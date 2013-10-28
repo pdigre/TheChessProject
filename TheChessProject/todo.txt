@@ -1,0 +1,25 @@
+To Do
+======
+
+Must:
+
+MOVES
+======
+1. Add halfmoves check
+
+Execution:
+=========
+3. improve Pull mechanism
+4. Negamax processor
+5. try multi processing
+
+
+GAME:
+=====
+1. Opening games datanase
+2.   with history narrative
+3. AppCloud 
+    - remember game
+    - get rating
+4. Personas (Jakob, Marianne, Leif, Per)
+  
