@@ -3,14 +3,14 @@ package no.pdigre.chess.test.engine;
 import java.util.HashSet;
 
 import no.pdigre.chess.engine.base.NodeUtil;
-import no.pdigre.chess.engine.eval.EvalUnit;
-import no.pdigre.chess.engine.eval.Evaluator;
-import no.pdigre.chess.engine.eval.IThinker;
-import no.pdigre.chess.engine.eval.NegaMax;
-import no.pdigre.chess.engine.eval.NegaMaxCutoff;
-import no.pdigre.chess.engine.eval.NegaMaxEnd;
-import no.pdigre.chess.engine.eval.NegaMaxTransposition;
 import no.pdigre.chess.engine.fen.StartGame;
+import no.pdigre.chess.engine.iterate.EvalUnit;
+import no.pdigre.chess.engine.iterate.Evaluator;
+import no.pdigre.chess.engine.iterate.IThinker;
+import no.pdigre.chess.engine.iterate.NegaMax;
+import no.pdigre.chess.engine.iterate.NegaMaxCutoff;
+import no.pdigre.chess.engine.iterate.NegaMaxEnd;
+import no.pdigre.chess.engine.iterate.NegaMaxTransposition;
 
 import org.junit.Test;
 

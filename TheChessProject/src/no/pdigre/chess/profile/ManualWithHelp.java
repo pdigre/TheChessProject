@@ -1,6 +1,6 @@
 package no.pdigre.chess.profile;
 
-import no.pdigre.chess.engine.eval.AlphaBeta;
+import no.pdigre.chess.engine.iterate.AlphaBeta;
 
 public class ManualWithHelp extends Manual {
 

@@ -1,7 +1,7 @@
 package no.pdigre.chess.test.engine;
 
-import no.pdigre.chess.engine.eval.EvalUnit;
 import no.pdigre.chess.engine.fen.StartGame;
+import no.pdigre.chess.engine.iterate.EvalUnit;
 
 import org.junit.Test;
 

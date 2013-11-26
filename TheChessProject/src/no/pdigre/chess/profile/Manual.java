@@ -3,7 +3,7 @@ package no.pdigre.chess.profile;
 import java.util.ArrayList;
 
 import no.pdigre.chess.engine.base.NodeUtil;
-import no.pdigre.chess.engine.eval.AlphaBeta;
+import no.pdigre.chess.engine.iterate.AlphaBeta;
 
 public class Manual extends Player {
 

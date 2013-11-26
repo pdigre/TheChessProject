@@ -7,13 +7,13 @@ public enum PieceType {
     WHITE_BISHOP(300, 'B', 3),
     WHITE_ROOK(500, 'R', 4),
     WHITE_QUEEN(900, 'Q', 5),
-    WHITE_KING(10000, 'K', 6),
+    WHITE_KING(20000, 'K', 6),
     BLACK_PAWN(-100, 'p', 9),
     BLACK_KNIGHT(-300, 'n', 10),
     BLACK_BISHOP(-300, 'b', 11),
     BLACK_ROOK(-500, 'r', 12),
     BLACK_QUEEN(-900, 'q', 13),
-    BLACK_KING(-10000, 'k', 14);
+    BLACK_KING(-20000, 'k', 14);
 
     final public int weight;
 
