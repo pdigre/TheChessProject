@@ -1,4 +1,4 @@
-package no.pdigre.chess.test.engine;
+package no.pdigre.chess.test;
 
 import java.util.HashSet;
 

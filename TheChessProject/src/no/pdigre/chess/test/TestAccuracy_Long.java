@@ -1,8 +1,10 @@
-package no.pdigre.chess.test.engine;
+package no.pdigre.chess.test;
 
 import java.util.ArrayList;
 
 import no.pdigre.chess.engine.fen.StartGame;
+import no.pdigre.chess.test.util.CountMoveParallel;
+import no.pdigre.chess.test.util.FileUtils;
 
 import org.junit.Test;
 

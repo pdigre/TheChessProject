@@ -1,4 +1,4 @@
-package no.pdigre.chess.test.engine;
+package no.pdigre.chess.test;
 
 import static org.junit.Assert.assertEquals;
 import no.pdigre.chess.engine.fen.StartGame;

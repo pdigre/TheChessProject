@@ -1,14 +1,15 @@
 package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.Bitmap;
+import no.pdigre.chess.engine.base.NodeUtil;
 
-public final class Move implements IPosition {
+public final class Move implements IPositionWithLog {
 
-    final private IPosition parent;
+    final private IPositionWithLog parent;
 
     final private int bitmap;
 
-    public Move(final IPosition parent, final int bitmap) {
+    public Move(final IPositionWithLog parent, final int bitmap) {
         this.parent = parent;
         this.bitmap = bitmap;
     }
@@ -16,11 +17,6 @@ public final class Move implements IPosition {
     @Override
     public String toString() {
         return FEN.printMove(getBitmap(),getBoard());
-    }
-
-   @Override
-    final public boolean whiteTurn() {
-        return (getBitmap() & BLACK) != 0;
     }
 
     @Override
@@ -37,6 +33,11 @@ public final class Move implements IPosition {
     }
 
     @Override
+    final public boolean whiteTurn() {
+        return (getBitmap() & BLACK) != 0;
+    }
+
+    @Override
     public int getBitmap() {
         return bitmap;
     }
@@ -44,6 +45,16 @@ public final class Move implements IPosition {
     @Override
     public IPosition move(int bitmap2) {
         return new Position(Bitmap.apply(getBoard(), bitmap2), bitmap2);
+    }
+
+    @Override
+    public int tacticValue() {
+        return Bitmap.tacticValue(getBitmap());
+    }
+
+    @Override
+    public int[] getAllBestFirst() {
+        return NodeUtil.getAllBestFirst(this);
     }
 
 }

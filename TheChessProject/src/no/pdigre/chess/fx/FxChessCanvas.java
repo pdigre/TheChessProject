@@ -20,11 +20,8 @@ public class FxChessCanvas extends Canvas{
 
     private GraphicsContext gc;
 
-    private FxGameData game;
-
     public FxChessCanvas(final FxGameData game) {
         super(270,270);
-        this.game=game;
         game.setCanvas(this);
         gc = getGraphicsContext2D();
         setOnMousePressed(new EventHandler<Event>() {

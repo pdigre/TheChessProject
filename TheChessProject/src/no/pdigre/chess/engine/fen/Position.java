@@ -1,6 +1,7 @@
 package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.Bitmap;
+import no.pdigre.chess.engine.base.NodeUtil;
 
 
 public class Position implements IPosition {
@@ -17,11 +18,7 @@ public class Position implements IPosition {
     public boolean whiteTurn() {
         return Bitmap.white(bitmap);
     }
-    @Override
-    public int totalMoves() {
-        return Bitmap.halfMoves(bitmap);
-    }
-
+    
     @Override
     public int[] getBoard() {
         return board;
@@ -35,5 +32,15 @@ public class Position implements IPosition {
     @Override
     public IPosition move(int bitmap2) {
         return new Position(Bitmap.apply(board, bitmap2), bitmap2);
+    }
+
+    @Override
+    public int tacticValue() {
+        return Bitmap.tacticValue(bitmap);
+    }
+
+    @Override
+    public int[] getAllBestFirst() {
+        return NodeUtil.getAllBestFirst(this);
     }
 }

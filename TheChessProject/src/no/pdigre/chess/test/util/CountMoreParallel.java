@@ -1,4 +1,4 @@
-package no.pdigre.chess.test.engine;
+package no.pdigre.chess.test.util;
 
 import java.util.ArrayList;
 import java.util.concurrent.ForkJoinPool;
@@ -15,7 +15,7 @@ public class CountMoreParallel extends CountMore {
     }
 
     @Override
-    protected Counter[] compute() {
+    public Counter[] compute() {
         NodeGen pull = new NodeGen(board, bitmap);
         int processors = Runtime.getRuntime().availableProcessors();
         ForkJoinPool pool = new ForkJoinPool(processors);

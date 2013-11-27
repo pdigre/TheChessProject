@@ -22,8 +22,10 @@ public class FEN implements IConst{
 		fen.append(FEN.pos2string(Bitmap.getEnpassant(move.getBitmap())));
 		fen.append(" ");
 		fen.append(Bitmap.halfMoves(move.getBitmap()));
-		fen.append(" ");
-		fen.append(move.totalMoves());
+		if(move instanceof IPositionWithLog){
+	        fen.append(" ");
+	        fen.append(((IPositionWithLog) move).totalMoves());
+		}
 		return fen.toString();
 	}
 

@@ -7,8 +7,6 @@ public abstract interface IPosition extends IConst{
 
     public abstract boolean whiteTurn();
 
-    public abstract int totalMoves();
-
     public abstract int[] getBoard();
 
     /**
@@ -23,4 +21,16 @@ public abstract interface IPosition extends IConst{
      * @return
      */
     public IPosition move(int bitmap);
+
+    /**
+     * Calculated gain in positional evaluation based on last move
+     * @return
+     */
+    public abstract int tacticValue();
+
+    /**
+     * Calculate next moves
+     * @return
+     */
+    public abstract int[] getAllBestFirst();
 }

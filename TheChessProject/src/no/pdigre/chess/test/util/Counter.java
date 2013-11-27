@@ -1,4 +1,4 @@
-package no.pdigre.chess.test.engine;
+package no.pdigre.chess.test.util;
 
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeGen;

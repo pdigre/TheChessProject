@@ -1,7 +1,5 @@
 package no.pdigre.chess.engine.iterate;
 
-import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 
@@ -30,10 +28,8 @@ public class NegaMaxCutoff implements IThinker {
     @Override
     public int think(IPosition pos, int total, int alpha, int beta) {
         this.pos=pos;
-        int bitmap = pos.getBitmap();
-        int[] board = pos.getBoard();
-        total += Bitmap.tacticValue(bitmap);
-        int[] moves = NodeUtil.getAllBestFirst(board, bitmap);
+        total += pos.tacticValue();
+        int[] moves = pos.getAllBestFirst();
         countertot+=moves.length;
         for (int i = 0; i < moves.length; i++) {
             int bitmap1 = moves[i];
