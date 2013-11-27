@@ -1,9 +1,10 @@
 package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.Bitmap;
+import no.pdigre.chess.engine.base.NodeUtil;
 
 
-public class StartGame implements IPosition {
+public class StartGame implements IPositionWithLog {
 
 	private final String castling;
 	private final boolean white;
@@ -80,6 +81,16 @@ public class StartGame implements IPosition {
     @Override
     public IPosition move(int bitmap2) {
         return new Position(Bitmap.apply(board, bitmap2), bitmap2);
+    }
+
+    @Override
+    public int tacticValue() {
+        return 0;
+    }
+
+    @Override
+    public int[] getAllBestFirst() {
+        return NodeUtil.getAllBestFirst(this);
     }
 
 }

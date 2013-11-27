@@ -1,5 +1,7 @@
 package no.pdigre.chess.engine.base;
 
+import no.pdigre.chess.engine.fen.IPosition;
+
 public class NodeUtil {
 
     public static int[] getAllMoves(final int[] board, int parent) {
@@ -16,8 +18,12 @@ public class NodeUtil {
         return ret;
     }
 
-    public static int[] getAllBestFirst(final int[] board, int parent) {
-        return sortMoves(getAllMoves(board, parent));
+    public static int[] getAllBestFirst(final int[] board, int bitmap) {
+        return sortMoves(getAllMoves(board, bitmap));
+    }
+
+    public static int[] getAllBestFirst(IPosition pos) {
+        return sortMoves(getAllMoves(pos.getBoard(), pos.getBitmap()));
     }
 
     public static int[] sortMoves(int[] all) {
