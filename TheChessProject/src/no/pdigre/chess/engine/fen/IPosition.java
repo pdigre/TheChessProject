@@ -17,4 +17,10 @@ public abstract interface IPosition extends IConst{
      */
     public abstract int getBitmap();
 
+    /**
+     * Returns a new IPosition based on current
+     * @param bitmap
+     * @return
+     */
+    public IPosition move(int bitmap);
 }

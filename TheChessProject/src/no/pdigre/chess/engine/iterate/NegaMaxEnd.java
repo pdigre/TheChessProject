@@ -1,6 +1,7 @@
 package no.pdigre.chess.engine.iterate;
 
 import no.pdigre.chess.engine.base.Bitmap;
+import no.pdigre.chess.engine.fen.IPosition;
 
 public class NegaMaxEnd implements IThinker {
 
@@ -8,8 +9,8 @@ public class NegaMaxEnd implements IThinker {
     }
 
     @Override
-    public int think(int[] board, int inherit, int total, int alpha, int beta) {
-        return total+ Bitmap.tacticValue(inherit);
+    public int think(IPosition pos, int total, int alpha, int beta) {
+        return total+ Bitmap.tacticValue(pos.getBitmap());
     }
 
     @Override

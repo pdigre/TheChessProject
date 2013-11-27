@@ -1,5 +1,7 @@
 package no.pdigre.chess.engine.fen;
 
+import no.pdigre.chess.engine.base.Bitmap;
+
 
 public class StartGame implements IPosition {
 
@@ -73,6 +75,11 @@ public class StartGame implements IPosition {
             }
         }
         return (halfMoves<<_HALFMOVES)|getCastlingState()|(white?BLACK:0)|enp;
+    }
+
+    @Override
+    public IPosition move(int bitmap2) {
+        return new Position(Bitmap.apply(board, bitmap2), bitmap2);
     }
 
 }

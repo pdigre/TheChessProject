@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import no.pdigre.chess.engine.fen.FEN;
+import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class EvalBase implements IThinker {
 
-    final private int[] board;
-
-    final private int bitmap;
-
+    final IPosition pos;
+    
     final StringBuilder sb = new StringBuilder();
 
     public Integer score;
@@ -19,22 +19,21 @@ public class EvalBase implements IThinker {
 
     @Override
     public String toString() {
-        return FEN.printMove(bitmap, board) + " (" + sb.toString() + ")";
+        return FEN.printMove(pos.getBitmap(), pos.getBoard()) + " (" + sb.toString() + ")";
     }
 
     public EvalBase(int[] board, int bitmap) {
-        this.board = board;
-        this.bitmap = bitmap;
+        pos=new Position(board, bitmap);
     }
 
     @Override
-    public int think(int[] board, int inherit, int total, int alpha, int beta) {
+    public int think(IPosition pos, int total, int alpha, int beta) {
         return 0;
     }
 
     @Override
     public int getBitmap() {
-        return bitmap;
+        return pos.getBitmap();
     }
 
     @Override
@@ -48,7 +47,7 @@ public class EvalBase implements IThinker {
     }
 
     public void run(NegaMax thinker) {
-        score = thinker.think(board, bitmap, 0, IThinker.MIN, IThinker.MAX);
+        score = thinker.think(pos, 0, IThinker.MIN, IThinker.MAX);
         if(sb.length()>0)
             sb.append(",");
         sb.append(score);

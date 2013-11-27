@@ -6,7 +6,7 @@ import no.pdigre.chess.engine.fen.StartGame;
 
 import org.junit.Test;
 
-public class AccuracyTest {
+public class TestAccuracy_Long {
 
     public class Perft {
 
@@ -31,7 +31,7 @@ public class AccuracyTest {
 
     @Test
     public void testAccuracy() {
-        ArrayList<Perft> list = new ArrayList<AccuracyTest.Perft>();
+        ArrayList<Perft> list = new ArrayList<TestAccuracy_Long.Perft>();
         for (String line : FileUtils.stream2lines(getClass().getResourceAsStream("perftsuite.epd"))) {
             String[] split = line.split("\\;");
             int[] count = new int[split.length - 1];

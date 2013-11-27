@@ -10,47 +10,9 @@ import no.pdigre.chess.engine.fen.StartGame;
 import org.junit.Test;
 
 @SuppressWarnings("static-method")
-public class StandardMovesTest {
+public class TestBasics {
 
     private static final int MAXDEPTH = 5;
-
-    @Test
-    public void testWhiteStart() {
-        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        StartGame move = new StartGame(fen);
-        assertEquals("Knight1", "N c3 a3", getLegalMovesFromPos("b1", move));
-        assertEquals("Knight2", "N h3 f3", getLegalMovesFromPos("g1", move));
-        assertEquals("Pawn1", "P a4 a3", getLegalMovesFromPos("a2", move));
-    }
-
-    @Test
-    public void testEnpassant() {
-        String fen = "rnbqkbnr/ppp1pppp/8/8/1PpP4/8/P3PPPP/RNBQKBNR b KQkq b3 0 3";
-        assertEquals("Pawn", "p b3 c3", getLegalMovesFromPos("c4", new StartGame(fen)));
-    }
-
-    @Test
-    public void testOpening1() {
-        String fen = "rnbqkb1r/pppp1ppp/5n2/4p3/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 1 3";
-        assertEquals("Queen", "Q h5 g4 f3 e2 d3 d2", getLegalMovesFromPos("d1", new StartGame(fen)));
-    }
-
-    @Test
-    public void testPromotions() {
-        String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
-        String moves = getLegalMovesFromPos("g2", new StartGame(fen));
-        assertEquals("Pawn", "p h1 h1 h1 h1 f1 f1 f1 f1 g1 g1 g1 g1", moves);
-    }
-
-    @Test
-    public void testCheck1() {
-        String fen = "rnbqk1nr/ppp2ppp/4p3/3p4/1b1P4/P4P2/1PP1P1PP/RNBQKBNR w KQkq - 1 4";
-        StartGame move = new StartGame(fen);
-        assertEquals("King", "K f2", getLegalMovesFromPos("e1", move));
-        assertEquals("Queen", "Q d2", getLegalMovesFromPos("d1", move));
-        assertEquals("Pawn1", "P b4", getLegalMovesFromPos("a3", move));
-        assertEquals("Pawn2", "P c3", getLegalMovesFromPos("c2", move));
-    }
 
     /**
      * Shows available moves
@@ -83,7 +45,7 @@ public class StandardMovesTest {
      * secs with 07.08.2012
      */
     @Test
-    public void testThinkStart1() {
+    public void thinkStart1_4347() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMore(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -99,7 +61,7 @@ public class StandardMovesTest {
      * secs with 07.08.2012
      */
     @Test
-    public void testThinkStart2() {
+    public void thinkStart2_2190() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMoreParallel(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -115,7 +77,7 @@ public class StandardMovesTest {
      * secs with 07.08.2012
      */
     @Test
-    public void testThinkStart3() {
+    public void thinkStart3_2552() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMoreParallel2(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -145,7 +107,7 @@ public class StandardMovesTest {
     }
 
     @Test
-    public void testThinkPromo() {
+    public void thinkPromo1_4243() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMore(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -158,7 +120,7 @@ public class StandardMovesTest {
     }
 
     @Test
-    public void testThinkPromo2() {
+    public void thinkPromo2_2226() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMoreParallel(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -171,7 +133,17 @@ public class StandardMovesTest {
     }
 
     @Test
-    public void testOrdering() {
+    public void check_0() {
+        String fen = "rnbqk1nr/ppp2ppp/4p3/3p4/1b1P4/P4P2/1PP1P1PP/RNBQKBNR w KQkq - 1 4";
+        StartGame move = new StartGame(fen);
+        assertEquals("King", "K f2", getLegalMovesFromPos("e1", move));
+        assertEquals("Queen", "Q d2", getLegalMovesFromPos("d1", move));
+        assertEquals("Pawn1", "P b4", getLegalMovesFromPos("a3", move));
+        assertEquals("Pawn2", "P c3", getLegalMovesFromPos("c2", move));
+    }
+
+    @Test
+    public void ordering_0() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         int[] board = start.getBoard();
@@ -191,5 +163,34 @@ public class StandardMovesTest {
             }
         }
     }
+
+    @Test
+    public void opening_0() {
+        String fen = "rnbqkb1r/pppp1ppp/5n2/4p3/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 1 3";
+        assertEquals("Queen", "Q h5 g4 f3 e2 d3 d2", getLegalMovesFromPos("d1", new StartGame(fen)));
+    }
+
+    @Test
+    public void whiteStart_0() {
+        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        StartGame move = new StartGame(fen);
+        assertEquals("Knight1", "N c3 a3", getLegalMovesFromPos("b1", move));
+        assertEquals("Knight2", "N h3 f3", getLegalMovesFromPos("g1", move));
+        assertEquals("Pawn1", "P a4 a3", getLegalMovesFromPos("a2", move));
+    }
+
+    @Test
+    public void promotions_0() {
+        String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
+        String moves = getLegalMovesFromPos("g2", new StartGame(fen));
+        assertEquals("Pawn", "p h1 h1 h1 h1 f1 f1 f1 f1 g1 g1 g1 g1", moves);
+    }
+
+    @Test
+    public void enpassant_0() {
+        String fen = "rnbqkbnr/ppp1pppp/8/8/1PpP4/8/P3PPPP/RNBQKBNR b KQkq b3 0 3";
+        assertEquals("Pawn", "p b3 c3", getLegalMovesFromPos("c4", new StartGame(fen)));
+    }
+
 
 }

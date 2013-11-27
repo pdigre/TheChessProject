@@ -7,10 +7,10 @@ import org.junit.Test;
 
 
 @SuppressWarnings("static-method")
-public class EloTest {
+public class TestElo {
 
     @Test
-    public void testEvalUnit2() {
+    public void testEvalUnit2_3() {
         String fen = "8/4p3/8/3P3p/P2pK3/6P1/7b/3k4 w - - 0 1";
         StartGame start = new StartGame(fen);
         EvalUnit top = new EvalUnit(start.getBoard(), start.getBitmap());

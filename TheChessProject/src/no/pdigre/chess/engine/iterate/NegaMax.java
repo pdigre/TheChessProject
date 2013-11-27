@@ -3,18 +3,17 @@ package no.pdigre.chess.engine.iterate;
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
+import no.pdigre.chess.engine.fen.IPosition;
 
 public class NegaMax implements IThinker {
 
     private IThinker next;
 
-    private int bitmap;
+    IPosition pos;
 
     private IThinker parent;
 
     private int counter;
-
-    private int[] board;
 
     @Override
     public void setParent(IThinker parent) {
@@ -27,25 +26,21 @@ public class NegaMax implements IThinker {
     }
 
     @Override
-    public int think(int[] board0, int bitmap0, int total, int alpha, int beta) {
-        this.bitmap = bitmap0;
-        this.board = board0;
-        total += Bitmap.tacticValue(bitmap0);
+    public int think(IPosition pos, int total, int alpha, int beta) {
+        this.pos=pos;
+        int bitmap = pos.getBitmap();
+        int[] board = pos.getBoard();
+        total += Bitmap.tacticValue(bitmap);
         int max = alpha;
-        int[] moves = NodeUtil.getAllBestFirst(board0, bitmap0);
+        int[] moves = NodeUtil.getAllBestFirst(board, bitmap);
         counter+=moves.length;
         for (int i = 0; i < moves.length; i++) {
             int bitmap1 = moves[i];
-            int score = -next.think(Bitmap.apply(board0, bitmap1), bitmap1, -total, -beta, -alpha);
+            int score = -next.think(pos.move(bitmap1), -total, -beta, -alpha);
             if (score > max)
                 max = score;
         }
         return max;
-    }
-
-    @Override
-    public int getBitmap() {
-        return bitmap;
     }
 
     @Override
@@ -54,8 +49,13 @@ public class NegaMax implements IThinker {
     }
 
     @Override
+    public int getBitmap() {
+        return pos.getBitmap();
+    }
+
+    @Override
     public String toString() {
-        return FEN.board2String(board) + "\n" + FEN.printMove(bitmap, board);
+        return FEN.board2String(pos.getBoard()) + "\n" + FEN.printMove(pos.getBitmap(), pos.getBoard());
     }
 
     public void printHitrate() {

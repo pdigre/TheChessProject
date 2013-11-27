@@ -3,6 +3,7 @@ package no.pdigre.chess.engine.iterate;
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
+import no.pdigre.chess.engine.fen.IPosition;
 
 public class NegaMaxCutoff implements IThinker {
 
@@ -10,13 +11,11 @@ public class NegaMaxCutoff implements IThinker {
 
     private IThinker parent;
 
-    private int bitmap;
-
-    private int[] board;
-
     private int counter;
 
     private int countertot;
+
+    private IPosition pos;
 
     @Override
     public void setParent(IThinker parent) {
@@ -29,16 +28,17 @@ public class NegaMaxCutoff implements IThinker {
     }
 
     @Override
-    public int think(int[] board0, int bitmap0, int total, int alpha, int beta) {
-        this.bitmap = bitmap0;
-        this.board = board0;
-        total += Bitmap.tacticValue(bitmap0);
-        int[] moves = NodeUtil.getAllBestFirst(board0, bitmap0);
+    public int think(IPosition pos, int total, int alpha, int beta) {
+        this.pos=pos;
+        int bitmap = pos.getBitmap();
+        int[] board = pos.getBoard();
+        total += Bitmap.tacticValue(bitmap);
+        int[] moves = NodeUtil.getAllBestFirst(board, bitmap);
         countertot+=moves.length;
         for (int i = 0; i < moves.length; i++) {
-            int bitmap = moves[i];
+            int bitmap1 = moves[i];
             counter++;
-            int score = -next.think(Bitmap.apply(board0, bitmap), bitmap, -total, -beta, -alpha);
+            int score = -next.think(pos.move(bitmap1), -total, -beta, -alpha);
             if (score >= beta)
                 return beta;
             if (score > alpha)
@@ -48,18 +48,18 @@ public class NegaMaxCutoff implements IThinker {
     }
 
     @Override
-    public int getBitmap() {
-        return bitmap;
-    }
-
-    @Override
     public IThinker getParent() {
         return parent;
     }
 
     @Override
+    public int getBitmap() {
+        return pos.getBitmap();
+    }
+
+    @Override
     public String toString() {
-        return FEN.board2String(board) + "\n" + FEN.printMove(bitmap, board);
+        return FEN.board2String(pos.getBoard()) + "\n" + FEN.printMove(pos.getBitmap(), pos.getBoard());
     }
     
     public void printHitrate() {

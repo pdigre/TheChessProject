@@ -4,6 +4,7 @@ import java.util.concurrent.ForkJoinPool;
 
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.fen.FEN;
+import no.pdigre.chess.engine.fen.Position;
 
 public class Evaluator {
 
@@ -34,7 +35,7 @@ public class Evaluator {
     }
 
     public void sync(IThinker thinker) {
-        score = thinker.think(Bitmap.apply(board, bitmap), bitmap, 0, IThinker.MIN, IThinker.MAX);
+        score = thinker.think(new Position(Bitmap.apply(board, bitmap), bitmap), 0, IThinker.MIN, IThinker.MAX);
         sb.append(score);
     }
 

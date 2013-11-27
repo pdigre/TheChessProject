@@ -41,4 +41,9 @@ public final class Move implements IPosition {
         return bitmap;
     }
 
+    @Override
+    public IPosition move(int bitmap2) {
+        return new Position(Bitmap.apply(getBoard(), bitmap2), bitmap2);
+    }
+
 }

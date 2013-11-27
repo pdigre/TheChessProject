@@ -5,6 +5,7 @@ import java.util.HashSet;
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
+import no.pdigre.chess.engine.fen.IPosition;
 
 public class NegaMaxTransposition implements IThinker {
 
@@ -18,11 +19,7 @@ public class NegaMaxTransposition implements IThinker {
 
     private IThinker next;
 
-    private int bitmap;
-
     private IThinker parent;
-
-    private int[] board;
 
     private int total;
 
@@ -31,6 +28,8 @@ public class NegaMaxTransposition implements IThinker {
     private int adds;
 
     private boolean lAdd;
+
+    private IPosition pos;
 
     @Override
     public void setParent(IThinker parent) {
@@ -44,21 +43,22 @@ public class NegaMaxTransposition implements IThinker {
     }
 
     @Override
-    public int think(int[] board0, int bitmap0, int aggr, int alpha, int beta) {
-        this.bitmap = bitmap0;
-        this.board = board0;
-        aggr += Bitmap.tacticValue(bitmap0);
+    public int think(IPosition pos, int aggr, int alpha, int beta) {
+        this.pos=pos;
+        int bitmap = pos.getBitmap();
+        int[] board = pos.getBoard();
+        aggr += Bitmap.tacticValue(bitmap);
         long ft1 = Bitmap.getFromTo(getParent().getBitmap());
-        long ft2 = Bitmap.getFromTo(bitmap0);
+        long ft2 = Bitmap.getFromTo(bitmap);
         long ft2x = ft2 << 12;
         long commonkey = ft1 | ft2x;
         long commontrn = ft2x | (ft1 << 24);
-        int[] moves = NodeUtil.getAllBestFirst(board0, bitmap0);
+        int[] moves = NodeUtil.getAllBestFirst(board, bitmap);
         total += moves.length;
         for (int i = 0; i < moves.length; i++) {
-            int bitmap = moves[i];
+            int bitmap1 = moves[i];
             int score = 0;
-            long ft3 = Bitmap.getFromTo(bitmap);
+            long ft3 = Bitmap.getFromTo(bitmap1);
             Long trans = ft3 | commontrn;
             if (tt.contains(trans)) {
                 hits++;
@@ -69,7 +69,7 @@ public class NegaMaxTransposition implements IThinker {
                 Long key = commonkey | (ft3 << 24);
                 tt.add(key);
             }
-            score = -next.think(Bitmap.apply(board0, bitmap), bitmap, -aggr, -beta, -alpha);
+            score = -next.think(pos.move(bitmap1), -aggr, -beta, -alpha);
             // if (score >= beta)
             // return beta;
             if (score > alpha)
@@ -87,18 +87,18 @@ public class NegaMaxTransposition implements IThinker {
     }
 
     @Override
-    public int getBitmap() {
-        return bitmap;
-    }
-
-    @Override
     public IThinker getParent() {
         return parent;
     }
 
     @Override
+    public int getBitmap() {
+        return pos.getBitmap();
+    }
+
+    @Override
     public String toString() {
-        return FEN.board2String(board) + "\n" + FEN.printMove(bitmap, board);
+        return FEN.board2String(pos.getBoard()) + "\n" + FEN.printMove(pos.getBitmap(), pos.getBoard());
     }
 
     public void printHitrate() {

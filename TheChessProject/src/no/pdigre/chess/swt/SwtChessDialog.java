@@ -1,6 +1,5 @@
 package no.pdigre.chess.swt;
 
-import java.lang.Thread.State;
 import java.util.ArrayList;
 
 import no.pdigre.chess.engine.fen.StartingGames;

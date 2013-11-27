@@ -23,15 +23,15 @@ import org.junit.Test;
  *
  */
 @SuppressWarnings("static-method")
-public class ThinkerTest {
+public class TestIterators {
 
     /**
      * Takes 2.2 sec with quadcore i7
      */
     @Test
-    public void testNegamax() {
+    public void negamax_194() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
-        NegaMax first = new NegaMax(new NegaMax(new NegaMax(new NegaMaxEnd())));
+        NegaMax first = new NegaMax(new NegaMaxEnd());
         NegaMax tt = new NegaMax(first);
         testThinker(fen, first, new NegaMax(tt));
         tt.printHitrate();
@@ -41,7 +41,7 @@ public class ThinkerTest {
      * Takes 148ms with quadcore i7
      */
     @Test
-    public void testNegamaxCutoff() {
+    public void negamaxCutoff_1978() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
         IThinker first = new NegaMaxCutoff(new NegaMaxCutoff(new NegaMaxCutoff(new NegaMaxEnd())));
         NegaMaxCutoff tt = new NegaMaxCutoff(first);
@@ -56,7 +56,7 @@ public class ThinkerTest {
      * 5201/39731
      */
     @Test
-    public void testNegamaxCutoffWithTransposition() {
+    public void negamaxCutoff_TT_480() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
         IThinker first = new NegaMaxCutoff(new NegaMaxEnd());
         HashSet<Long> tt=new HashSet<Long>();
@@ -72,7 +72,7 @@ public class ThinkerTest {
      * 5201/39731
      */
     @Test
-    public void testEvalUnit() {
+    public void evalUnit1_1321() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
         StartGame start = new StartGame(fen);
         EvalUnit top = new EvalUnit(start.getBoard(), start.getBitmap());
@@ -88,7 +88,7 @@ public class ThinkerTest {
      * 5201/39731
      */
     @Test
-    public void testEvalUnit2() {
+    public void evalUnit2_12() {
         String fen = "8/4p3/8/3P3p/P2pK3/6P1/7b/3k4 w - - 0 1";
         StartGame start = new StartGame(fen);
         EvalUnit top = new EvalUnit(start.getBoard(), start.getBitmap());
