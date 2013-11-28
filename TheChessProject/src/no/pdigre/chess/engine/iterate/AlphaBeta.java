@@ -24,7 +24,7 @@ public class AlphaBeta {
             moves[i] = new MoveScore(new Position(pos.getBoard(), bitmap1), alphaBeta(depth, new Position(pos.getBoard(), bitmap1)));
         }
 
-        if (pos.whiteTurn()) {
+        if (!pos.whiteTurn()) {
             Arrays.sort(moves, new Comparator<MoveScore>() {
 
                 @Override
