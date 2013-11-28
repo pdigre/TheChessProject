@@ -1,4 +1,4 @@
-package no.pdigre.chess.test.engine;
+package no.pdigre.chess.test;
 
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.engine.iterate.EvalUnit;

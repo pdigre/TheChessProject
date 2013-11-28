@@ -1,4 +1,4 @@
-package no.pdigre.chess.test.engine;
+package no.pdigre.chess.test;
 
 import static org.junit.Assert.assertEquals;
 import no.pdigre.chess.engine.base.Bitmap;
@@ -6,6 +6,10 @@ import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.PieceType;
 import no.pdigre.chess.engine.fen.StartGame;
+import no.pdigre.chess.test.util.CountMore;
+import no.pdigre.chess.test.util.CountMoreParallel;
+import no.pdigre.chess.test.util.CountMoreParallel2;
+import no.pdigre.chess.test.util.Counter;
 
 import org.junit.Test;
 

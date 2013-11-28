@@ -1,4 +1,4 @@
-package no.pdigre.chess.test.engine;
+package no.pdigre.chess.test.util;
 
 import java.util.concurrent.RecursiveTask;
 
@@ -47,7 +47,7 @@ public class CountMore extends RecursiveTask<Counter[]>{
     }
 
 	@Override
-	protected Counter[] compute() {
+    public Counter[] compute() {
         NodeGen pull = new NodeGen(board, bitmap);
         int bitmap=pull.nextSafe();
         while(bitmap!=0){
