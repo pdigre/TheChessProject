@@ -2,8 +2,8 @@ package no.pdigre.chess.profile;
 
 import java.util.HashSet;
 
-import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
+import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.iterate.Evaluator;
 import no.pdigre.chess.engine.iterate.IThinker;
 import no.pdigre.chess.engine.iterate.NegaMax;
@@ -26,7 +26,7 @@ public class Intermediate2 extends Player {
         IThinker second = new NegaMax(nm,IEvaluator.BASIC);
         int[] board = getBoard();
         int bitmap = getBitmap();
-        int[] moves = NodeUtil.getAllBestFirst(board, bitmap);
+        int[] moves = new Position(board, bitmap).getAllBestFirst();
         Evaluator[] evals = new Evaluator[moves.length];
         for (int i = 0; i < moves.length; i++)
             evals[i] = new Evaluator(board, moves[i]);
