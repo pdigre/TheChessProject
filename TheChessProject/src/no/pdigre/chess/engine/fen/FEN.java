@@ -102,7 +102,9 @@ public class FEN implements IConst{
 	}
 
 
-    public static String printMove(int bitmap, int[] board) {
+    public static String printMove(IPosition pos) {
+        int bitmap=pos.getBitmap();
+        int[] board=pos.getBoard();
         StringBuilder sb = new StringBuilder();
         sb.append(PieceType.types[bitmap & PIECE]);
         sb.append(" from " + FEN.pos2string(Bitmap.getFrom(bitmap)) + " to "
@@ -119,7 +121,7 @@ public class FEN implements IConst{
         boolean white = Bitmap.white(bitmap);
         if (!NodeGen.checkSafe(board, NodeGen.getKingPos(board, white), white)) {
             sb.append(" check");
-            if (!(new NodeGen(board, bitmap).nextSafe()!=0))
+            if (!(new NodeGen(new Position(board, bitmap)).nextSafe()!=0))
                 sb.append("mate");
         }
         return sb.toString();

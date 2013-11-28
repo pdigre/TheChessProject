@@ -99,7 +99,7 @@ public class NegaMaxTransposition implements IThinker {
 
     @Override
     public String toString() {
-        return FEN.board2String(pos.getBoard()) + "\n" + FEN.printMove(pos.getBitmap(), pos.getBoard());
+        return FEN.board2String(pos.getBoard()) + "\n" + FEN.printMove(pos);
     }
 
     public void printHitrate() {

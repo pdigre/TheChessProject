@@ -4,6 +4,7 @@ import java.util.concurrent.RecursiveTask;
 
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeGen;
+import no.pdigre.chess.engine.fen.Position;
 
 public class CountMove extends RecursiveTask<int[]> {
 
@@ -23,7 +24,7 @@ public class CountMove extends RecursiveTask<int[]> {
 
     @Override
     protected int[] compute() {
-        NodeGen pull = new NodeGen(board, bitmap);
+        NodeGen pull = new NodeGen(new Position(board, bitmap));
         int bitmap = pull.nextSafe();
         while (bitmap != 0) {
             counters[0]++;

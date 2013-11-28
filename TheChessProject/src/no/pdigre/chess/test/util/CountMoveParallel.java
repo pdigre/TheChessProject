@@ -5,6 +5,7 @@ import java.util.concurrent.ForkJoinPool;
 
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeGen;
+import no.pdigre.chess.engine.fen.Position;
 
 public class CountMoveParallel extends CountMove {
 
@@ -16,7 +17,7 @@ public class CountMoveParallel extends CountMove {
 
     @Override
     public int[] compute() {
-        NodeGen pull = new NodeGen(board, bitmap);
+        NodeGen pull = new NodeGen(new Position(board, bitmap));
         int processors = Runtime.getRuntime().availableProcessors();
         ForkJoinPool pool = new ForkJoinPool(processors);
         ArrayList<CountMove> tasks = new ArrayList<CountMove>();

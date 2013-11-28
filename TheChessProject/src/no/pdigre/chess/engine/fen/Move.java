@@ -16,7 +16,7 @@ public final class Move implements IPositionWithLog {
 
     @Override
     public String toString() {
-        return FEN.printMove(getBitmap(),getBoard());
+        return FEN.printMove(new Position(getBoard(),getBitmap()));
     }
 
     @Override
@@ -45,11 +45,6 @@ public final class Move implements IPositionWithLog {
     @Override
     public IPosition move(int bitmap2) {
         return new Position(Bitmap.apply(getBoard(), bitmap2), bitmap2);
-    }
-
-    @Override
-    public int tacticValue() {
-        return Bitmap.tacticValue(getBitmap());
     }
 
     @Override

@@ -84,11 +84,6 @@ public class StartGame implements IPositionWithLog {
     }
 
     @Override
-    public int tacticValue() {
-        return 0;
-    }
-
-    @Override
     public int[] getAllBestFirst() {
         return NodeUtil.getAllBestFirst(this);
     }

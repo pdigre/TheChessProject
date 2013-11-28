@@ -19,7 +19,7 @@ public class EvalBase implements IThinker {
 
     @Override
     public String toString() {
-        return FEN.printMove(pos.getBitmap(), pos.getBoard()) + " (" + sb.toString() + ")";
+        return FEN.printMove(pos) + " (" + sb.toString() + ")";
     }
 
     public EvalBase(int[] board, int bitmap) {

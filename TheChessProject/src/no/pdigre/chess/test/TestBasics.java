@@ -37,7 +37,7 @@ public class TestBasics {
         FEN.printPiece(type, from);
         StringBuffer sb = new StringBuffer();
         sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(board, start.getBitmap()), from)) {
+        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(new Position(board, start.getBitmap())), from)) {
             sb.append(" ");
             sb.append(FEN.pos2string(Bitmap.getTo(bitmap)));
         }
@@ -162,7 +162,7 @@ public class TestBasics {
             if (val > high){
                 System.out.println("=================================");
                 for (int bm : sorted) {
-                    System.out.println(FEN.printMove(bm, board));
+                    System.out.println(FEN.printMove(new Position(board, bm)));
                 }
                 throw new AssertionError("Wrong move value ordering");
             }

@@ -1,5 +1,7 @@
 package no.pdigre.chess.engine.base;
 
+import no.pdigre.chess.engine.fen.IPosition;
+
 public class NodeGen {
 
     final private int[] moves = new int[28];
@@ -38,9 +40,10 @@ public class NodeGen {
 
     final private int pawnline;
 
-    public NodeGen(int[] board, int inherit) {
-        this.inherit = inherit;
-        this.board = board;
+    public NodeGen(IPosition pos) {
+        
+        this.inherit = pos.getBitmap();
+        this.board = pos.getBoard();
         white = !Bitmap.white(inherit);
         kingpos = getKingPos(board, white);
         enpassant = Bitmap.getEnpassant(inherit);

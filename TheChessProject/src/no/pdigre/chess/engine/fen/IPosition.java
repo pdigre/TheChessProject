@@ -23,12 +23,6 @@ public abstract interface IPosition extends IConst{
     public IPosition move(int bitmap);
 
     /**
-     * Calculated gain in positional evaluation based on last move
-     * @return
-     */
-    public abstract int tacticValue();
-
-    /**
      * Calculate next moves
      * @return
      */

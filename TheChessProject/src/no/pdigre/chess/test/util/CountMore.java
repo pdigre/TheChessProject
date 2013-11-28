@@ -5,6 +5,7 @@ import java.util.concurrent.RecursiveTask;
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.NodeGen;
+import no.pdigre.chess.engine.fen.Position;
 
 public class CountMore extends RecursiveTask<Counter[]>{
 
@@ -28,7 +29,7 @@ public class CountMore extends RecursiveTask<Counter[]>{
         boolean white = Bitmap.white(bitmap);
         if (!NodeGen.checkSafe(board2, NodeGen.getKingPos(board2, white), white)) {
             counters[0].checks++;
-            if (!(new NodeGen(board2, bitmap2 & (IConst.CASTLING_STATE | IConst.HALFMOVES)).nextSafe()!=0))
+            if (!(new NodeGen(new Position(board2, bitmap2 & (IConst.CASTLING_STATE | IConst.HALFMOVES))).nextSafe()!=0))
                 counters[0].mates++;
         }
 	}
@@ -48,7 +49,7 @@ public class CountMore extends RecursiveTask<Counter[]>{
 
 	@Override
     public Counter[] compute() {
-        NodeGen pull = new NodeGen(board, bitmap);
+        NodeGen pull = new NodeGen(new Position(board, bitmap));
         int bitmap=pull.nextSafe();
         while(bitmap!=0){
             int[] board2 = Bitmap.apply(board, bitmap);

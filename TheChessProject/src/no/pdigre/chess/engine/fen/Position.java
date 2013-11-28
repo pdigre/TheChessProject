@@ -35,11 +35,6 @@ public class Position implements IPosition {
     }
 
     @Override
-    public int tacticValue() {
-        return Bitmap.tacticValue(bitmap);
-    }
-
-    @Override
     public int[] getAllBestFirst() {
         return NodeUtil.getAllBestFirst(this);
     }

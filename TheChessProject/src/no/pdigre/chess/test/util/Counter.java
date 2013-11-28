@@ -3,6 +3,7 @@ package no.pdigre.chess.test.util;
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class Counter {
 
@@ -24,9 +25,9 @@ public class Counter {
     	
     }
     
-    public void count(IPosition move, int[] board) {
+    public void count(IPosition pos, int[] board) {
         moves++;
-        int inherit = move.getBitmap();
+        int inherit = pos.getBitmap();
         if (Bitmap.isCastling(inherit)) {
             castlings++;
         }
@@ -39,12 +40,12 @@ public class Counter {
                 enpassants++;
             }
         }
-        int[] brd = Bitmap.apply(board, inherit);
-        boolean white = move.whiteTurn();
-        int kpos = NodeGen.getKingPos(brd, white);
-        if(!NodeGen.checkSafe(brd, kpos, white)){
+        int[] board1 = Bitmap.apply(board, inherit);
+        boolean white = pos.whiteTurn();
+        int kpos = NodeGen.getKingPos(board1, white);
+        if(!NodeGen.checkSafe(board1, kpos, white)){
             checks++;
-            if(!(new NodeGen(brd, inherit).nextSafe()!=0))
+            if(!(new NodeGen(new Position(board1, inherit)).nextSafe()!=0))
                 mates++;
         }
     }

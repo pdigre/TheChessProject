@@ -51,7 +51,7 @@ public class Evaluator {
 
     @Override
     public String toString() {
-        return FEN.printMove(bitmap, board) + " (" + sb.toString() + ")";
+        return FEN.printMove(new Position(board, bitmap)) + " (" + sb.toString() + ")";
     }
     
     public static Evaluator[] sort(Evaluator[] all) {
