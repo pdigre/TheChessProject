@@ -3,10 +3,12 @@ package no.pdigre.chess.engine.iterate;
 import java.util.HashSet;
 
 import no.pdigre.chess.engine.base.Bitmap;
+import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 
 public class NegaMaxTransposition implements IThinker {
+    private IEvaluator eval;
 
     public static long FROMTO_1 = 63 | (63 << 6);
 
@@ -35,7 +37,8 @@ public class NegaMaxTransposition implements IThinker {
         this.parent = parent;
     }
 
-    public NegaMaxTransposition(IThinker next,HashSet<Long> tt) {
+    public NegaMaxTransposition(IThinker next,HashSet<Long> tt,IEvaluator eval) {
+        this.eval=eval;
         this.next = next;
         this.tt=tt;
         next.setParent(this);
@@ -45,7 +48,7 @@ public class NegaMaxTransposition implements IThinker {
     public int think(IPosition pos, int aggr, int alpha, int beta) {
         this.pos=pos;
         int bitmap = pos.getBitmap();
-        aggr += pos.tacticValue();
+        aggr += eval.tactical(pos);
         long ft1 = Bitmap.getFromTo(getParent().getBitmap());
         long ft2 = Bitmap.getFromTo(bitmap);
         long ft2x = ft2 << 12;
@@ -103,14 +106,14 @@ public class NegaMaxTransposition implements IThinker {
         System.out.println("Scanning:" + tt.size() + "/" + total + " (hits:" + hits + ",adds:" + adds + ")");
     }
 
-    public static NegaMaxTransposition createAndFill(IThinker tail, HashSet<Long> tt) {
-        NegaMaxTransposition nm = new NegaMaxTransposition(tail,tt);
+    public static NegaMaxTransposition createAndFill(IThinker tail, HashSet<Long> tt,IEvaluator eval) {
+        NegaMaxTransposition nm = new NegaMaxTransposition(tail,tt,eval);
         nm.lAdd=true;
         return nm;
     }
 
-    public static NegaMaxTransposition create(IThinker tail, HashSet<Long> tt) {
-        return new NegaMaxTransposition(tail,tt);
+    public static NegaMaxTransposition create(IThinker tail, HashSet<Long> tt,IEvaluator eval) {
+        return new NegaMaxTransposition(tail,tt,eval);
     }
 
 }

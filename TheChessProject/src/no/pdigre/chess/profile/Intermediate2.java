@@ -3,6 +3,7 @@ package no.pdigre.chess.profile;
 import java.util.HashSet;
 
 import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.iterate.Evaluator;
 import no.pdigre.chess.engine.iterate.IThinker;
 import no.pdigre.chess.engine.iterate.NegaMax;
@@ -19,10 +20,10 @@ public class Intermediate2 extends Player {
 			makeMove(bitmaps[0]);
 			return;
 		}
-        IThinker first = new NegaMaxCutoff(new NegaMaxEnd());
+        IThinker first = new NegaMaxCutoff(new NegaMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC);
         HashSet<Long> tt=new HashSet<Long>();
-        NegaMaxTransposition nm = NegaMaxTransposition.createAndFill(first,tt);
-        IThinker second = new NegaMax(nm);
+        NegaMaxTransposition nm = NegaMaxTransposition.createAndFill(first,tt,IEvaluator.BASIC);
+        IThinker second = new NegaMax(nm,IEvaluator.BASIC);
         int[] board = getBoard();
         int bitmap = getBitmap();
         int[] moves = NodeUtil.getAllBestFirst(board, bitmap);
