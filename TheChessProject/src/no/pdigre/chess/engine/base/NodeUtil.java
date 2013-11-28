@@ -18,10 +18,6 @@ public class NodeUtil {
         return ret;
     }
 
-    public static int[] getAllBestFirst(final int[] board, int bitmap) {
-        return sortMoves(getAllMoves(board, bitmap));
-    }
-
     public static int[] getAllBestFirst(IPosition pos) {
         return sortMoves(getAllMoves(pos.getBoard(), pos.getBitmap()));
     }

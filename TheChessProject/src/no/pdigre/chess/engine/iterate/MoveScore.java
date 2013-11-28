@@ -1,20 +1,20 @@
 package no.pdigre.chess.engine.iterate;
 
+import no.pdigre.chess.engine.fen.IPosition;
 
-public class MoveEval implements Comparable<MoveEval>{
-    public final int bitmap;
-    public final int[] board;
+
+public class MoveScore implements Comparable<MoveScore>{
     public int score;
+    public IPosition pos;
     
-    public MoveEval(int bitmap, int[] board, int score) {
+    public MoveScore(IPosition pos, int score) {
         super();
-        this.bitmap = bitmap;
-        this.board = board;
+        this.pos=pos;
         this.score = score;
     }
 
     @Override
-    public int compareTo(MoveEval o) {
+    public int compareTo(MoveScore o) {
         return intCompare(this.score, o.score);
     }
 

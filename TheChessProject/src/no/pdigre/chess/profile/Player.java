@@ -72,15 +72,18 @@ public abstract class Player implements IPlayer {
 	}
 
 	protected void printFEN() {
-		System.out.println(FEN.getFen(game.position));
+		System.out.println(FEN.getFen(getPosition()));
 	}
 
 	protected int getBitmap() {
-		return game.position.getBitmap();
+		return getPosition().getBitmap();
 	}
 
 	protected int[] getBoard() {
-		return game.position.getBoard();
+		return getPosition().getBoard();
 	}
 
+	protected IPosition getPosition(){
+	    return game.position;
+	}
 }

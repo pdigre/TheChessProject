@@ -98,28 +98,28 @@ public final class Bitmap implements IConst {
         return (bitmap & BLACK) | promotion;
     }
 
-    final public static int bitPawnEnpassant(int[] board, int from, int inherit, int to) {
-        return castling(mapEnpassant(from, to, board[from]) | (inherit & CASTLING_STATE));
+    final public static int bitPawnEnpassant(int[] board, int bitmap, int from, int to) {
+        return castling(mapEnpassant(from, to, board[from]) | (bitmap & CASTLING_STATE));
     }
 
-    final public static int bitPawnCapture(int[] board, int from, int inherit, int to) {
-        return castling(mapCapture(from, to, board[from], board[to] & 7) | (inherit & CASTLING_STATE));
+    final public static int bitPawnCapture(int[] board, int bitmap, int from, int to) {
+        return castling(mapCapture(from, to, board[from], board[to] & 7) | (bitmap & CASTLING_STATE));
     }
 
-    final public static int bitPawnCapturePromote(int[] board, int from, int inherit, int to) {
-        return castling(mapCapturePromote(from, to, board[from], board[to] & 7, 0) | (inherit & CASTLING_STATE));
+    final public static int bitPawnCapturePromote(int[] board, int bitmap, int from, int to) {
+        return castling(mapCapturePromote(from, to, board[from], board[to] & 7, 0) | (bitmap & CASTLING_STATE));
     }
 
-    final public static int bitPawnPromote(int[] board, int from, int inherit, int to) {
-        return castling(mapPromote(from, to, board[from], 0) | (inherit & CASTLING_STATE));
+    final public static int bitPawnPromote(int[] board, int bitmap, int from, int to) {
+        return castling(mapPromote(from, to, board[from], 0) | (bitmap & CASTLING_STATE));
     }
 
     final public static int bitMove(int from, int inherit, int to, int bitmap) {
         return castling(mapMove(from, to, Bitmap.halfMoves(inherit), bitmap) | (inherit & CASTLING_STATE));
     }
 
-    final public static int bitCastling(final int[] board, int from, int inherit, int to) {
-        return castling(mapCastling(from, to, board[from]) | (inherit & CASTLING_STATE));
+    final public static int bitCastling(final int[] board, int bitmap, int from, int to) {
+        return castling(mapCastling(from, to, board[from]) | (bitmap & CASTLING_STATE));
     }
 
     private static int castling(int bitmap) {

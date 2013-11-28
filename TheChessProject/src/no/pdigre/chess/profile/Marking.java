@@ -3,7 +3,7 @@ package no.pdigre.chess.profile;
 import java.util.ArrayList;
 
 import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.fen.IPosition;
 
 public class Marking {
 
@@ -31,9 +31,9 @@ public class Marking {
 		this.score=score;
 	}
 
-    public static ArrayList<Marking> getPiecesThatCanMove(int[] board, int bitmap) {
+    public static ArrayList<Marking> getPiecesThatCanMove(IPosition pos) {
         ArrayList<Marking> list = new ArrayList<Marking>();
-        int[] moves = NodeUtil.getAllBestFirst(board, bitmap);
+        int[] moves = pos.getAllBestFirst();
         int best = Bitmap.getFrom(moves[0]);
         for (int move : moves) {
             int fr = Bitmap.getFrom(move);
@@ -42,9 +42,9 @@ public class Marking {
         return list;
     }
 
-    public static ArrayList<Marking> getMovesForPiece(int[] board, int bitmap, int from) {
+    public static ArrayList<Marking> getMovesForPiece(IPosition pos, int from) {
         ArrayList<Marking> list = new ArrayList<Marking>();
-        int[] moves = NodeUtil.getAllBestFirst(board, bitmap);
+        int[] moves = pos.getAllBestFirst();
         list.add(new Marking(MarkingType.MarkFrom, from));
         for (int move : moves) {
             if (Bitmap.getFrom(move) == from)

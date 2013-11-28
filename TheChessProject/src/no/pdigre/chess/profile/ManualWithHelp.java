@@ -7,7 +7,7 @@ public class ManualWithHelp extends Manual {
     @Override
     public void run() {
     	printFEN();
-        AlphaBeta eval = new AlphaBeta(getBoard(), getBitmap(), 5);
+        AlphaBeta eval = new AlphaBeta(getPosition(), 5);
         bitmaps = eval.getBitmaps();
         scores = eval.getScores();
 		game.updateBoard();

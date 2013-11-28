@@ -11,7 +11,7 @@ public class Intermediate extends Player {
 			makeMove(bitmaps[0]);
 			return;
 		}
-		AlphaBeta eval = new AlphaBeta(getBoard(), getBitmap(), 5);
+		AlphaBeta eval = new AlphaBeta(getPosition(), 5);
 		bitmaps = eval.getBitmaps();
 		scores = eval.getScores();
 		makeMove(bitmaps[0]);

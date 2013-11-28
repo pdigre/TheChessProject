@@ -10,7 +10,7 @@ public class Manual extends Player {
     @Override
     public void run() { 
     	printFEN();
-        bitmaps = new AlphaBeta(getBoard(), getBitmap(),0).getBitmaps();
+        bitmaps = new AlphaBeta(getPosition(),0).getBitmaps();
 		game.updateBoard();
     }
 
@@ -34,7 +34,7 @@ public class Manual extends Player {
     @Override
     public ArrayList<Marking> getMarkers() {
         if(from == -1)
-            return Marking.getPiecesThatCanMove(getBoard(),getBitmap());
-        return Marking.getMovesForPiece(getBoard(),getBitmap(),from);
+            return Marking.getPiecesThatCanMove(getPosition());
+        return Marking.getMovesForPiece(getPosition(),from);
     }
 }

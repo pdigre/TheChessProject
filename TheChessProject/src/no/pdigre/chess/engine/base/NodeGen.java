@@ -95,14 +95,14 @@ public class NodeGen {
                     if (board[home + 3] == 0 && board[home + 2] == 0 && board[home + 1] == 0
                         && board[home + 0] == castle_rook) {
                         if (checkSafe(board, home + 3, white) && checkSafe(board, home + 4, white)) {
-                            add(Bitmap.bitCastling(board, from, inherit, home + 2));
+                            add(Bitmap.bitCastling(board, inherit, from, home + 2));
                         }
                     }
                 }
                 if (castle_king) {
                     if (board[home + 5] == 0 && board[home + 6] == 0 && board[home + 7] == castle_rook) {
                         if (checkSafe(board, home + 4, white) && checkSafe(board, home + 5, white)) {
-                            add(Bitmap.bitCastling(board, from, inherit, home + 6));
+                            add(Bitmap.bitCastling(board, inherit, from, home + 6));
                         }
                     }
                 }
@@ -111,7 +111,7 @@ public class NodeGen {
                 int to1 = from + pawn_fwd;
                 if (board[to1] == 0) {
                     if (to1 >= goalline && to1 < goalline + 8) {
-                        int bitmap = Bitmap.bitPawnPromote(board, from, inherit, to1);
+                        int bitmap = Bitmap.bitPawnPromote(board, inherit, from, to1);
                         add(bitmap | IConst.QUEEN);
                         add(bitmap | IConst.ROOK);
                         add(bitmap | IConst.KNIGHT);
@@ -133,18 +133,18 @@ public class NodeGen {
                     if (piece != 0) {
                         if (((piece & IConst.BLACK) != 0) == white) {
                             if (to2 >= goalline && to2 < goalline + 8) {
-                                int bitmap = Bitmap.bitPawnCapturePromote(board, from, inherit, to2);
+                                int bitmap = Bitmap.bitPawnCapturePromote(board, inherit, from, to2);
                                 add(bitmap | IConst.QUEEN);
                                 add(bitmap | IConst.ROOK);
                                 add(bitmap | IConst.KNIGHT);
                                 add(bitmap | IConst.BISHOP);
                             } else {
-                                add(Bitmap.bitPawnCapture(board, from, inherit, to2));
+                                add(Bitmap.bitPawnCapture(board, inherit, from, to2));
                             }
                         }
                     } else {
                         if (enpassant == to2) {
-                            add(Bitmap.bitPawnEnpassant(board, from, inherit, to2));
+                            add(Bitmap.bitPawnEnpassant(board, inherit, from, to2));
                         }
                     }
                 }
@@ -154,18 +154,18 @@ public class NodeGen {
                     if (piece != 0) {
                         if (((piece & IConst.BLACK) != 0) == white) {
                             if (to3 >= goalline && to3 < goalline + 8) {
-                                int bitmap = Bitmap.bitPawnCapturePromote(board, from, inherit, to3);
+                                int bitmap = Bitmap.bitPawnCapturePromote(board, inherit, from, to3);
                                 add(bitmap | IConst.QUEEN);
                                 add(bitmap | IConst.ROOK);
                                 add(bitmap | IConst.KNIGHT);
                                 add(bitmap | IConst.BISHOP);
                             } else {
-                                add(Bitmap.bitPawnCapture(board, from, inherit, to3));
+                                add(Bitmap.bitPawnCapture(board, inherit, from, to3));
                             }
                         }
                     } else {
                         if (enpassant == to3) {
-                            add(Bitmap.bitPawnEnpassant(board, from, inherit, to3));
+                            add(Bitmap.bitPawnEnpassant(board, inherit, from, to3));
                         }
                     }
                 }
@@ -284,7 +284,7 @@ public class NodeGen {
             int bitmap = Bitmap.bitMove(from, inherit, to, board[from]);
             add(bitmap);
         } else if (((victim & IConst.BLACK) == 0) != white) {
-            int bitmap = Bitmap.bitPawnCapture(board, from, inherit, to);
+            int bitmap = Bitmap.bitPawnCapture(board, inherit, from, to);
             add(bitmap);
         }
         return victim == 0;
