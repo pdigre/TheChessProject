@@ -5,37 +5,38 @@ import java.util.Comparator;
 
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
+import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class AlphaBeta {
 
     private int[] stack;
 
-    public MoveEval[] moves;
+    public MoveScore[] moves;
 
-    public AlphaBeta(int[] board, int inherit, int depth) {
-        int[] legalmoves = NodeUtil.getAllBestFirst(board, inherit);
-        moves = new MoveEval[legalmoves.length];
+    public AlphaBeta(IPosition pos, int depth) {
+        int[] legalmoves = pos.getAllBestFirst();
+        moves = new MoveScore[legalmoves.length];
         for (int i = 0; i < moves.length; i++) {
-            int bitmap = legalmoves[i];
-            moves[i] = new MoveEval(bitmap, board, alphaBeta(depth, board, bitmap));
+            int bitmap1 = legalmoves[i];
+            moves[i] = new MoveScore(new Position(pos.getBoard(), bitmap1), alphaBeta(depth, pos.getBoard(), bitmap1));
         }
 
-        if (Bitmap.white(inherit)) {
-            Arrays.sort(moves, new Comparator<MoveEval>() {
+        if (pos.whiteTurn()) {
+            Arrays.sort(moves, new Comparator<MoveScore>() {
 
                 @Override
-                public int compare(MoveEval o1, MoveEval o2) {
-                    return MoveEval.intCompare(o1.score, o2.score);
+                public int compare(MoveScore o1, MoveScore o2) {
+                    return MoveScore.intCompare(o1.score, o2.score);
                 }
             });
         } else {
-            Arrays.sort(moves, new Comparator<MoveEval>() {
+            Arrays.sort(moves, new Comparator<MoveScore>() {
 
                 @Override
-                public int compare(MoveEval o1, MoveEval o2) {
-                    return MoveEval.intCompare(o2.score, o1.score);
+                public int compare(MoveScore o1, MoveScore o2) {
+                    return MoveScore.intCompare(o2.score, o1.score);
                 }
             });
         }
@@ -126,13 +127,13 @@ public class AlphaBeta {
     public int[] getBitmaps() {
         int[] ret = new int[moves.length];
         for (int i = 0; i < moves.length; i++)
-            ret[i] = moves[i].bitmap;
+            ret[i] = moves[i].pos.getBitmap();
         return ret;
     }
 
     public int getScore(int bitmap) {
-        for (MoveEval move : moves)
-            if (move.bitmap == bitmap)
+        for (MoveScore move : moves)
+            if (move.pos.getBitmap() == bitmap)
                 return move.score;
         return 0;
     }

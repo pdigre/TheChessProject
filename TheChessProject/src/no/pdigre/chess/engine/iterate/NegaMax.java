@@ -1,5 +1,6 @@
 package no.pdigre.chess.engine.iterate;
 
+import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 
@@ -7,8 +8,8 @@ public class NegaMax implements IThinker {
 
     private IThinker next;
 
-    IPosition pos;
-
+    private IPosition pos;
+    private IEvaluator eval;
     private IThinker parent;
 
     private int counter;
@@ -18,7 +19,8 @@ public class NegaMax implements IThinker {
         this.parent = parent;
     }
 
-    public NegaMax(IThinker next) {
+    public NegaMax(IThinker next,IEvaluator eval) {
+        this.eval=eval;
         this.next = next;
         next.setParent(this);
     }
@@ -26,7 +28,7 @@ public class NegaMax implements IThinker {
     @Override
     public int think(IPosition pos, int total, int alpha, int beta) {
         this.pos=pos;
-        total += pos.tacticValue();
+        total += eval.tactical(pos);
         int max = alpha;
         int[] moves = pos.getAllBestFirst();
         counter+=moves.length;

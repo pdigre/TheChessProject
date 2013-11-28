@@ -3,7 +3,8 @@ package no.pdigre.chess.engine.iterate;
 import java.util.HashSet;
 
 import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.evaluate.IEvaluator;
+import no.pdigre.chess.engine.fen.Position;
 
 
 public class EvalUnit{
@@ -11,11 +12,11 @@ public class EvalUnit{
     private final EvalBase[] evals;
     private HashSet<Long> tt = new HashSet<Long>();
 
-    public EvalUnit(final int[] board, final int bitmap) {
-        int[] moves = NodeUtil.getAllBestFirst(board, bitmap);
+    public EvalUnit(Position pos) {
+        int[] moves = pos.getAllBestFirst();
         evals = new EvalBase[moves.length];
         for (int i = 0; i < moves.length; i++){
-            evals[i] = new EvalBase(Bitmap.apply(board, moves[i]), moves[i]);
+            evals[i] = new EvalBase(Bitmap.apply(pos.getBoard(), moves[i]), moves[i]);
         }
     }
     
@@ -24,9 +25,9 @@ public class EvalUnit{
     }
     
     public void runFirstPass(){
-        IThinker tail = new NegaMaxCutoff(new NegaMaxEnd());
-        NegaMaxTransposition nm = NegaMaxTransposition.createAndFill(tail,tt);
-        NegaMax series = new NegaMax(nm);
+        IThinker tail = new NegaMaxCutoff(new NegaMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC);
+        NegaMaxTransposition nm = NegaMaxTransposition.createAndFill(tail,tt,IEvaluator.BASIC);
+        NegaMax series = new NegaMax(nm,IEvaluator.BASIC);
         for (EvalBase eval : evals){
             eval.pass=1;
             eval.run(series);
@@ -35,9 +36,9 @@ public class EvalUnit{
     }
 
     public void runSecondPass(int cut){
-        IThinker tail = new NegaMaxCutoff(new NegaMaxCutoff(new NegaMaxEnd()));
-        NegaMaxTransposition nm = NegaMaxTransposition.create(tail,tt);
-        NegaMax series = new NegaMax(nm);
+        IThinker tail = new NegaMaxCutoff(new NegaMaxCutoff(new NegaMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC),IEvaluator.BASIC);
+        NegaMaxTransposition nm = NegaMaxTransposition.create(tail,tt,IEvaluator.BASIC);
+        NegaMax series = new NegaMax(nm,IEvaluator.BASIC);
         int part=evals.length*cut/100;
         for (EvalBase eval : evals){
             eval.pass=2;
@@ -49,9 +50,9 @@ public class EvalUnit{
     }
 
     public void runSplit(int cut){
-        IThinker tail = new NegaMaxCutoff(new NegaMaxCutoff(new NegaMaxEnd()));
-        NegaMaxTransposition nm = NegaMaxTransposition.create(tail,tt);
-        NegaMax series = new NegaMax(nm);
+        IThinker tail = new NegaMaxCutoff(new NegaMaxCutoff(new NegaMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC),IEvaluator.BASIC);
+        NegaMaxTransposition nm = NegaMaxTransposition.create(tail,tt,IEvaluator.BASIC);
+        NegaMax series = new NegaMax(nm,IEvaluator.BASIC);
         int part=evals.length*cut/100;
         for (EvalBase eval : evals){
             eval.pass=3;

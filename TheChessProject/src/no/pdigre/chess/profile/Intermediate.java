@@ -1,5 +1,6 @@
 package no.pdigre.chess.profile;
 
+import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.iterate.AlphaBeta;
 
 public class Intermediate extends Player {
@@ -11,7 +12,7 @@ public class Intermediate extends Player {
 			makeMove(bitmaps[0]);
 			return;
 		}
-		AlphaBeta eval = new AlphaBeta(getBoard(), getBitmap(), 5);
+		AlphaBeta eval = new AlphaBeta(new Position(getBoard(), getBitmap()), 5);
 		bitmaps = eval.getBitmaps();
 		scores = eval.getScores();
 		makeMove(bitmaps[0]);

@@ -5,6 +5,7 @@ import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.PieceType;
+import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.test.util.CountMore;
 import no.pdigre.chess.test.util.CountMoreParallel;
@@ -152,7 +153,7 @@ public class TestBasics {
         StartGame start = new StartGame(fen);
         int[] board = start.getBoard();
         int inherit = start.getBitmap();
-        int[] sorted = NodeUtil.getAllBestFirst(board, inherit);
+        int[] sorted = new Position(board, inherit).getAllBestFirst();
         int high = 9000000;
         for (int bitmap : sorted) {
             int val = Bitmap.tacticValue(bitmap);

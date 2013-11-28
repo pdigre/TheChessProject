@@ -1,5 +1,6 @@
 package no.pdigre.chess.engine.iterate;
 
+import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 
@@ -8,6 +9,7 @@ public class NegaMaxCutoff implements IThinker {
     private IThinker next;
 
     private IThinker parent;
+    private IEvaluator eval;
 
     private int counter;
 
@@ -20,7 +22,8 @@ public class NegaMaxCutoff implements IThinker {
         this.parent = parent;
     }
 
-    public NegaMaxCutoff(IThinker next) {
+    public NegaMaxCutoff(IThinker next,IEvaluator eval) {
+        this.eval=eval;
         this.next = next;
         next.setParent(this);
     }
@@ -28,7 +31,7 @@ public class NegaMaxCutoff implements IThinker {
     @Override
     public int think(IPosition pos, int total, int alpha, int beta) {
         this.pos=pos;
-        total += pos.tacticValue();
+        total += eval.tactical(pos);
         int[] moves = pos.getAllBestFirst();
         countertot+=moves.length;
         for (int i = 0; i < moves.length; i++) {
