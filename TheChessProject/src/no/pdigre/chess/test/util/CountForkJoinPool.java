@@ -7,11 +7,11 @@ import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.Position;
 
-public class CountMoreParallel2 extends CountMore {
+public class CountForkJoinPool extends CountMore {
 
     private static final long serialVersionUID = -3058348904963758664L;
 
-    public CountMoreParallel2(int bitmap, int depth, int[] board) {
+    public CountForkJoinPool(int bitmap, int depth, int[] board) {
         super(bitmap, depth, board);
     }
 
@@ -27,7 +27,7 @@ public class CountMoreParallel2 extends CountMore {
             int[] board2 = Bitmap.apply(board, bitmap);
             countMove(bitmap, board2);
             if (counters.length > 1) {
-                CountMore task = new CountMoreParallel(bitmap, counters.length - 1, board2);
+                CountMore task = new CountMore(bitmap, counters.length - 1, board2);
                 tasks.add(task);
                 pool.execute(task);
             }

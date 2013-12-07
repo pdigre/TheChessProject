@@ -8,7 +8,7 @@ import org.junit.Test;
 
 
 @SuppressWarnings("static-method")
-public class TestElo {
+public class Test_Elo {
 
     @Test
     public void testEvalUnit2_3() {

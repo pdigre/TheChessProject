@@ -7,7 +7,7 @@ import no.pdigre.chess.engine.polyglot.ZobristKey;
 
 import org.junit.Test;
 
-public class TestZobristPolyglot {
+public class Test_Zobrist_Polyglot {
 
     @SuppressWarnings("static-method")
     @Test
