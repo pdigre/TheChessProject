@@ -41,7 +41,7 @@ public class Counter {
             }
         }
         int[] board1 = Bitmap.apply(board, inherit);
-        boolean white = pos.whiteTurn();
+        boolean white = pos.whiteNext();
         int kpos = NodeGen.getKingPos(board1, white);
         if(!NodeGen.checkSafe(board1, kpos, white)){
             checks++;

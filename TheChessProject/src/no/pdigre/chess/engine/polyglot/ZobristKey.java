@@ -243,7 +243,7 @@ public class ZobristKey implements IConst {
         int enpassant = Bitmap.getEnpassant(bitmap);
         if (enpassant != -1) {
             int file = enpassant & 7;
-            if (!Bitmap.white(bitmap)) {
+            if (Bitmap.whiteNext(bitmap)) {
                 if (file != 0 && board[enpassant - 7] == PAWN) {
                     key ^= random64[file + 772];
                 } else if (file != 7 && board[enpassant - 9] == PAWN) {
@@ -257,7 +257,7 @@ public class ZobristKey implements IConst {
                 }
             }
         }
-        if (!Bitmap.white(bitmap))
+        if (Bitmap.whiteNext(bitmap))
             key ^= random64[780];
         return key;
     }

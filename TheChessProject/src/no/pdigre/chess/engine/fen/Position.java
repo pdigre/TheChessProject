@@ -15,8 +15,8 @@ public class Position implements IPosition {
     }
     
     @Override
-    public boolean whiteTurn() {
-        return Bitmap.white(bitmap);
+    public boolean whiteNext() {
+        return !Bitmap.white(bitmap);
     }
     
     @Override
