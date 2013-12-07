@@ -15,7 +15,7 @@ public class StartGame implements IPositionWithLog {
 
 	public StartGame(String fen) {
 		String[] split = fen.split(" ");
-		board = getBoard(split[0]);
+		board = FEN.fen2board(split[0]);
 		white = "w".equalsIgnoreCase(split[1]);
 		castling = split[2];
 		enpassant = FEN.text2pos(split[3]);
@@ -23,33 +23,12 @@ public class StartGame implements IPositionWithLog {
 		fullMoves = Integer.parseInt(split[5]);
 	}
 
-	public static int[] getBoard(String fen_board) {
-        int[] board = new int[64];
-        int y = 56;
-        int x = 0;
-        for (int i = 0; i < fen_board.length(); i++) {
-        	char c = fen_board.charAt(i);
-        	if (c == '/') {
-        		y -= 8;
-        		x = 0;
-        	} else if (c == ' ') {
-        		break;
-        	} else if (c >= '0' && c <= '9') {
-        		x += Integer.parseInt(String.valueOf(c));
-        	} else if (c >= 'A' && c <= 'z') {
-                board[x + y]=PieceType.lookup(c).bitmap;
-        		x++;
-        	}
-        }
-        return board;
-	}
-
 	@Override
 	public int[] getBoard() {
 	    return board;
 	}
 	@Override
-	public boolean whiteTurn() {
+	public boolean whiteNext() {
 		return white;
 	}
 

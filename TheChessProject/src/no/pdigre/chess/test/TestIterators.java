@@ -30,7 +30,7 @@ public class TestIterators {
      * Takes 2.2 sec with quadcore i7
      */
     @Test
-    public void negamax_194() {
+    public void negamax_194_47() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
         NegaMaxEnd iter0 = new NegaMaxEnd(IEvaluator.BASIC);
         NegaMax iter1 = new NegaMax(iter0,IEvaluator.BASIC);
@@ -43,7 +43,7 @@ public class TestIterators {
      * Takes 148ms with quadcore i7
      */
     @Test
-    public void negamaxCutoff_1978() {
+    public void negamaxCutoff_1978_750() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
         NegaMaxEnd iter0 = new NegaMaxEnd(IEvaluator.BASIC);
         NegaMaxCutoff iter1 = new NegaMaxCutoff(iter0,IEvaluator.BASIC);
@@ -61,7 +61,7 @@ public class TestIterators {
      * 5201/39731
      */
     @Test
-    public void negamaxCutoff_TT_480() {
+    public void negamaxCutoff_TT_480_110() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
         IThinker first = new NegaMaxCutoff(new NegaMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC);
         HashSet<Long> tt=new HashSet<Long>();
@@ -77,7 +77,7 @@ public class TestIterators {
      * 5201/39731
      */
     @Test
-    public void evalUnit1_1321() {
+    public void evalUnit1_1321_390() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
         StartGame start = new StartGame(fen);
         EvalUnit top = new EvalUnit(new Position(start.getBoard(), start.getBitmap()));

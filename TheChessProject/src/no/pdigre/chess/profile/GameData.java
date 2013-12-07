@@ -39,7 +39,7 @@ public abstract class GameData {
     }
 
     Player getPlayer() {
-        return players[position.whiteTurn() ? 0 : 1];
+        return players[position.whiteNext() ? 0 : 1];
     }
 
     public void clickSquare(int i) {

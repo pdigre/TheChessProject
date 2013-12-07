@@ -50,8 +50,22 @@ public final class Bitmap implements IConst {
         return (bitmap & CAPTURE) != 0;
     }
 
+    /**
+     * Did white make the last move
+     * @param bitmap
+     * @return
+     */
     final static public boolean white(final int bitmap) {
         return (bitmap & IConst.BLACK) == 0;
+    }
+
+    /**
+     * Is white next to move
+     * @param bitmap
+     * @return
+     */
+    final static public boolean whiteNext(final int bitmap) {
+        return (bitmap & IConst.BLACK) > 0;
     }
 
     final static public boolean isCastling(final int bitmap) {

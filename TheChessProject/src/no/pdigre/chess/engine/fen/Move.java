@@ -33,7 +33,7 @@ public final class Move implements IPositionWithLog {
     }
 
     @Override
-    final public boolean whiteTurn() {
+    final public boolean whiteNext() {
         return (getBitmap() & BLACK) != 0;
     }
 

@@ -24,7 +24,7 @@ public class AlphaBeta {
             moves[i] = new MoveScore(new Position(pos.getBoard(), bitmap1), alphaBeta(depth, new Position(pos.getBoard(), bitmap1)));
         }
 
-        if (!pos.whiteTurn()) {
+        if (!pos.whiteNext()) {
             Arrays.sort(moves, new Comparator<MoveScore>() {
 
                 @Override
@@ -46,7 +46,7 @@ public class AlphaBeta {
 
     private final int alphaBeta(int depthleft, IPosition pos) {
         stack = new int[depthleft];
-        if (pos.whiteTurn())
+        if (pos.whiteNext())
             return blackMove(-1000000, +1000000, depthleft, pos, 0);
         return whiteMove(-1000000, +1000000, depthleft, pos, 0);
     }

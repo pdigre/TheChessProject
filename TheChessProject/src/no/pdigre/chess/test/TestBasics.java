@@ -19,13 +19,6 @@ public class TestBasics {
 
     private static final int MAXDEPTH = 5;
 
-    /**
-     * Shows available moves
-     * 
-     * @param from
-     * @param fen
-     * @return
-     */
     public static String testAvailMoves(String from, String fen) {
         return getLegalMovesFromPos(from, new StartGame(fen));
     }
@@ -44,13 +37,8 @@ public class TestBasics {
         return sb.toString();
     }
 
-    /**
-     * Takes 22.5 sec with 28.07.2012 Takes 2.1 sec with 02.08.2012 Takes 60.0
-     * sec with 02.08.2012 for 6 levels Takes 4.1 secs with 05.08.2012 Takes 3.9
-     * secs with 07.08.2012
-     */
     @Test
-    public void thinkStart1_4347() {
+    public void thinkStart1_4347_983() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMore(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -60,13 +48,9 @@ public class TestBasics {
         assertEquals(counters[4].enpassants, 258);
     }
 
-    /**
-     * Takes 22.5 sec with 28.07.2012 Takes 2.1 sec with 02.08.2012 Takes 60.0
-     * sec with 02.08.2012 for 6 levels Takes 4.1 secs with 05.08.2012 Takes 3.9
-     * secs with 07.08.2012
-     */
     @Test
-    public void thinkStart2_2190() {
+    public void thinkStart2_2190_297
+    () {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMoreParallel(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -76,13 +60,8 @@ public class TestBasics {
         assertEquals(counters[4].enpassants, 258);
     }
 
-    /**
-     * Takes 22.5 sec with 28.07.2012 Takes 2.1 sec with 02.08.2012 Takes 60.0
-     * sec with 02.08.2012 for 6 levels Takes 4.1 secs with 05.08.2012 Takes 3.9
-     * secs with 07.08.2012
-     */
     @Test
-    public void thinkStart3_2552() {
+    public void thinkStart3_2552_291() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMoreParallel2(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -112,7 +91,7 @@ public class TestBasics {
     }
 
     @Test
-    public void thinkPromo1_4243() {
+    public void thinkPromo1_4243_941() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMore(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -125,7 +104,7 @@ public class TestBasics {
     }
 
     @Test
-    public void thinkPromo2_2226() {
+    public void thinkPromo2_2226_289() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMoreParallel(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();

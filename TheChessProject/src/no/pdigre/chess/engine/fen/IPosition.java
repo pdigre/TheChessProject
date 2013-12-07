@@ -5,7 +5,7 @@ import no.pdigre.chess.engine.base.IConst;
 public abstract interface IPosition extends IConst{
 
 
-    public abstract boolean whiteTurn();
+    public abstract boolean whiteNext();
 
     public abstract int[] getBoard();
 
