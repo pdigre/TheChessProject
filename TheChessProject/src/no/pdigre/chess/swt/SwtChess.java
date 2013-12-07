@@ -6,11 +6,9 @@ import no.pdigre.chess.profile.IPlayer.Players;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.Test;
 
 public class SwtChess {
 
-    @Test
     public static void main(String[] args) {
         new SwtChess();
     }
