@@ -38,7 +38,7 @@ public class Test_MoveCount {
     }
 
     @Test
-    public void m1_Normal_4347_983() {
+    public void m1_Normal_4347_795() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMore(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -104,7 +104,7 @@ public class Test_MoveCount {
     }
 
     @Test
-    public void m2_Multi1_2226_289() {
+    public void m2_Multi1_2226_275() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountForkJoinPool(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
@@ -117,7 +117,7 @@ public class Test_MoveCount {
     }
 
     @Test
-    public void m2_Multi2_2552_291() {
+    public void m2_Multi2_2552_286() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountForkJoinPool2(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();

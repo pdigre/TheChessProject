@@ -32,7 +32,7 @@ public class Test_PERFT_Long {
     }
 
     @Test
-    public void testAccuracy() {
+    public void perft_169s() {
         ArrayList<Perft> list = new ArrayList<Test_PERFT_Long.Perft>();
         for (String line : FileUtils.stream2lines(getClass().getResourceAsStream("perftsuite.epd"))) {
             String[] split = line.split("\\;");
