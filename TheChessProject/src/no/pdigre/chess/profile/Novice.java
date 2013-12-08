@@ -8,7 +8,7 @@ public class Novice extends Player {
     public void run() {
         printFEN();
         bitmaps = new AlphaBeta(getPosition(), 5).getBitmaps();
-        int bitmap = bitmaps[0];
-		makeMove(bitmap);
+        makeMove(game.findBest(bitmaps,scores)); 
     }
+
 }

@@ -18,6 +18,10 @@ public abstract class GameData {
 
     public void setPlayer(Players profile,boolean white){
     	Player player = profile.getInstance();
+    	setPlayer(player, white);
+    }
+    
+    public void setPlayer(Player player,boolean white){
     	players[white?0:1]=player;
     	player.setGameData(this);
     }
@@ -38,7 +42,7 @@ public abstract class GameData {
         thread.start();
     }
 
-    Player getPlayer() {
+    protected Player getPlayer() {
         return players[position.whiteNext() ? 0 : 1];
     }
 
@@ -70,6 +74,13 @@ public abstract class GameData {
         run();
     }
 
+    public void start(String fen, Player p_white, Player p_black) {
+        setPlayer(p_white, true);
+        setPlayer(p_black, false);
+        setupFEN(fen);
+        run();
+    }
+
     @SuppressWarnings("deprecation")
     public void startEvent(String fen, Players p_white, Players p_black) {
         if (thread.isAlive()) {
@@ -83,5 +94,9 @@ public abstract class GameData {
             start(fen, p_white, p_black);
         }
     }
+
+	public int findBest(int[] bitmaps, int[] scores) {
+		return bitmaps[0];
+	}
 
 }

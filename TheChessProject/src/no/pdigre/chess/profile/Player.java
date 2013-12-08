@@ -14,9 +14,9 @@ public abstract class Player implements IPlayer {
 
     public Integer from = -1;
 
-    protected int[] bitmaps;
+    public int[] bitmaps;
 
-    protected int[] scores;
+    public int[] scores;
 
     protected GameData game;
 
@@ -86,4 +86,9 @@ public abstract class Player implements IPlayer {
 	protected IPosition getPosition(){
 	    return game.position;
 	}
+	
+	public int findBest(int[] bitmaps) {
+		return bitmaps[0];
+	}
+
 }
