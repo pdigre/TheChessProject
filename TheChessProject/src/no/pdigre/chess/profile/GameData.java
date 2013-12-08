@@ -38,7 +38,7 @@ public abstract class GameData {
         thread.start();
     }
 
-    Player getPlayer() {
+    protected Player getPlayer() {
         return players[position.whiteNext() ? 0 : 1];
     }
 
