@@ -24,9 +24,4 @@ public abstract interface IPosition extends IConst{
      */
     public IPosition move(int bitmap);
 
-    /**
-     * Calculate next moves
-     * @return
-     */
-    public abstract int[] getAllBestFirst();
 }

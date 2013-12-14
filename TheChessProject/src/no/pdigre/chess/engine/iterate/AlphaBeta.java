@@ -5,6 +5,7 @@ import java.util.Comparator;
 
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeGen;
+import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
@@ -17,11 +18,11 @@ public class AlphaBeta {
     public MoveScore[] moves;
 
     public AlphaBeta(IPosition pos, int depth) {
-        int[] legalmoves = pos.getAllBestFirst();
+        int[] legalmoves = NodeUtil.getAllBestFirst(pos);
         moves = new MoveScore[legalmoves.length];
         for (int i = 0; i < moves.length; i++) {
-            int bitmap1 = legalmoves[i];
-            moves[i] = new MoveScore(new Position(pos.getBoard(), bitmap1), alphaBeta(depth, new Position(pos.getBoard(), bitmap1)));
+            Position p = new Position(pos.getBoard(), legalmoves[i]);
+            moves[i] = new MoveScore(p, alphaBeta(depth, p));
         }
 
         if (!pos.whiteNext()) {
@@ -60,7 +61,7 @@ public class AlphaBeta {
         int[] board = Bitmap.apply(pos.getBoard(), pos.getBitmap());
         NodeGen pull = new NodeGen(new Position(board,pos.getBitmap()));
         while (true) {
-            int bitmap = pull.nextUnsafe();
+            int bitmap = pull.nextSafe();
             if (bitmap == 0)
                 break;
             int score = blackMove(whiteBest, blackBest, depthleft, new Position(board, bitmap), score1);
@@ -81,7 +82,7 @@ public class AlphaBeta {
         int[] board = Bitmap.apply(pos.getBoard(), pos.getBitmap());
         NodeGen pull = new NodeGen(new Position(board, pos.getBitmap()));
         while (true) {
-            int bitmap = pull.nextUnsafe();
+            int bitmap = pull.nextSafe();
             if (bitmap == 0)
                 break;
             int score = whiteMove(whiteBest, blackBest, depthleft, new Position(board, bitmap), score1);

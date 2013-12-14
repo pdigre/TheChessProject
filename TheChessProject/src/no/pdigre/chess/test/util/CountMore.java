@@ -31,7 +31,7 @@ public class CountMore extends RecursiveTask<Counter[]>{
 	    counters[0].moves++;
         boolean white = Bitmap.white(bitmap);
         Position next = new Position(board, bitmap & (IConst.CASTLING_STATE | IConst.HALFMOVES));
-        if (!NodeGen.checkSafe(board, NodeGen.getKingPos(next, white), white)) {
+        if (NodeGen.isCheck(board, NodeGen.getKingPos(next, white), white)) {
             counters[0].checks++;
             if (!(new NodeGen(next).nextSafe()!=0))
                 counters[0].mates++;

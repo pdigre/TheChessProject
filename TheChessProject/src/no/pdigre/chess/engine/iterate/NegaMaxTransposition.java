@@ -3,6 +3,7 @@ package no.pdigre.chess.engine.iterate;
 import java.util.HashSet;
 
 import no.pdigre.chess.engine.base.Bitmap;
+import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
@@ -54,7 +55,7 @@ public class NegaMaxTransposition implements IThinker {
         long ft2x = ft2 << 12;
         long commonkey = ft1 | ft2x;
         long commontrn = ft2x | (ft1 << 24);
-        int[] moves = pos.getAllBestFirst();
+        int[] moves = NodeUtil.getAllBestFirst(pos);
         total += moves.length;
         for (int i = 0; i < moves.length; i++) {
             int bitmap1 = moves[i];

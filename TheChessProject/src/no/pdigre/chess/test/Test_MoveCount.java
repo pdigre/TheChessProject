@@ -24,7 +24,7 @@ public class Test_MoveCount {
         FEN.printPiece(type, from);
         StringBuffer sb = new StringBuffer();
         sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(start), from)) 
+        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getLegalMoves(start), from)) 
             sb.append(" "+FEN.pos2string(Bitmap.getTo(bitmap)));
         return sb.toString();
     }

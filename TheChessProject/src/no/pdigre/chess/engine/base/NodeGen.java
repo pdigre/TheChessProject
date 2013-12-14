@@ -1,9 +1,11 @@
 package no.pdigre.chess.engine.base;
 
+import java.util.Iterator;
+
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position;
 
-public class NodeGen {
+public class NodeGen implements Iterable<Integer>,Iterator<Integer>{
 
     final private int[] moves = new int[28];
 
@@ -29,22 +31,20 @@ public class NodeGen {
 
     final boolean castle_king;
 
-//    final int[] board;
-//
-//    final int inherit;
-
     final IPosition pos;
-    
+
     private int from = -1;
 
     private int sqr;
 
     private int imoves;
 
+    private int next;
+    
     final private int pawnline;
 
     public NodeGen(IPosition pos) {
-        this.pos=pos;
+        this.pos = pos;
         int inherit = pos.getBitmap();
         white = !Bitmap.white(inherit);
         kingpos = getKingPos(pos, white);
@@ -54,20 +54,29 @@ public class NodeGen {
         pawn_right = pawn_fwd + BaseNodes.RIGHT;
         goalline = goalline(white);
         home = home(white);
-        pawnline=pawnline(white);
+        pawnline = pawnline(white);
         castle_rook = white ? IConst.ROOK : IConst.BLACK_ROOK;
         castle_queen = (inherit & (white ? IConst.NOCASTLE_WHITEQUEEN : IConst.NOCASTLE_BLACKQUEEN)) == 0;
         castle_king = (inherit & (white ? IConst.NOCASTLE_WHITEKING : IConst.NOCASTLE_BLACKKING)) == 0;
     }
 
     final public int nextSafe() {
-        int bitmap = nextUnsafe();
-        if (bitmap==0 || isSafe(new Position(pos.getBoard(),bitmap), from, kingpos, Bitmap.getTo(bitmap)))
-            return bitmap;
+        int bitmap2 = nextUnsafe();
+        if (bitmap2 == 0)
+            return 0;
+        if (!isCheck(Bitmap.apply(pos.getBoard(), bitmap2), bitmap2))
+            return bitmap2;
         return nextSafe();
     }
 
-    final public int nextUnsafe() {
+    public boolean isCheck(int[] board2, int bitmap2) {
+        int to = Bitmap.getTo(bitmap2);
+        int king = from == kingpos ? to : kingpos;
+        boolean w = Bitmap.white(bitmap2);
+        return NodeGen.isCheck(board2, king, w);
+    }
+
+    final private int nextUnsafe() {
         if (imoves > 0)
             return moves[--imoves];
         do {
@@ -81,8 +90,8 @@ public class NodeGen {
     }
 
     final private void nextPiece() {
-        int[] board=pos.getBoard();
-        int inherit=pos.getBitmap();
+        int[] board = pos.getBoard();
+        int inherit = pos.getBitmap();
         switch (sqr & 7) {
             case IConst.KNIGHT:
                 addSimple(board, BaseNodes.KNIGHT_MOVES[from], white, from, inherit);
@@ -101,14 +110,14 @@ public class NodeGen {
                 if (castle_queen) {
                     if (board[home + 3] == 0 && board[home + 2] == 0 && board[home + 1] == 0
                         && board[home + 0] == castle_rook) {
-                        if (checkSafe(board, home + 3, white) && checkSafe(board, home + 4, white)) {
+                        if (!isCheck(board, home + 3, white) && !isCheck(board, home + 4, white)) {
                             add(Bitmap.bitCastling(board, inherit, from, home + 2));
                         }
                     }
                 }
                 if (castle_king) {
                     if (board[home + 5] == 0 && board[home + 6] == 0 && board[home + 7] == castle_rook) {
-                        if (checkSafe(board, home + 4, white) && checkSafe(board, home + 5, white)) {
+                        if (!isCheck(board, home + 4, white) && !isCheck(board, home + 5, white)) {
                             add(Bitmap.bitCastling(board, inherit, from, home + 6));
                         }
                     }
@@ -189,16 +198,16 @@ public class NodeGen {
         return 0;
     }
 
-    final public static boolean checkSafe(int[] board, final int from, final boolean white) {
+    final public static boolean isCheck(int[] board, final int from, final boolean white) {
         int enemy = white ? IConst.BLACK_KNIGHT : IConst.KNIGHT;
         for (int pos : BaseNodes.KNIGHT_MOVES[from]) {
             if (board[pos] == enemy)
-                return false;
+                return true;
         }
         enemy = white ? IConst.BLACK_KING : IConst.KING;
         for (int pos : BaseNodes.KING_MOVES[from]) {
             if (board[pos] == enemy)
-                return false;
+                return true;
         }
         for (int[] slide : BaseNodes.BISHOP_MOVES[from]) {
             for (int pos : slide) {
@@ -209,7 +218,7 @@ public class NodeGen {
                     break;
                 int t = type & IConst.PIECETYPE;
                 if (t == IConst.QUEEN || t == IConst.BISHOP)
-                    return false;
+                    return true;
                 break;
             }
         }
@@ -222,7 +231,7 @@ public class NodeGen {
                     break;
                 int t = type & IConst.PIECETYPE;
                 if (t == IConst.QUEEN || t == IConst.ROOK)
-                    return false;
+                    return true;
                 break;
             }
         }
@@ -231,19 +240,19 @@ public class NodeGen {
         if (white) {
             if (from < 48) {
                 if ((x != 0) && board[from + 7] == IConst.BLACK_PAWN)
-                    return false;
+                    return true;
                 if ((x != 7) && board[from + 9] == IConst.BLACK_PAWN)
-                    return false;
+                    return true;
             }
         } else {
             if (from > 15) {
                 if ((x != 0) && board[from - 9] == IConst.PAWN)
-                    return false;
+                    return true;
                 if ((x != 7) && board[from - 7] == IConst.PAWN)
-                    return false;
+                    return true;
             }
         }
-        return true;
+        return false;
     }
 
     final private static int home(boolean white) {
@@ -278,6 +287,7 @@ public class NodeGen {
     /**
      * Calculate is move is within borders return true if can continue like
      * queen
+     * 
      * @param board
      * @param to
      * @param white
@@ -297,20 +307,35 @@ public class NodeGen {
         return victim == 0;
     }
 
-    final private static boolean isSafe(IPosition pos, int from, int kingpos, int to) {
-        int bitmap = pos.getBitmap();
-        int[] board = pos.getBoard();
-        return NodeGen
-            .checkSafe(Bitmap.apply(board, bitmap), from == kingpos ? to : kingpos, Bitmap.white(bitmap));
-    }
-
     final public static boolean isCheck(IPosition pos, boolean white) {
-        return !NodeGen.checkSafe(pos.getBoard(), getKingPos(pos, white), white);
+        return NodeGen.isCheck(pos.getBoard(), getKingPos(pos, white), white);
     }
 
     final private void add(int bitmap) {
         moves[imoves] = bitmap;
         imoves++;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return next>0;
+    }
+
+    @Override
+    public Integer next() {
+        Integer i=next;
+        next=nextSafe();
+        return i;
+    }
+
+    @Override
+    public void remove() {
+        // 
+    }
+
+    @Override
+    public Iterator<Integer> iterator() {
+        return this;
     }
 
 }

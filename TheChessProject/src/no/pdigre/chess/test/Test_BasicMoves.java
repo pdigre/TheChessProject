@@ -24,7 +24,7 @@ public class Test_BasicMoves {
         FEN.printPiece(type, from);
         StringBuffer sb = new StringBuffer();
         sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(start), from)) {
+        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getLegalMoves(start), from)) {
             sb.append(" ");
             sb.append(FEN.pos2string(Bitmap.getTo(bitmap)));
         }
@@ -47,7 +47,7 @@ public class Test_BasicMoves {
         StartGame start = new StartGame(fen);
         int[] board = start.getBoard();
         int inherit = start.getBitmap();
-        int[] sorted = new Position(board, inherit).getAllBestFirst();
+        int[] sorted = NodeUtil.getAllBestFirst(new Position(board, inherit));
         int high = 9000000;
         for (int bitmap : sorted) {
             int val = Bitmap.tacticValue(bitmap);

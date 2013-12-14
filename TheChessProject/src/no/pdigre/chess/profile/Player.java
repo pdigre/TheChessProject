@@ -51,7 +51,7 @@ public abstract class Player implements IPlayer {
     public void checkPolyglot() {
         IPosition pos = game.position;
         ArrayList<BookMove> list = Polyglot.get(ZobristKey.getKey(pos));
-        int[] moves = NodeUtil.getAllMoves(pos);
+        int[] moves = NodeUtil.getLegalMoves(pos);
         bitmaps=new int[list.size()];
         scores=new int[list.size()];
         for (int i = 0; i < bitmaps.length; i++){

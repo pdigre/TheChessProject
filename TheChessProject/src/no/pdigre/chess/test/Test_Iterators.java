@@ -2,6 +2,7 @@ package no.pdigre.chess.test;
 
 import java.util.HashSet;
 
+import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.StartGame;
@@ -82,7 +83,7 @@ public class Test_Iterators {
     public static void testThinker(String fen, IThinker first, IThinker second) {
         StartGame start = new StartGame(fen);
         int[] board = start.getBoard();
-        int[] moves = new Position(board, start.getBitmap()).getAllBestFirst();
+        int[] moves = NodeUtil.getAllBestFirst(new Position(board, start.getBitmap()));
         Evaluator[] evals = new Evaluator[moves.length];
         for (int i = 0; i < moves.length; i++)
             evals[i] = new Evaluator(board, moves[i]);
@@ -115,7 +116,7 @@ public class Test_Iterators {
         int bitmap = start.getBitmap();
         Position pos = new Position(board, bitmap);
         new EvalUnit(pos);
-        int[] moves = pos.getAllBestFirst();
+        int[] moves = NodeUtil.getAllBestFirst(pos);
         Evaluator[] evals = new Evaluator[moves.length];
         for (int i = 0; i < moves.length; i++)
             evals[i] = new Evaluator(board, moves[i]);

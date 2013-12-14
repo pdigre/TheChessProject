@@ -2,17 +2,18 @@ package no.pdigre.chess.test.util;
 
 import java.util.Iterator;
 
+import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.IPosition;
 
-public final class MovesIterator implements Iterable<IPosition>, Iterator<IPosition> {
+public final class IterateMoves implements Iterable<IPosition>, Iterator<IPosition> {
 
     final IPosition pos;
     final int[] all;
     int i = 0;
 
-    public MovesIterator(IPosition pos) {
+    public IterateMoves(IPosition pos) {
         this.pos = pos;
-        all = pos.getAllBestFirst();
+        all = NodeUtil.getAllBestFirst(pos);
     }
 
     @Override

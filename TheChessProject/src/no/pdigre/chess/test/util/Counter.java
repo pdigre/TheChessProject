@@ -44,7 +44,7 @@ public class Counter {
         boolean white = pos.whiteNext();
         Position next = new Position(board1, bitmap);
         int kpos = NodeGen.getKingPos(next, white);
-        if(!NodeGen.checkSafe(board1, kpos, white)){
+        if(NodeGen.isCheck(board1, kpos, white)){
             checks++;
             if(!(new NodeGen(next).nextSafe()!=0))
                 mates++;

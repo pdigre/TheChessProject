@@ -5,7 +5,7 @@ import no.pdigre.chess.engine.fen.IPosition;
 
 public class NodeUtil {
 
-    public static int[] getAllMoves(IPosition pos) {
+    public static int[] getLegalMoves(IPosition pos) {
         int length = 0;
         int[] array = new int[100];
         NodeGen pull = new NodeGen(pos);
@@ -20,7 +20,7 @@ public class NodeUtil {
     }
 
     public static int[] getAllBestFirst(IPosition pos) {
-        return sortMoves(pos,getAllMoves(pos));
+        return sortMoves(pos,getLegalMoves(pos));
     }
 
     public static int[] sortMoves(IPosition pos,int[] all) {

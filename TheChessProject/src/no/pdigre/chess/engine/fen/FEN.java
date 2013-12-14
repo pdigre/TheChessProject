@@ -134,7 +134,7 @@ public class FEN implements IConst {
 		if (Bitmap.isPromotion(bitmap))
 			sb.append(" promoted");
 		boolean white = Bitmap.white(bitmap);
-		if (!NodeGen.checkSafe(pos.getBoard(), NodeGen.getKingPos(pos, white), white)) {
+		if (NodeGen.isCheck(pos.getBoard(), NodeGen.getKingPos(pos, white), white)) {
 			sb.append(" check");
 			if (!(new NodeGen(pos).nextSafe() != 0))
 				sb.append("mate");
@@ -166,7 +166,7 @@ public class FEN implements IConst {
 			}
 		}
 		boolean white = Bitmap.white(bitmap);
-		if (!NodeGen.checkSafe(board, NodeGen.getKingPos(pos, white), white)) {
+		if (NodeGen.isCheck(board, NodeGen.getKingPos(pos, white), white)) {
 			suffix += "+";
 			if (!(new NodeGen(pos).nextSafe() != 0))
 				suffix += "+";

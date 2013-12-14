@@ -1,7 +1,6 @@
 package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeUtil;
 
 public final class Move implements IPositionWithLog {
 
@@ -45,11 +44,6 @@ public final class Move implements IPositionWithLog {
     @Override
     public IPosition move(int bitmap2) {
         return new Position(Bitmap.apply(getBoard(), bitmap2), bitmap2);
-    }
-
-    @Override
-    public int[] getAllBestFirst() {
-        return NodeUtil.getAllBestFirst(this);
     }
 
     @Override
