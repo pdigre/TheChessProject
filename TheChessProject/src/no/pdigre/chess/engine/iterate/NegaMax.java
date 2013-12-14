@@ -3,7 +3,7 @@ package no.pdigre.chess.engine.iterate;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.test.util.IterateMoves;
+import no.pdigre.chess.test.util.IterateMovesSorted;
 
 public class NegaMax implements IThinker {
 
@@ -37,7 +37,7 @@ public class NegaMax implements IThinker {
         this.pos=pos;
         total += eval.tactical(pos);
         int max = alpha;
-        for (IPosition move : new IterateMoves(pos)) {
+        for (IPosition move : new IterateMovesSorted(pos)) {
             int score = -next.think(move, -total, -beta, -alpha);
             if (score > max)
                 max = score;

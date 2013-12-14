@@ -2,37 +2,31 @@ package no.pdigre.chess.test.util;
 
 import java.util.concurrent.RecursiveTask;
 
-import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.fen.IPosition;
 
 public class CountMove extends RecursiveTask<int[]> {
 
     private static final long serialVersionUID = -3058548234963758664L;
 
-    final protected int bitmap;
+    final protected IPosition pos;
 
     final protected int[] counters;
 
-    final protected int[] board;
-
-    public CountMove(int bitmap, int depth, int[] board) {
-        this.bitmap = bitmap;
-        this.board = board;
+    public CountMove(IPosition pos, int depth) {
+        this.pos = pos;
         counters = new int[depth];
     }
 
     @Override
     protected int[] compute() {
-        NodeGen pull = new NodeGen(new Position(board, bitmap));
-        int bitmap = pull.nextSafe();
-        while (bitmap != 0) {
-            counters[0]++;
-            if (counters.length > 1) {
-                int[] board2 = Bitmap.apply(board, bitmap);
-                Counter.total(counters, new CountMove(bitmap, counters.length - 1, board2).compute());
+        if (counters.length > 1) {
+            for (IPosition next : new IterateMoves(pos)) {
+                counters[0]++;
+                Counter.total(counters, new CountMove(next, counters.length - 1).compute());
             }
-            bitmap = pull.nextSafe();
+        } else {
+            counters[0]+=NodeUtil.getLegalMoves(pos).length;
         }
         return counters;
     }

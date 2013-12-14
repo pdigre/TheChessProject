@@ -3,21 +3,17 @@ package no.pdigre.chess.engine.fen;
 import no.pdigre.chess.engine.base.Bitmap;
 
 
-public class Position implements IPosition {
-    int board[];
+public class PositionNext implements IPosition {
+    int[] board;
+    int[] parent;
     int bitmap;
     
-    public Position(int[] board, int bitmap) {
+    public PositionNext(int[] parent, int bitmap) {
         super();
-        this.board = board;
+        this.parent = parent;
         this.bitmap = bitmap;
     }
     
-    @Override
-    public String toString() {
-        return FEN.printMove(this);
-    }
-
     @Override
     public boolean whiteNext() {
         return !Bitmap.white(bitmap);
@@ -25,6 +21,8 @@ public class Position implements IPosition {
     
     @Override
     public int[] getBoard() {
+        if(board==null)
+            board=Bitmap.apply(parent, bitmap);
         return board;
     }
     
@@ -35,11 +33,15 @@ public class Position implements IPosition {
 
     @Override
     public IPosition move(int bitmap2) {
+        if(board==null)
+            board=Bitmap.apply(parent, bitmap);
         return new PositionNext(board, bitmap2);
     }
 
     @Override
     public int getPiece(int square) {
+        if(board==null)
+            board=Bitmap.apply(parent, bitmap);
         return board[square];
     }
 

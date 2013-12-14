@@ -2,7 +2,7 @@ package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.IConst;
-import no.pdigre.chess.engine.base.NodeGen;
+import no.pdigre.chess.engine.base.NodeUtil;
 
 public class FEN implements IConst {
 
@@ -133,20 +133,20 @@ public class FEN implements IConst {
 			sb.append(" castling");
 		if (Bitmap.isPromotion(bitmap))
 			sb.append(" promoted");
-		boolean white = Bitmap.white(bitmap);
-		if (NodeGen.isCheck(pos.getBoard(), NodeGen.getKingPos(pos, white), white)) {
-			sb.append(" check");
-			if (!(new NodeGen(pos).nextSafe() != 0))
-				sb.append("mate");
-		}
-		sb.append(", ");
-		sb.append(notation(pos));
+        switch(NodeUtil.getCheckState(pos)){
+            case NodeUtil.CHECK:
+                sb.append(" check");
+                break;
+            case NodeUtil.MATE:
+                sb.append(" checkmate");
+                break;
+        }
+		sb.append(", "+notation(pos));
 		return sb.toString();
 	}
 
 	private static String notation(IPosition pos) {
 		int bitmap = pos.getBitmap();
-		int[] board = pos.getBoard();
 		int from = Bitmap.getFrom(bitmap);
 		int to = Bitmap.getTo(bitmap);
 		String capture = ((bitmap >> _CAPTURE) & 7) != 0 ? "x" : "";
@@ -165,11 +165,13 @@ public class FEN implements IConst {
 				suffix = col == 2 ? "O-O-O" : "O-O";
 			}
 		}
-		boolean white = Bitmap.white(bitmap);
-		if (NodeGen.isCheck(board, NodeGen.getKingPos(pos, white), white)) {
-			suffix += "+";
-			if (!(new NodeGen(pos).nextSafe() != 0))
-				suffix += "+";
+		switch(NodeUtil.getCheckState(pos)){
+            case NodeUtil.CHECK:
+                suffix += "+";
+                break;
+            case NodeUtil.MATE:
+                suffix += "++";
+                break;
 		}
 		return prefix + " " + suffix;
 	}

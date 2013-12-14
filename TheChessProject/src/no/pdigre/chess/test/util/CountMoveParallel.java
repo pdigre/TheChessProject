@@ -3,34 +3,29 @@ package no.pdigre.chess.test.util;
 import java.util.ArrayList;
 import java.util.concurrent.ForkJoinPool;
 
-import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.fen.IPosition;
 
 public class CountMoveParallel extends CountMove {
 
     private static final long serialVersionUID = -3158348904963758664L;
 
-    public CountMoveParallel(int bitmap, int depth, int[] board) {
-        super(bitmap, depth, board);
+    public CountMoveParallel(IPosition pos, int depth) {
+        super(pos, depth);
     }
 
     @Override
     public int[] compute() {
-        NodeGen pull = new NodeGen(new Position(board, bitmap));
         int processors = Runtime.getRuntime().availableProcessors();
         ForkJoinPool pool = new ForkJoinPool(processors);
         ArrayList<CountMove> tasks = new ArrayList<CountMove>();
-        int bitmap = pull.nextSafe();
-        while (bitmap != 0) {
+
+        for (IPosition next : new IterateMoves(pos)) {
             counters[0]++;
             if (counters.length > 1) {
-                final int[] board2 = Bitmap.apply(board, bitmap);
-                CountMove task = new CountMove(bitmap, counters.length - 1, board2);
+                CountMove task = new CountMove(next, counters.length - 1);
                 tasks.add(task);
                 pool.execute(task);
             }
-            bitmap = pull.nextSafe();
         }
         for (CountMove task : tasks)
             Counter.total(counters, task.join());

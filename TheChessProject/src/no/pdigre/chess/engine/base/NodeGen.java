@@ -3,35 +3,34 @@ package no.pdigre.chess.engine.base;
 import java.util.Iterator;
 
 import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.Position;
 
-public class NodeGen implements Iterable<Integer>,Iterator<Integer>{
+public class NodeGen implements Iterable<Integer>, Iterator<Integer> {
 
     final private int[] moves = new int[28];
 
-    final boolean white;
+    final private boolean white;
 
-    final int kingpos;
+    final private int kingpos;
 
-    final int enpassant;
+    final private int enpassant;
 
-    final int pawn_fwd;
+    final private int pawn_fwd;
 
-    final int pawn_left;
+    final private int pawn_left;
 
-    final int pawn_right;
+    final private int pawn_right;
 
-    final int goalline;
+    final private int goalline;
 
-    final int home;
+    final private int home;
 
-    final int castle_rook;
+    final private int castle_rook;
 
-    final boolean castle_queen;
+    final private boolean castle_queen;
 
-    final boolean castle_king;
+    final private boolean castle_king;
 
-    final IPosition pos;
+    final private IPosition pos;
 
     private int from = -1;
 
@@ -39,8 +38,8 @@ public class NodeGen implements Iterable<Integer>,Iterator<Integer>{
 
     private int imoves;
 
-    private int next;
-    
+    private int next = -1;
+
     final private int pawnline;
 
     public NodeGen(IPosition pos) {
@@ -64,16 +63,10 @@ public class NodeGen implements Iterable<Integer>,Iterator<Integer>{
         int bitmap2 = nextUnsafe();
         if (bitmap2 == 0)
             return 0;
-        if (!isCheck(Bitmap.apply(pos.getBoard(), bitmap2), bitmap2))
-            return bitmap2;
-        return nextSafe();
-    }
-
-    public boolean isCheck(int[] board2, int bitmap2) {
-        int to = Bitmap.getTo(bitmap2);
-        int king = from == kingpos ? to : kingpos;
-        boolean w = Bitmap.white(bitmap2);
-        return NodeGen.isCheck(board2, king, w);
+        int[] board2 = Bitmap.apply(pos.getBoard(), bitmap2);
+        if (isCheck(board2, from == kingpos ? Bitmap.getTo(bitmap2) : kingpos, Bitmap.white(bitmap2)))
+            return nextSafe();
+        return bitmap2;
     }
 
     final private int nextUnsafe() {
@@ -307,10 +300,6 @@ public class NodeGen implements Iterable<Integer>,Iterator<Integer>{
         return victim == 0;
     }
 
-    final public static boolean isCheck(IPosition pos, boolean white) {
-        return NodeGen.isCheck(pos.getBoard(), getKingPos(pos, white), white);
-    }
-
     final private void add(int bitmap) {
         moves[imoves] = bitmap;
         imoves++;
@@ -318,23 +307,25 @@ public class NodeGen implements Iterable<Integer>,Iterator<Integer>{
 
     @Override
     public boolean hasNext() {
-        return next>0;
+        return next > 0;
     }
 
     @Override
     public Integer next() {
-        Integer i=next;
-        next=nextSafe();
+        Integer i = next;
+        next = nextSafe();
         return i;
     }
 
     @Override
     public void remove() {
-        // 
+        //
     }
 
     @Override
     public Iterator<Integer> iterator() {
+        if (next == -1)
+            next = nextSafe();
         return this;
     }
 

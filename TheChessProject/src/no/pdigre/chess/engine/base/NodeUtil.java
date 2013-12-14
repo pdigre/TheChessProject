@@ -2,18 +2,15 @@ package no.pdigre.chess.engine.base;
 
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class NodeUtil {
 
     public static int[] getLegalMoves(IPosition pos) {
         int length = 0;
         int[] array = new int[100];
-        NodeGen pull = new NodeGen(pos);
-        int bitmap1 = pull.nextSafe();
-        while (bitmap1 != 0) {
+        for (Integer bitmap1 : new NodeGen(pos))
             array[length++] = bitmap1;
-            bitmap1 = pull.nextSafe();
-        }
         int[] ret = new int[length];
         System.arraycopy(array, 0, ret, 0, length);
         return ret;
@@ -98,4 +95,23 @@ public class NodeUtil {
         return ret;
     }
 
+    public final static int CHECK=1;
+    public final static int MATE=2;
+    /**
+     * @param pos
+     * @return
+     */
+    public static int getCheckState(IPosition pos) {
+        int bitmap = pos.getBitmap();
+        int[] board = pos.getBoard();
+        boolean white = Bitmap.white(bitmap);
+        Position next = new Position(board, bitmap & (IConst.CASTLING_STATE | IConst.HALFMOVES));
+        int kingPos = NodeGen.getKingPos(next, white);
+        boolean ch = NodeGen.isCheck(board, kingPos, white);
+        if (!ch)
+            return 0;
+        if (new NodeGen(next).iterator().hasNext())
+            return CHECK;
+        return MATE;
+    }
 }

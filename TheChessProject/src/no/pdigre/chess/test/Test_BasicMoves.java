@@ -5,7 +5,6 @@ import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.PieceType;
-import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.StartGame;
 
 import org.junit.Test;
@@ -19,15 +18,12 @@ public class Test_BasicMoves {
 
     public static String getLegalMovesFromPos(String from_txt, StartGame start) {
         int from = FEN.text2pos(from_txt);
-        int[] board = start.getBoard();
-        int type = board[from];
+        int type = start.getPiece(from);
         FEN.printPiece(type, from);
         StringBuffer sb = new StringBuffer();
         sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getLegalMoves(start), from)) {
-            sb.append(" ");
-            sb.append(FEN.pos2string(Bitmap.getTo(bitmap)));
-        }
+        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getLegalMoves(start), from))
+            sb.append(" "+FEN.pos2string(Bitmap.getTo(bitmap)));
         return sb.toString();
     }
 
@@ -45,19 +41,15 @@ public class Test_BasicMoves {
     public void ordering_0() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
-        int[] board = start.getBoard();
-        int inherit = start.getBitmap();
-        int[] sorted = NodeUtil.getAllBestFirst(new Position(board, inherit));
         int high = 9000000;
-        for (int bitmap : sorted) {
+        StringBuffer sb=new StringBuffer("=================================\n");
+        for (int bitmap : NodeUtil.getAllBestFirst(start)) {
+            sb.append(FEN.printMove(start.move(bitmap))+"\n");
             int val = Bitmap.tacticValue(bitmap);
             if (val < high)
                 high = val;
             if (val > high){
-                System.out.println("=================================");
-                for (int bm : sorted) {
-                    System.out.println(FEN.printMove(new Position(board, bm)));
-                }
+                    System.out.println(sb.toString());
                 throw new AssertionError("Wrong move value ordering");
             }
         }
@@ -81,8 +73,7 @@ public class Test_BasicMoves {
     @Test
     public void moves_promotions_0() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
-        String moves = getLegalMovesFromPos("g2", new StartGame(fen));
-        assertEquals("Pawn", "p h1 h1 h1 h1 f1 f1 f1 f1 g1 g1 g1 g1", moves);
+        assertEquals("Pawn", "p h1 h1 h1 h1 f1 f1 f1 f1 g1 g1 g1 g1", getLegalMovesFromPos("g2", new StartGame(fen)));
     }
 
     @Test

@@ -1,9 +1,5 @@
 package no.pdigre.chess.test.util;
 
-import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.Position;
 
 public class Counter {
 
@@ -20,36 +16,6 @@ public class Counter {
     public int enpassants;
 
     public int promotions;
-
-    public Counter(){
-    	
-    }
-    
-    public void count(IPosition pos, int[] board) {
-        moves++;
-        int bitmap = pos.getBitmap();
-        if (Bitmap.isCastling(bitmap)) {
-            castlings++;
-        }
-        if (Bitmap.isPromotion(bitmap)) {
-            promotions++;
-        }
-        if (Bitmap.isCapture(bitmap)) {
-            captures++;
-            if (Bitmap.isEnpassant(bitmap)) {
-                enpassants++;
-            }
-        }
-        int[] board1 = Bitmap.apply(board, bitmap);
-        boolean white = pos.whiteNext();
-        Position next = new Position(board1, bitmap);
-        int kpos = NodeGen.getKingPos(next, white);
-        if(NodeGen.isCheck(board1, kpos, white)){
-            checks++;
-            if(!(new NodeGen(next).nextSafe()!=0))
-                mates++;
-        }
-    }
 
 	private void add(Counter count) {
         captures += count.captures;

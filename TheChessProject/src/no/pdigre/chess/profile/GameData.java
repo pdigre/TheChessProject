@@ -4,7 +4,7 @@ import java.lang.Thread.State;
 import java.util.ArrayList;
 
 import no.pdigre.chess.engine.fen.IPositionWithLog;
-import no.pdigre.chess.engine.fen.Move;
+import no.pdigre.chess.engine.fen.PositionWithLog;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.profile.IPlayer.Players;
 
@@ -56,7 +56,7 @@ public abstract class GameData {
     }
 
     public void makeMove(int bitmap) {
-        position = new Move(position, bitmap);
+        position = new PositionWithLog(position, bitmap);
 		updateBoard();
         run();
     }
