@@ -5,6 +5,7 @@ import java.util.concurrent.RecursiveTask;
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.NodeGen;
+import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position;
 
 public class CountMore extends RecursiveTask<Counter[]>{
@@ -12,13 +13,13 @@ public class CountMore extends RecursiveTask<Counter[]>{
     private static final long serialVersionUID = -3058348234963748664L;
 
     final protected Counter[] counters;
-    final protected int bitmap;
+//    protected int bitmap;
+//    protected int[] board;
+    final protected IPosition pos;
+    
 
-    final protected int[] board;
-
-	public CountMore(int bitmap, int depth, int[] board) {
-        this.bitmap = bitmap;
-        this.board = board;
+	public CountMore(IPosition pos, int depth) {
+	    this.pos=pos;
         counters = new Counter[depth];
         for (int i = 0; i < depth; i++)
             counters[i] = new Counter();
@@ -50,14 +51,14 @@ public class CountMore extends RecursiveTask<Counter[]>{
 
 	@Override
     public Counter[] compute() {
-        NodeGen pull = new NodeGen(new Position(board, bitmap));
+        NodeGen pull = new NodeGen(pos);
         int bitmap=pull.nextSafe();
         while(bitmap!=0){
-            int[] board2 = Bitmap.apply(board, bitmap);
+            int[] board2 = Bitmap.apply(pos.getBoard(), bitmap);
             count(bitmap);
             countMove(bitmap, board2);
 			if (counters.length>1)
-			    Counter.total(counters, new CountMore(bitmap, counters.length-1, board2).compute());
+			    Counter.total(counters, new CountMore(new Position(board2,bitmap), counters.length-1).compute());
             bitmap=pull.nextSafe();
         }
         return counters;

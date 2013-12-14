@@ -5,11 +5,10 @@ import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.PieceType;
-import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.StartGame;
-import no.pdigre.chess.test.util.CountMore;
 import no.pdigre.chess.test.util.CountForkJoinPool;
 import no.pdigre.chess.test.util.CountForkJoinPool2;
+import no.pdigre.chess.test.util.CountMore;
 import no.pdigre.chess.test.util.Counter;
 
 import org.junit.Test;
@@ -19,18 +18,13 @@ public class Test_MoveCount {
 
     private static final int MAXDEPTH = 5;
 
-    public static String testAvailMoves(String from, String fen) {
-        return getLegalMovesFromPos(from, new StartGame(fen));
-    }
-
     public static String getLegalMovesFromPos(String from_txt, StartGame start) {
         int from = FEN.text2pos(from_txt);
-        int[] board = start.getBoard();
-        int type = board[from];
+        int type = start.getPiece(from);
         FEN.printPiece(type, from);
         StringBuffer sb = new StringBuffer();
         sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(new Position(board, start.getBitmap())), from)) {
+        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(start), from)) {
             sb.append(" ");
             sb.append(FEN.pos2string(Bitmap.getTo(bitmap)));
         }
@@ -40,8 +34,7 @@ public class Test_MoveCount {
     @Test
     public void m1_Normal_4347_795() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        StartGame start = new StartGame(fen);
-        Counter[] counters = new CountMore(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
+        Counter[] counters = new CountMore(new StartGame(fen), MAXDEPTH).compute();
         printCounter(counters);
         assertEquals(counters[4].moves, 4865609);
         assertEquals(counters[4].captures, 82719);
@@ -52,8 +45,7 @@ public class Test_MoveCount {
     public void m1_Multi1_2190_297
     () {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        StartGame start = new StartGame(fen);
-        Counter[] counters = new CountForkJoinPool(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
+        Counter[] counters = new CountForkJoinPool(new StartGame(fen), MAXDEPTH).compute();
         printCounter(counters);
         assertEquals(counters[4].moves, 4865609);
         assertEquals(counters[4].captures, 82719);
@@ -63,8 +55,7 @@ public class Test_MoveCount {
     @Test
     public void m1_Multi2_2552_291() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        StartGame start = new StartGame(fen);
-        Counter[] counters = new CountForkJoinPool2(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
+        Counter[] counters = new CountForkJoinPool2(new StartGame(fen), MAXDEPTH).compute();
         printCounter(counters);
         assertEquals(counters[4].moves, 4865609);
         assertEquals(counters[4].captures, 82719);
@@ -94,7 +85,7 @@ public class Test_MoveCount {
     public void m2_Normal_4243_941() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
-        Counter[] counters = new CountMore(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
+        Counter[] counters = new CountMore(start, MAXDEPTH).compute();
         printCounter(counters);
         assertEquals(counters[0].moves, 24);
         assertEquals(counters[1].moves, 496);
@@ -107,7 +98,7 @@ public class Test_MoveCount {
     public void m2_Multi1_2226_275() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
-        Counter[] counters = new CountForkJoinPool(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
+        Counter[] counters = new CountForkJoinPool(start, MAXDEPTH).compute();
         printCounter(counters);
         assertEquals(counters[0].moves, 24);
         assertEquals(counters[1].moves, 496);
@@ -120,7 +111,7 @@ public class Test_MoveCount {
     public void m2_Multi2_2552_286() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
-        Counter[] counters = new CountForkJoinPool2(start.getBitmap(), MAXDEPTH, start.getBoard()).compute();
+        Counter[] counters = new CountForkJoinPool2(start, MAXDEPTH).compute();
         printCounter(counters);
         assertEquals(counters[0].moves, 24);
         assertEquals(counters[1].moves, 496);
