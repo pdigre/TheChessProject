@@ -58,7 +58,7 @@ public class NegaMaxCutoff implements IThinker {
 
     @Override
     public String toString() {
-        return FEN.board2String(pos.getBoard()) + "\n" + FEN.printMove(pos);
+        return FEN.board2String(pos) + "\n" + FEN.printMove(pos);
     }
     
     public void printHitrate() {

@@ -7,6 +7,8 @@ public abstract interface IPosition extends IConst{
 
     public abstract boolean whiteNext();
 
+    public abstract  int getPiece(int square);
+    
     public abstract int[] getBoard();
 
     /**

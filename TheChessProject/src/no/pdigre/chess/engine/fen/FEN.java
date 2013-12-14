@@ -40,20 +40,20 @@ public class FEN implements IConst {
 	 * 
 	 * @return
 	 */
-	final public static String getFen(IPosition move) {
+	final public static String getFen(IPosition pos) {
 		StringBuilder fen = new StringBuilder();
-		fen.append(FEN.board2String(move.getBoard()));
+		fen.append(FEN.board2String(pos));
 		fen.append(" ");
-		fen.append(move.whiteNext() ? "w" : "b");
+		fen.append(pos.whiteNext() ? "w" : "b");
 		fen.append(" ");
-		fen.append(FEN.getFenCastling(move));
+		fen.append(FEN.getFenCastling(pos));
 		fen.append(" ");
-		fen.append(FEN.pos2string(Bitmap.getEnpassant(move.getBitmap())));
+		fen.append(FEN.pos2string(Bitmap.getEnpassant(pos.getBitmap())));
 		fen.append(" ");
-		fen.append(Bitmap.halfMoves(move.getBitmap()));
-		if (move instanceof IPositionWithLog) {
+		fen.append(Bitmap.halfMoves(pos.getBitmap()));
+		if (pos instanceof IPositionWithLog) {
 			fen.append(" ");
-			fen.append(((IPositionWithLog) move).totalMoves());
+			fen.append(((IPositionWithLog) pos).totalMoves());
 		}
 		return fen.toString();
 	}
@@ -73,14 +73,14 @@ public class FEN implements IConst {
 		return "abcdefgh".indexOf(pos.charAt(0)) + 8 * (pos.charAt(1) - '1');
 	}
 
-	final public static String board2String(int[] board) {
+    final public static String board2String(IPosition pos) {
 		StringBuilder fen = new StringBuilder();
 		for (int y = 8; y-- > 0;) {
 			int i = 0;
 			if (y != 7)
 				fen.append("/");
 			for (int x = 0; x < 8; x++) {
-				PieceType type = PieceType.types[board[y * 8 + x]];
+				PieceType type = PieceType.types[pos.getPiece(y * 8 + x)];
 				if (type == null) {
 					i++;
 				} else {
@@ -111,18 +111,6 @@ public class FEN implements IConst {
 		return sb.toString();
 	}
 
-	public static String printBoard(int[] board) {
-		StringBuffer sb = new StringBuffer();
-		for (int y = 56; y >= 0; y -= 8) {
-			for (int x = 0; x < 8; x++) {
-				PieceType type = PieceType.types[board[x + y]];
-				sb.append(type == null ? "." : type.fen);
-			}
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
-
 	public static void printPiece(int type, int pos) {
 		PieceType pt = PieceType.types[type];
 		System.out.println(pt == null ? "<none>" : pt.toString() + " "
@@ -131,7 +119,6 @@ public class FEN implements IConst {
 
 	public static String printMove(IPosition pos) {
 		int bitmap = pos.getBitmap();
-		int[] board = pos.getBoard();
 		StringBuilder sb = new StringBuilder();
 		sb.append(PieceType.types[bitmap & PIECE]);
 		sb.append(" from " + FEN.pos2string(Bitmap.getFrom(bitmap)) + " to "
@@ -147,9 +134,9 @@ public class FEN implements IConst {
 		if (Bitmap.isPromotion(bitmap))
 			sb.append(" promoted");
 		boolean white = Bitmap.white(bitmap);
-		if (!NodeGen.checkSafe(board, NodeGen.getKingPos(board, white), white)) {
+		if (!NodeGen.checkSafe(pos.getBoard(), NodeGen.getKingPos(pos, white), white)) {
 			sb.append(" check");
-			if (!(new NodeGen(new Position(board, bitmap)).nextSafe() != 0))
+			if (!(new NodeGen(pos).nextSafe() != 0))
 				sb.append("mate");
 		}
 		sb.append(", ");
@@ -179,9 +166,9 @@ public class FEN implements IConst {
 			}
 		}
 		boolean white = Bitmap.white(bitmap);
-		if (!NodeGen.checkSafe(board, NodeGen.getKingPos(board, white), white)) {
+		if (!NodeGen.checkSafe(board, NodeGen.getKingPos(pos, white), white)) {
 			suffix += "+";
-			if (!(new NodeGen(new Position(board, bitmap)).nextSafe() != 0))
+			if (!(new NodeGen(pos).nextSafe() != 0))
 				suffix += "+";
 		}
 		return prefix + " " + suffix;
@@ -189,15 +176,15 @@ public class FEN implements IConst {
 
 	private static String piecePrefix(int type) {
 		switch (type) {
-		case Bitmap.KING:
+		case IConst.KING:
 			return "K";
-		case Bitmap.QUEEN:
+		case IConst.QUEEN:
 			return "Q";
-		case Bitmap.ROOK:
+		case IConst.ROOK:
 			return "R";
-		case Bitmap.BISHOP:
+		case IConst.BISHOP:
 			return "B";
-		case Bitmap.KNIGHT:
+		case IConst.KNIGHT:
 			return "N";
 		}
 		return "";

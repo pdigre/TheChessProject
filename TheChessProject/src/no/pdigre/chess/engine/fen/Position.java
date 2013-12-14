@@ -38,4 +38,10 @@ public class Position implements IPosition {
     public int[] getAllBestFirst() {
         return NodeUtil.getAllBestFirst(this);
     }
+
+    @Override
+    public int getPiece(int square) {
+        return board[square];
+    }
+
 }

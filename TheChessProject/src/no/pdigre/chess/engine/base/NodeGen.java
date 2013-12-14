@@ -1,6 +1,7 @@
 package no.pdigre.chess.engine.base;
 
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class NodeGen {
 
@@ -28,10 +29,12 @@ public class NodeGen {
 
     final boolean castle_king;
 
-    final int[] board;
+//    final int[] board;
+//
+//    final int inherit;
 
-    final int inherit;
-
+    final IPosition pos;
+    
     private int from = -1;
 
     private int sqr;
@@ -41,11 +44,10 @@ public class NodeGen {
     final private int pawnline;
 
     public NodeGen(IPosition pos) {
-        
-        this.inherit = pos.getBitmap();
-        this.board = pos.getBoard();
+        this.pos=pos;
+        int inherit = pos.getBitmap();
         white = !Bitmap.white(inherit);
-        kingpos = getKingPos(board, white);
+        kingpos = getKingPos(pos, white);
         enpassant = Bitmap.getEnpassant(inherit);
         pawn_fwd = forward(white);
         pawn_left = pawn_fwd + BaseNodes.LEFT;
@@ -60,7 +62,7 @@ public class NodeGen {
 
     final public int nextSafe() {
         int bitmap = nextUnsafe();
-        if (bitmap==0 || isSafe(board, from, kingpos, Bitmap.getTo(bitmap), bitmap))
+        if (bitmap==0 || isSafe(new Position(pos.getBoard(),bitmap), from, kingpos, Bitmap.getTo(bitmap)))
             return bitmap;
         return nextSafe();
     }
@@ -72,13 +74,15 @@ public class NodeGen {
             from++;
             if (from == 64)
                 return 0;
-            sqr = board[from];
+            sqr = pos.getPiece(from);
         } while (sqr == 0 || white != Bitmap.white(sqr));
         nextPiece();
         return nextUnsafe();
     }
 
     final private void nextPiece() {
+        int[] board=pos.getBoard();
+        int inherit=pos.getBitmap();
         switch (sqr & 7) {
             case IConst.KNIGHT:
                 addSimple(board, BaseNodes.KNIGHT_MOVES[from], white, from, inherit);
@@ -177,10 +181,10 @@ public class NodeGen {
         }
     }
 
-    final public static int getKingPos(final int[] board, boolean white) {
+    final public static int getKingPos(IPosition pos, boolean white) {
         int kingtype = white ? IConst.KING : IConst.BLACK_KING;
         for (int i = 0; i < 64; i++)
-            if (board[i] == kingtype)
+            if (pos.getPiece(i) == kingtype)
                 return i;
         return 0;
     }
@@ -293,13 +297,15 @@ public class NodeGen {
         return victim == 0;
     }
 
-    final private static boolean isSafe(int[] board, int from, int kingpos, int to, int bitmap) {
+    final private static boolean isSafe(IPosition pos, int from, int kingpos, int to) {
+        int bitmap = pos.getBitmap();
+        int[] board = pos.getBoard();
         return NodeGen
             .checkSafe(Bitmap.apply(board, bitmap), from == kingpos ? to : kingpos, Bitmap.white(bitmap));
     }
 
-    final public static boolean isCheck(int[] board, boolean white) {
-        return !NodeGen.checkSafe(board, getKingPos(board, white), white);
+    final public static boolean isCheck(IPosition pos, boolean white) {
+        return !NodeGen.checkSafe(pos.getBoard(), getKingPos(pos, white), white);
     }
 
     final private void add(int bitmap) {

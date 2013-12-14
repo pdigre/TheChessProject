@@ -18,19 +18,6 @@ public class FxGameData extends GameData{
         ArrayList<Marking> markers = getMarkers();
         int[] board = position.getBoard();
         canvas.drawBoard(board, markers);
-//        Runnable runnable = new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                ArrayList<Marking> markers = getMarkers();
-//                int[] board = position.getBoard();
-//                canvas.drawBoard(board, markers);
-//                canvas.redraw();
-//                canvas.update();
-//            }
-//
-//        };
-//        canvas.getDisplay().syncExec(runnable);
     }
 
 

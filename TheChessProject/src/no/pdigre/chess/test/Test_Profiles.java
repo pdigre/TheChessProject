@@ -32,7 +32,7 @@ public class Test_Profiles {
 			
 			@Override
 			public void makeMove(int bitmap) {
-				System.out.println(FEN.printBoard(position.getBoard()));
+				System.out.println(FEN.board2String(position));
 				IPosition move = position.move(bitmap);
 				System.out.println(">"+FEN.printMove(move));
 			}

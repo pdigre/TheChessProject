@@ -16,7 +16,7 @@ public final class Move implements IPositionWithLog {
 
     @Override
     public String toString() {
-        return FEN.printMove(new Position(getBoard(),getBitmap()));
+        return FEN.printMove(this);
     }
 
     @Override
@@ -50,6 +50,11 @@ public final class Move implements IPositionWithLog {
     @Override
     public int[] getAllBestFirst() {
         return NodeUtil.getAllBestFirst(this);
+    }
+
+    @Override
+    public int getPiece(int square) {
+        return getBoard()[square];
     }
 
 }

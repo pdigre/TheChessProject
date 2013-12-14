@@ -24,7 +24,7 @@ public class Test_BasicMoves {
         FEN.printPiece(type, from);
         StringBuffer sb = new StringBuffer();
         sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(new Position(board, start.getBitmap())), from)) {
+        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(start), from)) {
             sb.append(" ");
             sb.append(FEN.pos2string(Bitmap.getTo(bitmap)));
         }

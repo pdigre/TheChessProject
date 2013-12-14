@@ -27,25 +27,26 @@ public class Counter {
     
     public void count(IPosition pos, int[] board) {
         moves++;
-        int inherit = pos.getBitmap();
-        if (Bitmap.isCastling(inherit)) {
+        int bitmap = pos.getBitmap();
+        if (Bitmap.isCastling(bitmap)) {
             castlings++;
         }
-        if (Bitmap.isPromotion(inherit)) {
+        if (Bitmap.isPromotion(bitmap)) {
             promotions++;
         }
-        if (Bitmap.isCapture(inherit)) {
+        if (Bitmap.isCapture(bitmap)) {
             captures++;
-            if (Bitmap.isEnpassant(inherit)) {
+            if (Bitmap.isEnpassant(bitmap)) {
                 enpassants++;
             }
         }
-        int[] board1 = Bitmap.apply(board, inherit);
+        int[] board1 = Bitmap.apply(board, bitmap);
         boolean white = pos.whiteNext();
-        int kpos = NodeGen.getKingPos(board1, white);
+        Position next = new Position(board1, bitmap);
+        int kpos = NodeGen.getKingPos(next, white);
         if(!NodeGen.checkSafe(board1, kpos, white)){
             checks++;
-            if(!(new NodeGen(new Position(board1, inherit)).nextSafe()!=0))
+            if(!(new NodeGen(next).nextSafe()!=0))
                 mates++;
         }
     }

@@ -67,4 +67,9 @@ public class StartGame implements IPositionWithLog {
         return NodeUtil.getAllBestFirst(this);
     }
 
+    @Override
+    public int getPiece(int square) {
+        return board[square];
+    }
+
 }
