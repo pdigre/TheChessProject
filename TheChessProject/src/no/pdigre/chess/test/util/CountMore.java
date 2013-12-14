@@ -25,7 +25,9 @@ public class CountMore extends RecursiveTask<Counter[]>{
             counters[i] = new Counter();
     }
 
-	protected void countMove(int bitmap, int[] board) {
+	protected void countMove(IPosition pos) {
+	    int bitmap=pos.getBitmap();
+	    int[] board=pos.getBoard();
 	    counters[0].moves++;
         boolean white = Bitmap.white(bitmap);
         Position next = new Position(board, bitmap & (IConst.CASTLING_STATE | IConst.HALFMOVES));
@@ -52,14 +54,14 @@ public class CountMore extends RecursiveTask<Counter[]>{
 	@Override
     public Counter[] compute() {
         NodeGen pull = new NodeGen(pos);
-        int bitmap=pull.nextSafe();
-        while(bitmap!=0){
-            int[] board2 = Bitmap.apply(pos.getBoard(), bitmap);
-            count(bitmap);
-            countMove(bitmap, board2);
+        int bitmap2=pull.nextSafe();
+        while(bitmap2!=0){
+            IPosition next = pos.move(bitmap2);
+            count(bitmap2);
+            countMove(next);
 			if (counters.length>1)
-			    Counter.total(counters, new CountMore(new Position(board2,bitmap), counters.length-1).compute());
-            bitmap=pull.nextSafe();
+			    Counter.total(counters, new CountMore(next, counters.length-1).compute());
+            bitmap2=pull.nextSafe();
         }
         return counters;
 	}

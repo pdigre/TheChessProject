@@ -7,8 +7,8 @@ public interface IThinker {
 
     final static int MAX=99999;
     final static int MIN=-MAX;
-    public int think(IPosition pos, int total, int alpha, int beta);
-    public int getBitmap();
-    public IThinker getParent();
-    public void setParent(IThinker prev);
+    int think(IPosition pos, int total, int alpha, int beta);
+    IPosition getPos();
+    IThinker getParent();
+    void setParent(IThinker prev);
 }

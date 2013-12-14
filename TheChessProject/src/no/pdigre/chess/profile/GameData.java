@@ -95,7 +95,8 @@ public abstract class GameData {
         }
     }
 
-	public int findBest(int[] bitmaps, int[] scores) {
+	@SuppressWarnings("static-method")
+    public int findBest(int[] bitmaps, int[] scores) {
 		return bitmaps[0];
 	}
 

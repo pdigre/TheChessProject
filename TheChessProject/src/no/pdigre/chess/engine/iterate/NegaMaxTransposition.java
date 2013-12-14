@@ -49,7 +49,7 @@ public class NegaMaxTransposition implements IThinker {
         this.pos=pos;
         int bitmap = pos.getBitmap();
         aggr += eval.tactical(pos);
-        long ft1 = Bitmap.getFromTo(getParent().getBitmap());
+        long ft1 = Bitmap.getFromTo(getParent().getPos().getBitmap());
         long ft2 = Bitmap.getFromTo(bitmap);
         long ft2x = ft2 << 12;
         long commonkey = ft1 | ft2x;
@@ -93,11 +93,6 @@ public class NegaMaxTransposition implements IThinker {
     }
 
     @Override
-    public int getBitmap() {
-        return pos.getBitmap();
-    }
-
-    @Override
     public String toString() {
         return FEN.board2String(pos) + "\n" + FEN.printMove(pos);
     }
@@ -116,4 +111,8 @@ public class NegaMaxTransposition implements IThinker {
         return new NegaMaxTransposition(tail,tt,eval);
     }
 
+    @Override
+    public IPosition getPos() {
+        return pos;
+    }
 }

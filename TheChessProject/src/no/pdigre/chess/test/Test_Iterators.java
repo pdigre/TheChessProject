@@ -104,6 +104,11 @@ public class Test_Iterators {
             System.out.println(eval.toString());
     }
 
+    /**
+     * @param fen
+     * @param first
+     * @param second
+     */
     public static void testThinker2(String fen, IThinker first, IThinker second) {
         StartGame start = new StartGame(fen);
         int[] board = start.getBoard();

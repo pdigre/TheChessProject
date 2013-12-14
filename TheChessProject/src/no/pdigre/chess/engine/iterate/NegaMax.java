@@ -3,12 +3,19 @@ package no.pdigre.chess.engine.iterate;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.test.util.MovesIterator;
 
 public class NegaMax implements IThinker {
 
     private IThinker next;
 
     private IPosition pos;
+    
+    @Override
+    public IPosition getPos() {
+        return pos;
+    }
+
     private IEvaluator eval;
     private IThinker parent;
 
@@ -30,13 +37,11 @@ public class NegaMax implements IThinker {
         this.pos=pos;
         total += eval.tactical(pos);
         int max = alpha;
-        int[] moves = pos.getAllBestFirst();
-        counter+=moves.length;
-        for (int i = 0; i < moves.length; i++) {
-            int bitmap1 = moves[i];
-            int score = -next.think(pos.move(bitmap1), -total, -beta, -alpha);
+        for (IPosition move : new MovesIterator(pos)) {
+            int score = -next.think(move, -total, -beta, -alpha);
             if (score > max)
                 max = score;
+            counter++;
         }
         return max;
     }
@@ -44,11 +49,6 @@ public class NegaMax implements IThinker {
     @Override
     public IThinker getParent() {
         return parent;
-    }
-
-    @Override
-    public int getBitmap() {
-        return pos.getBitmap();
     }
 
     @Override

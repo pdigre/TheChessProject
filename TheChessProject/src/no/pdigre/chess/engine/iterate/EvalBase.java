@@ -32,11 +32,6 @@ public class EvalBase implements IThinker {
     }
 
     @Override
-    public int getBitmap() {
-        return pos.getBitmap();
-    }
-
-    @Override
     public IThinker getParent() {
         return null;
     }
@@ -65,4 +60,8 @@ public class EvalBase implements IThinker {
         return all;
     }
 
+    @Override
+    public IPosition getPos() {
+        return pos;
+    }
 }

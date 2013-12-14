@@ -24,10 +24,8 @@ public class Test_MoveCount {
         FEN.printPiece(type, from);
         StringBuffer sb = new StringBuffer();
         sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(start), from)) {
-            sb.append(" ");
-            sb.append(FEN.pos2string(Bitmap.getTo(bitmap)));
-        }
+        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getAllMoves(start), from)) 
+            sb.append(" "+FEN.pos2string(Bitmap.getTo(bitmap)));
         return sb.toString();
     }
 
@@ -74,10 +72,8 @@ public class Test_MoveCount {
 
     private static String format10(String delimited) {
         StringBuilder sb = new StringBuilder();
-        for (String string : delimited.split(",")) {
-            sb.append("          ".substring(string.length()));
-            sb.append(string);
-        }
+        for (String string : delimited.split(","))
+            sb.append("          ".substring(string.length())+string);
         return sb.toString();
     }
 

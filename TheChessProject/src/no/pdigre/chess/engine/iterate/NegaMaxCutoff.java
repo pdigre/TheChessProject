@@ -52,11 +52,6 @@ public class NegaMaxCutoff implements IThinker {
     }
 
     @Override
-    public int getBitmap() {
-        return pos.getBitmap();
-    }
-
-    @Override
     public String toString() {
         return FEN.board2String(pos) + "\n" + FEN.printMove(pos);
     }
@@ -65,4 +60,8 @@ public class NegaMaxCutoff implements IThinker {
         System.out.println("Scanning:" + counter + "/" + countertot);
     }
 
+    @Override
+    public IPosition getPos() {
+        return pos;
+    }
 }

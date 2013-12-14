@@ -16,11 +16,6 @@ public class NegaMaxEnd implements IThinker {
     }
 
     @Override
-    public int getBitmap() {
-        return 0;
-    }
-
-    @Override
     public IThinker getParent() {
         return null;
     }
@@ -28,5 +23,10 @@ public class NegaMaxEnd implements IThinker {
     @Override
     public void setParent(IThinker prev) {
         // none
+    }
+
+    @Override
+    public IPosition getPos() {
+        return null;
     }
 }
