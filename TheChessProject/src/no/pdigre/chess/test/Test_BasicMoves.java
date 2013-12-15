@@ -3,18 +3,17 @@ package no.pdigre.chess.test;
 import static org.junit.Assert.assertEquals;
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.PieceType;
+import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.fen.StartGame;
+import no.pdigre.chess.test.util.IterateScores;
 
 import org.junit.Test;
 
 @SuppressWarnings("static-method")
 public class Test_BasicMoves {
-
-    public static String testAvailMoves(String from, String fen) {
-        return getLegalMovesFromPos(from, new StartGame(fen));
-    }
 
     public static String getLegalMovesFromPos(String from_txt, StartGame start) {
         int from = FEN.text2pos(from_txt);
@@ -43,9 +42,10 @@ public class Test_BasicMoves {
         StartGame start = new StartGame(fen);
         int high = 9000000;
         StringBuffer sb=new StringBuffer("=================================\n");
-        for (int bitmap : NodeUtil.getAllBestFirst(start)) {
-            sb.append(FEN.printMove(start.move(bitmap))+"\n");
-            int val = Bitmap.tacticValue(bitmap);
+        IterateScores moves = new IterateScores(start, IEvaluator.BASIC);
+        for (PositionScore next : moves) {
+            sb.append(FEN.printMove(next)+"\n");
+            int val = next.score;
             if (val < high)
                 high = val;
             if (val > high){

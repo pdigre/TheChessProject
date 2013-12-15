@@ -2,7 +2,7 @@ package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.IConst;
-import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.base.NodeGen;
 
 public class FEN implements IConst {
 
@@ -133,11 +133,11 @@ public class FEN implements IConst {
 			sb.append(" castling");
 		if (Bitmap.isPromotion(bitmap))
 			sb.append(" promoted");
-        switch(NodeUtil.getCheckState(pos)){
-            case NodeUtil.CHECK:
+        switch(NodeGen.getCheckState(pos)){
+            case NodeGen.CHECK:
                 sb.append(" check");
                 break;
-            case NodeUtil.MATE:
+            case NodeGen.MATE:
                 sb.append(" checkmate");
                 break;
         }
@@ -165,11 +165,11 @@ public class FEN implements IConst {
 				suffix = col == 2 ? "O-O-O" : "O-O";
 			}
 		}
-		switch(NodeUtil.getCheckState(pos)){
-            case NodeUtil.CHECK:
+		switch(NodeGen.getCheckState(pos)){
+            case NodeGen.CHECK:
                 suffix += "+";
                 break;
-            case NodeUtil.MATE:
+            case NodeGen.MATE:
                 suffix += "++";
                 break;
 		}

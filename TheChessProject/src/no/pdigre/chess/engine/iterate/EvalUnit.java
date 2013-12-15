@@ -2,10 +2,10 @@ package no.pdigre.chess.engine.iterate;
 
 import java.util.HashSet;
 
-import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.PositionScore;
+import no.pdigre.chess.test.util.IterateScores;
 
 
 public class EvalUnit{
@@ -14,11 +14,11 @@ public class EvalUnit{
     private HashSet<Long> tt = new HashSet<Long>();
 
     public EvalUnit(IPosition pos) {
-        int[] moves = NodeUtil.getAllBestFirst(pos);
-        evals = new EvalBase[moves.length];
-        for (int i = 0; i < moves.length; i++){
-            evals[i] = new EvalBase(Bitmap.apply(pos.getBoard(), moves[i]), moves[i]);
-        }
+        IterateScores moves = new IterateScores(pos, IEvaluator.BASIC);
+        evals = new EvalBase[moves.size()];
+        int i = 0;
+        for (PositionScore n: moves)
+            evals[i++] = new EvalBase(n);
     }
     
     public void calculateStrategic(){
