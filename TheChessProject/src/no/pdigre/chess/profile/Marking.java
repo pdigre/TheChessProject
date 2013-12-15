@@ -3,8 +3,10 @@ package no.pdigre.chess.profile;
 import java.util.ArrayList;
 
 import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.PositionScore;
+import no.pdigre.chess.test.util.IterateScores;
 
 public class Marking {
 
@@ -34,10 +36,10 @@ public class Marking {
 
     public static ArrayList<Marking> getPiecesThatCanMove(IPosition pos) {
         ArrayList<Marking> list = new ArrayList<Marking>();
-        int[] moves = NodeUtil.getAllBestFirst(pos);
-        int best = Bitmap.getFrom(moves[0]);
-        for (int move : moves) {
-            int fr = Bitmap.getFrom(move);
+        IterateScores moves = new IterateScores(pos, IEvaluator.BASIC);
+        int best = Bitmap.getFrom(moves.first().getBitmap());
+        for (PositionScore n : moves) {
+            int fr = Bitmap.getFrom(n.getBitmap());
             list.add(new Marking(fr == best ? MarkingType.BestMoveFrom : MarkingType.MoveFrom, fr));
         }
         return list;
@@ -45,9 +47,10 @@ public class Marking {
 
     public static ArrayList<Marking> getMovesForPiece(IPosition pos, int from) {
         ArrayList<Marking> list = new ArrayList<Marking>();
-        int[] moves = NodeUtil.getAllBestFirst(pos);
+        IterateScores moves = new IterateScores(pos, IEvaluator.BASIC);
         list.add(new Marking(MarkingType.MarkFrom, from));
-        for (int move : moves) {
+        for (PositionScore n : moves) {
+            int move=n.getBitmap();
             if (Bitmap.getFrom(move) == from)
                 list.add(new Marking(MarkingType.MoveTo, Bitmap.getTo(move), 0));
         }

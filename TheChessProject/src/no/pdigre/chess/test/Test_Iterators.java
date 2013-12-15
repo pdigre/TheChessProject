@@ -2,8 +2,8 @@ package no.pdigre.chess.test;
 
 import java.util.HashSet;
 
-import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
+import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.engine.iterate.EvalUnit;
 import no.pdigre.chess.engine.iterate.Evaluator;
@@ -12,6 +12,7 @@ import no.pdigre.chess.engine.iterate.NegaMax;
 import no.pdigre.chess.engine.iterate.NegaMaxCutoff;
 import no.pdigre.chess.engine.iterate.NegaMaxEnd;
 import no.pdigre.chess.engine.iterate.NegaMaxTransposition;
+import no.pdigre.chess.test.util.IterateScores;
 
 import org.junit.Test;
 
@@ -79,16 +80,17 @@ public class Test_Iterators {
 
     public static void testThinker(String fen, IThinker first, IThinker second) {
         StartGame pos = new StartGame(fen);
-        int[] moves = NodeUtil.getAllBestFirst(pos);
-        Evaluator[] evals = new Evaluator[moves.length];
-        for (int i = 0; i < moves.length; i++)
-            evals[i] = new Evaluator(pos.move(moves[i]));
+        IterateScores moves = new IterateScores(pos, IEvaluator.BASIC);
+        Evaluator[] evals = new Evaluator[moves.size()];
+        int i=0;
+        for (PositionScore next:moves)
+            evals[i++] = new Evaluator(next);
         for (Evaluator eval : evals)
             eval.async(first);
         for (Evaluator eval : evals)
             eval.join();
         Evaluator.sort(evals);
-        int extra = moves.length / 3;
+        int extra = moves.size() / 3;
         for (Evaluator eval : evals) {
             if (extra-- < 0)
                 break;
@@ -108,10 +110,11 @@ public class Test_Iterators {
      */
     public static void testThinker2(String fen, IThinker first, IThinker second) {
         StartGame pos = new StartGame(fen);
-        int[] moves = NodeUtil.getAllBestFirst(pos);
-        Evaluator[] evals = new Evaluator[moves.length];
-        for (int i = 0; i < moves.length; i++)
-            evals[i] = new Evaluator(pos.move(moves[i]));
+        IterateScores moves = new IterateScores(pos, IEvaluator.BASIC);
+        Evaluator[] evals = new Evaluator[moves.size()];
+        int i=0;
+        for (PositionScore n:moves)
+            evals[i++] = new Evaluator(n);
         for (Evaluator eval : evals)
             eval.sync(second);
         Evaluator.sort(evals);

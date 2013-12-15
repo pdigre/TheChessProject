@@ -2,15 +2,16 @@ package no.pdigre.chess.profile;
 
 import java.util.HashSet;
 
-import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.iterate.Evaluator;
 import no.pdigre.chess.engine.iterate.IThinker;
 import no.pdigre.chess.engine.iterate.NegaMax;
 import no.pdigre.chess.engine.iterate.NegaMaxCutoff;
 import no.pdigre.chess.engine.iterate.NegaMaxEnd;
 import no.pdigre.chess.engine.iterate.NegaMaxTransposition;
+import no.pdigre.chess.test.util.IterateScores;
 
 public class Intermediate2 extends Player {
 
@@ -26,10 +27,11 @@ public class Intermediate2 extends Player {
         NegaMaxTransposition nm = NegaMaxTransposition.createAndFill(first,tt,IEvaluator.BASIC);
         IThinker second = new NegaMax(nm,IEvaluator.BASIC);
         IPosition pos = getPosition();
-        int[] moves = NodeUtil.getAllBestFirst(pos);
-        Evaluator[] evals = new Evaluator[moves.length];
-        for (int i = 0; i < moves.length; i++)
-            evals[i] = new Evaluator(pos.move(moves[i]));
+        IterateScores moves = new IterateScores(pos, IEvaluator.BASIC);
+        Evaluator[] evals = new Evaluator[moves.size()];
+        int i = 0;
+        for (PositionScore n: moves)
+            evals[i++] = new Evaluator(n);
         for (Evaluator eval : evals)
             eval.sync(second);
         Evaluator.sort(evals);

@@ -3,7 +3,7 @@ package no.pdigre.chess.test.util;
 import java.util.concurrent.RecursiveTask;
 
 import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.IPosition;
 
 public class CountMore extends RecursiveTask<Counter[]> {
@@ -34,11 +34,11 @@ public class CountMore extends RecursiveTask<Counter[]> {
         }
         if (Bitmap.isPromotion(bitmap))
             counters[0].promotions++;
-        switch (NodeUtil.getCheckState(pos)) {
-            case NodeUtil.CHECK:
+        switch (NodeGen.getCheckState(pos)) {
+            case NodeGen.CHECK:
                 counters[0].checks++;
                 break;
-            case NodeUtil.MATE:
+            case NodeGen.MATE:
                 counters[0].checks++;
                 counters[0].mates++;
                 break;

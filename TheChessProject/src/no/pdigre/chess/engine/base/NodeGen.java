@@ -3,6 +3,7 @@ package no.pdigre.chess.engine.base;
 import java.util.Iterator;
 
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class NodeGen implements Iterable<Integer>, Iterator<Integer> {
 
@@ -327,6 +328,26 @@ public class NodeGen implements Iterable<Integer>, Iterator<Integer> {
         if (next == -1)
             next = nextSafe();
         return this;
+    }
+
+    public final static int CHECK=1;
+    public final static int MATE=2;
+    /**
+     * @param pos
+     * @return
+     */
+    public static int getCheckState(IPosition pos) {
+        int bitmap = pos.getBitmap();
+        int[] board = pos.getBoard();
+        boolean white = Bitmap.white(bitmap);
+        Position next = new Position(board, bitmap & (IConst.CASTLING_STATE | IConst.HALFMOVES));
+        int kingPos = NodeGen.getKingPos(next, white);
+        boolean ch = NodeGen.isCheck(board, kingPos, white);
+        if (!ch)
+            return 0;
+        if (new NodeGen(next).iterator().hasNext())
+            return CHECK;
+        return MATE;
     }
 
 }

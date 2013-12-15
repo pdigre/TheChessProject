@@ -26,6 +26,10 @@ public class EvalBase implements IThinker {
         pos=new Position(board, bitmap);
     }
 
+    public EvalBase(IPosition pos) {
+        this.pos=pos;
+    }
+
     @Override
     public int think(IPosition pos, int total, int alpha, int beta) {
         return 0;

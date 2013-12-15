@@ -3,10 +3,11 @@ package no.pdigre.chess.engine.iterate;
 import java.util.HashSet;
 
 import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.PositionScore;
+import no.pdigre.chess.test.util.IterateScores;
 
 public class NegaMaxTransposition implements IThinker {
     private IEvaluator eval;
@@ -55,10 +56,10 @@ public class NegaMaxTransposition implements IThinker {
         long ft2x = ft2 << 12;
         long commonkey = ft1 | ft2x;
         long commontrn = ft2x | (ft1 << 24);
-        int[] moves = NodeUtil.getAllBestFirst(pos);
-        total += moves.length;
-        for (int i = 0; i < moves.length; i++) {
-            int bitmap1 = moves[i];
+        IterateScores moves = new IterateScores(pos, eval);
+        total += moves.size();
+        for (PositionScore n : moves) {
+            int bitmap1 = n.getBitmap();
             int score = 0;
             long ft3 = Bitmap.getFromTo(bitmap1);
             Long trans = ft3 | commontrn;
@@ -71,7 +72,7 @@ public class NegaMaxTransposition implements IThinker {
                 Long key = commonkey | (ft3 << 24);
                 tt.add(key);
             }
-            score = -next.think(pos.move(bitmap1), -aggr, -beta, -alpha);
+            score = -next.think(n, -aggr, -beta, -alpha);
             // if (score >= beta)
             // return beta;
             if (score > alpha)

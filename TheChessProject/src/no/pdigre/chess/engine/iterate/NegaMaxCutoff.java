@@ -1,9 +1,10 @@
 package no.pdigre.chess.engine.iterate;
 
-import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.PositionScore;
+import no.pdigre.chess.test.util.IterateScores;
 
 public class NegaMaxCutoff implements IThinker {
 
@@ -33,12 +34,11 @@ public class NegaMaxCutoff implements IThinker {
     public int think(IPosition pos, int total, int alpha, int beta) {
         this.pos=pos;
         total += eval.tactical(pos);
-        int[] moves = NodeUtil.getAllBestFirst(pos);
-        countertot+=moves.length;
-        for (int i = 0; i < moves.length; i++) {
-            int bitmap1 = moves[i];
+        IterateScores moves = new IterateScores(pos, eval);
+        countertot+=moves.size();
+        for (PositionScore n:moves) {
             counter++;
-            int score = -next.think(pos.move(bitmap1), -total, -beta, -alpha);
+            int score = -next.think(n, -total, -beta, -alpha);
             if (score >= beta)
                 return beta;
             if (score > alpha)

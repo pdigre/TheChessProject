@@ -3,11 +3,11 @@ package no.pdigre.chess.engine.iterate;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.test.util.IterateMovesSorted;
+import no.pdigre.chess.engine.fen.PositionScore;
+import no.pdigre.chess.test.util.IterateScores;
 
 public class AlphaBeta {
 
@@ -16,12 +16,11 @@ public class AlphaBeta {
     public MoveScore[] moves;
 
     public AlphaBeta(IPosition pos, int depth) {
-        int[] legalmoves = NodeUtil.getAllBestFirst(pos);
-        moves = new MoveScore[legalmoves.length];
-        for (int i = 0; i < moves.length; i++) {
-            IPosition p = pos.move(legalmoves[i]);
-            moves[i] = new MoveScore(p, alphaBeta(depth, p));
-        }
+        IterateScores legalmoves = new IterateScores(pos, IEvaluator.BASIC);
+        moves = new MoveScore[legalmoves.size()];
+        int i=0;
+        for (PositionScore n:legalmoves)
+            moves[i++] = new MoveScore(n, alphaBeta(depth, n));
 
         if (!pos.whiteNext()) {
             Arrays.sort(moves, new Comparator<MoveScore>() {
@@ -56,7 +55,7 @@ public class AlphaBeta {
             return score1;
         depthleft--;
         stack[depthleft] = pos.getBitmap();
-        for(IPosition next:new IterateMovesSorted(pos)){
+        for(IPosition next:new IterateScores(pos,IEvaluator.BASIC)){
             int score = blackMove(whiteBest, blackBest, depthleft, next, score1);
             if (score >= blackBest)
                 return blackBest; // fail hard beta-cutoff
@@ -72,7 +71,7 @@ public class AlphaBeta {
             return score1;
         depthleft--;
         stack[depthleft] = pos.getBitmap();
-        for(IPosition next:new IterateMovesSorted(pos)){
+        for(IPosition next:new IterateScores(pos,IEvaluator.BASIC)){
             int score = whiteMove(whiteBest, blackBest, depthleft, next, score1);
             if (score <= whiteBest)
                 return whiteBest; // fail hard alpha-cutoff
