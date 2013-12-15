@@ -4,7 +4,6 @@ import java.util.HashSet;
 
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
-import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.engine.iterate.EvalUnit;
 import no.pdigre.chess.engine.iterate.Evaluator;
@@ -62,8 +61,7 @@ public class Test_Iterators {
     @Test
     public void evalUnit1_1321_390() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
-        StartGame start = new StartGame(fen);
-        EvalUnit top = new EvalUnit(new Position(start.getBoard(), start.getBitmap()));
+        EvalUnit top = new EvalUnit(new StartGame(fen));
         top.runFirstPass();
         top.runSecondPass(20);
         top.printScore();
@@ -72,8 +70,7 @@ public class Test_Iterators {
     @Test
     public void evalUnit2_12() {
         String fen = "8/4p3/8/3P3p/P2pK3/6P1/7b/3k4 w - - 0 1";
-        StartGame start = new StartGame(fen);
-        EvalUnit top = new EvalUnit(new Position(start.getBoard(), start.getBitmap()));
+        EvalUnit top = new EvalUnit(new StartGame(fen));
         top.runFirstPass();
         top.runSecondPass(20);
         top.printScore();
@@ -81,12 +78,11 @@ public class Test_Iterators {
     }
 
     public static void testThinker(String fen, IThinker first, IThinker second) {
-        StartGame start = new StartGame(fen);
-        int[] board = start.getBoard();
-        int[] moves = NodeUtil.getAllBestFirst(new Position(board, start.getBitmap()));
+        StartGame pos = new StartGame(fen);
+        int[] moves = NodeUtil.getAllBestFirst(pos);
         Evaluator[] evals = new Evaluator[moves.length];
         for (int i = 0; i < moves.length; i++)
-            evals[i] = new Evaluator(board, moves[i]);
+            evals[i] = new Evaluator(pos.move(moves[i]));
         for (Evaluator eval : evals)
             eval.async(first);
         for (Evaluator eval : evals)
@@ -111,15 +107,11 @@ public class Test_Iterators {
      * @param second
      */
     public static void testThinker2(String fen, IThinker first, IThinker second) {
-        StartGame start = new StartGame(fen);
-        int[] board = start.getBoard();
-        int bitmap = start.getBitmap();
-        Position pos = new Position(board, bitmap);
-        new EvalUnit(pos);
+        StartGame pos = new StartGame(fen);
         int[] moves = NodeUtil.getAllBestFirst(pos);
         Evaluator[] evals = new Evaluator[moves.length];
         for (int i = 0; i < moves.length; i++)
-            evals[i] = new Evaluator(board, moves[i]);
+            evals[i] = new Evaluator(pos.move(moves[i]));
         for (Evaluator eval : evals)
             eval.sync(second);
         Evaluator.sort(evals);

@@ -21,7 +21,7 @@ public class SwtGameData extends GameData {
             @Override
             public void run() {
                 ArrayList<Marking> markers = getMarkers();
-                canvas.drawBoard(position.getBoard(), markers);
+                canvas.drawBoard(pos, markers);
                 canvas.redraw();
                 canvas.update();
             }

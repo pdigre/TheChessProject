@@ -7,6 +7,12 @@ public class Position implements IPosition {
     int board[];
     int bitmap;
     
+    public Position(IPosition pos) {
+        super();
+        this.board = pos.getBoard();
+        this.bitmap = pos.getBitmap();
+    }
+
     public Position(int[] board, int bitmap) {
         super();
         this.board = board;

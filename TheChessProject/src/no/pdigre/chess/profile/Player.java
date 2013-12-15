@@ -49,7 +49,7 @@ public abstract class Player implements IPlayer {
     }
     
     public void checkPolyglot() {
-        IPosition pos = game.position;
+        IPosition pos = game.pos;
         ArrayList<BookMove> list = Polyglot.get(ZobristKey.getKey(pos));
         int[] moves = NodeUtil.getLegalMoves(pos);
         bitmaps=new int[list.size()];
@@ -76,7 +76,7 @@ public abstract class Player implements IPlayer {
 	}
 
 	protected IPosition getPosition(){
-	    return game.position;
+	    return game.pos;
 	}
 	
 	public int findBest(int[] bitmaps) {

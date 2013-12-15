@@ -5,7 +5,7 @@ import java.util.HashSet;
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
-import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.fen.IPosition;
 
 
 public class EvalUnit{
@@ -13,7 +13,7 @@ public class EvalUnit{
     private final EvalBase[] evals;
     private HashSet<Long> tt = new HashSet<Long>();
 
-    public EvalUnit(Position pos) {
+    public EvalUnit(IPosition pos) {
         int[] moves = NodeUtil.getAllBestFirst(pos);
         evals = new EvalBase[moves.length];
         for (int i = 0; i < moves.length; i++){

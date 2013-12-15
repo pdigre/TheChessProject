@@ -10,7 +10,7 @@ import no.pdigre.chess.profile.IPlayer.Players;
 
 public abstract class GameData {
 
-    public IPositionWithLog position;
+    public IPositionWithLog pos;
 
     private Player[] players=new Player[2];
 
@@ -27,7 +27,7 @@ public abstract class GameData {
     }
     
     public void setupFEN(String fen) {
-        position = new StartGame(fen);
+        pos = new StartGame(fen);
 		updateBoard();
     }
 
@@ -43,7 +43,7 @@ public abstract class GameData {
     }
 
     protected Player getPlayer() {
-        return players[position.whiteNext() ? 0 : 1];
+        return players[pos.whiteNext() ? 0 : 1];
     }
 
     public void clickSquare(int i) {
@@ -56,7 +56,7 @@ public abstract class GameData {
     }
 
     public void makeMove(int bitmap) {
-        position = new PositionWithLog(position, bitmap);
+        pos = new PositionWithLog(pos, bitmap);
 		updateBoard();
         run();
     }

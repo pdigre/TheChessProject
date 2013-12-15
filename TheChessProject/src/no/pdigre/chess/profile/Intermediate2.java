@@ -26,11 +26,10 @@ public class Intermediate2 extends Player {
         NegaMaxTransposition nm = NegaMaxTransposition.createAndFill(first,tt,IEvaluator.BASIC);
         IThinker second = new NegaMax(nm,IEvaluator.BASIC);
         IPosition pos = getPosition();
-        int[] board = pos.getBoard();
         int[] moves = NodeUtil.getAllBestFirst(pos);
         Evaluator[] evals = new Evaluator[moves.length];
         for (int i = 0; i < moves.length; i++)
-            evals[i] = new Evaluator(board, moves[i]);
+            evals[i] = new Evaluator(pos.move(moves[i]));
         for (Evaluator eval : evals)
             eval.sync(second);
         Evaluator.sort(evals);

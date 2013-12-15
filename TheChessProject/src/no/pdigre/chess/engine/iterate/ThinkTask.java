@@ -2,8 +2,7 @@ package no.pdigre.chess.engine.iterate;
 
 import java.util.concurrent.RecursiveTask;
 
-import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.fen.IPosition;
 
 public class ThinkTask extends RecursiveTask<Integer> {
 
@@ -12,18 +11,16 @@ public class ThinkTask extends RecursiveTask<Integer> {
 	 */
 	private static final long serialVersionUID = 2971959747250168203L;
 	final private IThinker thinker;
-	final private int[] board;
-	final private int bitmap;
+    private IPosition pos;
 	
-	public ThinkTask(IThinker thinker, int[] board, int bitmap) {
+	public ThinkTask(IThinker thinker, IPosition pos) {
 		this.thinker = thinker;
-		this.board = board;
-		this.bitmap = bitmap;
+		this.pos = pos;
 	}
 	
 	@Override
 	protected Integer compute() {
-		return thinker.think(new Position(Bitmap.apply(board, bitmap), bitmap), 0, IThinker.MIN, IThinker.MAX);
+		return thinker.think(pos, 0, IThinker.MIN, IThinker.MAX);
 	}
 
 }

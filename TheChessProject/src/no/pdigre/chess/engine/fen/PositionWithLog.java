@@ -2,6 +2,7 @@ package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.Bitmap;
 
+
 public final class PositionWithLog extends Position implements IPositionWithLog {
 
     final private IPositionWithLog parent;

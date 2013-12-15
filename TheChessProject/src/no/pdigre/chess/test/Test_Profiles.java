@@ -32,22 +32,22 @@ public class Test_Profiles {
 			
 			@Override
 			public void makeMove(int bitmap) {
-				System.out.println(FEN.board2String(position));
-				IPosition move = position.move(bitmap);
+				System.out.println(FEN.board2String(pos));
+				IPosition move = pos.move(bitmap);
 				System.out.println(">"+FEN.printMove(move));
 			}
 			
 			@Override
 			public int findBest(int[] bitmaps, int[] scores) {
 				for (int bitmap : bitmaps) {
-					IPosition move = position.move(bitmap);
+					IPosition move = pos.move(bitmap);
 					System.out.println(":"+FEN.printMove(move));
 				}
 				return super.findBest(bitmaps, scores);
 			}
         };
 		game.start(fen, player, player);
-		System.out.println("*** ALPHABETA *** "+FEN.printMove(game.position));
+		System.out.println("*** ALPHABETA *** "+FEN.printMove(game.pos));
 	}
 
 }

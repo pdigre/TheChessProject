@@ -3,13 +3,11 @@ package no.pdigre.chess.engine.iterate;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.test.util.IterateMovesSorted;
 
 public class AlphaBeta {
 
@@ -21,7 +19,7 @@ public class AlphaBeta {
         int[] legalmoves = NodeUtil.getAllBestFirst(pos);
         moves = new MoveScore[legalmoves.length];
         for (int i = 0; i < moves.length; i++) {
-            Position p = new Position(pos.getBoard(), legalmoves[i]);
+            IPosition p = pos.move(legalmoves[i]);
             moves[i] = new MoveScore(p, alphaBeta(depth, p));
         }
 
@@ -58,13 +56,8 @@ public class AlphaBeta {
             return score1;
         depthleft--;
         stack[depthleft] = pos.getBitmap();
-        int[] board = Bitmap.apply(pos.getBoard(), pos.getBitmap());
-        NodeGen pull = new NodeGen(new Position(board,pos.getBitmap()));
-        while (true) {
-            int bitmap = pull.nextSafe();
-            if (bitmap == 0)
-                break;
-            int score = blackMove(whiteBest, blackBest, depthleft, new Position(board, bitmap), score1);
+        for(IPosition next:new IterateMovesSorted(pos)){
+            int score = blackMove(whiteBest, blackBest, depthleft, next, score1);
             if (score >= blackBest)
                 return blackBest; // fail hard beta-cutoff
             if (score > whiteBest)
@@ -79,13 +72,8 @@ public class AlphaBeta {
             return score1;
         depthleft--;
         stack[depthleft] = pos.getBitmap();
-        int[] board = Bitmap.apply(pos.getBoard(), pos.getBitmap());
-        NodeGen pull = new NodeGen(new Position(board, pos.getBitmap()));
-        while (true) {
-            int bitmap = pull.nextSafe();
-            if (bitmap == 0)
-                break;
-            int score = whiteMove(whiteBest, blackBest, depthleft, new Position(board, bitmap), score1);
+        for(IPosition next:new IterateMovesSorted(pos)){
+            int score = whiteMove(whiteBest, blackBest, depthleft, next, score1);
             if (score <= whiteBest)
                 return whiteBest; // fail hard alpha-cutoff
             if (score < blackBest)

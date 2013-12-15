@@ -2,20 +2,17 @@ package no.pdigre.chess.engine.iterate;
 
 import java.util.concurrent.ForkJoinPool;
 
-import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.fen.FEN;
-import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.fen.IPosition;
 
 public class Evaluator {
 
     public static ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
 
-    final private int[] board;
-
-    final private int bitmap;
+    IPosition pos;
 
     public int getBitmap() {
-		return bitmap;
+		return pos.getBitmap();
 	}
 
 	final StringBuilder sb = new StringBuilder();
@@ -24,18 +21,17 @@ public class Evaluator {
 
     private Integer score;
 
-    public Evaluator(int[] board, int bitmap) {
-        this.board = board;
-        this.bitmap = bitmap;
+    public Evaluator(IPosition pos) {
+        this.pos=pos;
     }
 
     public void async(IThinker thinker) {
-        task = new ThinkTask(thinker, board, bitmap);
+        task = new ThinkTask(thinker, pos);
         pool.execute(task);
     }
 
     public void sync(IThinker thinker) {
-        score = thinker.think(new Position(Bitmap.apply(board, bitmap), bitmap), 0, IThinker.MIN, IThinker.MAX);
+        score = thinker.think(pos, 0, IThinker.MIN, IThinker.MAX);
         sb.append(score);
     }
 
@@ -51,7 +47,7 @@ public class Evaluator {
 
     @Override
     public String toString() {
-        return FEN.printMove(new Position(board, bitmap)) + " (" + sb.toString() + ")";
+        return FEN.printMove(pos) + " (" + sb.toString() + ")";
     }
     
     public static Evaluator[] sort(Evaluator[] all) {
