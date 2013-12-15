@@ -145,7 +145,7 @@ public class FEN implements IConst {
 		return sb.toString();
 	}
 
-	private static String notation(IPosition pos) {
+	public static String notation(IPosition pos) {
 		int bitmap = pos.getBitmap();
 		int from = Bitmap.getFrom(bitmap);
 		int to = Bitmap.getTo(bitmap);

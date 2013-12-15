@@ -1,11 +1,12 @@
 package no.pdigre.chess.profile;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import no.pdigre.chess.engine.evaluate.IEvaluator;
+import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.PositionScore;
-import no.pdigre.chess.engine.iterate.Evaluator;
 import no.pdigre.chess.engine.iterate.IThinker;
 import no.pdigre.chess.engine.iterate.NegaMax;
 import no.pdigre.chess.engine.iterate.NegaMaxCutoff;
@@ -28,18 +29,26 @@ public class Intermediate2 extends Player {
         IThinker second = new NegaMax(nm,IEvaluator.BASIC);
         IPosition pos = getPosition();
         IterateScores moves = new IterateScores(pos, IEvaluator.BASIC);
-        Evaluator[] evals = new Evaluator[moves.size()];
-        int i = 0;
-        for (PositionScore n: moves)
-            evals[i++] = new Evaluator(n);
-        for (Evaluator eval : evals)
-            eval.sync(second);
-        Evaluator.sort(evals);
-        for (Evaluator eval : evals)
-            System.out.println(eval.toString());
-        nm.printHitrate();
-        
-        makeMove(evals[0].getBitmap());
+        for (PositionScore m : new ArrayList<PositionScore>(moves))
+            runThinker(m, moves, first);
+        printScore(moves, "PASS 1");
+        for (PositionScore m : new ArrayList<PositionScore>(moves))
+            runThinker(m, moves, second);
+        printScore(moves, "PASS 2");
+        makeMove(moves.first().getBitmap());
+    }
+
+    public static void printScore(IterateScores moves, String txt) {
+        System.out.println("\n**** "+txt+" ****");
+        for (PositionScore m : new ArrayList<PositionScore>(moves))
+            System.out.println(m.score+":"+FEN.notation(m));
+    }
+
+    public static void runThinker(PositionScore move, IterateScores moves, IThinker thinker) {
+        move.score = thinker.think(move, 0, IThinker.MIN, IThinker.MAX);
+        move.run++;
+        moves.remove(move);
+        moves.add(move);
     }
 
 

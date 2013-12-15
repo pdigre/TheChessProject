@@ -4,6 +4,7 @@ import java.util.concurrent.ForkJoinPool;
 
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.PositionScore;
 
 public class Evaluator {
 
@@ -14,8 +15,6 @@ public class Evaluator {
     public int getBitmap() {
 		return pos.getBitmap();
 	}
-
-	final StringBuilder sb = new StringBuilder();
 
     private ThinkTask task;
 
@@ -32,22 +31,20 @@ public class Evaluator {
 
     public void sync(IThinker thinker) {
         score = thinker.think(pos, 0, IThinker.MIN, IThinker.MAX);
-        sb.append(score);
+        if(pos instanceof PositionScore)
+            ((PositionScore) pos).score=score;
     }
 
     public void join() {
         if (task != null) {
-            if (sb.length() > 0)
-                sb.append(",");
             score = task.join();
-            sb.append(score);
             task = null;
         }
     }
 
     @Override
     public String toString() {
-        return FEN.printMove(pos) + " (" + sb.toString() + ")";
+        return FEN.printMove(pos);
     }
     
     public static Evaluator[] sort(Evaluator[] all) {
