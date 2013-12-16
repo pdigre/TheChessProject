@@ -6,11 +6,16 @@ import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.PositionScore;
+import no.pdigre.chess.engine.iterate.IThinker;
 import no.pdigre.chess.engine.polyglot.BookMove;
 import no.pdigre.chess.engine.polyglot.Polyglot;
 import no.pdigre.chess.engine.polyglot.ZobristKey;
+import no.pdigre.chess.test.util.IterateScores;
 
 public abstract class Player implements IPlayer {
+
+    public static boolean debug=true;
 
     public Integer from = -1;
 
@@ -82,5 +87,26 @@ public abstract class Player implements IPlayer {
 	public int findBest(int[] bitmaps) {
 		return bitmaps[0];
 	}
+
+    public static void printScore(IterateScores moves, String txt) {
+        if(debug){
+            System.out.println("\n**** "+txt+" ****");
+            for (PositionScore m : moves)
+                System.out.println(m.score+":"+(m.whiteNext()?"b ":"w ")+FEN.notation(m));
+        }
+    }
+
+    public static void runThinker(PositionScore move, IterateScores moves, IThinker thinker) {
+        int think = thinker.think(move, 0, IThinker.MIN, IThinker.MAX);
+        moves.remove(move);
+        move.run++;
+        move.score = think;
+        moves.add(move);
+    }
+
+    public static void initRun(IPosition pos) {
+        if (debug)
+            System.out.println(FEN.board2string(pos));
+    }
 
 }

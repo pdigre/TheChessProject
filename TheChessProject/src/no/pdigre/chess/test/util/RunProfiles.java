@@ -3,21 +3,13 @@ package no.pdigre.chess.test.util;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.profile.GameData;
-import no.pdigre.chess.profile.Novice;
 import no.pdigre.chess.profile.Player;
 
-import org.junit.Test;
 
-
-@SuppressWarnings("static-method")
 public class RunProfiles {
 
-    @Test
-    public void testNovice() {
-        testMove(new Novice(),"8/4p3/8/3P3p/P2pK3/6P1/7b/3k4 w - - 0 1");
-    }
-
 	public static void testMove(Player player,String fen) {
+	    Player.debug=true;
 		GameData game = new GameData(){
 
 			@Override
@@ -32,9 +24,7 @@ public class RunProfiles {
 			
 			@Override
 			public void makeMove(int bitmap) {
-				System.out.println(FEN.board2String(pos));
-				IPosition move = pos.move(bitmap);
-				System.out.println(">"+FEN.printMove(move));
+				System.out.println(">"+FEN.printMove(pos.move(bitmap)));
 			}
 			
 			@Override
@@ -47,7 +37,6 @@ public class RunProfiles {
 			}
         };
 		game.start(fen, player, player);
-		System.out.println("*** ALPHABETA *** "+FEN.printMove(game.pos));
 	}
 
 }
