@@ -165,8 +165,12 @@ public final class Bitmap implements IConst {
         }
     }
 
+    final public static int piece(final int bitmap) {
+        return bitmap & PIECE;
+    }
+
     final public static int type(final int bitmap) {
-        return bitmap & 7;
+        return bitmap & PIECETYPE;
     }
 
     final public static int halfMoves(final int bitmap) {
@@ -190,42 +194,5 @@ public final class Bitmap implements IConst {
         }
     }
 
-    public static int value(final int type) {
-        switch (type) {
-            case PAWN:
-                return 100;
-            case KNIGHT:
-                return 300;
-            case BISHOP:
-                return 325;
-            case ROOK:
-                return 500;
-            case QUEEN:
-                return 900;
-            case KING:
-                return 100000;
-            case BLACK_PAWN:
-                return -100;
-            case BLACK_KNIGHT:
-                return -300;
-            case BLACK_BISHOP:
-                return -325;
-            case BLACK_ROOK:
-                return -500;
-            case BLACK_QUEEN:
-                return -900;
-            case BLACK_KING:
-                return -100000;
-            default:
-                return 0;
-        }
-    }
-    
-    public final static int tacticValue(int bitmap) {
-        int val = Bitmap.value((bitmap & IConst.CAPTURE) >>> IConst._CAPTURE);
-        if(Bitmap.isPromotion(bitmap))
-            val+=Bitmap.value(Bitmap.type(bitmap));
-        return val;
-    }
 
 }
