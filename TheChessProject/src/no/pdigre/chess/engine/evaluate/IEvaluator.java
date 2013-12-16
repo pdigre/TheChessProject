@@ -10,15 +10,14 @@ public abstract interface IEvaluator {
      * 
      * @return
      */
-    public abstract int tactical(IPosition pos);
+    public abstract int score(IPosition pos);
 
     public static IEvaluator BASIC = new IEvaluator() {
 
         @Override
-        public int tactical(IPosition pos) {
+        public int score(IPosition pos) {
             return Bitmap.tacticValue(pos.getBitmap());
         }
 
     };
-
 }

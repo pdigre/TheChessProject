@@ -86,7 +86,7 @@ public class AlphaBeta {
      * @param depthleft 
      */
     private final static int evalWhiteMove(IPosition pos, int score, int depthleft) {
-        return score - IEvaluator.BASIC.tactical(pos);
+        return score - IEvaluator.BASIC.score(pos);
     }
 
     /**
@@ -94,7 +94,7 @@ public class AlphaBeta {
      * @param depthleft 
      */
     private final static int evalBlackMove(IPosition pos, int score, int depthleft) {
-        return score + IEvaluator.BASIC.tactical(pos);
+        return score + IEvaluator.BASIC.score(pos);
     }
 
     protected void printStack(IPosition pos, int capturedValue, int total, int depthleft) {

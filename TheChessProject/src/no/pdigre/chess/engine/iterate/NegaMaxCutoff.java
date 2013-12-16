@@ -33,7 +33,7 @@ public class NegaMaxCutoff implements IThinker {
     @Override
     public int think(IPosition pos, int total, int alpha, int beta) {
         this.pos=pos;
-        total += eval.tactical(pos);
+        total += eval.score(pos);
         IterateScores moves = new IterateScores(pos, eval);
         countertot+=moves.size();
         for (PositionScore n:moves) {

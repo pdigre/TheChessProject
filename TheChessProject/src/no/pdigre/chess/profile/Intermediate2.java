@@ -3,6 +3,7 @@ package no.pdigre.chess.profile;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import no.pdigre.chess.engine.evaluate.FullEval;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
@@ -28,7 +29,8 @@ public class Intermediate2 extends Player {
         NegaMaxTransposition nm = NegaMaxTransposition.createAndFill(first,tt,IEvaluator.BASIC);
         IThinker second = new NegaMax(nm,IEvaluator.BASIC);
         IPosition pos = getPosition();
-        IterateScores moves = new IterateScores(pos, IEvaluator.BASIC);
+        
+        IterateScores moves = new IterateScores(pos, new FullEval());
         for (PositionScore m : new ArrayList<PositionScore>(moves))
             runThinker(m, moves, first);
         printScore(moves, "PASS 1");

@@ -12,7 +12,7 @@ public class NegaMaxEnd implements IThinker {
 
     @Override
     public int think(IPosition pos, int total, int alpha, int beta) {
-        return total+ eval.tactical(pos);
+        return total+ eval.score(pos);
     }
 
     @Override

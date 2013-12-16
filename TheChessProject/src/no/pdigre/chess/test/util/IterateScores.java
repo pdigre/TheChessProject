@@ -15,7 +15,7 @@ public final class IterateScores extends TreeSet<PositionScore> {
         int[] legalMoves = NodeUtil.getLegalMoves(pos);
         for (int bitmap : legalMoves) {
             PositionScore e = new PositionScore(pos.move(bitmap));
-            e.score=evaluator.tactical(pos);
+            e.score=evaluator.score(pos);
             add(e);
         }
     }

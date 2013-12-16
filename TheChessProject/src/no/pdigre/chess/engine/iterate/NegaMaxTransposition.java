@@ -50,7 +50,7 @@ public class NegaMaxTransposition implements IThinker {
     public int think(IPosition pos, int aggr, int alpha, int beta) {
         this.pos=pos;
         int bitmap = pos.getBitmap();
-        aggr += eval.tactical(pos);
+        aggr += eval.score(pos);
         long ft1 = Bitmap.getFromTo(getParent().getPos().getBitmap());
         long ft2 = Bitmap.getFromTo(bitmap);
         long ft2x = ft2 << 12;

@@ -35,7 +35,7 @@ public class NegaMax implements IThinker {
     @Override
     public int think(IPosition pos, int total, int alpha, int beta) {
         this.pos=pos;
-        total += eval.tactical(pos);
+        total += eval.score(pos);
         int max = alpha;
         for (IPosition move : new IterateScores(pos,eval)) {
             int score = -next.think(move, -total, -beta, -alpha);
