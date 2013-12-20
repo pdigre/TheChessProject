@@ -2,7 +2,6 @@ package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.Bitmap;
 
-
 public final class PositionWithLog extends Position implements IPositionWithLog {
 
     final private IPositionWithLog parent;
@@ -22,7 +21,11 @@ public final class PositionWithLog extends Position implements IPositionWithLog 
 
     @Override
     public IPosition move(int bitmap2) {
-        return new PositionWithLog(parent, bitmap2);
+        return new PositionWithLog(this, bitmap2);
     }
 
+    @Override
+    public String toString() {
+        return FEN.printMove(this)+"\n"+FEN.board2string(this);
+    }
 }

@@ -1,14 +1,17 @@
 package no.pdigre.chess.profile;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import no.pdigre.chess.engine.base.Bitmap;
-import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.IPositionScore;
+import no.pdigre.chess.engine.fen.IPositionWithLog;
 import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.iterate.IIterator;
-import no.pdigre.chess.engine.iterate.IThinker;
 import no.pdigre.chess.engine.polyglot.BookMove;
 import no.pdigre.chess.engine.polyglot.Polyglot;
 import no.pdigre.chess.engine.polyglot.ZobristKey;
@@ -16,32 +19,16 @@ import no.pdigre.chess.test.util.IterateScores;
 
 public abstract class Player implements IPlayer {
 
-    public static boolean debug=true;
+    public volatile RunState state = RunState.READY;
 
-    public Integer from = -1;
+    public static boolean debug = true;
 
-    public int[] bitmaps;
-
-    public int[] scores;
+    public IterateScores moves;
 
     protected GameData game;
 
-    public void setGameData(GameData game){
+    public void setGameData(GameData game) {
         this.game = game;
-    }
-    
-    @Override
-    public int[] getBitmaps() {
-        return bitmaps;
-    }
-
-    @Override
-    public int getScore(int bitmap) {
-        if (scores != null && scores.length == bitmaps.length)
-            for (int i = 0; i < bitmaps.length; i++)
-                if (bitmap == bitmaps[i])
-                    return scores[i];
-        return 0;
     }
 
     @Override
@@ -53,62 +40,56 @@ public abstract class Player implements IPlayer {
     public int clickSquare(int i) {
         return -1;
     }
-    
-    public void checkPolyglot() {
-        IPosition pos = game.pos;
+
+    public int checkPolyglot() {
+        IPositionWithLog pos = game.pos;
+        boolean white=pos.whiteNext();
         ArrayList<BookMove> list = Polyglot.get(ZobristKey.getKey(pos));
-        int[] moves = NodeUtil.getLegalMoves(pos);
-        bitmaps=new int[list.size()];
-        scores=new int[list.size()];
-        for (int i = 0; i < bitmaps.length; i++){
-            int move = list.get(i).move;
-            int f1=Polyglot.getFrom(move);
-            int t1=Polyglot.getTo(move);
-            for (int bitmap : moves) {
-                if(Bitmap.getFrom(bitmap)==f1 && Bitmap.getTo(bitmap)==t1)
-                    bitmaps[i]=bitmap;
+        int best = moves.first().getScore();
+        IPositionScore[] array = moves.toArray(new IPositionScore[moves.size()]);
+        for (BookMove book: list) {
+            int bitmap = book.move;
+            int f1 = Polyglot.getFrom(bitmap);
+            int t1 = Polyglot.getTo(bitmap);
+            for (IPositionScore p : array) {
+                if (Bitmap.getFrom(p.getBitmap()) == f1 && Bitmap.getTo(p.getBitmap()) == t1){
+                    moves.remove(p);
+                    ((PositionScore)p).score=white?best+book.weight:best-book.weight;
+                    moves.add(p);
+                }
             }
-            scores[i]=list.get(i).weight;
         }
+        return list.size();
     }
 
+    protected void makeMove(int bitmap) {
+        game.makeMove(bitmap);
+    }
 
-	protected void makeMove(int bitmap) {
-		game.makeMove(bitmap);
-	}
+    protected void printFEN() {
+        System.out.println(FEN.getFen(getPosition()));
+    }
 
-	protected void printFEN() {
-		System.out.println(FEN.getFen(getPosition()));
-	}
-
-	protected IPosition getPosition(){
-	    return game.pos;
-	}
-	
-	public int findBest(int[] bitmaps) {
-		return bitmaps[0];
-	}
+    protected IPosition getPosition() {
+        return game.pos;
+    }
 
     public static void printScore(IterateScores moves, String txt) {
-        if(debug){
-            System.out.println("\n**** "+txt+" ****");
-            for (PositionScore m : moves)
-                System.out.println(m.score+":"+(m.whiteNext()?"b ":"w ")+FEN.notation(m));
+        if (debug) {
+            System.out.println("\n**** " + txt + " ****");
+            for (IPositionScore m : moves)
+                System.out.println(m.getScore() + ":" + (m.whiteNext() ? "b " : "w ") + FEN.notation(m));
         }
     }
 
-    public static void runThinker(PositionScore move, IterateScores moves, IThinker thinker) {
-        int score=0;
-        final int total=move.getScore();
-        if(thinker instanceof IIterator){
-            IIterator iter=(IIterator) thinker;
-            score = move.whiteNext()?iter.white(move, total, IThinker.MIN, IThinker.MAX):iter.black(move, total, IThinker.MIN, IThinker.MAX);
-        } else {
-            score = thinker.think(move, total, IThinker.MIN, IThinker.MAX);
-        }
+    public static void runThinker(IPositionScore move, IterateScores moves, IIterator iter) {
+        int score = 0;
+        final int total = move.getScore();
+        score = move.whiteNext() ? iter.white(move, total, IIterator.MIN, IIterator.MAX) : iter.black(move, total,
+            IIterator.MIN, IIterator.MAX);
         moves.remove(move);
-        move.run++;
-        move.score = score;
+        ((PositionScore)move).run++;
+        ((PositionScore)move).score = score;
         moves.add(move);
     }
 
@@ -116,5 +97,50 @@ public abstract class Player implements IPlayer {
         if (debug)
             System.out.println(FEN.board2string(pos));
     }
+
+    @Override
+    public String getDescription() {
+        return "<No description>";
+    }
+
+    public void prepare() {
+        moves = new IterateScores(getPosition(), IEvaluator.FULL);
+    }
+
+    public void processAndMove(IIterator iterator) {
+        IterateScores copy = (IterateScores) moves.clone();
+        for (IPositionScore m : copy)
+            runThinker(m, moves, iterator);
+        makeMove(moves.first().getBitmap());
+    }
+
+    public void printTestHeader() {
+        IPosition pos = getPosition();
+        System.out.println("**********************************************");
+        System.out.println("START:" + FEN.getFen(pos));
+        initRun(pos);
+    }
+
+    public void setTimeout(int timeout_ms) {
+        state = RunState.RUNNING;
+        Timer timer=new Timer();
+        timer.schedule(new TimerTask() {
+            
+            @Override
+            public void run() {
+                state=RunState.TIMEOUT;
+            }
+        }, timeout_ms);
+    }
+
+    public void processUntilTimeout(IIterator iterator) {
+        for (IPositionScore m : moves.toArray(new IPositionScore[moves.size()])) {
+            if (state != RunState.RUNNING)
+                break;
+            System.out.println("Processing:"+FEN.notation(m));
+            runThinker(m, moves, iterator);
+        }
+    }
+
 
 }

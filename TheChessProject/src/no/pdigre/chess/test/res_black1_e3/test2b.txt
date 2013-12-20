@@ -1,0 +1,326 @@
+**********************************************
+START:5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w  - 0 1
+8 .....r.k
+7 .P....pp
+6 ...P.p..
+5 ....p...
+4 .P.....P
+3 ...q..P.
+2 Q..b..K.
+1 B...R...
+  ABCDEFGH
+
+
+**** PASS 0 ****
+860:w b7 b8=Q
+480:w Qxa2 Qxd2
+470:w b7 b8=R
+290:w Bxa1 Bxe5
+290:w b7 b8=B
+255:w Rxe1 Rxe5
+250:w b7 b8=N
+150:w Ba1 Bc3
+150:w Ba1 Bd4
+145:w Ba1 Bb2
+140:w d6 d7
+135:w Qa2 Qc2
+135:w Qa2 Qb3
+135:w Qa2 Qc4
+135:w Qa2 Qd5
+135:w Qa2 Qe6
+130:w Kg2 Kg1
+130:w Qa2 Qb2
+130:w Qa2 Qf7
+125:w g3 g4
+125:w b4 b5
+125:w h4 h5
+125:w Qa2 Qa4
+125:w Qa2 Qa5
+120:w Qa2 Qb1
+120:w Re1 Rd1
+120:w Kg2 Kh1
+120:w Kg2 Kh2
+120:w Qa2 Qa3
+120:w Qa2 Qa6
+120:w Qa2 Qa7
+120:w Qa2 Qg8
+115:w Re1 Rb1
+115:w Re1 Rc1
+115:w Re1 Rf1
+115:w Re1 Rg1
+115:w Re1 Rh1
+115:w Re1 Re2
+115:w Re1 Re3
+115:w Re1 Re4
+110:w Qa2 Qa8
+100:w Kg2 Kf2
+90:w Kg2 Kh3
+
+**** PASS 1 ****
+860:w b7 b8=Q
+480:w Qxa2 Qxd2
+470:w b7 b8=R
+290:w Bxa1 Bxe5
+290:w b7 b8=B
+255:w Rxe1 Rxe5
+250:w b7 b8=N
+150:w Ba1 Bc3
+150:w Ba1 Bd4
+145:w Ba1 Bb2
+140:w d6 d7
+135:w Qa2 Qc2
+135:w Qa2 Qb3
+135:w Qa2 Qc4
+135:w Qa2 Qd5
+135:w Qa2 Qe6
+130:w Kg2 Kg1
+130:w Qa2 Qb2
+130:w Qa2 Qf7
+125:w g3 g4
+125:w b4 b5
+125:w h4 h5
+125:w Qa2 Qa4
+125:w Qa2 Qa5
+120:w Qa2 Qb1
+120:w Re1 Rd1
+120:w Kg2 Kh1
+120:w Kg2 Kh2
+120:w Qa2 Qa3
+120:w Qa2 Qa6
+120:w Qa2 Qa7
+120:w Qa2 Qg8
+115:w Re1 Rb1
+115:w Re1 Rc1
+115:w Re1 Rf1
+115:w Re1 Rg1
+115:w Re1 Rh1
+115:w Re1 Re2
+115:w Re1 Re3
+115:w Re1 Re4
+110:w Qa2 Qa8
+100:w Kg2 Kf2
+90:w Kg2 Kh3
+
+**** PASS 2 ****
+10:w Re1 Rd1
+5:w Re1 Rg1
+5:w Re1 Rh1
+-10:w b7 b8=R
+-10:w b7 b8=Q
+-185:w b7 b8=B
+-205:w Bxa1 Bxe5
+-225:w b7 b8=N
+-275:w Rxe1 Rxe5
+-325:w Kg2 Kf2
+-325:w Ba1 Bc3
+-325:w Ba1 Bd4
+-330:w Ba1 Bb2
+-335:w d6 d7
+-340:w Qa2 Qe6
+-345:w Qa2 Qb2
+-350:w g3 g4
+-350:w b4 b5
+-350:w h4 h5
+-350:w Re1 Rb1
+-350:w Re1 Rf1
+-350:w Qa2 Qa4
+-350:w Qa2 Qa5
+-355:w Re1 Rc1
+-355:w Kg2 Kg1
+-355:w Kg2 Kh2
+-355:w Kg2 Kh3
+-355:w Qa2 Qa7
+-360:w Re1 Re2
+-365:w Re1 Re4
+-375:w Kg2 Kh1
+-375:w Re1 Re3
+-415:w Qxa2 Qxd2
+-735:w Qa2 Qb1
+-735:w Qa2 Qa3
+-735:w Qa2 Qa6
+-745:w Qa2 Qc2
+-745:w Qa2 Qb3
+-750:w Qa2 Qc4
+-750:w Qa2 Qd5
+-750:w Qa2 Qf7
+-750:w Qa2 Qa8
+-770:w Qa2 Qg8
+
+**** PASS 3 ****
+535:w Bxa1 Bxe5
+465:w Rxe1 Rxe5
+415:w Ba1 Bc3
+415:w Ba1 Bd4
+410:w d6 d7
+390:w g3 g4
+390:w b4 b5
+390:w h4 h5
+385:w Kg2 Kh2
+365:w Re1 Re3
+330:w b7 b8=R
+330:w b7 b8=Q
+305:w Qa2 Qe6
+295:w Qa2 Qa5
+290:w Ba1 Bb2
+140:w Qa2 Qb2
+135:w Qa2 Qb1
+135:w Qa2 Qa4
+130:w Re1 Rd1
+130:w Kg2 Kh1
+130:w Qa2 Qa7
+125:w Re1 Rb1
+125:w Re1 Rc1
+125:w Re1 Rf1
+125:w Re1 Rh1
+120:w Kg2 Kh3
+120:w Qa2 Qa8
+115:w Re1 Rg1
+50:w Kg2 Kg1
+5:w Qa2 Qa3
+5:w Qa2 Qa6
+-5:w Qa2 Qc2
+-5:w Qa2 Qb3
+-10:w Qa2 Qc4
+-10:w Qa2 Qf7
+-30:w Qa2 Qg8
+-35:w b7 b8=B
+-35:w Kg2 Kf2
+-75:w b7 b8=N
+-335:w Re1 Re4
+-360:w Re1 Re2
+-365:w Qxa2 Qxd2
+-720:w Qa2 Qd5
+
+**** PASS 4 ****
+-75:w Re1 Rg1
+-130:w Qa2 Qf7
+-140:w b7 b8=R
+-140:w b7 b8=Q
+-255:w Rxe1 Rxe5
+-305:w b7 b8=N
+-305:w b7 b8=B
+-310:w Re1 Rh1
+-310:w Ba1 Bc3
+-320:w Re1 Rb1
+-325:w Qa2 Qb1
+-325:w Kg2 Kf2
+-335:w Bxa1 Bxe5
+-350:w Re1 Rf1
+-355:w Re1 Rd1
+-445:w Ba1 Bb2
+-445:w Qa2 Qe6
+-455:w g3 g4
+-455:w b4 b5
+-455:w h4 h5
+-455:w d6 d7
+-455:w Re1 Rc1
+-455:w Re1 Re3
+-455:w Qa2 Qa4
+-455:w Qa2 Qa5
+-460:w Kg2 Kg1
+-460:w Kg2 Kh2
+-460:w Kg2 Kh3
+-460:w Ba1 Bd4
+-460:w Qa2 Qa7
+-465:w Re1 Re2
+-470:w Qa2 Qb2
+-480:w Kg2 Kh1
+-480:w Re1 Re4
+-720:w Qa2 Qa8
+-855:w Qa2 Qc2
+-855:w Qa2 Qb3
+-855:w Qa2 Qc4
+-865:w Qxa2 Qxd2
+-885:w Qa2 Qa3
+-885:w Qa2 Qa6
+-900:w Qa2 Qg8
+-1215:w Qa2 Qd5
+Processing:b7 b8=Q
+Processing:Qxa2 Qxd2
+Processing:b7 b8=R
+Processing:Bxa1 Bxe5
+Processing:b7 b8=B
+Processing:Rxe1 Rxe5
+Processing:b7 b8=N
+Processing:Ba1 Bc3
+Processing:Ba1 Bd4
+Processing:Ba1 Bb2
+Processing:d6 d7
+Processing:Qa2 Qc2
+Processing:Qa2 Qb3
+Processing:Qa2 Qc4
+Processing:Qa2 Qd5
+Processing:Qa2 Qe6
+Processing:Kg2 Kg1
+Processing:Qa2 Qb2
+Processing:Qa2 Qf7
+Processing:g3 g4
+Processing:b4 b5
+Processing:h4 h5
+Processing:Qa2 Qa4
+Processing:Qa2 Qa5
+Processing:Qa2 Qb1
+Processing:Re1 Rd1
+Processing:Kg2 Kh1
+Processing:Kg2 Kh2
+Processing:Qa2 Qa3
+Processing:Qa2 Qa6
+Processing:Qa2 Qa7
+Processing:Qa2 Qg8
+Processing:Re1 Rb1
+Processing:Re1 Rc1
+Processing:Re1 Rf1
+Processing:Re1 Rg1
+Processing:Re1 Rh1
+Processing:Re1 Re2
+Processing:Re1 Re3
+Processing:Re1 Re4
+Processing:Qa2 Qa8
+Processing:Kg2 Kf2
+Processing:Kg2 Kh3
+
+**** PASS 5 ****
+375:w Qa2 Qf7
+375:w Qa2 Qa8
+205:w d6 d7
+205:w b7 b8=R
+205:w b7 b8=Q
+150:w Qa2 Qb1
+135:w Re1 Rd1
+130:w Re1 Rb1
+130:w Re1 Rh1
+125:w Re1 Rf1
+120:w Re1 Rg1
+5:w Ba1 Bc3
+-5:w Qa2 Qa7
+-85:w Rxe1 Rxe5
+-95:w Kg2 Kf2
+-120:w Bxa1 Bxe5
+-120:w Kg2 Kh2
+-175:w Re1 Rc1
+-190:w Qa2 Qe6
+-200:w g3 g4
+-200:w b4 b5
+-200:w h4 h5
+-200:w Kg2 Kh3
+-200:w Qa2 Qa4
+-200:w Qa2 Qa5
+-205:w Kg2 Kh1
+-205:w Ba1 Bb2
+-205:w Ba1 Bd4
+-225:w Re1 Re3
+-255:w b7 b8=B
+-265:w Qxa2 Qxd2
+-265:w b7 b8=N
+-330:w Re1 Re2
+-330:w Qa2 Qa3
+-340:w Qa2 Qb2
+-360:w Re1 Re4
+-450:w Kg2 Kg1
+-570:w Qa2 Qb3
+-570:w Qa2 Qc4
+-590:w Qa2 Qg8
+-595:w Qa2 Qc2
+-715:w Qa2 Qa6
+-745:w Qa2 Qd5
+>WHITE_QUEEN from a2 to f7, Qa2 Qf7

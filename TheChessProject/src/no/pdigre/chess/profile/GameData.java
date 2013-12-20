@@ -28,15 +28,18 @@ public abstract class GameData {
     
     public void setupFEN(String fen) {
         pos = new StartGame(fen);
+        getPlayer().prepare();
 		updateBoard();
     }
 
     public void run() {
+        final Player player = getPlayer();
+        player.prepare();
         thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
-            	getPlayer().run();
+                player.run();
             }
         });
         thread.start();
@@ -57,6 +60,7 @@ public abstract class GameData {
 
     public void makeMove(int bitmap) {
         pos = new PositionWithLog(pos, bitmap);
+        System.out.println("\n<=======================================>\n"+pos.toString());
 		updateBoard();
         run();
     }
@@ -95,6 +99,11 @@ public abstract class GameData {
         }
     }
 
+	/**
+	 * @param bitmaps
+	 * @param scores
+	 * @return
+	 */
 	@SuppressWarnings("static-method")
     public int findBest(int[] bitmaps, int[] scores) {
 		return bitmaps[0];

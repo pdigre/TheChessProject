@@ -3,12 +3,9 @@ package no.pdigre.chess.test;
 import static org.junit.Assert.assertEquals;
 import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
-import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.PieceType;
-import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.fen.StartGame;
-import no.pdigre.chess.test.util.IterateScores;
 
 import org.junit.Test;
 
@@ -34,25 +31,6 @@ public class Test_BasicMoves {
         assertEquals("Queen", "Q d2", getLegalMovesFromPos("d1", move));
         assertEquals("Pawn1", "P b4", getLegalMovesFromPos("a3", move));
         assertEquals("Pawn2", "P c3", getLegalMovesFromPos("c2", move));
-    }
-
-    @Test
-    public void ordering_0() {
-        String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
-        StartGame start = new StartGame(fen);
-        int high = 9000000;
-        StringBuffer sb=new StringBuffer("=================================\n");
-        IterateScores moves = new IterateScores(start, IEvaluator.BASIC);
-        for (PositionScore next : moves) {
-            sb.append(FEN.printMove(next)+"\n");
-            int val = next.score;
-            if (val < high)
-                high = val;
-            if (val > high){
-                    System.out.println(sb.toString());
-                throw new AssertionError("Wrong move value ordering");
-            }
-        }
     }
 
     @Test

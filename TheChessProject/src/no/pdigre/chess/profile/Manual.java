@@ -2,21 +2,24 @@ package no.pdigre.chess.profile;
 
 import java.util.ArrayList;
 
+import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.NodeUtil;
-import no.pdigre.chess.engine.iterate.AlphaBetaOld;
+import no.pdigre.chess.engine.fen.FEN;
+import no.pdigre.chess.profile.Marking.MarkingType;
 
 public class Manual extends Player {
+ 
+    public Integer from = -1;
 
     @Override
     public void run() { 
-    	printFEN();
-        bitmaps = new AlphaBetaOld(getPosition(),0).getBitmaps();
+    	System.out.println("MANUAL:"+FEN.getFen(getPosition()));
 		game.updateBoard();
     }
 
     @Override
     public int clickSquare(int i) {
-        int[] bitmaps = getBitmaps();
+        int[] bitmaps = moves.getBitmaps();
         if(from>-1){
             int[] avail = NodeUtil.filterTo(NodeUtil.filterFrom(bitmaps, from), i);
             from=-1;
@@ -33,8 +36,23 @@ public class Manual extends Player {
 
     @Override
     public ArrayList<Marking> getMarkers() {
-        if(from == -1)
-            return Marking.getPiecesThatCanMove(getPosition());
-        return Marking.getMovesForPiece(getPosition(),from);
+        if(moves==null)
+            return super.getMarkers();
+        ArrayList<Marking> list = new ArrayList<Marking>();
+        int[] bitmaps = moves.getBitmaps();
+        if(from == -1) {
+            int best = Bitmap.getFrom(bitmaps[0]);
+            for (int n : bitmaps) {
+                int fr = Bitmap.getFrom(n);
+                list.add(new Marking(fr == best ? MarkingType.BestMoveFrom : MarkingType.MoveFrom, fr));
+            }
+        } else {
+            list.add(new Marking(MarkingType.MarkFrom, from));
+            for (int n : bitmaps) {
+                if (Bitmap.getFrom(n) == from)
+                    list.add(new Marking(MarkingType.MoveTo, Bitmap.getTo(n), 0));
+            }
+        }
+        return list;
     }
 }

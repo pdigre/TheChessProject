@@ -21,7 +21,7 @@ public class Position implements IPosition {
     
     @Override
     public String toString() {
-        return FEN.printMove(this);
+        return FEN.printMove(this)+"\n"+FEN.board2string(this);
     }
 
     @Override

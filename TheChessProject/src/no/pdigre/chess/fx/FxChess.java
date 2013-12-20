@@ -12,7 +12,7 @@ public class FxChess extends Application {
 	public void start(Stage primaryStage) {
         FxGameData game = new FxGameData();
 	    FxChessDialog grid = new FxChessDialog(game);
-        game.start(StartingGames.FEN_GAMES[0], Players.MANUAL, Players.NOVICE);
+        game.start(StartingGames.FEN_GAMES[0], Players.MANUAL, Players.EASY);
 		primaryStage.setScene(new Scene(grid));
 		primaryStage.show();
 	}

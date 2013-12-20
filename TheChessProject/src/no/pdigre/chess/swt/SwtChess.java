@@ -19,7 +19,7 @@ public class SwtChess {
         shell.setSize(500, 370);
         SwtGameData game = new SwtGameData();
         new SwtChessDialog(shell,game);
-        game.start(StartingGames.FEN_GAMES[0], Players.MANUAL, Players.NOVICE);
+        game.start(StartingGames.FEN_GAMES[0], Players.MANUAL, Players.EASY);
         runDisplay(shell);
     }
 

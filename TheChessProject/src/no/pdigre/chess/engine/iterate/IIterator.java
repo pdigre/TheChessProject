@@ -1,8 +1,8 @@
 package no.pdigre.chess.engine.iterate;
 
-import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.IPositionScore;
 
-public interface IIterator extends IThinker{
+public interface IIterator{
 
     final static int MAX = 32000;
 
@@ -13,21 +13,21 @@ public interface IIterator extends IThinker{
      * 
      * @param pos
      * @param total
-     * @param alpha
-     * @param beta
+     * @param min= Beta for AlphaBeta
+     * @param max = Alpha for AlphaBeta
      * @return
      */
-    int black(IPosition pos, int total, int alpha, int beta);
+    int black(IPositionScore pos, int total, int min, int max);
 
     /**
      * Find best white score
      * 
      * @param pos
      * @param total
-     * @param alpha
-     * @param beta
+     * @param min= Beta for AlphaBeta
+     * @param max = Alpha for AlphaBeta
      * @return
      */
-    int white(IPosition pos, int total, int alpha, int beta);
+    int white(IPositionScore pos, int total, int min, int max);
 
 }

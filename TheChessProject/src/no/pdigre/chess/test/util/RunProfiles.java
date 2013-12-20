@@ -1,7 +1,6 @@
 package no.pdigre.chess.test.util;
 
 import no.pdigre.chess.engine.fen.FEN;
-import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.profile.GameData;
 import no.pdigre.chess.profile.Player;
 
@@ -29,10 +28,8 @@ public class RunProfiles {
 			
 			@Override
 			public int findBest(int[] bitmaps, int[] scores) {
-				for (int bitmap : bitmaps) {
-					IPosition move = pos.move(bitmap);
-					System.out.println(":"+FEN.printMove(move));
-				}
+				for (int bitmap : bitmaps)
+					System.out.println(":"+FEN.printMove(pos.move(bitmap)));
 				return super.findBest(bitmaps, scores);
 			}
         };

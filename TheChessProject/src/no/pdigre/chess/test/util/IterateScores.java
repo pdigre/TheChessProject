@@ -9,27 +9,27 @@ import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.IPositionScore;
 import no.pdigre.chess.engine.fen.PositionScore;
 
-public final class IterateScores extends TreeSet<PositionScore> {
+public final class IterateScores extends TreeSet<IPositionScore> {
 
-    public static class Ascending implements Comparator<PositionScore> {
+    public static class Ascending implements Comparator<IPositionScore> {
 
         @Override
-        public int compare(PositionScore in, PositionScore other) {
-            if (in.score > other.score)
+        public int compare(IPositionScore in, IPositionScore other) {
+            if (in.getScore() > other.getScore())
                 return -1;
-            if (in.score < other.score)
+            if (in.getScore() < other.getScore())
                 return 1;
             return Integer.compare(in.getBitmap(), other.getBitmap());
         }
     }
 
-    public static class Descending implements Comparator<PositionScore> {
+    public static class Descending implements Comparator<IPositionScore> {
 
         @Override
-        public int compare(PositionScore in, PositionScore other) {
-            if (in.score > other.score)
+        public int compare(IPositionScore in, IPositionScore other) {
+            if (in.getScore() > other.getScore())
                 return 1;
-            if (in.score < other.score)
+            if (in.getScore() < other.getScore())
                 return -1;
             return Integer.compare(in.getBitmap(), other.getBitmap());
         }
@@ -46,5 +46,14 @@ public final class IterateScores extends TreeSet<PositionScore> {
             next.score = evaluator.score(next,total);
             add(next);
         }
+    }
+
+    public int[] getBitmaps() {
+        int[] bitmaps=new int[size()];
+        int i=0;
+        for (IPositionScore score : this) {
+            bitmaps[i++]=score.getBitmap();
+        }
+        return bitmaps;
     }
 }

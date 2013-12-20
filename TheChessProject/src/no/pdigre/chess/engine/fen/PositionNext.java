@@ -45,4 +45,10 @@ public class PositionNext implements IPosition {
         return board[square];
     }
 
+
+    @Override
+    public String toString() {
+        return FEN.printMove(this)+"\n"+FEN.board2string(this);
+    }
+
 }

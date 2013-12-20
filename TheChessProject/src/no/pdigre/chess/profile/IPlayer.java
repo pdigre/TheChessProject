@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 public interface IPlayer {
 
+    public enum RunState{READY,RUNNING,PAUSE,PAUSED,STOP,STOPPED,TIMEOUT}
+
     public enum Players {
         MANUAL(Manual.class),
         MANUALHELP(ManualWithHelp.class),
-        NOVICE(Novice.class),
-        INTERMEDIATE2(Intermediate2.class),
-        INTERMEDIATE(Intermediate.class);
+        EASY(Easy.class),
+        MEDIUM(Medium.class);
 
         public static String[] NAMES = getPlayers();
 
@@ -36,13 +37,11 @@ public interface IPlayer {
         }
     }
 
-    abstract void run();
-
-    abstract int[] getBitmaps();
-
-    abstract int getScore(int bitmap);
+    void run();
 
     int clickSquare(int i);
 
     ArrayList<Marking> getMarkers();
+    
+    String getDescription();
 }
