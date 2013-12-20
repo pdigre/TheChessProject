@@ -8,10 +8,11 @@ public abstract interface IEvaluator {
 
     /**
      * Calculated gain in positional evaluation based on last move
+     * @param total TODO
      * 
      * @return
      */
-    public abstract int score(IPosition pos);
+    public abstract int score(IPosition pos, int total);
 
     public final static IEvaluator BASIC = new IEvaluator() {
         public final int value(final int type) {
@@ -46,14 +47,14 @@ public abstract interface IEvaluator {
         }
         
         public final int tacticValue(int bitmap) {
-            int val = value((bitmap & IConst.CAPTURE) >>> IConst._CAPTURE);
+            int val = value(Bitmap.getCapturedType(bitmap));
             if(Bitmap.isPromotion(bitmap))
                 val+=value(Bitmap.type(bitmap));
             return val;
         }
 
         @Override
-        public int score(IPosition pos) {
+        public int score(IPosition pos, int total) {
             return tacticValue(pos.getBitmap());
         }
 

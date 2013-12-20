@@ -9,7 +9,7 @@ import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.test.util.IterateScores;
 
-public class NegaMaxTransposition implements IThinker {
+public class NegaMaxTransposition implements IIterator {
     private IEvaluator eval;
 
     public static long FROMTO_1 = 63 | (63 << 6);
@@ -47,10 +47,10 @@ public class NegaMaxTransposition implements IThinker {
     }
 
     @Override
-    public int think(IPosition pos, int aggr, int alpha, int beta) {
+    public int think(IPosition pos, int total, int alpha, int beta) {
         this.pos=pos;
         int bitmap = pos.getBitmap();
-        aggr += eval.score(pos);
+        total = eval.score(pos,total);
         long ft1 = Bitmap.getFromTo(getParent().getPos().getBitmap());
         long ft2 = Bitmap.getFromTo(bitmap);
         long ft2x = ft2 << 12;
@@ -72,7 +72,7 @@ public class NegaMaxTransposition implements IThinker {
                 Long key = commonkey | (ft3 << 24);
                 tt.add(key);
             }
-            score = -next.think(n, -aggr, -beta, -alpha);
+            score = -next.think(n, -total, -beta, -alpha);
             // if (score >= beta)
             // return beta;
             if (score > alpha)
@@ -116,5 +116,15 @@ public class NegaMaxTransposition implements IThinker {
     @Override
     public IPosition getPos() {
         return pos;
+    }
+
+    @Override
+    public int black(IPosition pos, int total, int alpha, int beta) {
+        return think(pos, total, alpha, beta);
+    }
+
+    @Override
+    public int white(IPosition pos, int total, int alpha, int beta) {
+        return think(pos, total, alpha, beta);
     }
 }

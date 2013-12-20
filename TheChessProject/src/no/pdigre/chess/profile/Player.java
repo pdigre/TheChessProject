@@ -7,6 +7,7 @@ import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.PositionScore;
+import no.pdigre.chess.engine.iterate.IIterator;
 import no.pdigre.chess.engine.iterate.IThinker;
 import no.pdigre.chess.engine.polyglot.BookMove;
 import no.pdigre.chess.engine.polyglot.Polyglot;
@@ -97,10 +98,17 @@ public abstract class Player implements IPlayer {
     }
 
     public static void runThinker(PositionScore move, IterateScores moves, IThinker thinker) {
-        int think = thinker.think(move, 0, IThinker.MIN, IThinker.MAX);
+        int score=0;
+        final int total=move.getScore();
+        if(thinker instanceof IIterator){
+            IIterator iter=(IIterator) thinker;
+            score = move.whiteNext()?iter.white(move, total, IThinker.MIN, IThinker.MAX):iter.black(move, total, IThinker.MIN, IThinker.MAX);
+        } else {
+            score = thinker.think(move, total, IThinker.MIN, IThinker.MAX);
+        }
         moves.remove(move);
         move.run++;
-        move.score = think;
+        move.score = score;
         moves.add(move);
     }
 

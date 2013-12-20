@@ -1,50 +1,3 @@
-package no.pdigre.chess.profile;
-
-import no.pdigre.chess.engine.evaluate.IEvaluator;
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.PositionScore;
-import no.pdigre.chess.engine.iterate.IIterator;
-import no.pdigre.chess.engine.iterate.MiniMax;
-import no.pdigre.chess.engine.iterate.MiniMaxEnd;
-import no.pdigre.chess.test.util.IterateScores;
-
-public class Intermediate2 extends Player {
-
-    @Override
-    public void run() {
-        IIterator iter0 = new MiniMaxEnd(IEvaluator.TACTICAL);
-        IIterator iter1 = new MiniMax(iter0, IEvaluator.TACTICAL);
-        IIterator iter2 = new MiniMax(iter1, IEvaluator.TACTICAL);
-        IIterator iter3 = new MiniMax(iter2, IEvaluator.TACTICAL);
-        IIterator iter4 = new MiniMax(iter3, IEvaluator.TACTICAL);
-        IIterator iter5 = new MiniMax(iter4, IEvaluator.TACTICAL);
-        IPosition pos = getPosition();
-        initRun(pos);
-        IterateScores moves = new IterateScores(pos, IEvaluator.FULL);
-        printScore(moves, "PASS 0");
-        PositionScore[] all = moves.toArray(new PositionScore[moves.size()]);
-        for (PositionScore m : all)
-            runThinker(m, moves, iter0);
-        printScore(moves, "PASS 1");
-        for (PositionScore m : all)
-            runThinker(m, moves, iter1);
-        printScore(moves, "PASS 2");
-        for (PositionScore m : all)
-            runThinker(m, moves, iter2);
-        printScore(moves, "PASS 3");
-        for (PositionScore m : all)
-            runThinker(m, moves, iter3);
-        printScore(moves, "PASS 4");
-        for (PositionScore m : all)
-            runThinker(m, moves, iter4);
-        printScore(moves, "PASS 5");
-        for (PositionScore m : all)
-            runThinker(m, moves, iter5);
-        printScore(moves, "PASS 6");
-        makeMove(moves.first().getBitmap());
-    }
-/*
- * 
 8 .k.r....
 7 .pp....p
 6 ..n.....
@@ -196,6 +149,3 @@ public class Intermediate2 extends Player {
 30:b Rd8 Rg8
 30:b Rd8 Rh8
 >BLACK_ROOK from d8 to d2, Rd8 Rd2
- */
-
-}

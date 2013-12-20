@@ -45,7 +45,7 @@ public class EvalBase implements IThinker {
         //;
     }
 
-    public void run(NegaMax thinker) {
+    public void run(IThinker thinker) {
         score = thinker.think(pos, 0, IThinker.MIN, IThinker.MAX);
         if(sb.length()>0)
             sb.append(",");

@@ -194,5 +194,9 @@ public final class Bitmap implements IConst {
         }
     }
 
+    public static int getCapturedType(int bitmap) {
+        return (bitmap & IConst.CAPTURE) >>> IConst._CAPTURE;
+    }
+
 
 }

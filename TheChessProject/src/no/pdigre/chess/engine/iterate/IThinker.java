@@ -5,7 +5,7 @@ import no.pdigre.chess.engine.fen.IPosition;
 
 public interface IThinker {
 
-    final static int MAX=99999;
+    final static int MAX=32000;
     final static int MIN=-MAX;
     int think(IPosition pos, int total, int alpha, int beta);
     IPosition getPos();

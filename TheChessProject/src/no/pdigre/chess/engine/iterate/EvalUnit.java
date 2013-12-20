@@ -26,9 +26,9 @@ public class EvalUnit{
     }
     
     public void runFirstPass(){
-        IThinker tail = new NegaMaxCutoff(new NegaMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC);
+        IIterator tail = new AlphaBeta(new MiniMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC);
         NegaMaxTransposition nm = NegaMaxTransposition.createAndFill(tail,tt,IEvaluator.BASIC);
-        NegaMax series = new NegaMax(nm,IEvaluator.BASIC);
+        IIterator series = new MiniMax(nm,IEvaluator.BASIC);
         for (EvalBase eval : evals){
             eval.pass=1;
             eval.run(series);
@@ -37,9 +37,9 @@ public class EvalUnit{
     }
 
     public void runSecondPass(int cut){
-        IThinker tail = new NegaMaxCutoff(new NegaMaxCutoff(new NegaMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC),IEvaluator.BASIC);
+        IThinker tail = new AlphaBeta(new AlphaBeta(new MiniMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC),IEvaluator.BASIC);
         NegaMaxTransposition nm = NegaMaxTransposition.create(tail,tt,IEvaluator.BASIC);
-        NegaMax series = new NegaMax(nm,IEvaluator.BASIC);
+        IIterator series = new MiniMax(nm,IEvaluator.BASIC);
         int part=evals.length*cut/100;
         for (EvalBase eval : evals){
             eval.pass=2;
@@ -51,9 +51,9 @@ public class EvalUnit{
     }
 
     public void runSplit(int cut){
-        IThinker tail = new NegaMaxCutoff(new NegaMaxCutoff(new NegaMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC),IEvaluator.BASIC);
+        IThinker tail = new AlphaBeta(new AlphaBeta(new MiniMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC),IEvaluator.BASIC);
         NegaMaxTransposition nm = NegaMaxTransposition.create(tail,tt,IEvaluator.BASIC);
-        NegaMax series = new NegaMax(nm,IEvaluator.BASIC);
+        MiniMax series = new MiniMax(nm,IEvaluator.BASIC);
         int part=evals.length*cut/100;
         for (EvalBase eval : evals){
             eval.pass=3;

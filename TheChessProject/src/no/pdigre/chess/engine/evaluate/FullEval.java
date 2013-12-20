@@ -6,7 +6,7 @@ import no.pdigre.chess.engine.fen.IPosition;
 public class FullEval implements IEvaluator {
 
     @Override
-    public int score(IPosition pos) {
+    public int score(IPosition pos, int total) {
         int bk = 0;
         int wk = 0;
         int pcs = 0;

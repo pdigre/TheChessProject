@@ -1,13 +1,13 @@
 package no.pdigre.chess.profile;
 
-import no.pdigre.chess.engine.iterate.AlphaBeta;
+import no.pdigre.chess.engine.iterate.AlphaBetaOld;
 
 public class ManualWithHelp extends Manual {
 
     @Override
     public void run() {
     	printFEN();
-        AlphaBeta eval = new AlphaBeta(getPosition(), 5);
+        AlphaBetaOld eval = new AlphaBetaOld(getPosition(), 5);
         bitmaps = eval.getBitmaps();
         scores = eval.getScores();
 		game.updateBoard();

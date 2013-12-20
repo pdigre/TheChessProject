@@ -8,9 +8,9 @@ import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.engine.iterate.EvalUnit;
 import no.pdigre.chess.engine.iterate.Evaluator;
 import no.pdigre.chess.engine.iterate.IThinker;
-import no.pdigre.chess.engine.iterate.NegaMax;
-import no.pdigre.chess.engine.iterate.NegaMaxCutoff;
-import no.pdigre.chess.engine.iterate.NegaMaxEnd;
+import no.pdigre.chess.engine.iterate.MiniMax;
+import no.pdigre.chess.engine.iterate.AlphaBeta;
+import no.pdigre.chess.engine.iterate.MiniMaxEnd;
 import no.pdigre.chess.engine.iterate.NegaMaxTransposition;
 import no.pdigre.chess.test.util.IterateScores;
 
@@ -30,32 +30,32 @@ public class Test_Iterators {
     @Test
     public void negamax_194_47() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
-        NegaMaxEnd iter0 = new NegaMaxEnd(IEvaluator.BASIC);
-        NegaMax iter1 = new NegaMax(iter0,IEvaluator.BASIC);
-        NegaMax iter2 = new NegaMax(iter1,IEvaluator.BASIC);
-        testThinker(fen, iter1, new NegaMax(iter2,IEvaluator.BASIC));
+        MiniMaxEnd iter0 = new MiniMaxEnd(IEvaluator.BASIC);
+        MiniMax iter1 = new MiniMax(iter0,IEvaluator.BASIC);
+        MiniMax iter2 = new MiniMax(iter1,IEvaluator.BASIC);
+        testThinker(fen, iter1, new MiniMax(iter2,IEvaluator.BASIC));
         iter2.printHitrate();
     }
 
     @Test
     public void negamaxCutoff_1978_750() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
-        NegaMaxEnd iter0 = new NegaMaxEnd(IEvaluator.BASIC);
-        NegaMaxCutoff iter1 = new NegaMaxCutoff(iter0,IEvaluator.BASIC);
-        NegaMaxCutoff iter2 = new NegaMaxCutoff(iter1,IEvaluator.BASIC);
-        IThinker iter3 = new NegaMaxCutoff(iter2,IEvaluator.BASIC);
-        NegaMaxCutoff iter4 = new NegaMaxCutoff(iter3,IEvaluator.BASIC);
-        testThinker(fen, iter3, new NegaMaxCutoff(iter4,IEvaluator.BASIC));
+        MiniMaxEnd iter0 = new MiniMaxEnd(IEvaluator.BASIC);
+        AlphaBeta iter1 = new AlphaBeta(iter0,IEvaluator.BASIC);
+        AlphaBeta iter2 = new AlphaBeta(iter1,IEvaluator.BASIC);
+        IThinker iter3 = new AlphaBeta(iter2,IEvaluator.BASIC);
+        AlphaBeta iter4 = new AlphaBeta(iter3,IEvaluator.BASIC);
+        testThinker(fen, iter3, new AlphaBeta(iter4,IEvaluator.BASIC));
         iter4.printHitrate();
     }
 
     @Test
     public void negamaxCutoff_TT_480_110() {
         String fen = "rnbqkb1r/p1p2ppp/1p2pn2/3p4/3P1B2/2N5/PPPQPPPP/R3KBNR w KQkq - 2 5";
-        IThinker first = new NegaMaxCutoff(new NegaMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC);
+        IThinker first = new AlphaBeta(new MiniMaxEnd(IEvaluator.BASIC),IEvaluator.BASIC);
         HashSet<Long> tt=new HashSet<Long>();
         NegaMaxTransposition nm = NegaMaxTransposition.createAndFill(first,tt,IEvaluator.BASIC);
-        testThinker2(fen, first, new NegaMax(nm,IEvaluator.BASIC));
+        testThinker2(fen, first, new MiniMax(nm,IEvaluator.BASIC));
         nm.printHitrate();
     }
 

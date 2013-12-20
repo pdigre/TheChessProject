@@ -12,12 +12,12 @@ public class Test_Profiles {
 
     @Test
     public void moveIntermediate_0() {
-        RunProfiles.testMove(new Intermediate2(),StartingGames.FEN_GAMES[0]);
+        RunProfiles.testMove(new Intermediate2(),"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
     @Test
     public void moveIntermediate_1() {
-        RunProfiles.testMove(new Intermediate2(),StartingGames.FEN_GAMES[1]);
+        RunProfiles.testMove(new Intermediate2(),"rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 1 2");
     }
 
     @Test
@@ -31,7 +31,7 @@ public class Test_Profiles {
     }
     
     @Test
-    public void white1_Qf7() {
+    public void white1_Qf7_ok() {
         RunProfiles.testMove(new Intermediate2(),"5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w - - 0 1");
     }
     

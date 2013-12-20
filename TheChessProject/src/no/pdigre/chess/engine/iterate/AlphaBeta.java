@@ -1,131 +1,78 @@
 package no.pdigre.chess.engine.iterate;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.test.util.IterateScores;
 
-public class AlphaBeta {
+public class AlphaBeta implements IIterator {
 
-    private int[] stack;
+    private IThinker next;
 
-    public MoveScore[] moves;
+    private IThinker parent;
+    private IEvaluator eval;
 
-    public AlphaBeta(IPosition pos, int depth) {
-        IterateScores legalmoves = new IterateScores(pos, IEvaluator.BASIC);
-        moves = new MoveScore[legalmoves.size()];
-        int i=0;
-        for (PositionScore n:legalmoves)
-            moves[i++] = new MoveScore(n, alphaBeta(depth, n));
+    private int counter;
 
-        if (!pos.whiteNext()) {
-            Arrays.sort(moves, new Comparator<MoveScore>() {
+    private int countertot;
 
-                @Override
-                public int compare(MoveScore o1, MoveScore o2) {
-                    return MoveScore.intCompare(o1.score, o2.score);
-                }
-            });
-        } else {
-            Arrays.sort(moves, new Comparator<MoveScore>() {
+    private IPosition pos;
 
-                @Override
-                public int compare(MoveScore o1, MoveScore o2) {
-                    return MoveScore.intCompare(o2.score, o1.score);
-                }
-            });
+    @Override
+    public void setParent(IThinker parent) {
+        this.parent = parent;
+    }
+
+    public AlphaBeta(IThinker next,IEvaluator eval) {
+        this.eval=eval;
+        this.next = next;
+        next.setParent(this);
+    }
+
+    @Override
+    public int think(IPosition pos, int total, int alpha, int beta) {
+        this.pos=pos;
+        total = eval.score(pos,total);
+        IterateScores moves = new IterateScores(pos, eval);
+        countertot+=moves.size();
+        for (PositionScore n:moves) {
+            counter++;
+            int score = -next.think(n, -total, -beta, -alpha);
+            if (score >= beta)
+                return beta;
+            if (score > alpha)
+                alpha = score;
         }
-
+        return alpha;
     }
 
-    private final int alphaBeta(int depthleft, IPosition pos) {
-        stack = new int[depthleft];
-        if (pos.whiteNext())
-            return blackMove(-1000000, +1000000, depthleft, pos, 0);
-        return whiteMove(-1000000, +1000000, depthleft, pos, 0);
+    @Override
+    public IThinker getParent() {
+        return parent;
     }
 
-    private final int whiteMove(int whiteBest, int blackBest, int depthleft, IPosition pos, int score0) {
-        int score1 = evalWhiteMove(pos, score0,depthleft);
-        if (depthleft == 0)
-            return score1;
-        depthleft--;
-        stack[depthleft] = pos.getBitmap();
-        for(IPosition next:new IterateScores(pos,IEvaluator.BASIC)){
-            int score = blackMove(whiteBest, blackBest, depthleft, next, score1);
-            if (score >= blackBest)
-                return blackBest; // fail hard beta-cutoff
-            if (score > whiteBest)
-                whiteBest = score; // alpha acts like max in MiniMax
-        }
-        return whiteBest;
+    @Override
+    public String toString() {
+        return FEN.board2fen(pos) + "\n" + FEN.printMove(pos);
+    }
+    
+    public void printHitrate() {
+        System.out.println("Scanning:" + counter + "/" + countertot);
     }
 
-    private final int blackMove(int whiteBest, int blackBest, int depthleft, IPosition pos, int score0) {
-        int score1 = evalBlackMove(pos, score0,depthleft);
-        if (depthleft == 0)
-            return score1;
-        depthleft--;
-        stack[depthleft] = pos.getBitmap();
-        for(IPosition next:new IterateScores(pos,IEvaluator.BASIC)){
-            int score = whiteMove(whiteBest, blackBest, depthleft, next, score1);
-            if (score <= whiteBest)
-                return whiteBest; // fail hard alpha-cutoff
-            if (score < blackBest)
-                blackBest = score; // beta acts like min in MiniMax
-        }
-        return blackBest;
+    @Override
+    public IPosition getPos() {
+        return pos;
     }
 
-    /**
-     * @param board
-     * @param depthleft 
-     */
-    private final static int evalWhiteMove(IPosition pos, int score, int depthleft) {
-        return score - IEvaluator.BASIC.score(pos);
+    @Override
+    public int black(IPosition pos, int total, int alpha, int beta) {
+        return think(pos, total, alpha, beta);
     }
 
-    /**
-     * @param board
-     * @param depthleft 
-     */
-    private final static int evalBlackMove(IPosition pos, int score, int depthleft) {
-        return score + IEvaluator.BASIC.score(pos);
+    @Override
+    public int white(IPosition pos, int total, int alpha, int beta) {
+        return think(pos, total, alpha, beta);
     }
-
-    protected void printStack(IPosition pos, int capturedValue, int total, int depthleft) {
-        if(capturedValue!=0){
-            for (int j = stack.length-1; j >= depthleft; j--) {
-                int bit = stack[j];
-                System.out.print(FEN.printMove(pos.move(bit)) + " ");
-            }
-            System.out.println(FEN.printMove(pos) + " "+total);
-        }
-    }
-
-    public int[] getBitmaps() {
-        int[] ret = new int[moves.length];
-        for (int i = 0; i < moves.length; i++)
-            ret[i] = moves[i].pos.getBitmap();
-        return ret;
-    }
-
-    public int getScore(int bitmap) {
-        for (MoveScore move : moves)
-            if (move.pos.getBitmap() == bitmap)
-                return move.score;
-        return 0;
-    }
-
-    public int[] getScores() {
-        int[] ret = new int[moves.length];
-        for (int i = 0; i < moves.length; i++)
-            ret[i] = moves[i].score;
-        return ret;
-    }
-
 }

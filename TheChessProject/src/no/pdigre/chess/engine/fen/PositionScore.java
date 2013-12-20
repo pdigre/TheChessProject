@@ -1,6 +1,6 @@
 package no.pdigre.chess.engine.fen;
 
-public class PositionScore extends Position {
+public class PositionScore extends Position implements IPositionScore {
 
     public int score = 0;
 
@@ -18,5 +18,10 @@ public class PositionScore extends Position {
     @Override
     public int hashCode() {
         return getBitmap();
+    }
+
+    @Override
+    public int getScore() {
+        return score;
     }
 }
