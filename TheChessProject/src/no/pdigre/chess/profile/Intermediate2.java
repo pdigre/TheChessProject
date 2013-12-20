@@ -1,6 +1,7 @@
 package no.pdigre.chess.profile;
 
 import no.pdigre.chess.engine.evaluate.IEvaluator;
+import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.iterate.IIterator;
@@ -12,13 +13,15 @@ public class Intermediate2 extends Player {
 
     @Override
     public void run() {
+        IPosition pos = getPosition();
+        System.out.println("***********************************************");
+        System.out.println("START:"+FEN.getFen(pos));
         IIterator iter0 = new MiniMaxEnd(IEvaluator.TACTICAL);
         IIterator iter1 = new MiniMax(iter0, IEvaluator.TACTICAL);
         IIterator iter2 = new MiniMax(iter1, IEvaluator.TACTICAL);
         IIterator iter3 = new MiniMax(iter2, IEvaluator.TACTICAL);
         IIterator iter4 = new MiniMax(iter3, IEvaluator.TACTICAL);
         IIterator iter5 = new MiniMax(iter4, IEvaluator.TACTICAL);
-        IPosition pos = getPosition();
         initRun(pos);
         IterateScores moves = new IterateScores(pos, IEvaluator.FULL);
         printScore(moves, "PASS 0");
@@ -35,12 +38,12 @@ public class Intermediate2 extends Player {
         for (PositionScore m : all)
             runThinker(m, moves, iter3);
         printScore(moves, "PASS 4");
-        for (PositionScore m : all)
-            runThinker(m, moves, iter4);
-        printScore(moves, "PASS 5");
-        for (PositionScore m : all)
-            runThinker(m, moves, iter5);
-        printScore(moves, "PASS 6");
+//        for (PositionScore m : all)
+//            runThinker(m, moves, iter4);
+//        printScore(moves, "PASS 5");
+//        for (PositionScore m : all)
+//            runThinker(m, moves, iter5);
+//        printScore(moves, "PASS 6");
         makeMove(moves.first().getBitmap());
     }
 /*

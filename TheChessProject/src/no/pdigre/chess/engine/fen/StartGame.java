@@ -66,4 +66,8 @@ public class StartGame implements IPositionWithLog {
         return board[square];
     }
 
+    @Override
+    public String toString() {
+        return FEN.printMove(this)+"\n"+FEN.board2string(this);
+    }
 }

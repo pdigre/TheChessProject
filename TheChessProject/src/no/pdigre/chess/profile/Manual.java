@@ -3,13 +3,14 @@ package no.pdigre.chess.profile;
 import java.util.ArrayList;
 
 import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.iterate.AlphaBetaOld;
 
 public class Manual extends Player {
 
     @Override
     public void run() { 
-    	printFEN();
+    	System.out.println("MANUAL:"+FEN.getFen(getPosition()));
         bitmaps = new AlphaBetaOld(getPosition(),0).getBitmaps();
 		game.updateBoard();
     }

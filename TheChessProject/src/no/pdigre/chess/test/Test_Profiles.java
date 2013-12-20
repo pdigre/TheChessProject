@@ -21,8 +21,8 @@ public class Test_Profiles {
     }
 
     @Test
-    public void moveIntermediate_2() {
-        RunProfiles.testMove(new Intermediate2(),StartingGames.FEN_GAMES[2]);
+    public void stupidity_black() {
+        RunProfiles.testMove(new Intermediate2(),"r1bqk2r/pppp1ppp/2B5/2b1P3/4n3/5N2/PPP2PPP/RNBQK2R b KQkq - 0 6");
     }
 
     @Test

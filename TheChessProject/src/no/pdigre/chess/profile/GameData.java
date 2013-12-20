@@ -57,6 +57,7 @@ public abstract class GameData {
 
     public void makeMove(int bitmap) {
         pos = new PositionWithLog(pos, bitmap);
+        System.out.println("\n<=======================================>\n"+pos.toString());
 		updateBoard();
         run();
     }
