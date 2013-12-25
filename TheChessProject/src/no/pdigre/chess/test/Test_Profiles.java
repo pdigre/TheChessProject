@@ -1,8 +1,10 @@
 package no.pdigre.chess.test;
 
 import no.pdigre.chess.profile.Easy2;
+import no.pdigre.chess.profile.Hard;
 import no.pdigre.chess.profile.Medium2;
 import no.pdigre.chess.profile.Medium3;
+import no.pdigre.chess.profile.Medium4;
 import no.pdigre.chess.test.util.RunProfiles;
 
 import org.junit.Test;
@@ -37,8 +39,18 @@ public class Test_Profiles {
     }
     
     @Test
-    public void white1_Qf7_alphabeta() {
+    public void white1_Qf7_medium3_258() {
         RunProfiles.testMove(new Medium3(),"5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w - - 0 1");
+    }
+    
+    @Test
+    public void white1_Qf7_medium4() {
+        RunProfiles.testMove(new Medium4(),"5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w - - 0 1");
+    }
+    
+    @Test
+    public void white1_Qf7_hard() {
+        RunProfiles.testMove(new Hard(),"5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w - - 0 1");
     }
     
     @Test

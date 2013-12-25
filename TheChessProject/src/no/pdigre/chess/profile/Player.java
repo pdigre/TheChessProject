@@ -66,6 +66,10 @@ public abstract class Player implements IPlayer {
         game.makeMove(bitmap);
     }
 
+    public void makeMove() {
+        game.makeMove(moves.first().getBitmap());
+    }
+
     protected void printFEN() {
         System.out.println(FEN.getFen(getPosition()));
     }
@@ -78,7 +82,7 @@ public abstract class Player implements IPlayer {
         if (debug) {
             System.out.println("\n**** " + txt + " ****");
             for (IPositionScore m : moves)
-                System.out.println(m.getScore() + ":" + (m.whiteNext() ? "b " : "w ") + FEN.notation(m));
+                System.out.println(m.getRun() + " "+m.getScore() + ":" + (m.whiteNext() ? "b " : "w ") + FEN.notation(m));
         }
     }
 
@@ -87,10 +91,7 @@ public abstract class Player implements IPlayer {
         final int total = move.getScore();
         score = move.whiteNext() ? iter.white(move, total, IIterator.MIN, IIterator.MAX) : iter.black(move, total,
             IIterator.MIN, IIterator.MAX);
-        moves.remove(move);
-        ((PositionScore)move).run++;
-        ((PositionScore)move).score = score;
-        moves.add(move);
+        moves.improveScore((PositionScore) move,score);
     }
 
     public static void initRun(IPosition pos) {
@@ -111,7 +112,7 @@ public abstract class Player implements IPlayer {
         IterateScores copy = (IterateScores) moves.clone();
         for (IPositionScore m : copy)
             runThinker(m, moves, iterator);
-        makeMove(moves.first().getBitmap());
+        makeMove();
     }
 
     public void printTestHeader() {
@@ -140,6 +141,11 @@ public abstract class Player implements IPlayer {
             System.out.println("Processing:"+FEN.notation(m));
             runThinker(m, moves, iterator);
         }
+    }
+
+    public void processSimple(IIterator iter3) {
+        for (IPositionScore m : (IterateScores) moves.clone())
+            runThinker(m, moves, iter3);
     }
 
 

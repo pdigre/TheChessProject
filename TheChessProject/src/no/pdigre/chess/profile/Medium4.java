@@ -6,11 +6,11 @@ import no.pdigre.chess.engine.iterate.AlphaBeta;
 import no.pdigre.chess.engine.iterate.IIterator;
 import no.pdigre.chess.engine.iterate.MiniMaxEnd;
 
-public class Medium3 extends Player {
+public class Medium4 extends Player {
 
     @Override
     public String getDescription() {
-        return "Medium MiniMax timed to 30 secs with Tactical evaluation";
+        return "Medium AlphaBeta timed to 9 secs with Tactical evaluation";
     }
 
     @Override
@@ -40,6 +40,4 @@ public class Medium3 extends Player {
 //        printScore(moves, "PASS 5");
         makeMove();
     }
-
-
 }

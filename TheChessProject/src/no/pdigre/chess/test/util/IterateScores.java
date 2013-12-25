@@ -15,9 +15,17 @@ public final class IterateScores extends TreeSet<IPositionScore> {
 
         @Override
         public int compare(IPositionScore in, IPositionScore other) {
-            if (in.getScore() > other.getScore())
+            int r1 = in.getRun();
+            int r2 = other.getRun();
+            if (r1 > r2)
                 return -1;
-            if (in.getScore() < other.getScore())
+            if (r1 < r2)
+                return 1;
+            int s1 = in.getScore();
+            int s2 = other.getScore();
+            if (s1 > s2)
+                return -1;
+            if (s1 < s2)
                 return 1;
             return Integer.compare(in.getBitmap(), other.getBitmap());
         }
@@ -27,9 +35,17 @@ public final class IterateScores extends TreeSet<IPositionScore> {
 
         @Override
         public int compare(IPositionScore in, IPositionScore other) {
-            if (in.getScore() > other.getScore())
+            int r1 = in.getRun();
+            int r2 = other.getRun();
+            if (r1 > r2)
+                return -1;
+            if (r1 < r2)
                 return 1;
-            if (in.getScore() < other.getScore())
+            int s1 = in.getScore();
+            int s2 = other.getScore();
+            if (s1 > s2)
+                return 1;
+            if (s1 < s2)
                 return -1;
             return Integer.compare(in.getBitmap(), other.getBitmap());
         }
@@ -39,21 +55,33 @@ public final class IterateScores extends TreeSet<IPositionScore> {
 
     public IterateScores(IPosition pos, IEvaluator evaluator) {
         super(pos.whiteNext() ? new Ascending() : new Descending());
-        final int total=pos instanceof IPositionScore?((IPositionScore)pos).getScore():0;
+        final int total = pos instanceof IPositionScore ? ((IPositionScore) pos).getScore() : 0;
         int[] legalMoves = NodeUtil.getLegalMoves(pos);
         for (int bitmap : legalMoves) {
             PositionScore next = new PositionScore(pos.move(bitmap));
-            next.score = evaluator.score(next,total);
+            next.score = evaluator.score(next, total);
             add(next);
         }
     }
 
     public int[] getBitmaps() {
-        int[] bitmaps=new int[size()];
-        int i=0;
+        int[] bitmaps = new int[size()];
+        int i = 0;
         for (IPositionScore score : this) {
-            bitmaps[i++]=score.getBitmap();
+            bitmaps[i++] = score.getBitmap();
         }
         return bitmaps;
     }
+
+    public void improveScore(PositionScore move, int score) {
+        remove(move);
+        move.run++;
+        move.score = score;
+        add(move);
+    }
+
+    public IPositionScore[] getSortedArray() {
+        return toArray(new IPositionScore[size()]);
+    }
+
 }

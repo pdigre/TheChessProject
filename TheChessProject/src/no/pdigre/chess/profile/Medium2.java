@@ -26,28 +26,27 @@ public class Medium2 extends Player {
 
         setTimeout(9000);
         printScore(moves, "PASS 0");
-        IterateScores copy = (IterateScores) moves.clone();
-        for (IPositionScore m : copy)
+        for (IPositionScore m : moves.getSortedArray())
             runThinker(m, moves, iter0);
         printScore(moves, "PASS 1");
-        for (IPositionScore m : copy)
+        for (IPositionScore m : moves.getSortedArray())
             runThinker(m, moves, iter1);
         printScore(moves, "PASS 2");
-        for (IPositionScore m : copy)
+        for (IPositionScore m : moves.getSortedArray())
             runThinker(m, moves, iter2);
         printScore(moves, "PASS 3");
-        for (IPositionScore m : copy)
+        for (IPositionScore m : moves.getSortedArray())
             if (state == RunState.RUNNING)
             runThinker(m, moves, iter3);
         printScore(moves, "PASS 4");
-        for (IPositionScore m : copy) {
+        for (IPositionScore m : moves.getSortedArray()) {
             if (state != RunState.RUNNING)
                 break;
             System.out.println("Processing:"+FEN.notation(m));
             runThinker(m, moves, iter4);
         }
         printScore(moves, "PASS 5");
-        makeMove(moves.first().getBitmap());
+        makeMove();
     }
 
 }

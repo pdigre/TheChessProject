@@ -22,20 +22,19 @@ public class Easy2 extends Player {
         IIterator iter2 = new MiniMax(iter1, IEvaluator.TACTICAL);
         IIterator iter3 = new MiniMax(iter2, IEvaluator.TACTICAL);
         printScore(moves, "PASS 0");
-        IterateScores copy = (IterateScores) moves.clone();
-        for (IPositionScore m : copy)
+        for (IPositionScore m : moves.getSortedArray())
             runThinker(m, moves, iter0);
         printScore(moves, "PASS 1");
-        for (IPositionScore m : copy)
+        for (IPositionScore m : moves.getSortedArray())
             runThinker(m, moves, iter1);
         printScore(moves, "PASS 2");
-        for (IPositionScore m : copy)
+        for (IPositionScore m : moves.getSortedArray())
             runThinker(m, moves, iter2);
         printScore(moves, "PASS 3");
-        for (IPositionScore m : copy)
+        for (IPositionScore m : moves.getSortedArray())
             runThinker(m, moves, iter3);
         printScore(moves, "PASS 4");
-        makeMove(moves.first().getBitmap());
+        makeMove();
     }
 
 }

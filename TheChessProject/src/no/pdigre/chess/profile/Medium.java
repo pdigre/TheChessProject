@@ -29,7 +29,7 @@ public class Medium extends Player {
         IIterator iter4 = new AlphaBeta(iter3, IEvaluator.TACTICAL);
 
         setTimeout(9000);
-        for (IPositionScore m : (IterateScores) moves.clone())
+        for (IPositionScore m : moves.getSortedArray())
             runThinker(m, moves, iter3);
         processUntilTimeout(iter4);
         makeMove(moves.first().getBitmap());
