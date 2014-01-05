@@ -1,9 +1,34 @@
 To Do
 ======
 
-1. Add Junit tests for testing iterators and evaluators
-2. Evaluators
-3. Scoring sorter / iterator / time control
+Move sorter:
+1. 64bit array = score+bitmap
+2. best move slot for updating tree
+
+Move generator:
+1. Quiescence move generator
+  - find just capture moves or promotion
+  - evaluate the best move
+  - evaluate all moves until no captures
+2. bitboard
+  - pawn position move generator
+  - implement bitboard storage IPosition
+  
+Bitboards:
+1. pawn position - hash pawns (lazy)
+  - eval 
+  - move gen
+2. knight position - hash knights (lazy)
+  - OR black to find captures
+  - OR white to find legal
+  - lookup in hashtable to find moves left (from_to_piece bitmaps)
+3. king position
+4. Rook, Bishop, Queen
+  - Magic number
+  
+
+
+ 
 
 
   
