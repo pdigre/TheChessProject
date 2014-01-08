@@ -31,7 +31,6 @@ Bitboards:
   - quick mobility calculation
   
 6. Is it possible to use moves generated from previous pos ?
-   
   
 
 
