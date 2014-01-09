@@ -3,6 +3,7 @@ package no.pdigre.chess.test.util;
 import java.util.ArrayList;
 import java.util.concurrent.ForkJoinPool;
 
+import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.IPosition;
 
 public class CountMoveParallel extends CountMove {
@@ -19,7 +20,7 @@ public class CountMoveParallel extends CountMove {
         ForkJoinPool pool = new ForkJoinPool(processors);
         ArrayList<CountMove> tasks = new ArrayList<CountMove>();
 
-        for (IPosition next : new IterateMoves(pos)) {
+        for (IPosition next : NodeGen.children(pos)) {
             counters[0]++;
             if (counters.length > 1) {
                 CountMove task = new CountMove(next, counters.length - 1);

@@ -146,10 +146,10 @@ public class FEN implements IConst {
         if (Bitmap.isPromotion(bitmap))
             sb.append(" promoted");
         switch (NodeGen.getCheckState(pos)) {
-            case NodeGen.CHECK:
+            case IConst.CHECK:
                 sb.append(" check");
                 break;
-            case NodeGen.MATE:
+            case IConst.MATE:
                 sb.append(" checkmate");
                 break;
         }
@@ -178,10 +178,10 @@ public class FEN implements IConst {
             }
         }
         switch (NodeGen.getCheckState(pos)) {
-            case NodeGen.CHECK:
+            case IConst.CHECK:
                 suffix += "+";
                 break;
-            case NodeGen.MATE:
+            case IConst.MATE:
                 suffix += "++";
                 break;
         }

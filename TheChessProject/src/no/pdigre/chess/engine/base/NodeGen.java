@@ -1,13 +1,11 @@
 package no.pdigre.chess.engine.base;
 
-import java.util.Iterator;
-
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position;
 
-public class NodeGen implements Iterable<Integer>, Iterator<Integer> {
+public class NodeGen {
 
-    final private int[] moves = new int[28];
+    final private int[] moves = new int[300];
 
     final private boolean white;
 
@@ -31,23 +29,18 @@ public class NodeGen implements Iterable<Integer>, Iterator<Integer> {
 
     final private boolean castle_king;
 
-    final private IPosition pos;
-
-    private int from = -1;
-
-    private int sqr;
-
     private int imoves;
-
-    private int next = -1;
 
     final private int pawnline;
 
-    public NodeGen(IPosition pos) {
-        this.pos = pos;
-        int inherit = pos.getBitmap();
+    final private int[] board;
+    final private int inherit;
+    
+    private NodeGen(IPosition pos) {
+        board = pos.getBoard();
+        inherit = pos.getBitmap();
         white = !Bitmap.white(inherit);
-        kingpos = getKingPos(pos, white);
+        kingpos = getKingPos(board,white);
         enpassant = Bitmap.getEnpassant(inherit);
         pawn_fwd = forward(white);
         pawn_left = pawn_fwd + BaseNodes.LEFT;
@@ -60,32 +53,7 @@ public class NodeGen implements Iterable<Integer>, Iterator<Integer> {
         castle_king = (inherit & (white ? IConst.NOCASTLE_WHITEKING : IConst.NOCASTLE_BLACKKING)) == 0;
     }
 
-    final public int nextSafe() {
-        int bitmap2 = nextUnsafe();
-        if (bitmap2 == 0)
-            return 0;
-        int[] board2 = Bitmap.apply(pos.getBoard(), bitmap2);
-        if (isCheck(board2, from == kingpos ? Bitmap.getTo(bitmap2) : kingpos, Bitmap.white(bitmap2)))
-            return nextSafe();
-        return bitmap2;
-    }
-
-    final private int nextUnsafe() {
-        if (imoves > 0)
-            return moves[--imoves];
-        do {
-            from++;
-            if (from == 64)
-                return 0;
-            sqr = pos.getPiece(from);
-        } while (sqr == 0 || white != Bitmap.white(sqr));
-        nextPiece();
-        return nextUnsafe();
-    }
-
-    final private void nextPiece() {
-        int[] board = pos.getBoard();
-        int inherit = pos.getBitmap();
+    final private void getMoves(final int from,final int sqr) {
         switch (sqr & 7) {
             case IConst.KNIGHT:
                 addSimple(board, BaseNodes.KNIGHT_MOVES[from], white, from, inherit);
@@ -184,15 +152,15 @@ public class NodeGen implements Iterable<Integer>, Iterator<Integer> {
         }
     }
 
-    final public static int getKingPos(IPosition pos, boolean white) {
+    final private static int getKingPos(int[] board,boolean white) {
         int kingtype = white ? IConst.KING : IConst.BLACK_KING;
         for (int i = 0; i < 64; i++)
-            if (pos.getPiece(i) == kingtype)
+            if (board[i] == kingtype)
                 return i;
         return 0;
     }
 
-    final public static boolean isCheck(int[] board, final int from, final boolean white) {
+    final private static boolean isCheck(int[] board, final int from, final boolean white) {
         int enemy = white ? IConst.BLACK_KNIGHT : IConst.KNIGHT;
         for (int pos : BaseNodes.KNIGHT_MOVES[from]) {
             if (board[pos] == enemy)
@@ -306,32 +274,38 @@ public class NodeGen implements Iterable<Integer>, Iterator<Integer> {
         imoves++;
     }
 
-    @Override
-    public boolean hasNext() {
-        return next > 0;
+	private int[] getAllLegal() {
+    	int safe=0;
+    	int test=0;
+    	for (int i = 0; i < 64; i++) {
+			int p = board[i];
+			if(p!=0 && white == Bitmap.white(p)){
+				getMoves(i,p);
+				while(test<imoves){
+					int t=moves[test++];
+			        int[] brd = Bitmap.apply(board, t);
+			        if (!isCheck(brd, i == kingpos ? Bitmap.getTo(t) : kingpos, Bitmap.white(t)))
+			        	moves[safe++]=t;
+		    	}
+			}
+		}
+    	int[] ret=new int[safe];
+    	System.arraycopy(moves, 0, ret, 0, safe);
+    	return ret;
+	}
+
+    public static final int[] getLegalMoves(IPosition pos) {
+    	return new NodeGen(pos).getAllLegal();
     }
 
-    @Override
-    public Integer next() {
-        Integer i = next;
-        next = nextSafe();
-        return i;
+    public static final IPosition[] children(IPosition pos) {
+    	int[] p=getLegalMoves(pos);
+    	IPosition[] all=new IPosition[p.length];
+        for (int i = 0; i < p.length; i++)
+			all[i]=pos.move(p[i]);
+        return all;
     }
 
-    @Override
-    public void remove() {
-        //
-    }
-
-    @Override
-    public Iterator<Integer> iterator() {
-        if (next == -1)
-            next = nextSafe();
-        return this;
-    }
-
-    public final static int CHECK=1;
-    public final static int MATE=2;
     /**
      * @param pos
      * @return
@@ -341,13 +315,13 @@ public class NodeGen implements Iterable<Integer>, Iterator<Integer> {
         int[] board = pos.getBoard();
         boolean white = Bitmap.white(bitmap);
         Position next = new Position(board, bitmap & (IConst.CASTLING_STATE | IConst.HALFMOVES));
-        int kingPos = NodeGen.getKingPos(next, white);
+        int kingPos = NodeGen.getKingPos(next.getBoard(), white);
         boolean ch = NodeGen.isCheck(board, kingPos, white);
         if (!ch)
             return 0;
-        if (new NodeGen(next).iterator().hasNext())
-            return CHECK;
-        return MATE;
+        if (getLegalMoves(next).length>0)
+            return IConst.CHECK;
+        return IConst.MATE;
     }
 
 }

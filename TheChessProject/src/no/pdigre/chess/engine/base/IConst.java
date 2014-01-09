@@ -66,4 +66,8 @@ public interface IConst {
 
     public final static int BLACK_KING = KING | BLACK;
 
+    public final static int CHECK=1;
+
+    public final static int MATE=2;
+
 }

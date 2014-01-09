@@ -2,7 +2,7 @@ package no.pdigre.chess.test.util;
 
 import java.util.concurrent.RecursiveTask;
 
-import no.pdigre.chess.engine.base.NodeUtil;
+import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.IPosition;
 
 public class CountMove extends RecursiveTask<int[]> {
@@ -21,12 +21,12 @@ public class CountMove extends RecursiveTask<int[]> {
     @Override
     protected int[] compute() {
         if (counters.length > 1) {
-            for (IPosition next : new IterateMoves(pos)) {
+            for (IPosition next : NodeGen.children(pos)) {
                 counters[0]++;
                 Counter.total(counters, new CountMove(next, counters.length - 1).compute());
             }
         } else {
-            counters[0]+=NodeUtil.getLegalMoves(pos).length;
+            counters[0]+=NodeGen.getLegalMoves(pos).length;
         }
         return counters;
     }
