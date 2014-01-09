@@ -1,6 +1,5 @@
 package no.pdigre.chess.engine.fen;
 
-import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.NodeGen;
 
@@ -48,9 +47,9 @@ public class FEN implements IConst {
         fen.append(" ");
         fen.append(FEN.getFenCastling(pos));
         fen.append(" ");
-        fen.append(FEN.pos2string(Bitmap.getEnpassant(pos.getBitmap())));
+        fen.append(FEN.pos2string(BITS.getEnpassant(pos.getBitmap())));
         fen.append(" ");
-        fen.append(Bitmap.halfMoves(pos.getBitmap()));
+        fen.append(BITS.halfMoves(pos.getBitmap()));
         if (pos instanceof IPositionWithLog) {
             fen.append(" ");
             fen.append(((IPositionWithLog) pos).totalMoves());
@@ -113,7 +112,7 @@ public class FEN implements IConst {
 
     final public static String getFenCastling(IPosition move) {
         StringBuilder sb = new StringBuilder();
-        int state = Bitmap.getCastlingState(move.getBitmap());
+        int state = BITS.getCastlingState(move.getBitmap());
         if ((state & IConst.NOCASTLE_WHITEKING) == 0)
             sb.append("K");
         if ((state & IConst.NOCASTLE_WHITEQUEEN) == 0)
@@ -134,22 +133,22 @@ public class FEN implements IConst {
         int bitmap = pos.getBitmap();
         StringBuilder sb = new StringBuilder();
         sb.append(PieceType.types[bitmap & PIECE]);
-        sb.append(" from " + FEN.pos2string(Bitmap.getFrom(bitmap)) + " to "
-            + FEN.pos2string(Bitmap.getTo(bitmap)));
+        sb.append(" from " + FEN.pos2string(BITS.getFrom(bitmap)) + " to "
+            + FEN.pos2string(BITS.getTo(bitmap)));
         int capture = ((bitmap >> _CAPTURE) & 7);
         if (capture != 0)
             sb.append(" beats " + PieceType.types[capture | ((bitmap & BLACK) ^ BLACK)]);
-        if (Bitmap.isEnpassant(bitmap))
+        if (BITS.isEnpassant(bitmap))
             sb.append(" enpassant");
-        if (Bitmap.isCastling(bitmap))
+        if (BITS.isCastling(bitmap))
             sb.append(" castling");
-        if (Bitmap.isPromotion(bitmap))
+        if (BITS.isPromotion(bitmap))
             sb.append(" promoted");
         switch (NodeGen.getCheckState(pos)) {
-            case NodeGen.CHECK:
+            case IConst.CHECK:
                 sb.append(" check");
                 break;
-            case NodeGen.MATE:
+            case IConst.MATE:
                 sb.append(" checkmate");
                 break;
         }
@@ -159,29 +158,29 @@ public class FEN implements IConst {
 
     public static String notation(IPosition pos) {
         int bitmap = pos.getBitmap();
-        int from = Bitmap.getFrom(bitmap);
-        int to = Bitmap.getTo(bitmap);
+        int from = BITS.getFrom(bitmap);
+        int to = BITS.getTo(bitmap);
         String capture = ((bitmap >> _CAPTURE) & 7) != 0 ? "x" : "";
         String p = piecePrefix(bitmap & PIECETYPE);
         String prefix = capture + FEN.pos2string(from);
         String suffix = capture + FEN.pos2string(to);
-        if (Bitmap.isPromotion(bitmap)) {
+        if (BITS.isPromotion(bitmap)) {
             suffix += "=" + p;
         } else {
             prefix = p + prefix;
             suffix = p + suffix;
-            if (Bitmap.isEnpassant(bitmap))
+            if (BITS.isEnpassant(bitmap))
                 suffix += "e.p.";
-            if (Bitmap.isCastling(bitmap)) {
+            if (BITS.isCastling(bitmap)) {
                 int col = from & 7;
                 suffix = col == 2 ? "O-O-O" : "O-O";
             }
         }
         switch (NodeGen.getCheckState(pos)) {
-            case NodeGen.CHECK:
+            case IConst.CHECK:
                 suffix += "+";
                 break;
-            case NodeGen.MATE:
+            case IConst.MATE:
                 suffix += "++";
                 break;
         }

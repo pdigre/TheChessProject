@@ -1,6 +1,6 @@
 package no.pdigre.chess.engine.evaluate;
 
-import no.pdigre.chess.engine.base.Bitmap;
+import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.fen.IPosition;
 
@@ -9,12 +9,12 @@ public class TacticEval implements IEvaluator {
     @Override
     public int score(IPosition pos, int last) {
             int bitmap = pos.getBitmap();
-            int p = Bitmap.piece(bitmap);
-            int f = Bitmap.getFrom(bitmap);
-            int t = Bitmap.getTo(bitmap);
-            if(Bitmap.isCapture(bitmap))
-                last+=value(Bitmap.getCapturedType(bitmap));
-            if(Bitmap.isPromotion(bitmap))
+            int p = BITS.getPiece(bitmap);
+            int f = BITS.getFrom(bitmap);
+            int t = BITS.getTo(bitmap);
+            if(BITS.isCapture(bitmap))
+                last+=value(BITS.getCapturedType(bitmap));
+            if(BITS.isPromotion(bitmap))
                 last+=promoValue(p);
                 
             if (p == IConst.BLACK_KING) {

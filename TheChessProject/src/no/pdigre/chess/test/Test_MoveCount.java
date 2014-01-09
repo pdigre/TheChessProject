@@ -1,7 +1,8 @@
 package no.pdigre.chess.test;
 
 import static org.junit.Assert.assertEquals;
-import no.pdigre.chess.engine.base.Bitmap;
+import no.pdigre.chess.engine.base.IConst.BITS;
+import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.base.NodeUtil;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.PieceType;
@@ -24,8 +25,8 @@ public class Test_MoveCount {
         FEN.printPiece(type, from);
         StringBuffer sb = new StringBuffer();
         sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeUtil.getLegalMoves(start), from)) 
-            sb.append(" "+FEN.pos2string(Bitmap.getTo(bitmap)));
+        for (int bitmap : NodeUtil.filterFrom(NodeGen.getLegalMoves(start), from)) 
+            sb.append(" "+FEN.pos2string(BITS.getTo(bitmap)));
         return sb.toString();
     }
 

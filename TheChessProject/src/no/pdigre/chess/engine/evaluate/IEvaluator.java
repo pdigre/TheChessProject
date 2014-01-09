@@ -1,8 +1,8 @@
 package no.pdigre.chess.engine.evaluate;
 
-import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.base.IConst.BITS;
 
 public abstract interface IEvaluator {
 
@@ -20,9 +20,9 @@ public abstract interface IEvaluator {
                 case IConst.PAWN:
                     return 100;
                 case IConst.KNIGHT:
-                    return 300;
+                    return 320;
                 case IConst.BISHOP:
-                    return 325;
+                    return 330;
                 case IConst.ROOK:
                     return 500;
                 case IConst.QUEEN:
@@ -47,9 +47,9 @@ public abstract interface IEvaluator {
         }
         
         public final int tacticValue(int bitmap) {
-            int val = value(Bitmap.getCapturedType(bitmap));
-            if(Bitmap.isPromotion(bitmap))
-                val+=value(Bitmap.type(bitmap));
+            int val = value(BITS.getCapturedType(bitmap));
+            if(BITS.isPromotion(bitmap))
+                val+=value(BITS.getType(bitmap));
             return val;
         }
 

@@ -1,6 +1,5 @@
 package no.pdigre.chess.engine.polyglot;
 
-import no.pdigre.chess.engine.base.Bitmap;
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.fen.IPosition;
 
@@ -239,10 +238,10 @@ public class ZobristKey implements IConst {
         if ((bitmap & NOCASTLE_BLACKQUEEN) == 0)
             key ^= random64[771];
         // passant flags only when pawn can capture
-        int enpassant = Bitmap.getEnpassant(bitmap);
+        int enpassant = BITS.getEnpassant(bitmap);
         if (enpassant != -1) {
             int file = enpassant & 7;
-            if (Bitmap.whiteNext(bitmap)) {
+            if (BITS.whiteNext(bitmap)) {
                 if (file != 0 && pos.getPiece(enpassant - 7) == PAWN) {
                     key ^= random64[file + 772];
                 } else if (file != 7 && pos.getPiece(enpassant - 9) == PAWN) {
@@ -256,7 +255,7 @@ public class ZobristKey implements IConst {
                 }
             }
         }
-        if (Bitmap.whiteNext(bitmap))
+        if (BITS.whiteNext(bitmap))
             key ^= random64[780];
         return key;
     }

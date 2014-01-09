@@ -5,7 +5,6 @@ import no.pdigre.chess.engine.fen.IPositionScore;
 import no.pdigre.chess.engine.iterate.AlphaBeta;
 import no.pdigre.chess.engine.iterate.IIterator;
 import no.pdigre.chess.engine.iterate.MiniMaxEnd;
-import no.pdigre.chess.test.util.IterateScores;
 
 public class Medium extends Player {
 

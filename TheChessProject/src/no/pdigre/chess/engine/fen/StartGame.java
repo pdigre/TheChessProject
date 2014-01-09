@@ -1,6 +1,5 @@
 package no.pdigre.chess.engine.fen;
 
-import no.pdigre.chess.engine.base.Bitmap;
 
 
 public class StartGame implements IPositionWithLog {
@@ -58,7 +57,7 @@ public class StartGame implements IPositionWithLog {
 
     @Override
     public IPosition move(int bitmap2) {
-        return new Position(Bitmap.apply(board, bitmap2), bitmap2);
+        return new Position(IPosition.BOARD88.apply(board, bitmap2), bitmap2);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package no.pdigre.chess.engine.fen;
 
-import no.pdigre.chess.engine.base.Bitmap;
 
 
 public class Position implements IPosition {
@@ -26,7 +25,7 @@ public class Position implements IPosition {
 
     @Override
     public boolean whiteNext() {
-        return !Bitmap.white(bitmap);
+        return !BITS.white(bitmap);
     }
     
     @Override

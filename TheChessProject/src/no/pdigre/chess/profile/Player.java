@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import no.pdigre.chess.engine.base.Bitmap;
+import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
@@ -52,7 +52,7 @@ public abstract class Player implements IPlayer {
             int f1 = Polyglot.getFrom(bitmap);
             int t1 = Polyglot.getTo(bitmap);
             for (IPositionScore p : array) {
-                if (Bitmap.getFrom(p.getBitmap()) == f1 && Bitmap.getTo(p.getBitmap()) == t1){
+                if (BITS.getFrom(p.getBitmap()) == f1 && BITS.getTo(p.getBitmap()) == t1){
                     moves.remove(p);
                     ((PositionScore)p).score=white?best+book.weight:best-book.weight;
                     moves.add(p);
