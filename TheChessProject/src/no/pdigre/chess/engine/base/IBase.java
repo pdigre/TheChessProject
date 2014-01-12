@@ -30,95 +30,107 @@ public interface IBase {
 		final public static int DOWN = -8;
 
 		static {
-			for (int i = 0; i < 64; i++) {
-				KNIGHT_MOVES[i] = getKnightMoves(i);
-				KNIGHT_MOVES_BLACK[i] = getKnightMoves(i);
+			for (int from = 0; from < 64; from++) {
+				KNIGHT_MOVES[from] = getKnightMoves(from,IConst.KNIGHT);
+				KNIGHT_MOVES_BLACK[from] = getKnightMoves(from,IConst.BLACK_KNIGHT);
 			}
 		}
 
-		private static int[] getKnightMoves(int from) {
+		private static int[] getKnightMoves(int from,int piece) {
 			ArrayList<Integer> moves = new ArrayList<Integer>();
-			add(moves, from, UP + LEFT + LEFT);
-			add(moves, from, UP + UP + LEFT);
-			add(moves, from, UP + RIGHT + RIGHT);
-			add(moves, from, UP + UP + RIGHT);
-			add(moves, from, DOWN + LEFT + LEFT);
-			add(moves, from, DOWN + DOWN + LEFT);
-			add(moves, from, DOWN + RIGHT + RIGHT);
-			add(moves, from, DOWN + DOWN + RIGHT);
+			add(moves, piece, from, UP + LEFT + LEFT, 0);
+			add(moves, piece, from, UP + UP + LEFT, 0);
+			add(moves, piece, from, UP + RIGHT + RIGHT, 0);
+			add(moves, piece, from, UP + UP + RIGHT, 0);
+			add(moves, piece, from, DOWN + LEFT + LEFT, 0);
+			add(moves, piece, from, DOWN + DOWN + LEFT, 0);
+			add(moves, piece, from, DOWN + RIGHT + RIGHT, 0);
+			add(moves, piece, from, DOWN + DOWN + RIGHT, 0);
 			return toArray(moves);
 		}
 
 		static {
-			for (int i = 0; i < 64; i++) {
-				ROOK_MOVES[i] = getRookMoves(i);
-				ROOK_MOVES_BLACK[i] = getRookMoves(i);
+			for (int from = 0; from < 64; from++) {
+				ROOK_MOVES[from] = getRookMoves(from,IConst.ROOK,IConst.CASTLING_STATE);
+				ROOK_MOVES_BLACK[from] = getRookMoves(from,IConst.BLACK_ROOK,IConst.CASTLING_STATE);
 			}
+			for (int[] b : ROOK_MOVES[0])
+				for (int i = 0; i < b.length; i++)
+					b[i]^=IConst.NOCASTLE_WHITEQUEEN;
+			for (int[] b : ROOK_MOVES[7])
+				for (int i = 0; i < b.length; i++)
+					b[i]^=IConst.NOCASTLE_WHITEKING;
+			for (int[] b : ROOK_MOVES_BLACK[56])
+				for (int i = 0; i < b.length; i++)
+					b[i]^=IConst.NOCASTLE_BLACKQUEEN;
+			for (int[] b : ROOK_MOVES_BLACK[63])
+				for (int i = 0; i < b.length; i++)
+					b[i]^=IConst.NOCASTLE_BLACKKING;
 		}
 
-		private static int[][] getRookMoves(int from) {
+		private static int[][] getRookMoves(int from,int piece,int mask) {
 			ArrayList<int[]> slide = new ArrayList<int[]>();
-			slide(slide, from, UP);
-			slide(slide, from, DOWN);
-			slide(slide, from, LEFT);
-			slide(slide, from, RIGHT);
+			slide(slide, from, UP, piece, mask);
+			slide(slide, from, DOWN, piece, mask);
+			slide(slide, from, LEFT, piece, mask);
+			slide(slide, from, RIGHT, piece, mask);
 			return toArray2(slide);
 		}
 
 		static {
-			for (int i = 0; i < 64; i++) {
-				BISHOP_MOVES[i] = getBishopMoves(i);
-				BISHOP_MOVES_BLACK[i] = getBishopMoves(i);
+			for (int from = 0; from < 64; from++) {
+				BISHOP_MOVES[from] = getBishopMoves(from,IConst.BISHOP);
+				BISHOP_MOVES_BLACK[from] = getBishopMoves(from,IConst.BLACK_BISHOP);
 			}
 		}
 
-		private static int[][] getBishopMoves(int from) {
+		private static int[][] getBishopMoves(int from,int piece) {
 			ArrayList<int[]> slide = new ArrayList<int[]>();
-			slide(slide, from, UP + LEFT);
-			slide(slide, from, UP + RIGHT);
-			slide(slide, from, DOWN + LEFT);
-			slide(slide, from, DOWN + RIGHT);
+			slide(slide, from, UP + LEFT, piece, 0);
+			slide(slide, from, UP + RIGHT, piece, 0);
+			slide(slide, from, DOWN + LEFT, piece, 0);
+			slide(slide, from, DOWN + RIGHT, piece, 0);
 			return toArray2(slide);
 		}
 
 		static {
-			for (int i = 0; i < 64; i++) {
-				QUEEN_MOVES[i] = getQueenMoves(i);
-				QUEEN_MOVES_BLACK[i] = getQueenMoves(i);
+			for (int from = 0; from < 64; from++) {
+				QUEEN_MOVES[from] = getQueenMoves(from,IConst.QUEEN);
+				QUEEN_MOVES_BLACK[from] = getQueenMoves(from,IConst.BLACK_QUEEN);
 			}
 		}
 
-		private static int[][] getQueenMoves(int from) {
+		private static int[][] getQueenMoves(int from,int piece) {
 			ArrayList<int[]> slide = new ArrayList<int[]>();
-			slide(slide, from, UP);
-			slide(slide, from, DOWN);
-			slide(slide, from, LEFT);
-			slide(slide, from, RIGHT);
-			slide(slide, from, UP + LEFT);
-			slide(slide, from, UP + RIGHT);
-			slide(slide, from, DOWN + LEFT);
-			slide(slide, from, DOWN + RIGHT);
+			slide(slide, from, UP, piece, 0);
+			slide(slide, from, DOWN, piece, 0);
+			slide(slide, from, LEFT, piece, 0);
+			slide(slide, from, RIGHT, piece, 0);
+			slide(slide, from, UP + LEFT, piece, 0);
+			slide(slide, from, UP + RIGHT, piece, 0);
+			slide(slide, from, DOWN + LEFT, piece, 0);
+			slide(slide, from, DOWN + RIGHT, piece, 0);
 			return toArray2(slide);
 		}
 
 		static {
-			for (int i = 0; i < 64; i++) {
-				KING_MOVES[i] = getKingMoves(i);
-				KING_MOVES_BLACK[i] = getKingMoves(i);
+			for (int from = 0; from < 64; from++) {
+				KING_MOVES[from] = getKingMoves(from,IConst.KING,IConst.NOCASTLE_WHITEKING|IConst.NOCASTLE_WHITEQUEEN);
+				KING_MOVES_BLACK[from] = getKingMoves(from,IConst.BLACK_KING,IConst.NOCASTLE_BLACKKING|IConst.NOCASTLE_BLACKQUEEN);
 			}
 		}
 
-		private static int[] getKingMoves(int from) {
-			ArrayList<Integer> slide = new ArrayList<Integer>();
-			add(slide, from, UP);
-			add(slide, from, DOWN);
-			add(slide, from, LEFT);
-			add(slide, from, RIGHT);
-			add(slide, from, UP + LEFT);
-			add(slide, from, UP + RIGHT);
-			add(slide, from, DOWN + LEFT);
-			add(slide, from, DOWN + RIGHT);
-			return toArray(slide);
+		private static int[] getKingMoves(int from,int piece,int mask) {
+			ArrayList<Integer> moves = new ArrayList<Integer>();
+			add(moves, piece, from, UP, mask);
+			add(moves, piece, from, DOWN, mask);
+			add(moves, piece, from, LEFT, mask);
+			add(moves, piece, from, RIGHT, mask);
+			add(moves, piece, from, UP + LEFT, mask);
+			add(moves, piece, from, UP + RIGHT, mask);
+			add(moves, piece, from, DOWN + LEFT, mask);
+			add(moves, piece, from, DOWN + RIGHT, mask);
+			return toArray(moves);
 		}
 
 		static int[] toArray(ArrayList<Integer> moves) {
@@ -142,30 +154,43 @@ public interface IBase {
 		 * queen
 		 * 
 		 * @param moves
+		 * @param piece TODO
 		 * @param offset
+		 * @param bitmap TODO
 		 * @param pieces
-		 * 
 		 * @return
 		 */
-		static boolean add(ArrayList<Integer> moves, int from, int offset) {
-			int i = from + offset;
-			boolean has = inside(i, from);
-			if (has)
-				moves.add(i);
+		static boolean add(ArrayList<Integer> moves, int piece, int from, int offset, int mask) {
+			int to = from + offset;
+			boolean has = inside(to, from);
+			if (has) {
+				int bitmap = (piece<<IConst._PIECE)|(from<<IConst._FROM)|(to<<IConst._TO);
+				moves.add(bitmap);
+			}
+			return has;
+		}
+
+		static boolean add(ArrayList<Integer> moves, int piece, int from, int offset, int mask, int from2) {
+			int to = from + offset;
+			boolean has = inside(to, from);
+			if (has) {
+				int bitmap = (piece<<IConst._PIECE)|(from2<<IConst._FROM)|(to<<IConst._TO);
+				moves.add(bitmap);
+			}
 			return has;
 		}
 
 		/**
 		 * is it inside the board = legal move
 		 * 
-		 * @param i
+		 * @param to
 		 * @param from
 		 * @return
 		 */
-		static boolean inside(int i, int from) {
-			if (i < 0 || i > 63)
+		static boolean inside(int to, int from) {
+			if (to < 0 || to > 63)
 				return false;
-			int x1 = i % 8;
+			int x1 = to % 8;
 			int x2 = from % 8;
 			if ((x1 < 3 && x2 > 4) || (x2 < 3 && x1 > 4))
 				return false;
@@ -174,15 +199,16 @@ public interface IBase {
 
 		/**
 		 * Repeated moves like rook and queen
-		 * 
-		 * @param ROOK_MOVES
-		 * @param board
 		 * @param from
 		 * @param offset
+		 * @param piece TODO
+		 * @param mark TODO
+		 * @param ROOK_MOVES
+		 * @param board
 		 */
-		static void slide(ArrayList<int[]> main, int from, int offset) {
+		static void slide(ArrayList<int[]> main, int from, int offset, int piece, int mark) {
 			ArrayList<Integer> moves = new ArrayList<Integer>();
-			for (int i = from; add(moves, i, offset); i += offset) {
+			for (int slidefrom = from; add(moves, piece, slidefrom, offset,mark, from); slidefrom += offset) {
 				// not
 			}
 			int[] mv = toArray(moves);

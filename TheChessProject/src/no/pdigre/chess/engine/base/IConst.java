@@ -198,12 +198,24 @@ public interface IConst {
             return setFromTo((BITS.getType(bitmap) == PAWN ? bitmap : ((halmoves + 1) << _HALFMOVES) | bitmap), from, to);
         }
 
+        final public static int mapMove(int move,final int halfmoves) {
+            return BITS.getType(move) == PAWN ? move : ((halfmoves + 1) << _HALFMOVES);
+        }
+
         final public static int mapCastling(int bitmap, int from, int to) {
             return setFromTo(bitmap, from, to) | SPECIAL;
         }
 
+        final public static int mapCastling(int bitmap) {
+            return bitmap | SPECIAL;
+        }
+
         final public static int mapCapture(int bitmap, int from, int to, int victim) {
             return setFromTo(bitmap, from, to) | (victim << _CAPTURE);
+        }
+
+        final public static int mapCapture(int bitmap, int victim) {
+            return bitmap | (victim << _CAPTURE);
         }
 
         final public static int mapEnpassant(int bitmap, int from, int to) {
@@ -271,7 +283,14 @@ public interface IConst {
             return castling(mapMove(piece, from, to, BITS.halfMoves(bitmap)) | (bitmap & CASTLING_STATE));
         }
 
-        final public static int bitCastling(int piece, int bitmap, int from, int to) {
+        final public static int bitMove(int bitmap, int inherit) {
+        	int piece=IConst.BITS.getPiece(bitmap);
+        	int from=IConst.BITS.getFrom(bitmap);
+        	int to=IConst.BITS.getTo(bitmap);
+            return castling(mapMove(piece, from, to, BITS.halfMoves(bitmap)) | (bitmap & CASTLING_STATE));
+        }
+
+		final public static int bitCastling(int piece, int bitmap, int from, int to) {
             return castling(mapCastling(piece, from, to) | (bitmap & CASTLING_STATE));
         }
 
