@@ -40,14 +40,13 @@ public class NodeGen {
 	final private IPosition pos;
 	final private int halfmoves;
 	final private int castling;
-	
 
 	private NodeGen(IPosition pos) {
-		this.pos=pos;
+		this.pos = pos;
 		board = pos.getBoard();
 		inherit = pos.getBitmap();
-		halfmoves=(BITS.halfMoves(inherit)+1)<<IConst._HALFMOVES;
-		castling=~0&(inherit&IConst.CASTLING_STATE);  // all other are set 
+		halfmoves = (BITS.halfMoves(inherit) + 1) << IConst._HALFMOVES;
+		castling = ~0 & (inherit & IConst.CASTLING_STATE); // all other are set
 		white = !BITS.white(inherit);
 		kingpos = getKingPos(board, white);
 		enpassant = BITS.getEnpassant(inherit);
@@ -65,37 +64,51 @@ public class NodeGen {
 	final private void getMoves(int from, int ptype) {
 		switch (ptype) {
 		case IConst.BISHOP:
-			addSlider(IBase.BISHOP_MOVES[from], from);
+			for (int[] bitmaps : IBase.BISHOP_MOVES[from])
+				for (int i = 0; i < bitmaps.length && addSliper(bitmaps[i]); i++)
+					;
+			break;
+		case IConst.BLACK_BISHOP:
+			for (int[] bitmaps : IBase.BISHOP_MOVES_BLACK[from])
+				for (int i = 0; i < bitmaps.length && addSliper(bitmaps[i]); i++)
+					;
 			break;
 		case IConst.ROOK:
-			addSliderSpecial(IBase.ROOK_MOVES[from], from);
+			for (int[] bitmaps : IBase.ROOK_MOVES[from])
+				for (int i1 = 0; i1 < bitmaps.length && addSpecial2(bitmaps[i1]); i1++)
+					;
+			break;
+		case IConst.BLACK_ROOK:
+			for (int[] bitmaps : IBase.ROOK_MOVES_BLACK[from])
+				for (int i = 0; i < bitmaps.length && addSpecial2(bitmaps[i]); i++)
+					;
 			break;
 		case IConst.QUEEN:
-			addSlider(IBase.QUEEN_MOVES[from], from);
+			for (int[] bitmaps : IBase.QUEEN_MOVES[from])
+				for (int i = 0; i < bitmaps.length && addSliper(bitmaps[i]); i++)
+					;
+			break;
+		case IConst.BLACK_QUEEN:
+			for (int[] bitmaps : IBase.QUEEN_MOVES_BLACK[from])
+				for (int i = 0; i < bitmaps.length && addSliper(bitmaps[i]); i++)
+					;
 			break;
 		case IConst.KNIGHT:
-			addSimple(IBase.KNIGHT_MOVES[from], from);
+			for (int bitmap : IBase.KNIGHT_MOVES[from])
+				addSliper(bitmap);
+			break;
+		case IConst.BLACK_KNIGHT:
+			for (int bitmap : IBase.KNIGHT_MOVES_BLACK[from])
+				addSliper(bitmap);
 			break;
 		case IConst.KING:
 			movesKing(from);
 			break;
-		case IConst.PAWN:
-			movesPawn(from);
-			break;
-		case IConst.BLACK_BISHOP:
-			addSlider(IBase.BISHOP_MOVES_BLACK[from], from);
-			break;
-		case IConst.BLACK_ROOK:
-			addSlider(IBase.ROOK_MOVES_BLACK[from], from);
-			break;
-		case IConst.BLACK_QUEEN:
-			addSlider(IBase.QUEEN_MOVES_BLACK[from], from);
-			break;
-		case IConst.BLACK_KNIGHT:
-			addSimple(IBase.KNIGHT_MOVES_BLACK[from], from);
-			break;
 		case IConst.BLACK_KING:
 			movesKingBlack(from);
+			break;
+		case IConst.PAWN:
+			movesPawn(from);
 			break;
 		case IConst.BLACK_PAWN:
 			movesPawn(from);
@@ -104,100 +117,133 @@ public class NodeGen {
 	}
 
 	private void movesKing(int from) {
-		addSimple(IBase.KING_MOVES[from], from);
+		for (int bitmap : IBase.KING_MOVES[from])
+			addSliper(bitmap);
 		if (castle_queen) {
 			if (board[home + 3] == 0 && board[home + 2] == 0 && board[home + 1] == 0 && board[home + 0] == castle_rook) {
 				if (!isCheck(board, home + 3, white) && !isCheck(board, home + 4, white)) {
-					addSpecial(MOVE.bitCastling(board[from], inherit, from, home + 2));
+					int piece = board[from];
+					int bitmap = piece | (from << IConst._FROM) | (home + 2 << IConst._TO) | IConst.SPECIAL
+							| (inherit & IConst.CASTLING_STATE);
+					int bitmap2 = MOVE.castling(bitmap);
+					add(bitmap2);
 				}
 			}
 		}
 		if (castle_king) {
 			if (board[home + 5] == 0 && board[home + 6] == 0 && board[home + 7] == castle_rook) {
 				if (!isCheck(board, home + 4, white) && !isCheck(board, home + 5, white)) {
-					addSpecial(MOVE.bitCastling(board[from], inherit, from, home + 6));
+					int piece = board[from];
+					int bitmap = piece | (from << IConst._FROM) | (home + 6 << IConst._TO) | IConst.SPECIAL
+							| (inherit & IConst.CASTLING_STATE);
+					int bitmap2 = MOVE.castling(bitmap);
+					add(bitmap2);
 				}
 			}
 		}
 	}
 
 	private void movesKingBlack(int from) {
-		addSimple(IBase.KING_MOVES_BLACK[from], from);
+		for (int bitmap : IBase.KING_MOVES_BLACK[from])
+			addSliper(bitmap);
 		if (castle_queen) {
 			if (board[home + 3] == 0 && board[home + 2] == 0 && board[home + 1] == 0 && board[home + 0] == castle_rook) {
 				if (!isCheck(board, home + 3, white) && !isCheck(board, home + 4, white)) {
-					addSpecial(MOVE.bitCastling(board[from], inherit, from, home + 2));
+					int piece = board[from];
+					final int from1 = from;
+					int bitmap = piece | (from1 << IConst._FROM) | (home + 2 << IConst._TO) | IConst.SPECIAL
+							| (inherit & IConst.CASTLING_STATE);
+					int bitmap2 = MOVE.castling(bitmap);
+					add(bitmap2);
 				}
 			}
 		}
 		if (castle_king) {
 			if (board[home + 5] == 0 && board[home + 6] == 0 && board[home + 7] == castle_rook) {
 				if (!isCheck(board, home + 4, white) && !isCheck(board, home + 5, white)) {
-					addSpecial(MOVE.bitCastling(board[from], inherit, from, home + 6));
+					int piece = board[from];
+					final int from1 = from;
+					int bm = piece | (from1 << IConst._FROM) | (home + 6 << IConst._TO) | IConst.SPECIAL
+							| (inherit & IConst.CASTLING_STATE);
+					int bitmap = MOVE.castling(bm);
+					add(bitmap);
 				}
 			}
 		}
 	}
 
 	private void movesPawn(int from) {
-		int to1 = from + pawn_fwd;
-		if (board[to1] == 0) {
-			if (to1 >= goalline && to1 < goalline + 8) {
-				int bitmap = MOVE.bitPawnPromote(board[from], inherit, from, to1);
-				add(bitmap | IConst.QUEEN);
-				add(bitmap | IConst.ROOK);
-				add(bitmap | IConst.KNIGHT);
-				add(bitmap | IConst.BISHOP);
-			} else {
-				add(MOVE.bitMove(board[from], inherit, from, to1));
-			}
-			if (from >= pawnline && from < pawnline + 8) {
-				int to2 = to1 + pawn_fwd;
-				if (board[to2] == 0) {
-					add(MOVE.bitMove(board[from], inherit, from, to2));
+		{
+			int to = from + pawn_fwd;
+			if (board[to] == 0) {
+				int piece = board[from];
+				boolean isPawn = BITS.getType(piece) == IConst.PAWN;
+				int bm2 = isPawn ? piece : ((BITS.halfMoves(inherit) + 1) << IConst._HALFMOVES) | piece;
+				if (to >= goalline && to < goalline + 8) {
+					int bitmap = (piece & IConst.BLACK) | 0 | (from << IConst._FROM) | (to << IConst._TO)
+							| IConst.SPECIAL;
+					add(bitmap | IConst.QUEEN);
+					add(bitmap | IConst.ROOK);
+					add(bitmap | IConst.KNIGHT);
+					add(bitmap | IConst.BISHOP);
+				} else {
+					int bm = bm2 | (from << IConst._FROM) | (to << IConst._TO) | (inherit & IConst.CASTLING_STATE);
+					add(MOVE.castling(bm));
+				}
+				if (from >= pawnline && from < pawnline + 8) {
+					if (board[to + pawn_fwd] == 0) {
+						add(MOVE.castling(bm2 | (from << IConst._FROM) | (to + pawn_fwd << IConst._TO)
+								| (inherit & IConst.CASTLING_STATE)));
+					}
 				}
 			}
 		}
 		int x = from & 7;
 		if (x != 0) {
-			int to2 = from + pawn_left;
-			int piece = board[to2];
+			int to = from + pawn_left;
+			int piece = board[to];
 			if (piece != 0) {
 				if (((piece & IConst.BLACK) != 0) == white) {
-					if (to2 >= goalline && to2 < goalline + 8) {
-						int bitmap = MOVE.bitPawnCapturePromote(board[from], inherit,from, to2, board[to2] & IConst.BITS3);
+					if (to >= goalline && to < goalline + 8) {
+						int bitmap = (board[from] & IConst.BLACK) | 0 | (from << IConst._FROM) | (to << IConst._TO)
+								| IConst.SPECIAL | ((board[to] & IConst.BITS3) << IConst._CAPTURE);
 						add(bitmap | IConst.QUEEN);
 						add(bitmap | IConst.ROOK);
 						add(bitmap | IConst.KNIGHT);
 						add(bitmap | IConst.BISHOP);
 					} else {
-						add(MOVE.bitPawnCapture(board[from],inherit, from, to2, board[to2] & IConst.BITS3));
+						add(board[from] | (from << IConst._FROM) | (to << IConst._TO)
+								| ((board[to] & IConst.BITS3) << IConst._CAPTURE));
 					}
 				}
 			} else {
-				if (enpassant == to2) {
-					add(MOVE.bitPawnEnpassant(board[from], inherit, from, to2));
+				if (enpassant == to) {
+					add(board[from] | (from << IConst._FROM) | (to << IConst._TO) | (IConst.PAWN << IConst._CAPTURE)
+							| IConst.SPECIAL);
 				}
 			}
 		}
 		if (x != 7) {
-			int to3 = from + pawn_right;
-			int piece = board[to3];
+			int to = from + pawn_right;
+			int piece = board[to];
 			if (piece != 0) {
 				if (((piece & IConst.BLACK) != 0) == white) {
-					if (to3 >= goalline && to3 < goalline + 8) {
-						int bitmap = MOVE.bitPawnCapturePromote(board[from],inherit, from, to3, board[to3] & IConst.BITS3);
+					if (to >= goalline && to < goalline + 8) {
+						int bitmap = (board[from] & IConst.BLACK) | 0 | (from << IConst._FROM) | (to << IConst._TO)
+								| IConst.SPECIAL | ((board[to] & IConst.BITS3) << IConst._CAPTURE);
 						add(bitmap | IConst.QUEEN);
 						add(bitmap | IConst.ROOK);
 						add(bitmap | IConst.KNIGHT);
 						add(bitmap | IConst.BISHOP);
 					} else {
-						add(MOVE.bitPawnCapture(board[from],inherit, from, to3, board[to3] & IConst.BITS3));
+						add(board[from] | (from << IConst._FROM) | (to << IConst._TO)
+								| ((board[to] & IConst.BITS3) << IConst._CAPTURE));
 					}
 				}
 			} else {
-				if (enpassant == to3) {
-					add(MOVE.bitPawnEnpassant(board[from], inherit, from, to3));
+				if (enpassant == to) {
+					add(board[from] | (from << IConst._FROM) | (to << IConst._TO) | (IConst.PAWN << IConst._CAPTURE)
+							| IConst.SPECIAL);
 				}
 			}
 		}
@@ -284,64 +330,52 @@ public class NodeGen {
 		return white ? 56 : 0;
 	}
 
-	final private void addSlider(int[][] moves, int from) {
-		for (int[] bitmaps : moves) {
-			for (int i = 0; i < bitmaps.length && add2(bitmaps[i]); i++) {
-				// not
-			}
-		}
-	}
-
-	final private void addSliderSpecial(int[][] moves, int from) {
-		for (int[] bitmaps : moves) {
-			for (int i = 0; i < bitmaps.length && addSpecial2(bitmaps[i]); i++) {
-				// not
-			}
-		}
-	}
-
-	final private void addSimple(int[] moves, int from) {
-		for (int bitmap : moves)
-			add2(bitmap);
-	}
-
 	/**
 	 * Calculate is move is within borders return true if can continue like
 	 * queen
+	 * 
 	 * @param to
 	 * @param from
 	 * @return
 	 */
-	final private boolean add2(int bitmap) {
+	final private boolean addSliper(int bitmap) {
+		int piece = IConst.BITS.getPiece(bitmap);
+		int from = IConst.BITS.getFrom(bitmap);
 		int to = IConst.BITS.getTo(bitmap);
 		int victim = board[to];
 		if (victim == 0) {
-			add(MOVE.bitMove(bitmap, inherit));
+			int move1 = (BITS.getType(piece) == IConst.PAWN ? piece
+					: ((BITS.halfMoves(bitmap) + 1) << IConst._HALFMOVES) | piece)
+					| (from << IConst._FROM)
+					| (to << IConst._TO);
+			int move = MOVE.castling(move1 | (bitmap & IConst.CASTLING_STATE));
+			add(move);
 		} else if (((victim & IConst.BLACK) == 0) != white) {
-			int from = IConst.BITS.getFrom(bitmap);
-			add(MOVE.bitPawnCapture(board[from],inherit, from, to, board[to] & IConst.BITS3));
+			add(board[from] | (from << IConst._FROM) | (to << IConst._TO)
+					| ((board[to] & IConst.BITS3) << IConst._CAPTURE));
 		}
 		return victim == 0;
 	}
 
 	final private boolean addSpecial2(int bitmap) {
+		int piece = IConst.BITS.getPiece(bitmap);
+		int from = IConst.BITS.getFrom(bitmap);
 		int to = IConst.BITS.getTo(bitmap);
 		int victim = board[to];
 		if (victim == 0) {
-			addSpecial(MOVE.bitMove(bitmap, inherit));
+			int move1 = (BITS.getType(piece) == IConst.PAWN ? piece
+					: ((BITS.halfMoves(bitmap) + 1) << IConst._HALFMOVES) | piece)
+					| (from << IConst._FROM)
+					| (to << IConst._TO);
+			int move = MOVE.castling(move1 | (bitmap & IConst.CASTLING_STATE));
+			add(move);
 		} else if (((victim & IConst.BLACK) == 0) != white) {
-			int from = IConst.BITS.getFrom(bitmap);
-			int piece = IConst.BITS.getPiece(bitmap);
-			addSpecial(MOVE.bitPawnCapture(piece,inherit, from, to, victim & IConst.BITS3));
+			add(piece | (from << IConst._FROM) | (to << IConst._TO) | ((victim & IConst.BITS3) << IConst._CAPTURE));
 		}
 		return victim == 0;
 	}
 
 	final private void add(int bitmap) {
-		moves[imoves++] = bitmap; // |state;
-	}
-
-	final private void addSpecial(int bitmap) {
 		moves[imoves++] = bitmap;
 	}
 

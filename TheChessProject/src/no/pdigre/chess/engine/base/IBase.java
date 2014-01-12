@@ -2,6 +2,15 @@ package no.pdigre.chess.engine.base;
 
 import java.util.ArrayList;
 
+import no.pdigre.chess.engine.base.IConst.BITS;
+
+/**
+ * Arrays of possible moves for each position of the board sliders have sub
+ * arrays - piece - from - to - x - castling
+ * 
+ * @author pdigre
+ * 
+ */
 public interface IBase {
 
 	int[][] PAWN_MOVES = new int[64][];
@@ -18,8 +27,13 @@ public interface IBase {
 	int[][][] ROOK_MOVES_BLACK = new int[64][][];
 	int[][][] QUEEN_MOVES = new int[64][][];
 	int[][][] QUEEN_MOVES_BLACK = new int[64][][];
+	int CASTLING_KING_WHITE = BITS.assemble(IConst.KING, IConst.KING_POS, IConst.KING_POS + 2);
+	int CASTLING_QUEEN_WHITE = BITS.assemble(IConst.KING, IConst.KING_POS, IConst.KING_POS - 2);
+	int CASTLING_KING_BLACK = BITS.assemble(IConst.BLACK_KING, IConst.BLACK_KING_POS, IConst.BLACK_KING_POS + 2);
+	int CASTLING_QUEEN_BLACK = BITS.assemble(IConst.BLACK_KING, IConst.BLACK_KING_POS, IConst.BLACK_KING_POS - 2);
 
-	BASE base=new BASE();
+	BASE base = new BASE();
+
 	class BASE {
 		final public static int LEFT = -1;
 
@@ -31,12 +45,12 @@ public interface IBase {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				KNIGHT_MOVES[from] = getKnightMoves(from,IConst.KNIGHT);
-				KNIGHT_MOVES_BLACK[from] = getKnightMoves(from,IConst.BLACK_KNIGHT);
+				KNIGHT_MOVES[from] = getKnightMoves(from, IConst.KNIGHT);
+				KNIGHT_MOVES_BLACK[from] = getKnightMoves(from, IConst.BLACK_KNIGHT);
 			}
 		}
 
-		private static int[] getKnightMoves(int from,int piece) {
+		private static int[] getKnightMoves(int from, int piece) {
 			ArrayList<Integer> moves = new ArrayList<Integer>();
 			add(moves, piece, from, UP + LEFT + LEFT, 0);
 			add(moves, piece, from, UP + UP + LEFT, 0);
@@ -51,24 +65,24 @@ public interface IBase {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				ROOK_MOVES[from] = getRookMoves(from,IConst.ROOK,IConst.CASTLING_STATE);
-				ROOK_MOVES_BLACK[from] = getRookMoves(from,IConst.BLACK_ROOK,IConst.CASTLING_STATE);
+				ROOK_MOVES[from] = getRookMoves(from, IConst.ROOK, IConst.CASTLING_STATE);
+				ROOK_MOVES_BLACK[from] = getRookMoves(from, IConst.BLACK_ROOK, IConst.CASTLING_STATE);
 			}
 			for (int[] b : ROOK_MOVES[0])
 				for (int i = 0; i < b.length; i++)
-					b[i]^=IConst.NOCASTLE_WHITEQUEEN;
+					b[i] ^= IConst.NOCASTLE_WHITEQUEEN;
 			for (int[] b : ROOK_MOVES[7])
 				for (int i = 0; i < b.length; i++)
-					b[i]^=IConst.NOCASTLE_WHITEKING;
+					b[i] ^= IConst.NOCASTLE_WHITEKING;
 			for (int[] b : ROOK_MOVES_BLACK[56])
 				for (int i = 0; i < b.length; i++)
-					b[i]^=IConst.NOCASTLE_BLACKQUEEN;
+					b[i] ^= IConst.NOCASTLE_BLACKQUEEN;
 			for (int[] b : ROOK_MOVES_BLACK[63])
 				for (int i = 0; i < b.length; i++)
-					b[i]^=IConst.NOCASTLE_BLACKKING;
+					b[i] ^= IConst.NOCASTLE_BLACKKING;
 		}
 
-		private static int[][] getRookMoves(int from,int piece,int mask) {
+		private static int[][] getRookMoves(int from, int piece, int mask) {
 			ArrayList<int[]> slide = new ArrayList<int[]>();
 			slide(slide, from, UP, piece, mask);
 			slide(slide, from, DOWN, piece, mask);
@@ -79,12 +93,12 @@ public interface IBase {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				BISHOP_MOVES[from] = getBishopMoves(from,IConst.BISHOP);
-				BISHOP_MOVES_BLACK[from] = getBishopMoves(from,IConst.BLACK_BISHOP);
+				BISHOP_MOVES[from] = getBishopMoves(from, IConst.BISHOP);
+				BISHOP_MOVES_BLACK[from] = getBishopMoves(from, IConst.BLACK_BISHOP);
 			}
 		}
 
-		private static int[][] getBishopMoves(int from,int piece) {
+		private static int[][] getBishopMoves(int from, int piece) {
 			ArrayList<int[]> slide = new ArrayList<int[]>();
 			slide(slide, from, UP + LEFT, piece, 0);
 			slide(slide, from, UP + RIGHT, piece, 0);
@@ -95,12 +109,12 @@ public interface IBase {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				QUEEN_MOVES[from] = getQueenMoves(from,IConst.QUEEN);
-				QUEEN_MOVES_BLACK[from] = getQueenMoves(from,IConst.BLACK_QUEEN);
+				QUEEN_MOVES[from] = getQueenMoves(from, IConst.QUEEN);
+				QUEEN_MOVES_BLACK[from] = getQueenMoves(from, IConst.BLACK_QUEEN);
 			}
 		}
 
-		private static int[][] getQueenMoves(int from,int piece) {
+		private static int[][] getQueenMoves(int from, int piece) {
 			ArrayList<int[]> slide = new ArrayList<int[]>();
 			slide(slide, from, UP, piece, 0);
 			slide(slide, from, DOWN, piece, 0);
@@ -115,12 +129,14 @@ public interface IBase {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				KING_MOVES[from] = getKingMoves(from,IConst.KING,IConst.NOCASTLE_WHITEKING|IConst.NOCASTLE_WHITEQUEEN);
-				KING_MOVES_BLACK[from] = getKingMoves(from,IConst.BLACK_KING,IConst.NOCASTLE_BLACKKING|IConst.NOCASTLE_BLACKQUEEN);
+				KING_MOVES[from] = getKingMoves(from, IConst.KING, IConst.NOCASTLE_WHITEKING
+						| IConst.NOCASTLE_WHITEQUEEN);
+				KING_MOVES_BLACK[from] = getKingMoves(from, IConst.BLACK_KING, IConst.NOCASTLE_BLACKKING
+						| IConst.NOCASTLE_BLACKQUEEN);
 			}
 		}
 
-		private static int[] getKingMoves(int from,int piece,int mask) {
+		private static int[] getKingMoves(int from, int piece, int mask) {
 			ArrayList<Integer> moves = new ArrayList<Integer>();
 			add(moves, piece, from, UP, mask);
 			add(moves, piece, from, DOWN, mask);
@@ -154,9 +170,11 @@ public interface IBase {
 		 * queen
 		 * 
 		 * @param moves
-		 * @param piece TODO
+		 * @param piece
+		 *            TODO
 		 * @param offset
-		 * @param bitmap TODO
+		 * @param bitmap
+		 *            TODO
 		 * @param pieces
 		 * @return
 		 */
@@ -164,7 +182,7 @@ public interface IBase {
 			int to = from + offset;
 			boolean has = inside(to, from);
 			if (has) {
-				int bitmap = (piece<<IConst._PIECE)|(from<<IConst._FROM)|(to<<IConst._TO);
+				int bitmap = (piece << IConst._PIECE) | (from << IConst._FROM) | (to << IConst._TO);
 				moves.add(bitmap);
 			}
 			return has;
@@ -174,7 +192,7 @@ public interface IBase {
 			int to = from + offset;
 			boolean has = inside(to, from);
 			if (has) {
-				int bitmap = (piece<<IConst._PIECE)|(from2<<IConst._FROM)|(to<<IConst._TO);
+				int bitmap = (piece << IConst._PIECE) | (from2 << IConst._FROM) | (to << IConst._TO);
 				moves.add(bitmap);
 			}
 			return has;
@@ -199,16 +217,19 @@ public interface IBase {
 
 		/**
 		 * Repeated moves like rook and queen
+		 * 
 		 * @param from
 		 * @param offset
-		 * @param piece TODO
-		 * @param mark TODO
+		 * @param piece
+		 *            TODO
+		 * @param mark
+		 *            TODO
 		 * @param ROOK_MOVES
 		 * @param board
 		 */
 		static void slide(ArrayList<int[]> main, int from, int offset, int piece, int mark) {
 			ArrayList<Integer> moves = new ArrayList<Integer>();
-			for (int slidefrom = from; add(moves, piece, slidefrom, offset,mark, from); slidefrom += offset) {
+			for (int slidefrom = from; add(moves, piece, slidefrom, offset, mark, from); slidefrom += offset) {
 				// not
 			}
 			int[] mv = toArray(moves);
