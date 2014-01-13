@@ -105,8 +105,8 @@ public interface IConst {
 
 	class BITS {
 
-		final public static int assemble(int piece,int from,int to) {
-			return (piece <<_PIECE)|(from <<_FROM)|(to <<_TO);
+		final public static int assemble(int piece,int from,int to,int extra) {
+			return (piece <<_PIECE)|(from <<_FROM)|(to <<_TO)|extra;
 		}
 
 		final public static int getCastlingState(final int bitmap) {
@@ -206,9 +206,9 @@ public interface IConst {
 				default:
 					return bitmap;
 				}
-			case KING | BLACK:
+			case BLACK_KING:
 				return bitmap | NOCASTLE_BLACKKING | NOCASTLE_BLACKQUEEN;
-			case ROOK | BLACK:
+			case BLACK_ROOK:
 				switch ((bitmap >> _FROM) & BITS6) {
 				case 56:
 					return bitmap | NOCASTLE_BLACKQUEEN;

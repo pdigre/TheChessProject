@@ -65,12 +65,12 @@ public class NodeGen {
 		switch (ptype) {
 		case IConst.BISHOP:
 			for (int[] bitmaps : IBase.BISHOP_MOVES[from])
-				for (int i = 0; i < bitmaps.length && addSliper(bitmaps[i]); i++)
+				for (int i = 0; i < bitmaps.length && addSlide(bitmaps[i]); i++)
 					;
 			break;
 		case IConst.BLACK_BISHOP:
 			for (int[] bitmaps : IBase.BISHOP_MOVES_BLACK[from])
-				for (int i = 0; i < bitmaps.length && addSliper(bitmaps[i]); i++)
+				for (int i = 0; i < bitmaps.length && addSlide(bitmaps[i]); i++)
 					;
 			break;
 		case IConst.ROOK:
@@ -85,24 +85,24 @@ public class NodeGen {
 			break;
 		case IConst.QUEEN:
 			for (int[] bitmaps : IBase.QUEEN_MOVES[from])
-				for (int i = 0; i < bitmaps.length && addSliper(bitmaps[i]); i++)
+				for (int i = 0; i < bitmaps.length && addSlide(bitmaps[i]); i++)
 					;
 			break;
 		case IConst.BLACK_QUEEN:
 			for (int[] bitmaps : IBase.QUEEN_MOVES_BLACK[from])
-				for (int i = 0; i < bitmaps.length && addSliper(bitmaps[i]); i++)
+				for (int i = 0; i < bitmaps.length && addSlide(bitmaps[i]); i++)
 					;
 			break;
 		case IConst.KNIGHT:
 			for (int bitmap : IBase.KNIGHT_MOVES[from])
-				addSliper(bitmap);
+				addSlide(bitmap);
 			break;
 		case IConst.BLACK_KNIGHT:
 			for (int bitmap : IBase.KNIGHT_MOVES_BLACK[from])
-				addSliper(bitmap);
+				addSlide(bitmap);
 			break;
 		case IConst.KING:
-			movesKing(from);
+			movesKingWhite(from);
 			break;
 		case IConst.BLACK_KING:
 			movesKingBlack(from);
@@ -116,12 +116,12 @@ public class NodeGen {
 		}
 	}
 
-	private void movesKing(int from) {
+	private void movesKingWhite(int from) {
 		for (int bitmap : IBase.KING_MOVES[from])
-			addSliper(bitmap);
-		if (castle_queen) {
-			if (board[home + 3] == 0 && board[home + 2] == 0 && board[home + 1] == 0 && board[home + 0] == castle_rook) {
-				if (!isCheck(board, home + 3, white) && !isCheck(board, home + 4, white)) {
+			addSlide(bitmap);
+		if ((inherit&IConst.NOCASTLE_WHITEQUEEN)!=0) {
+			if (board[IConst.KING_POS -1] == 0 && board[IConst.KING_POS -2] == 0 && board[IConst.KING_POS -3] == 0 && board[IConst.KING_POS -4] == castle_rook) {
+				if (!isCheck(board, IConst.KING_POS -1, true) && !isCheck(board, IConst.KING_POS -2, true)) {
 					int piece = board[from];
 					int bitmap = piece | (from << IConst._FROM) | (home + 2 << IConst._TO) | IConst.SPECIAL
 							| (inherit & IConst.CASTLING_STATE);
@@ -130,9 +130,9 @@ public class NodeGen {
 				}
 			}
 		}
-		if (castle_king) {
-			if (board[home + 5] == 0 && board[home + 6] == 0 && board[home + 7] == castle_rook) {
-				if (!isCheck(board, home + 4, white) && !isCheck(board, home + 5, white)) {
+		if ((inherit&IConst.NOCASTLE_WHITEKING)!=0) {
+			if (board[IConst.KING_POS +1] == 0 && board[IConst.KING_POS +2] == 0 && board[IConst.KING_POS +3] == castle_rook) {
+				if (!isCheck(board, IConst.KING_POS +1, true) && !isCheck(board, IConst.KING_POS +2, true)) {
 					int piece = board[from];
 					int bitmap = piece | (from << IConst._FROM) | (home + 6 << IConst._TO) | IConst.SPECIAL
 							| (inherit & IConst.CASTLING_STATE);
@@ -145,28 +145,26 @@ public class NodeGen {
 
 	private void movesKingBlack(int from) {
 		for (int bitmap : IBase.KING_MOVES_BLACK[from])
-			addSliper(bitmap);
-		if (castle_queen) {
-			if (board[home + 3] == 0 && board[home + 2] == 0 && board[home + 1] == 0 && board[home + 0] == castle_rook) {
-				if (!isCheck(board, home + 3, white) && !isCheck(board, home + 4, white)) {
+			addSlide(bitmap);
+		if ((inherit&IConst.NOCASTLE_BLACKQUEEN)!=0) {
+			if (board[IConst.BLACK_KING_POS -1] == 0 && board[IConst.BLACK_KING_POS -2] == 0 && board[IConst.BLACK_KING_POS -3] == 0 && board[IConst.BLACK_KING_POS -4] == castle_rook) {
+				if (!isCheck(board, IConst.BLACK_KING_POS -1, false) && !isCheck(board, IConst.BLACK_KING_POS -2, false)) {
 					int piece = board[from];
-					final int from1 = from;
-					int bitmap = piece | (from1 << IConst._FROM) | (home + 2 << IConst._TO) | IConst.SPECIAL
+					int bitmap = piece | (from << IConst._FROM) | (home + 2 << IConst._TO) | IConst.SPECIAL
 							| (inherit & IConst.CASTLING_STATE);
 					int bitmap2 = MOVE.castling(bitmap);
 					add(bitmap2);
 				}
 			}
 		}
-		if (castle_king) {
-			if (board[home + 5] == 0 && board[home + 6] == 0 && board[home + 7] == castle_rook) {
-				if (!isCheck(board, home + 4, white) && !isCheck(board, home + 5, white)) {
+		if ((inherit&IConst.NOCASTLE_BLACKKING)!=0) {
+			if (board[IConst.BLACK_KING_POS +1] == 0 && board[IConst.BLACK_KING_POS +2] == 0 && board[IConst.BLACK_KING_POS +3] == castle_rook) {
+				if (!isCheck(board, IConst.BLACK_KING_POS +1, false) && !isCheck(board, IConst.BLACK_KING_POS +2, false)) {
 					int piece = board[from];
-					final int from1 = from;
-					int bm = piece | (from1 << IConst._FROM) | (home + 6 << IConst._TO) | IConst.SPECIAL
+					int bitmap = piece | (from << IConst._FROM) | (home + 6 << IConst._TO) | IConst.SPECIAL
 							| (inherit & IConst.CASTLING_STATE);
-					int bitmap = MOVE.castling(bm);
-					add(bitmap);
+					int bitmap2 = MOVE.castling(bitmap);
+					add(bitmap2);
 				}
 			}
 		}
@@ -338,7 +336,7 @@ public class NodeGen {
 	 * @param from
 	 * @return
 	 */
-	final private boolean addSliper(int bitmap) {
+	final private boolean addSlide(int bitmap) {
 		int piece = IConst.BITS.getPiece(bitmap);
 		int from = IConst.BITS.getFrom(bitmap);
 		int to = IConst.BITS.getTo(bitmap);
