@@ -1,6 +1,11 @@
 package no.pdigre.chess.test;
 
 import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.base.NodeUtil;
@@ -11,6 +16,7 @@ import no.pdigre.chess.test.util.CountForkJoinPool;
 import no.pdigre.chess.test.util.CountForkJoinPool2;
 import no.pdigre.chess.test.util.CountMore;
 import no.pdigre.chess.test.util.Counter;
+import no.pdigre.chess.test.util.FileUtils;
 
 import org.junit.Test;
 
@@ -19,25 +25,21 @@ public class Test_MoveCount {
 
     private static final int MAXDEPTH = 5;
 
-    public static String getLegalMovesFromPos(String from_txt, StartGame start) {
-        int from = FEN.text2pos(from_txt);
-        int type = start.getPiece(from);
-        FEN.printPiece(type, from);
-        StringBuffer sb = new StringBuffer();
-        sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeGen.getLegalMoves(start), from)) 
-            sb.append(" "+FEN.pos2string(BITS.getTo(bitmap)));
-        return sb.toString();
-    }
-
+/*
+     Depth     Moves  Captures Enpassant  Castling Promotion     Check      Mate
+         1        20         0         0         0         0         0         0
+         2       400         0         0         0         0         0         0
+         3      8902        34         0         0         0        12         0
+         4    197281      1576         0         0         0       469         8
+         5   4865609     82719       258         0         0     27351       347
+         6 119060324   2812008      5248         0         0    809099     10828
+ */
+    
     @Test
     public void m1_Normal_4347_795() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         Counter[] counters = new CountMore(new StartGame(fen), MAXDEPTH).compute();
-        printCounter(counters);
-        assertEquals(counters[4].moves, 4865609);
-        assertEquals(counters[4].captures, 82719);
-        assertEquals(counters[4].enpassants, 258);
+        compareTo(fen, counters, "m1.txt");
     }
 
     @Test
@@ -45,30 +47,36 @@ public class Test_MoveCount {
     () {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         Counter[] counters = new CountForkJoinPool(new StartGame(fen), MAXDEPTH).compute();
-        printCounter(counters);
-        assertEquals(counters[4].moves, 4865609);
-        assertEquals(counters[4].captures, 82719);
-        assertEquals(counters[4].enpassants, 258);
+        compareTo(fen, counters, "m1.txt");
     }
 
     @Test
     public void m1_Multi2_2552_291() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         Counter[] counters = new CountForkJoinPool2(new StartGame(fen), MAXDEPTH).compute();
-        printCounter(counters);
-        assertEquals(counters[4].moves, 4865609);
-        assertEquals(counters[4].captures, 82719);
-        assertEquals(counters[4].enpassants, 258);
+        compareTo(fen, counters, "m1.txt");
     }
 
-    private static void printCounter(Counter[] counters) {
+	private void compareTo(String fen, Counter[] counters, String name) {
+		URL resource = this.getClass().getResource(name);
+        try {
+			String txt = FileUtils.stream2string((InputStream) resource.getContent());
+			assertEquals(txt,"FEN="+fen+"\r\n"+printCounter(counters));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+    private static String printCounter(Counter[] counters) {
+    	StringBuffer sb=new StringBuffer();
         String x = "Depth,Moves,Captures,Enpassant,Castling,Promotion,Check,Mate";
-        System.out.println(format10(x));
+        sb.append(format10(x)+"\r\n");
         for (int i = 0; i < MAXDEPTH; i++) {
             Counter cnt = counters[i];
-            System.out.println(format10(String.format("%d,%d,%d,%d,%d,%d,%d,%d", i + 1, cnt.moves, cnt.captures,
-                cnt.enpassants, cnt.castlings, cnt.promotions, cnt.checks, cnt.mates)));
+            sb.append(format10(String.format("%d,%d,%d,%d,%d,%d,%d,%d", i + 1, cnt.moves, cnt.captures,
+                cnt.enpassants, cnt.castlings, cnt.promotions, cnt.checks, cnt.mates))+"\r\n");
         }
+        return sb.toString();
     }
 
     private static String format10(String delimited) {
@@ -78,17 +86,22 @@ public class Test_MoveCount {
         return sb.toString();
     }
 
+    /*
+    Depth     Moves  Captures Enpassant  Castling Promotion     Check      Mate
+        1        20         0         0         0         0         0         0
+        2       400         0         0         0         0         0         0
+        3      8902        34         0         0         0        12         0
+        4    197281      1576         0         0         0       469         8
+        5   4865609     82719       258         0         0     27351       347
+        6 119060324   2812008      5248         0         0    809099     10828
+*/
+
     @Test
     public void m2_Normal_4243_941() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountMore(start, MAXDEPTH).compute();
-        printCounter(counters);
-        assertEquals(counters[0].moves, 24);
-        assertEquals(counters[1].moves, 496);
-        assertEquals(counters[2].moves, 9483);
-        assertEquals(counters[3].moves, 182838);
-        assertEquals(counters[4].moves, 3605103);
+        compareTo(fen, counters, "m2.txt");
     }
 
     @Test
@@ -96,12 +109,7 @@ public class Test_MoveCount {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountForkJoinPool(start, MAXDEPTH).compute();
-        printCounter(counters);
-        assertEquals(counters[0].moves, 24);
-        assertEquals(counters[1].moves, 496);
-        assertEquals(counters[2].moves, 9483);
-        assertEquals(counters[3].moves, 182838);
-        assertEquals(counters[4].moves, 3605103);
+        compareTo(fen, counters, "m2.txt");
     }
 
     @Test
@@ -109,11 +117,36 @@ public class Test_MoveCount {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
         Counter[] counters = new CountForkJoinPool2(start, MAXDEPTH).compute();
-        printCounter(counters);
-        assertEquals(counters[0].moves, 24);
-        assertEquals(counters[1].moves, 496);
-        assertEquals(counters[2].moves, 9483);
-        assertEquals(counters[3].moves, 182838);
-        assertEquals(counters[4].moves, 3605103);
+        compareTo(fen, counters, "m2.txt");
     }
+
+    /*
+FEN=r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1
+8 r...k..r
+7 p.ppqpb.
+6 bn..pnp.
+5 ...PN...
+4 .p..P...
+3 ..N..Q.p
+2 PPPBBPPP
+1 R...K..R
+  ABCDEFGH
+
+     Depth     Moves  Captures Enpassant  Castling Promotion     Check      Mate
+         1        46         8         0         2         0         0         0
+         2      2039       351         1        91         0         3         0
+         3     97862     17102        45      3162         0       993         1
+         4   4085603    672748      1929    128013     15172     25523        43
+         5 193690690  30074002     73365   4993637      8392   3309887     30171
+    */
+    
+    @Test
+    public void m3_kiwipete_11071() {
+        String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+        StartGame start = new StartGame(fen);
+        Counter[] counters = new CountForkJoinPool2(start, MAXDEPTH).compute();
+        compareTo(fen, counters, "m3.txt");
+    }
+    
+    
 }

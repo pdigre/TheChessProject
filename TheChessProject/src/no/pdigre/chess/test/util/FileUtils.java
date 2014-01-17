@@ -26,4 +26,12 @@ public class FileUtils {
         return lines;
     }
 
+    public static String stream2string(InputStream in) {
+    	ArrayList<String> lines = stream2lines(in);
+    	StringBuffer sb = new StringBuffer();
+    	for (String line:lines)
+			sb.append(line+"\r\n");
+	    return sb.toString();
+    }
+
 }

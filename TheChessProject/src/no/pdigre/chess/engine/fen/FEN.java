@@ -113,13 +113,13 @@ public class FEN implements IConst {
     final public static String getFenCastling(IPosition move) {
         StringBuilder sb = new StringBuilder();
         int state = BITS.getCastlingState(move.getBitmap());
-        if ((state & IConst.NOCASTLE_WHITEKING) == 0)
+        if ((state & IConst.CANCASTLE_WHITEKING) == 0)
             sb.append("K");
-        if ((state & IConst.NOCASTLE_WHITEQUEEN) == 0)
+        if ((state & IConst.CANCASTLE_WHITEQUEEN) == 0)
             sb.append("Q");
-        if ((state & IConst.NOCASTLE_BLACKKING) == 0)
+        if ((state & IConst.CANCASTLE_BLACKKING) == 0)
             sb.append("k");
-        if ((state & IConst.NOCASTLE_BLACKQUEEN) == 0)
+        if ((state & IConst.CANCASTLE_BLACKQUEEN) == 0)
             sb.append("q");
         return sb.toString();
     }

@@ -21,10 +21,10 @@ public interface IBase extends IConst {
 	int[][][] ROOK_MOVES_BLACK = new int[64][][];
 	int[][][] QUEEN_MOVES = new int[64][][];
 	int[][][] QUEEN_MOVES_BLACK = new int[64][][];
-	int CASTLING_KING_WHITE = BITS.assemble(KING, KING_POS, KING_POS + 2, NOCASTLE_BLACKKING | NOCASTLE_BLACKQUEEN | SPECIAL);
-	int CASTLING_QUEEN_WHITE = BITS.assemble(KING, KING_POS, KING_POS - 2, NOCASTLE_BLACKKING | NOCASTLE_BLACKQUEEN | SPECIAL);
-	int CASTLING_KING_BLACK = BITS.assemble(BLACK_KING, BLACK_KING_POS, BLACK_KING_POS + 2, NOCASTLE_BLACKKING | NOCASTLE_WHITEQUEEN | SPECIAL);
-	int CASTLING_QUEEN_BLACK = BITS.assemble(BLACK_KING, BLACK_KING_POS, BLACK_KING_POS - 2, NOCASTLE_BLACKKING | NOCASTLE_WHITEQUEEN | SPECIAL);
+	int CASTLING_KING_WHITE = BITS.assemble(KING, KING_POS, KING_POS + 2, CANCASTLE_BLACKKING | CANCASTLE_BLACKQUEEN | SPECIAL);
+	int CASTLING_QUEEN_WHITE = BITS.assemble(KING, KING_POS, KING_POS - 2, CANCASTLE_BLACKKING | CANCASTLE_BLACKQUEEN | SPECIAL);
+	int CASTLING_KING_BLACK = BITS.assemble(BLACK_KING, BLACK_KING_POS, BLACK_KING_POS + 2, CANCASTLE_BLACKKING | CANCASTLE_WHITEQUEEN | SPECIAL);
+	int CASTLING_QUEEN_BLACK = BITS.assemble(BLACK_KING, BLACK_KING_POS, BLACK_KING_POS - 2, CANCASTLE_BLACKKING | CANCASTLE_WHITEQUEEN | SPECIAL);
 	int[][][] PAWN_MOVES = new int[64][][];
 	int[][][] PAWN_MOVES_BLACK = new int[64][][];
 	int[][] PAWN_CAPTURES = new int[64][];
@@ -68,16 +68,16 @@ public interface IBase extends IConst {
 			}
 			for (int[] b : ROOK_MOVES[0])
 				for (int i = 0; i < b.length; i++)
-					b[i] ^= NOCASTLE_WHITEQUEEN;
+					b[i] ^= CANCASTLE_WHITEQUEEN;
 			for (int[] b : ROOK_MOVES[7])
 				for (int i = 0; i < b.length; i++)
-					b[i] ^= NOCASTLE_WHITEKING;
+					b[i] ^= CANCASTLE_WHITEKING;
 			for (int[] b : ROOK_MOVES_BLACK[56])
 				for (int i = 0; i < b.length; i++)
-					b[i] ^= NOCASTLE_BLACKQUEEN;
+					b[i] ^= CANCASTLE_BLACKQUEEN;
 			for (int[] b : ROOK_MOVES_BLACK[63])
 				for (int i = 0; i < b.length; i++)
-					b[i] ^= NOCASTLE_BLACKKING;
+					b[i] ^= CANCASTLE_BLACKKING;
 		}
 
 		private static int[][] getRookMoves(int from, int piece, int mask) {
@@ -127,8 +127,8 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				KING_MOVES[from] = getKingMoves(from, KING, NOCASTLE_WHITEKING | NOCASTLE_WHITEQUEEN | HALFMOVES);
-				KING_MOVES_BLACK[from] = getKingMoves(from, BLACK_KING, NOCASTLE_BLACKKING | NOCASTLE_BLACKQUEEN | HALFMOVES);
+				KING_MOVES[from] = getKingMoves(from, KING, CANCASTLE_WHITEKING | CANCASTLE_WHITEQUEEN | HALFMOVES);
+				KING_MOVES_BLACK[from] = getKingMoves(from, BLACK_KING, CANCASTLE_BLACKKING | CANCASTLE_BLACKQUEEN | HALFMOVES);
 			}
 		}
 

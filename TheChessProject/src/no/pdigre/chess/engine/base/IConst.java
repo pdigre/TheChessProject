@@ -55,13 +55,13 @@ public interface IConst {
 
 	int CASTLING_STATE = BITS4 << _CASTLING;
 
-	int NOCASTLE_WHITEQUEEN = BITS1 << (_CASTLING);
+	int CANCASTLE_WHITEQUEEN = BITS1 << (_CASTLING);
 
-	int NOCASTLE_WHITEKING = BITS1 << (_CASTLING + 1);
+	int CANCASTLE_WHITEKING = BITS1 << (_CASTLING + 1);
 
-	int NOCASTLE_BLACKQUEEN = BITS1 << (_CASTLING + 2);
+	int CANCASTLE_BLACKQUEEN = BITS1 << (_CASTLING + 2);
 
-	int NOCASTLE_BLACKKING = BITS1 << (_CASTLING + 3);
+	int CANCASTLE_BLACKKING = BITS1 << (_CASTLING + 3);
 
 	int _HALFMOVES = 24;
 
@@ -196,24 +196,24 @@ public interface IConst {
 		public static int castling(int bitmap) {
 			switch (BITS.getPiece(bitmap)) {
 			case KING:
-				return bitmap | NOCASTLE_WHITEKING | NOCASTLE_WHITEQUEEN;
+				return bitmap | CANCASTLE_WHITEKING | CANCASTLE_WHITEQUEEN;
 			case ROOK:
 				switch ((bitmap >> _FROM) & BITS6) {
 				case 0:
-					return bitmap | NOCASTLE_WHITEQUEEN;
+					return bitmap | CANCASTLE_WHITEQUEEN;
 				case 7:
-					return bitmap | NOCASTLE_WHITEKING;
+					return bitmap | CANCASTLE_WHITEKING;
 				default:
 					return bitmap;
 				}
 			case BLACK_KING:
-				return bitmap | NOCASTLE_BLACKKING | NOCASTLE_BLACKQUEEN;
+				return bitmap | CANCASTLE_BLACKKING | CANCASTLE_BLACKQUEEN;
 			case BLACK_ROOK:
 				switch ((bitmap >> _FROM) & BITS6) {
 				case 56:
-					return bitmap | NOCASTLE_BLACKQUEEN;
+					return bitmap | CANCASTLE_BLACKQUEEN;
 				case 63:
-					return bitmap | NOCASTLE_BLACKKING;
+					return bitmap | CANCASTLE_BLACKKING;
 				default:
 					return bitmap;
 				}

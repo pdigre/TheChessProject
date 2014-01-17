@@ -36,10 +36,10 @@ public class StartGame implements IPositionWithLog {
 	}
 
 	final private int getCastlingState() {
-		return (castling.contains("K") ? 0 : NOCASTLE_WHITEKING)
-				| (castling.contains("Q") ? 0 : NOCASTLE_WHITEQUEEN)
-				| (castling.contains("k") ? 0 : NOCASTLE_BLACKKING)
-				| (castling.contains("q") ? 0 : NOCASTLE_BLACKQUEEN);
+		return (castling.contains("K") ? CANCASTLE_WHITEKING:0)
+				| (castling.contains("Q") ? CANCASTLE_WHITEQUEEN:0)
+				| (castling.contains("k") ? CANCASTLE_BLACKKING:0)
+				| (castling.contains("q") ? CANCASTLE_BLACKQUEEN:0);
 	}
 
     @Override

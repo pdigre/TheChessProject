@@ -2,7 +2,6 @@ package no.pdigre.chess.engine.base;
 
 import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.Position;
 
 public class NodeGen {
 
@@ -30,10 +29,10 @@ public class NodeGen {
 		white = !BITS.white(inherit);
 		kingpos = getKingPos(board, white);
 		enpassant = BITS.getEnpassant(inherit);
-		castleWQ = (inherit&IConst.NOCASTLE_WHITEQUEEN)!=0;
-		castleWK = (inherit&IConst.NOCASTLE_WHITEKING)!=0;
-		castleBQ = (inherit&IConst.NOCASTLE_BLACKQUEEN)!=0;
-		castleBK = (inherit&IConst.NOCASTLE_BLACKKING)!=0;
+		castleWQ = (inherit&IConst.CANCASTLE_WHITEQUEEN)!=0;
+		castleWK = (inherit&IConst.CANCASTLE_WHITEKING)!=0;
+		castleBQ = (inherit&IConst.CANCASTLE_BLACKQUEEN)!=0;
+		castleBK = (inherit&IConst.CANCASTLE_BLACKKING)!=0;
 	}
 
 	final private void getMoves(int from, int ptype) {
@@ -80,12 +79,12 @@ public class NodeGen {
 			for (int bitmap : IBase.KING_MOVES[from])
 				slideWhite(bitmap);
 			if (castleWQ){
-				if (board[IConst.KING_POS -1] == 0 && board[IConst.KING_POS -2] == 0 && board[IConst.KING_POS -3] == 0 && board[IConst.KING_POS -4] == IConst.ROOK)
+				if (board[IConst.KING_POS -1] == 0 && board[IConst.KING_POS -2] == 0 && board[IConst.KING_POS -3] == 0)
 					if (!isCheckWhite(board, IConst.KING_POS -1) && !isCheckWhite(board, IConst.KING_POS -2))
 						add(IBase.CASTLING_QUEEN_WHITE & castling);
 			}
 			if (castleWK){
-				if (board[IConst.KING_POS +1] == 0 && board[IConst.KING_POS +2] == 0 && board[IConst.KING_POS +3] == IConst.ROOK)
+				if (board[IConst.KING_POS +1] == 0 && board[IConst.KING_POS +2] == 0)
 					if (!isCheckWhite(board, IConst.KING_POS +1) && !isCheckWhite(board, IConst.KING_POS +2))
 						add(IBase.CASTLING_KING_WHITE & castling);
 			}
@@ -94,13 +93,13 @@ public class NodeGen {
 			for (int bitmap : IBase.KING_MOVES_BLACK[from])
 				slideBlack(bitmap);
 			if (castleBQ)
-				if (board[IConst.BLACK_KING_POS -1] == 0 && board[IConst.BLACK_KING_POS -2] == 0 && board[IConst.BLACK_KING_POS -3] == 0 && board[IConst.BLACK_KING_POS -4] == IConst.BLACK_ROOK) 
+				if (board[IConst.BLACK_KING_POS -1] == 0 && board[IConst.BLACK_KING_POS -2] == 0 && board[IConst.BLACK_KING_POS -3] == 0) 
 					if (!isCheckBlack(board, IConst.BLACK_KING_POS -1) && !isCheckBlack(board, IConst.BLACK_KING_POS -2)) 
 						add(IBase.CASTLING_QUEEN_BLACK & castling);
 			if (castleBK)
-				if (board[IConst.BLACK_KING_POS +1] == 0 && board[IConst.BLACK_KING_POS +2] == 0 && board[IConst.BLACK_KING_POS +3] == IConst.BLACK_ROOK) 
+				if (board[IConst.BLACK_KING_POS +1] == 0 && board[IConst.BLACK_KING_POS +2] == 0) 
 					if (!isCheckBlack(board, IConst.BLACK_KING_POS +1) && !isCheckBlack(board, IConst.BLACK_KING_POS +2))
-						add(IBase.CASTLING_QUEEN_BLACK & castling);
+						add(IBase.CASTLING_KING_BLACK & castling);
 			break;
 		case IConst.BLACK_PAWN:
 			for (int[] slides : IBase.PAWN_MOVES_BLACK[from])
@@ -148,7 +147,7 @@ public class NodeGen {
 				if ((type & IConst.BLACK) == 0)
 					break;
 				int t = type & IConst.PIECETYPE;
-				if (t == IConst.QUEEN || t == IConst.BISHOP)
+				if (t == IConst.BLACK_QUEEN || t == IConst.BLACK_BISHOP)
 					return true;
 				break;
 			}
@@ -161,7 +160,7 @@ public class NodeGen {
 				if (((type & IConst.BLACK) == 0) == true)
 					break;
 				int t = type & IConst.PIECETYPE;
-				if (t == IConst.QUEEN || t == IConst.ROOK)
+				if (t == IConst.BLACK_QUEEN || type == IConst.BLACK_ROOK)
 					return true;
 				break;
 			}
@@ -192,8 +191,7 @@ public class NodeGen {
 					continue;
 				if ((type & IConst.BLACK) != 0)
 					break;
-				int t = type & IConst.PIECETYPE;
-				if (t == IConst.QUEEN || t == IConst.BISHOP)
+				if (type == IConst.QUEEN || type == IConst.BISHOP)
 					return true;
 				break;
 			}
@@ -205,8 +203,7 @@ public class NodeGen {
 					continue;
 				if ((type & IConst.BLACK) != 0)
 					break;
-				int t = type & IConst.PIECETYPE;
-				if (t == IConst.QUEEN || t == IConst.ROOK)
+				if (type == IConst.QUEEN || type == IConst.ROOK)
 					return true;
 				break;
 			}
@@ -317,15 +314,12 @@ public class NodeGen {
 	 * @return
 	 */
 	public static int getCheckState(IPosition pos) {
-		int bitmap = pos.getBitmap();
 		int[] board = pos.getBoard();
-		boolean white = BITS.white(bitmap);
-		Position next = new Position(board, bitmap & (IConst.CASTLING_STATE | IConst.HALFMOVES));
-		int kingPos = NodeGen.getKingPos(next.getBoard(), white);
-		boolean ch = NodeGen.isCheck(board, kingPos, white);
-		if (!ch)
+		boolean whiteNext = pos.whiteNext();
+		int kingPos = NodeGen.getKingPos(board, whiteNext);
+		if (!NodeGen.isCheck(board, kingPos, whiteNext))
 			return 0;
-		if (getLegalMoves(next).length > 0)
+		if (getLegalMoves(pos).length > 0)
 			return IConst.CHECK;
 		return IConst.MATE;
 	}

@@ -229,13 +229,13 @@ public class ZobristKey implements IConst {
             if (piece != 0)
                 key ^= random64[64 * getKindOfPiece(piece) + i];
         }
-        if ((bitmap & NOCASTLE_WHITEKING) == 0)
+        if ((bitmap & CANCASTLE_WHITEKING) == 0)
             key ^= random64[768];
-        if ((bitmap & NOCASTLE_WHITEQUEEN) == 0)
+        if ((bitmap & CANCASTLE_WHITEQUEEN) == 0)
             key ^= random64[769];
-        if ((bitmap & NOCASTLE_BLACKKING) == 0)
+        if ((bitmap & CANCASTLE_BLACKKING) == 0)
             key ^= random64[770];
-        if ((bitmap & NOCASTLE_BLACKQUEEN) == 0)
+        if ((bitmap & CANCASTLE_BLACKQUEEN) == 0)
             key ^= random64[771];
         // passant flags only when pawn can capture
         int enpassant = BITS.getEnpassant(bitmap);
