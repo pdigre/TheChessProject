@@ -1,7 +1,0 @@
-FEN=r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1
-     Depth     Moves  Captures Enpassant  Castling Promotion     Check      Mate
-         1        48         8         0         2         0         0         0
-         2      2039       351         1        91         0         3         0
-         3     97862     17102        45      3162         0       993         1
-         4   4085603    757163      1929    128013     15172     25523        43
-         5 193690690  35043416     73365   4993637      8392   3309887     30171

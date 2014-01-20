@@ -259,7 +259,7 @@ public interface IBase extends IConst {
 			return has;
 		}
 
-		static boolean add(ArrayList<Integer> moves, int piece, int from, int offset, int mask, int from2) {
+		static boolean addSlide(ArrayList<Integer> moves, int piece, int from, int offset, int mask, int from2) {
 			int to = from + offset;
 			boolean has = inside(to, from);
 			if (has)
@@ -298,7 +298,7 @@ public interface IBase extends IConst {
 		 */
 		static void slide(ArrayList<int[]> main, int from, int offset, int piece, int mark) {
 			ArrayList<Integer> moves = new ArrayList<Integer>();
-			for (int slidefrom = from; add(moves, piece, slidefrom, offset, mark, from); slidefrom += offset)
+			for (int slidefrom = from; addSlide(moves, piece, slidefrom, offset, mark, from); slidefrom += offset)
 				;
 			int[] mv = toArray(moves);
 			if (mv.length > 0)
