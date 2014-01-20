@@ -86,6 +86,20 @@ public class FEN implements IConst {
         return fen.toString();
     }
 
+    final public static String board2string(int[] brd) {
+        StringBuilder fen = new StringBuilder();
+        for (int y = 8; y-- > 0;) {
+            fen.append(String.valueOf(y+1)+" ");
+            for (int x = 0; x < 8; x++) {
+                PieceType type = PieceType.types[brd[y * 8 + x]];
+                fen.append(type == null ? "." : type.fen);
+            }
+            fen.append("\n");
+        }
+        fen.append("  ABCDEFGH\n");
+        return fen.toString();
+    }
+
     final public static String board2fen(IPosition pos) {
         StringBuilder fen = new StringBuilder();
         for (int y = 8; y-- > 0;) {
@@ -113,13 +127,13 @@ public class FEN implements IConst {
     final public static String getFenCastling(IPosition move) {
         StringBuilder sb = new StringBuilder();
         int state = BITS.getCastlingState(move.getBitmap());
-        if ((state & IConst.CANCASTLE_WHITEKING) == 0)
+        if ((state & IConst.CANCASTLE_WHITEKING) != 0)
             sb.append("K");
-        if ((state & IConst.CANCASTLE_WHITEQUEEN) == 0)
+        if ((state & IConst.CANCASTLE_WHITEQUEEN) != 0)
             sb.append("Q");
-        if ((state & IConst.CANCASTLE_BLACKKING) == 0)
+        if ((state & IConst.CANCASTLE_BLACKKING) != 0)
             sb.append("k");
-        if ((state & IConst.CANCASTLE_BLACKQUEEN) == 0)
+        if ((state & IConst.CANCASTLE_BLACKQUEEN) != 0)
             sb.append("q");
         return sb.toString();
     }
@@ -183,6 +197,28 @@ public class FEN implements IConst {
             case IConst.MATE:
                 suffix += "++";
                 break;
+        }
+        return prefix + " " + suffix;
+    }
+
+    public static String notation(int bitmap) {
+        int from = BITS.getFrom(bitmap);
+        int to = BITS.getTo(bitmap);
+        String capture = ((bitmap >> _CAPTURE) & 7) != 0 ? "x" : "";
+        String p = piecePrefix(bitmap & PIECETYPE);
+        String prefix = capture + FEN.pos2string(from);
+        String suffix = capture + FEN.pos2string(to);
+        if (BITS.isPromotion(bitmap)) {
+            suffix += "=" + p;
+        } else {
+            prefix = p + prefix;
+            suffix = p + suffix;
+            if (BITS.isEnpassant(bitmap))
+                suffix += "e.p.";
+            if (BITS.isCastling(bitmap)) {
+                int col = from & 7;
+                suffix = col == 2 ? "O-O-O" : "O-O";
+            }
         }
         return prefix + " " + suffix;
     }

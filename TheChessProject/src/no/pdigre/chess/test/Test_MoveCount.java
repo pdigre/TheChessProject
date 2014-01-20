@@ -6,11 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import no.pdigre.chess.engine.base.IConst.BITS;
-import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.base.NodeUtil;
-import no.pdigre.chess.engine.fen.FEN;
-import no.pdigre.chess.engine.fen.PieceType;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.test.util.CountForkJoinPool;
 import no.pdigre.chess.test.util.CountForkJoinPool2;
@@ -23,7 +18,6 @@ import org.junit.Test;
 @SuppressWarnings("static-method")
 public class Test_MoveCount {
 
-    private static final int MAXDEPTH = 5;
 
 /*
      Depth     Moves  Captures Enpassant  Castling Promotion     Check      Mate
@@ -38,7 +32,7 @@ public class Test_MoveCount {
     @Test
     public void m1_Normal_4347_795() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        Counter[] counters = new CountMore(new StartGame(fen), MAXDEPTH).compute();
+        Counter[] counters = new CountMore(new StartGame(fen), 5).compute();
         compareTo(fen, counters, "m1.txt");
     }
 
@@ -46,14 +40,14 @@ public class Test_MoveCount {
     public void m1_Multi1_2190_297
     () {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        Counter[] counters = new CountForkJoinPool(new StartGame(fen), MAXDEPTH).compute();
+        Counter[] counters = new CountForkJoinPool(new StartGame(fen), 5).compute();
         compareTo(fen, counters, "m1.txt");
     }
 
     @Test
     public void m1_Multi2_2552_291() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        Counter[] counters = new CountForkJoinPool2(new StartGame(fen), MAXDEPTH).compute();
+        Counter[] counters = new CountForkJoinPool2(new StartGame(fen), 5).compute();
         compareTo(fen, counters, "m1.txt");
     }
 
@@ -71,7 +65,7 @@ public class Test_MoveCount {
     	StringBuffer sb=new StringBuffer();
         String x = "Depth,Moves,Captures,Enpassant,Castling,Promotion,Check,Mate";
         sb.append(format10(x)+"\r\n");
-        for (int i = 0; i < MAXDEPTH; i++) {
+        for (int i = 0; i < counters.length; i++) {
             Counter cnt = counters[i];
             sb.append(format10(String.format("%d,%d,%d,%d,%d,%d,%d,%d", i + 1, cnt.moves, cnt.captures,
                 cnt.enpassants, cnt.castlings, cnt.promotions, cnt.checks, cnt.mates))+"\r\n");
@@ -100,7 +94,7 @@ public class Test_MoveCount {
     public void m2_Normal_4243_941() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
-        Counter[] counters = new CountMore(start, MAXDEPTH).compute();
+        Counter[] counters = new CountMore(start, 5).compute();
         compareTo(fen, counters, "m2.txt");
     }
 
@@ -108,7 +102,7 @@ public class Test_MoveCount {
     public void m2_Multi1_2226_275() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
-        Counter[] counters = new CountForkJoinPool(start, MAXDEPTH).compute();
+        Counter[] counters = new CountForkJoinPool(start, 5).compute();
         compareTo(fen, counters, "m2.txt");
     }
 
@@ -116,7 +110,7 @@ public class Test_MoveCount {
     public void m2_Multi2_2552_286() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         StartGame start = new StartGame(fen);
-        Counter[] counters = new CountForkJoinPool2(start, MAXDEPTH).compute();
+        Counter[] counters = new CountForkJoinPool2(start, 5).compute();
         compareTo(fen, counters, "m2.txt");
     }
 
@@ -141,12 +135,45 @@ FEN=r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1
     */
     
     @Test
-    public void m3_kiwipete_11071() {
+    public void m_kiwipete_11071() {
         String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
         StartGame start = new StartGame(fen);
-        Counter[] counters = new CountForkJoinPool2(start, MAXDEPTH).compute();
+        Counter[] counters = new CountMore(start, 4).compute();
+        compareTo(fen, counters, "mk.txt");
+    }
+    
+    /** 
+     * http://chessprogramming.wikispaces.com/Perft+Results
+     * Position 3 - good for testing end game
+     */
+    @Test
+    public void m3_test_11071() {
+        String fen = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1";
+        StartGame start = new StartGame(fen);
+        Counter[] counters = new CountForkJoinPool2(start, 5).compute();
         compareTo(fen, counters, "m3.txt");
     }
+    
+    /** 
+     * http://chessprogramming.wikispaces.com/Perft+Results
+     * Position 4 - good for testing check situations
+     */
+    @Test
+    public void m4_test_11071() {
+        String fen = "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1";
+        StartGame start = new StartGame(fen);
+        Counter[] counters = new CountForkJoinPool2(start, 5).compute();
+        compareTo(fen, counters, "m4.txt");
+    }
+    
+    @Test
+    public void m4b_test_11071() {
+        String fen = "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1";
+        StartGame start = new StartGame(fen);
+        Counter[] counters = new CountForkJoinPool2(start, 5).compute();
+        compareTo(fen, counters, "m4.txt");
+    }
+    
     
     
 }

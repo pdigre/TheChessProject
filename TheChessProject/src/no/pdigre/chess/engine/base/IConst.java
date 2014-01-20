@@ -59,9 +59,13 @@ public interface IConst {
 
 	int CANCASTLE_WHITEKING = BITS1 << (_CASTLING + 1);
 
+	int CANCASTLE_WHITE = CANCASTLE_WHITEQUEEN | CANCASTLE_WHITEKING;
+
 	int CANCASTLE_BLACKQUEEN = BITS1 << (_CASTLING + 2);
 
 	int CANCASTLE_BLACKKING = BITS1 << (_CASTLING + 3);
+
+	int CANCASTLE_BLACK = CANCASTLE_BLACKQUEEN | CANCASTLE_BLACKKING;
 
 	int _HALFMOVES = 24;
 
@@ -190,36 +194,5 @@ public interface IConst {
 			return (bitmap & IConst.CAPTURE) >>> IConst._CAPTURE;
 		}
 
-	}
-
-	class MOVE {
-		public static int castling(int bitmap) {
-			switch (BITS.getPiece(bitmap)) {
-			case KING:
-				return bitmap | CANCASTLE_WHITEKING | CANCASTLE_WHITEQUEEN;
-			case ROOK:
-				switch ((bitmap >> _FROM) & BITS6) {
-				case 0:
-					return bitmap | CANCASTLE_WHITEQUEEN;
-				case 7:
-					return bitmap | CANCASTLE_WHITEKING;
-				default:
-					return bitmap;
-				}
-			case BLACK_KING:
-				return bitmap | CANCASTLE_BLACKKING | CANCASTLE_BLACKQUEEN;
-			case BLACK_ROOK:
-				switch ((bitmap >> _FROM) & BITS6) {
-				case 56:
-					return bitmap | CANCASTLE_BLACKQUEEN;
-				case 63:
-					return bitmap | CANCASTLE_BLACKKING;
-				default:
-					return bitmap;
-				}
-			default:
-				return bitmap;
-			}
-		}
 	}
 }
