@@ -2,6 +2,7 @@ package no.pdigre.chess.engine.fen;
 
 
 
+
 public class StartGame implements IPositionWithLog {
 
 	private final String castling;
@@ -47,9 +48,9 @@ public class StartGame implements IPositionWithLog {
         int enp=0;
         if(enpassant!=-1){
             if(white){
-                enp=SPECIAL|PAWN|(enpassant+8)<<_FROM|(enpassant-8)<<_TO;
+                enp=SPECIAL|WHITE_PAWN|(enpassant+8)<<_FROM|(enpassant-8)<<_TO;
             }else {
-                enp=SPECIAL|PAWN|(enpassant-8)<<_FROM|(enpassant+8)<<_TO;
+                enp=SPECIAL|WHITE_PAWN|(enpassant-8)<<_FROM|(enpassant+8)<<_TO;
             }
         }
         return (halfMoves<<_HALFMOVES)|getCastlingState()|(white?BLACK:0)|enp;
@@ -69,4 +70,14 @@ public class StartGame implements IPositionWithLog {
     public String toString() {
         return FEN.printMove(this)+"\n"+FEN.board2string(this);
     }
+
+	@Override
+	public int getWKpos() {
+		return BOARD88.getWKpos(this);
+	}
+
+	@Override
+	public int getBKpos() {
+		return BOARD88.getBKpos(this);
+	}
 }

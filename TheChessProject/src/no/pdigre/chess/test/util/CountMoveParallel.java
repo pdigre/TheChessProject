@@ -20,7 +20,7 @@ public class CountMoveParallel extends CountMove {
         ForkJoinPool pool = new ForkJoinPool(processors);
         ArrayList<CountMove> tasks = new ArrayList<CountMove>();
 
-        for (IPosition next : NodeGen.children(pos)) {
+        for (IPosition next : NodeGen.getLegalMoves64(pos)) {
             counters[0]++;
             if (counters.length > 1) {
                 CountMove task = new CountMove(next, counters.length - 1);

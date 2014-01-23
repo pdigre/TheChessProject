@@ -1,7 +1,7 @@
 package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.IConst;
-import no.pdigre.chess.engine.base.NodeGen;
+import no.pdigre.chess.engine.base.KingSafe;
 
 public class FEN implements IConst {
 
@@ -158,7 +158,7 @@ public class FEN implements IConst {
             sb.append(" castling");
         if (BITS.isPromotion(bitmap))
             sb.append(" promoted");
-        switch (NodeGen.getCheckState(pos)) {
+        switch (KingSafe.getCheckState(pos)) {
             case IConst.CHECK:
                 sb.append(" check");
                 break;
@@ -190,7 +190,7 @@ public class FEN implements IConst {
                 suffix = col == 2 ? "O-O-O" : "O-O";
             }
         }
-        switch (NodeGen.getCheckState(pos)) {
+        switch (KingSafe.getCheckState(pos)) {
             case IConst.CHECK:
                 suffix += "+";
                 break;
@@ -225,15 +225,15 @@ public class FEN implements IConst {
 
     private static String piecePrefix(int type) {
         switch (type) {
-            case IConst.KING:
+            case IConst.WHITE_KING:
                 return "K";
-            case IConst.QUEEN:
+            case IConst.WHITE_QUEEN:
                 return "Q";
-            case IConst.ROOK:
+            case IConst.WHITE_ROOK:
                 return "R";
-            case IConst.BISHOP:
+            case IConst.WHITE_BISHOP:
                 return "B";
-            case IConst.KNIGHT:
+            case IConst.WHITE_KNIGHT:
                 return "N";
         }
         return "";

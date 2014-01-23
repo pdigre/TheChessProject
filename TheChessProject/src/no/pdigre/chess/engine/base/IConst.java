@@ -74,29 +74,29 @@ public interface IConst {
 	// piecetype
 	int NONE = 0;
 
-	int PAWN = 1;
+	int WHITE_BISHOP = 1;
 
-	int KNIGHT = 2;
+	int WHITE_ROOK = 2;
 
-	int BISHOP = 3;
+	int WHITE_QUEEN = 3;
 
-	int ROOK = 4;
+	int WHITE_PAWN = 5;
 
-	int QUEEN = 5;
+	int WHITE_KNIGHT = 6;
 
-	int KING = 6;
+	int WHITE_KING = 7;
 
-	int BLACK_PAWN = PAWN | BLACK;
+	int BLACK_PAWN = WHITE_PAWN | BLACK;
 
-	int BLACK_KNIGHT = KNIGHT | BLACK;
+	int BLACK_KNIGHT = WHITE_KNIGHT | BLACK;
 
-	int BLACK_BISHOP = BISHOP | BLACK;
+	int BLACK_BISHOP = WHITE_BISHOP | BLACK;
 
-	int BLACK_ROOK = ROOK | BLACK;
+	int BLACK_ROOK = WHITE_ROOK | BLACK;
 
-	int BLACK_QUEEN = QUEEN | BLACK;
+	int BLACK_QUEEN = WHITE_QUEEN | BLACK;
 
-	int BLACK_KING = KING | BLACK;
+	int BLACK_KING = WHITE_KING | BLACK;
 
 	// game state
 	int CHECK = 1;
@@ -104,8 +104,8 @@ public interface IConst {
 	int MATE = 2;
 
 	int GOAL_LINE = 56;
-	int KING_POS = 4;
-	int BLACK_KING_POS = KING_POS + GOAL_LINE;
+	int WHITE_KING_STARTPOS = 4;
+	int BLACK_KING_STARTPOS = WHITE_KING_STARTPOS + GOAL_LINE;
 
 	class BITS {
 
@@ -138,6 +138,16 @@ public interface IConst {
 		final static public boolean white(final int bitmap) {
 			return (bitmap & IConst.BLACK) == 0;
 		}
+		
+		/**
+		 * Did black make the last move
+		 * 
+		 * @param bitmap
+		 * @return
+		 */
+		final static public boolean black(final int bitmap) {
+			return (bitmap & IConst.BLACK) != 0;
+		}
 
 		/**
 		 * Is white next to move
@@ -150,15 +160,15 @@ public interface IConst {
 		}
 
 		final static public boolean isCastling(final int bitmap) {
-			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == KING;
+			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == WHITE_KING;
 		}
 
 		final static public boolean isEnpassant(final int bitmap) {
-			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == PAWN;
+			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == WHITE_PAWN;
 		}
 
 		final public static boolean isPromotion(final int bitmap) {
-			return ((bitmap & SPECIAL) != 0) && BITS.getType(bitmap) != KING && BITS.getType(bitmap) != PAWN;
+			return ((bitmap & SPECIAL) != 0) && BITS.getType(bitmap) != WHITE_KING && BITS.getType(bitmap) != WHITE_PAWN;
 		}
 
 		final public static int getPiece(final int bitmap) {
@@ -177,11 +187,11 @@ public interface IConst {
 			int from2 = getFrom(bitmap);
 			int to2 = getTo(bitmap);
 			switch (getPiece(bitmap)) {
-			case PAWN:
+			case WHITE_PAWN:
 				if (from2 - to2 == -16)
 					return from2 + 8;
 				return -1;
-			case PAWN | BLACK:
+			case BLACK_PAWN:
 				if (from2 - to2 == 16)
 					return from2 - 8;
 				return -1;

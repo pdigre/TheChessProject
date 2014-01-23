@@ -2,6 +2,7 @@ package no.pdigre.chess.engine.fen;
 
 
 
+
 public class PositionNext implements IPosition {
     int[] board;
     int[] parent;
@@ -50,5 +51,14 @@ public class PositionNext implements IPosition {
         return FEN.printMove(this)+"\n"+FEN.board2string(this);
     }
 
+	@Override
+	public int getWKpos() {
+		return BOARD88.getWKpos(this);
+	}
+
+	@Override
+	public int getBKpos() {
+		return BOARD88.getBKpos(this);
+	}
     
 }

@@ -109,15 +109,15 @@ public class Piece_Square_Tables {
 
     final static int pVal(int p, int type) {
         switch (type) {
-            case IConst.PAWN:
+            case IConst.WHITE_PAWN:
                 return WPAWN[p];
-            case IConst.KNIGHT:
+            case IConst.WHITE_KNIGHT:
                 return WKNIGHT[p];
-            case IConst.BISHOP:
+            case IConst.WHITE_BISHOP:
                 return WBISHOP[p];
-            case IConst.ROOK:
+            case IConst.WHITE_ROOK:
                 return WROOK[p];
-            case IConst.QUEEN:
+            case IConst.WHITE_QUEEN:
                 return WQUEEN[p];
             case IConst.BLACK_PAWN:
                 return BPAWN[p];

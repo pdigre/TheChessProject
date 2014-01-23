@@ -10,6 +10,10 @@ public abstract interface IPosition extends IConst {
 
 	public abstract int[] getBoard();
 
+	int getWKpos();
+
+	int getBKpos();
+
 	/**
 	 * Returns the castling and halfmoves state
 	 * 
@@ -26,6 +30,20 @@ public abstract interface IPosition extends IConst {
 	public IPosition move(int bitmap);
 
 	class BOARD88 {
+		final static public int getWKpos(IPosition pos){
+			int kingpos=0;
+			while(pos.getPiece(kingpos) != WHITE_KING)
+				kingpos++;
+			return kingpos;
+		}
+
+		final static public int getBKpos(IPosition pos){
+			int kingpos=0;
+			while(pos.getPiece(kingpos) != BLACK_KING)
+				kingpos++;
+			return kingpos;
+		}
+		
 		final static public int[] apply(final int[] in, final int bitmap) {
 			int[] out = in.clone();
 			int from = BITS.getFrom(bitmap);

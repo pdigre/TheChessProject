@@ -195,27 +195,27 @@ public class ZobristKey implements IConst {
         switch (piece) {
             case IConst.BLACK_PAWN:
                 return 0;
-            case IConst.PAWN:
+            case IConst.WHITE_PAWN:
                 return 1;
             case IConst.BLACK_KNIGHT:
                 return 2;
-            case IConst.KNIGHT:
+            case IConst.WHITE_KNIGHT:
                 return 3;
             case IConst.BLACK_BISHOP:
                 return 4;
-            case IConst.BISHOP:
+            case IConst.WHITE_BISHOP:
                 return 5;
             case IConst.BLACK_ROOK:
                 return 6;
-            case IConst.ROOK:
+            case IConst.WHITE_ROOK:
                 return 7;
             case IConst.BLACK_QUEEN:
                 return 8;
-            case IConst.QUEEN:
+            case IConst.WHITE_QUEEN:
                 return 9;
             case IConst.BLACK_KING:
                 return 10;
-            case IConst.KING:
+            case IConst.WHITE_KING:
                 return 11;
         }
         return 0;
@@ -229,22 +229,22 @@ public class ZobristKey implements IConst {
             if (piece != 0)
                 key ^= random64[64 * getKindOfPiece(piece) + i];
         }
-        if ((bitmap & CANCASTLE_WHITEKING) == 0)
+        if ((bitmap & CANCASTLE_WHITEKING) != 0)
             key ^= random64[768];
-        if ((bitmap & CANCASTLE_WHITEQUEEN) == 0)
+        if ((bitmap & CANCASTLE_WHITEQUEEN) != 0)
             key ^= random64[769];
-        if ((bitmap & CANCASTLE_BLACKKING) == 0)
+        if ((bitmap & CANCASTLE_BLACKKING) != 0)
             key ^= random64[770];
-        if ((bitmap & CANCASTLE_BLACKQUEEN) == 0)
+        if ((bitmap & CANCASTLE_BLACKQUEEN) != 0)
             key ^= random64[771];
         // passant flags only when pawn can capture
         int enpassant = BITS.getEnpassant(bitmap);
         if (enpassant != -1) {
             int file = enpassant & 7;
             if (BITS.whiteNext(bitmap)) {
-                if (file != 0 && pos.getPiece(enpassant - 7) == PAWN) {
+                if (file != 0 && pos.getPiece(enpassant - 7) == WHITE_PAWN) {
                     key ^= random64[file + 772];
-                } else if (file != 7 && pos.getPiece(enpassant - 9) == PAWN) {
+                } else if (file != 7 && pos.getPiece(enpassant - 9) == WHITE_PAWN) {
                     key ^= random64[file + 772];
                 }
             } else {

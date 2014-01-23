@@ -21,12 +21,10 @@ public class CountMove extends RecursiveTask<int[]> {
     @Override
     protected int[] compute() {
         if (counters.length > 1) {
-            for (IPosition next : NodeGen.children(pos)) {
+            for (IPosition next : NodeGen.getLegalMoves64(pos)) {
                 counters[0]++;
                 Counter.total(counters, new CountMove(next, counters.length - 1).compute());
             }
-        } else {
-            counters[0]+=NodeGen.getLegalMoves(pos).length;
         }
         return counters;
     }

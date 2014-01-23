@@ -48,4 +48,14 @@ public class Position implements IPosition {
         return board[square];
     }
 
+	@Override
+	public int getWKpos() {
+		return BOARD88.getWKpos(this);
+	}
+
+	@Override
+	public int getBKpos() {
+		return BOARD88.getBKpos(this);
+	}
+
 }

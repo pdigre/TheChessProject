@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.IPosition64;
 import no.pdigre.chess.engine.fen.IPositionScore;
 import no.pdigre.chess.engine.fen.PositionScore;
 
@@ -56,9 +57,8 @@ public final class IterateScores extends TreeSet<IPositionScore> {
     public IterateScores(IPosition pos, IEvaluator evaluator) {
         super(pos.whiteNext() ? new Ascending() : new Descending());
         final int total = pos instanceof IPositionScore ? ((IPositionScore) pos).getScore() : 0;
-        int[] legalMoves = NodeGen.getLegalMoves(pos);
-        for (int bitmap : legalMoves) {
-            PositionScore next = new PositionScore(pos.move(bitmap));
+        for (IPosition64 move64 : NodeGen.getLegalMoves64(pos)) {
+            PositionScore next = new PositionScore(move64);
             next.score = evaluator.score(next, total);
             add(next);
         }

@@ -18,7 +18,7 @@ public class CountForkJoinPool2 extends CountMore {
     public Counter[] compute() {
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
         ArrayList<CountMore> tasks = new ArrayList<CountMore>();
-        for (IPosition next : NodeGen.children(pos)) {
+        for (IPosition next : NodeGen.getLegalMoves64(pos)) {
             count(next);
             if (counters.length > 1) {
                 CountMore task = new CountForkJoinPool(next, counters.length - 1);

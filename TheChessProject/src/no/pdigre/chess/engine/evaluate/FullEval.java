@@ -15,7 +15,7 @@ public class FullEval implements IEvaluator {
             int p = pos.getPiece(i);
             if (p == IConst.BLACK_KING) {
                 bk = i;
-            } else if (p == IConst.KING) {
+            } else if (p == IConst.WHITE_KING) {
                 wk = i;
             } else if (p > 0) {
                 score += Piece_Square_Tables.pVal(i, p);

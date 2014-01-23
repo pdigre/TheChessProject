@@ -1,19 +1,21 @@
 package no.pdigre.chess.engine.fen;
 
+import no.pdigre.chess.engine.base.IConst;
+
 
 public enum PieceType {
-    WHITE_PAWN(100, 'P', 1),
-    WHITE_KNIGHT(300, 'N', 2),
-    WHITE_BISHOP(300, 'B', 3),
-    WHITE_ROOK(500, 'R', 4),
-    WHITE_QUEEN(900, 'Q', 5),
-    WHITE_KING(20000, 'K', 6),
-    BLACK_PAWN(-100, 'p', 9),
-    BLACK_KNIGHT(-300, 'n', 10),
-    BLACK_BISHOP(-300, 'b', 11),
-    BLACK_ROOK(-500, 'r', 12),
-    BLACK_QUEEN(-900, 'q', 13),
-    BLACK_KING(-20000, 'k', 14);
+    WHITE_PAWN(100, 'P', IConst.WHITE_PAWN),
+    WHITE_KNIGHT(300, 'N', IConst.WHITE_KNIGHT),
+    WHITE_BISHOP(300, 'B', IConst.WHITE_BISHOP),
+    WHITE_ROOK(500, 'R', IConst.WHITE_ROOK),
+    WHITE_QUEEN(900, 'Q', IConst.WHITE_QUEEN),
+    WHITE_KING(20000, 'K', IConst.WHITE_KING),
+    BLACK_PAWN(-100, 'p', IConst.BLACK_PAWN),
+    BLACK_KNIGHT(-300, 'n', IConst.BLACK_KNIGHT),
+    BLACK_BISHOP(-300, 'b', IConst.BLACK_BISHOP),
+    BLACK_ROOK(-500, 'r', IConst.BLACK_ROOK),
+    BLACK_QUEEN(-900, 'q', IConst.BLACK_QUEEN),
+    BLACK_KING(-20000, 'k', IConst.BLACK_KING);
 
     final public int weight;
 
@@ -22,9 +24,7 @@ public enum PieceType {
     final public int bitmap;
 
 
-    final public static PieceType[] types = new PieceType[] { null, WHITE_PAWN, WHITE_KNIGHT, WHITE_BISHOP,
-        WHITE_ROOK, WHITE_QUEEN, WHITE_KING, null, null, BLACK_PAWN, BLACK_KNIGHT, BLACK_BISHOP, BLACK_ROOK,
-        BLACK_QUEEN, BLACK_KING, null };
+    final public static PieceType[] types = assign();
 
     PieceType(int weight, char fen, int bitmap) {
         this.weight = weight;
@@ -32,7 +32,15 @@ public enum PieceType {
         this.bitmap = bitmap;
     }
 
-    final public static PieceType lookup(char fen) {
+    private static PieceType[] assign() {
+    	PieceType[] pcs=new PieceType[16];
+    	PieceType[] values = PieceType.values();
+    	for (PieceType pt : values)
+			pcs[pt.bitmap]=pt;
+    	return pcs;
+	}
+
+	final public static PieceType lookup(char fen) {
         for (PieceType type : PieceType.values()) {
             if (type.fen == fen)
                 return type;

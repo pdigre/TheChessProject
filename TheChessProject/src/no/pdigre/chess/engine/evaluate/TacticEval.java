@@ -19,7 +19,7 @@ public class TacticEval implements IEvaluator {
                 
             if (p == IConst.BLACK_KING) {
                 return last+Piece_Square_Tables.BKING_MIDDLE[t]-Piece_Square_Tables.BKING_MIDDLE[f];
-            } else if (p == IConst.KING) {
+            } else if (p == IConst.WHITE_KING) {
                 return last+Piece_Square_Tables.WKING_MIDDLE[t]-Piece_Square_Tables.WKING_MIDDLE[f];
             } else if (p > 0) {
                 return last+Piece_Square_Tables.pVal(t, p)-Piece_Square_Tables.pVal(t, p);
@@ -29,17 +29,17 @@ public class TacticEval implements IEvaluator {
 
     public static final int value(final int type) {
         switch (type) {
-            case IConst.PAWN:
+            case IConst.WHITE_PAWN:
                 return 100;
-            case IConst.KNIGHT:
+            case IConst.WHITE_KNIGHT:
                 return 320;
-            case IConst.BISHOP:
+            case IConst.WHITE_BISHOP:
                 return 330;
-            case IConst.ROOK:
+            case IConst.WHITE_ROOK:
                 return 500;
-            case IConst.QUEEN:
+            case IConst.WHITE_QUEEN:
                 return 900;
-            case IConst.KING:
+            case IConst.WHITE_KING:
                 return 20000;
             case IConst.BLACK_PAWN:
                 return -100;
@@ -59,13 +59,13 @@ public class TacticEval implements IEvaluator {
     }
     public static final int promoValue(final int type) {
         switch (type) {
-            case IConst.KNIGHT:
+            case IConst.WHITE_KNIGHT:
                 return 220;
-            case IConst.BISHOP:
+            case IConst.WHITE_BISHOP:
                 return 230;
-            case IConst.ROOK:
+            case IConst.WHITE_ROOK:
                 return 400;
-            case IConst.QUEEN:
+            case IConst.WHITE_QUEEN:
                 return 800;
             case IConst.BLACK_KNIGHT:
                 return -220;
