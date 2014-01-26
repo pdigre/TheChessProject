@@ -2,13 +2,12 @@ package no.pdigre.chess.engine.base;
 
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.IPosition64;
-import no.pdigre.chess.engine.fen.Position64Wrapper;
+import no.pdigre.chess.engine.fen.Position64;
 
 public class KingSafe implements IConst {
 
-	public static int getCheckState(IPosition pos) {
-		KingSafe kingSafe = KingSafe.pos(pos);
-		if (!(pos.whiteNext() ? kingSafe.isCheckWhite() : kingSafe.isCheckBlack()))
+	public static int getCheckState(IPosition64 pos) {
+		if (!(pos.whiteNext() ? pos.isCheckWhite() : pos.isCheckBlack()))
 			return 0;
 		if (NodeGen.getLegalMoves64(pos).isEmpty())
 			return MATE;
@@ -34,73 +33,14 @@ public class KingSafe implements IConst {
 	}
 
 	public static KingSafe pos(IPosition in) {
-		IPosition64 pos = (in instanceof IPosition64 ? (IPosition64) in : new Position64Wrapper(in));
+		IPosition64 pos = Position64.getPosition64(in);
 		return new KingSafe(pos.get64black(), pos.get64bit1(), pos.get64bit2(), pos.get64bit3(), pos.getWKpos(), pos.getBKpos());
 	}
 
-	public static KingSafe move(IPosition in, int move) {
-		IPosition64 pos = (in instanceof IPosition64 ? (IPosition64) in : new Position64Wrapper(in));
-		long bb_black = pos.get64black();
-		long bb_bit1 = pos.get64bit1();
-		long bb_bit2 = pos.get64bit2();
-		long bb_bit3 = pos.get64bit3();
-		int wking = pos.getWKpos();
-		int bking = pos.getBKpos();
-
-		// Apply move
-		int from = BITS.getFrom(move);
-		int to = BITS.getTo(move);
-		int piece = BITS.getPiece(move);
-		if (from == wking)
-			wking = to;
-		if (from == bking)
-			bking = to;
-		{
-			long bfrom = 1L << from;
-			long bto = 1L << to;
-			long mask = ~(bfrom | bto);
-			bb_bit1 = (bb_bit1 & mask)|((piece&1)==0?0:bto);
-			bb_bit2 = (bb_bit2 & mask)|((piece&2)==0?0:bto);
-			bb_bit3 = (bb_bit3 & mask)|((piece&4)==0?0:bto);
-			bb_black = (bb_black & mask)|((piece&8)==0?0:bto);
-		}
-
-		if (BITS.isCastling(move)) {
-			if (from > to) {
-				to = from - 1;
-				from = from - 4;
-			} else {
-				to = from + 1;
-				from = from + 3;
-			}
-			long bfrom = 1L << from;
-			long bto = 1L << to;
-			long mask = ~(bfrom | bto);
-			bb_bit1 = (bb_bit1 & mask)|((piece&1)==0?0:bto);
-			bb_bit2 = (bb_bit2 & mask)|((piece&2)==0?0:bto);
-			bb_bit3 = (bb_bit3 & mask)|((piece&4)==0?0:bto);
-			bb_black = (bb_black & mask)|((piece&8)==0?0:bto);
-		} else if (BITS.isEnpassant(move)) {
-			from = to + (to > from ? -8 : 8);
-			long bfrom = 1L << from;
-			long mask = ~bfrom;
-			bb_black = bb_black & mask;
-			bb_bit1 = bb_bit1 & mask;
-			bb_bit2 = bb_bit2 & mask;
-			bb_bit3 = bb_bit3 & mask;
-		}
-		return new KingSafe(bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking);
-	}
-
-	final boolean isCheckBlack() {
-		for (int p : IBase.M32_WHITE_KNIGHT[bking]) {
-			long bit = 1L << BITS.getTo(p);
-			if ((bb_piece & bit) == 0 || (bb_black & bit) != 0)
-				continue;
-			int type = type(bit);
-			if (type == WHITE_KNIGHT)
-				return true;
-		}
+	final public boolean isCheckBlack() {
+		long nmap = (~bb_bit1 & bb_bit2 & bb_bit3 & ~bb_black);
+		if((nmap&IBase.M64_KNIGHT[bking])!=0)
+			return true;
 		for (int p : IBase.M32_WHITE_KING[bking]) {
 			long bit = 1L << BITS.getTo(p);
 			if ((bb_piece & bit) == 0 || (bb_black & bit) != 0)
@@ -145,14 +85,15 @@ public class KingSafe implements IConst {
 		return false;
 	}
 
-	final boolean isCheckWhite() {
-		for (int p : IBase.M32_WHITE_KNIGHT[wking]) {
-			long bit = 1L << BITS.getTo(p);
-			if ((bb_piece & bit) == 0 || (bb_black & bit) == 0)
-				continue;
-			if (type(bit) == WHITE_KNIGHT)
-				return true;
-		}
+	private String format64(long b64) {
+		String string64=Long.toBinaryString(b64);
+		return ".0000000.0000000.0000000.0000000.0000000.0000000.0000000.0000000".substring(0,64-string64.length())+string64;
+	}
+
+	final public boolean isCheckWhite() {
+		long nmap = (~bb_bit1 & bb_bit2 & bb_bit3 & bb_black);
+		if((nmap&IBase.M64_KNIGHT[wking])!=0)
+			return true;
 		for (int p : IBase.M32_WHITE_KING[wking]) {
 			long bit = 1L << BITS.getTo(p);
 			if ((bb_piece & bit) == 0 || (bb_black & bit) == 0)

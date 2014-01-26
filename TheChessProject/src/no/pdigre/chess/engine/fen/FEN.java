@@ -158,7 +158,7 @@ public class FEN implements IConst {
             sb.append(" castling");
         if (BITS.isPromotion(bitmap))
             sb.append(" promoted");
-        switch (KingSafe.getCheckState(pos)) {
+        switch (KingSafe.getCheckState(Position64.getPosition64(pos))) {
             case IConst.CHECK:
                 sb.append(" check");
                 break;
@@ -190,7 +190,7 @@ public class FEN implements IConst {
                 suffix = col == 2 ? "O-O-O" : "O-O";
             }
         }
-        switch (KingSafe.getCheckState(pos)) {
+        switch (KingSafe.getCheckState(Position64.getPosition64(pos))) {
             case IConst.CHECK:
                 suffix += "+";
                 break;

@@ -15,12 +15,14 @@ public interface IBase extends IConst {
 	int[][] M32_BLACK_KNIGHT = new int[64][];
 	int[][] M32_WHITE_KING = new int[64][];
 	int[][] M32_BLACK_KING = new int[64][];
+	long[] M64_KNIGHT = new long[64];
+	long[] M64_KING = new long[64];
 	int[][][] M32_WHITE_BISHOP = new int[64][][];
 	int[][][] M32_BLACK_BISHOP = new int[64][][];
 	int[][][] M32_WHITE_ROOK = new int[64][][];
 	int[][][] M32_BLACK_ROOK = new int[64][][];
 	int[][][] M32_WHITE_QUEEN = new int[64][][];
-	int[][][] QUEEN_MOVES_BLACK = new int[64][][];
+	int[][][] M32_BLACK_QUEEN = new int[64][][];
 	int CASTLING_WHITE_KING = BITS.assemble(WHITE_KING, WHITE_KING_STARTPOS, WHITE_KING_STARTPOS + 2, CANCASTLE_BLACK | SPECIAL);
 	int CASTLING_WHITE_QUEEN = BITS.assemble(WHITE_KING, WHITE_KING_STARTPOS, WHITE_KING_STARTPOS - 2, CANCASTLE_BLACK | SPECIAL);
 	int CASTLING_BLACK_KING = BITS.assemble(BLACK_KING, BLACK_KING_STARTPOS, BLACK_KING_STARTPOS + 2, CANCASTLE_WHITE | SPECIAL);
@@ -47,8 +49,13 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				M32_WHITE_KNIGHT[from] = getKnightMoves(from, WHITE_KNIGHT, CASTLING_STATE | HALFMOVES);
-				M32_BLACK_KNIGHT[from] = getKnightMoves(from, BLACK_KNIGHT, CASTLING_STATE | HALFMOVES);
+				int[] mw = getKnightMoves(from, WHITE_KNIGHT, CASTLING_STATE | HALFMOVES);
+				M32_WHITE_KNIGHT[from] = mw;
+				int[] mb = getKnightMoves(from, BLACK_KNIGHT, CASTLING_STATE | HALFMOVES);
+				M32_BLACK_KNIGHT[from] = mb;
+				long bfrom=1L<<from;
+				for (int bitmap : mw) 
+					M64_KNIGHT[IConst.BITS.getTo(bitmap)]|=bfrom;
 			}
 		}
 
@@ -112,7 +119,7 @@ public interface IBase extends IConst {
 		static {
 			for (int from = 0; from < 64; from++) {
 				M32_WHITE_QUEEN[from] = getQueenMoves(from, WHITE_QUEEN, CASTLING_STATE | HALFMOVES);
-				QUEEN_MOVES_BLACK[from] = getQueenMoves(from, BLACK_QUEEN, CASTLING_STATE | HALFMOVES);
+				M32_BLACK_QUEEN[from] = getQueenMoves(from, BLACK_QUEEN, CASTLING_STATE | HALFMOVES);
 			}
 		}
 
@@ -131,8 +138,13 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				M32_WHITE_KING[from] = getKingMoves(from, WHITE_KING, CANCASTLE_BLACK | HALFMOVES);
-				M32_BLACK_KING[from] = getKingMoves(from, BLACK_KING, CANCASTLE_WHITE | HALFMOVES);
+				int[] mw = getKingMoves(from, WHITE_KING, CANCASTLE_BLACK | HALFMOVES);
+				M32_WHITE_KING[from] = mw;
+				int[] mb = getKingMoves(from, BLACK_KING, CANCASTLE_WHITE | HALFMOVES);
+				M32_BLACK_KING[from] = mb;
+				long bfrom=1L<<from;
+				for (int bitmap : mw) 
+					M64_KING[IConst.BITS.getTo(bitmap)]|=bfrom;
 			}
 		}
 

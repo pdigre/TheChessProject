@@ -5,7 +5,7 @@ import java.util.List;
 
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.IPosition64;
-import no.pdigre.chess.engine.fen.Position64Wrapper;
+import no.pdigre.chess.engine.fen.Position64;
 
 public class NodeGen implements IConst {
 
@@ -64,7 +64,7 @@ public class NodeGen implements IConst {
 					while (test < imoves) {
 						int bitmap = moves[test++];
 						IPosition64 next = pos.move(bitmap);
-						if (!KingSafe.pos(next).isCheckWhite())
+						if (!next.isCheckWhite())
 							list.add(next);
 					}
 				}
@@ -81,7 +81,7 @@ public class NodeGen implements IConst {
 					while (test < imoves) {
 						int bitmap = moves[test++];
 						IPosition64 next = pos.move(bitmap);
-						if (!KingSafe.pos(next).isCheckBlack())
+						if (!next.isCheckBlack())
 							list.add(next);
 					}
 				}
@@ -120,7 +120,7 @@ public class NodeGen implements IConst {
 					;
 			break;
 		case BLACK_QUEEN:
-			for (int[] slides : IBase.QUEEN_MOVES_BLACK[from])
+			for (int[] slides : IBase.M32_BLACK_QUEEN[from])
 				for (int i = 0; i < slides.length && slideBlack(slides[i]); i++)
 					;
 			break;
@@ -158,12 +158,12 @@ public class NodeGen implements IConst {
 			slideWhite(bitmap);
 		if ((castling & CANCASTLE_WHITEQUEEN) != 0) {
 			if (!board(WHITE_KING_STARTPOS - 1) && !board(WHITE_KING_STARTPOS - 2) && !board(WHITE_KING_STARTPOS - 3))
-				if (!KingSafe.pos(pos).isCheckWhite() && !KingSafe.pos(pos.move(IBase.WHITE_QUEENSIDE)).isCheckWhite())
+				if (!pos.isCheckWhite() && !pos.move(IBase.WHITE_QUEENSIDE).isCheckWhite())
 					add(IBase.CASTLING_WHITE_QUEEN & castling);
 		}
 		if ((castling & CANCASTLE_WHITEKING) != 0) {
 			if (!board(WHITE_KING_STARTPOS + 1) && !board(WHITE_KING_STARTPOS + 2))
-				if (!KingSafe.pos(pos).isCheckWhite() && !KingSafe.pos(pos.move(IBase.WHITE_KINGSIDE)).isCheckWhite())
+				if (!pos.isCheckWhite() && !pos.move(IBase.WHITE_KINGSIDE).isCheckWhite())
 					add(IBase.CASTLING_WHITE_KING & castling);
 		}
 	}
@@ -173,13 +173,13 @@ public class NodeGen implements IConst {
 			slideBlack(bitmap);
 		if ((castling & CANCASTLE_BLACKQUEEN) != 0) {
 			if (!board(BLACK_KING_STARTPOS - 1) && !board(BLACK_KING_STARTPOS - 2) && !board(BLACK_KING_STARTPOS - 3))
-				if (!KingSafe.pos(pos).isCheckBlack() && !KingSafe.pos(pos.move(IBase.BLACK_QUEENSIDE)).isCheckBlack()) {
+				if (!pos.isCheckBlack() && !pos.move(IBase.BLACK_QUEENSIDE).isCheckBlack()) {
 					add(IBase.CASTLING_BLACK_QUEEN & castling);
 				}
 		}
 		if ((castling & CANCASTLE_BLACKKING) != 0) {
 			if (!board(BLACK_KING_STARTPOS + 1) && !board(BLACK_KING_STARTPOS + 2))
-				if (!KingSafe.pos(pos).isCheckBlack() && !KingSafe.pos(pos.move(IBase.BLACK_KINGSIDE)).isCheckBlack()) {
+				if (!pos.isCheckBlack() && !pos.move(IBase.BLACK_KINGSIDE).isCheckBlack()) {
 					add(IBase.CASTLING_BLACK_KING & castling);
 				}
 		}
@@ -269,9 +269,7 @@ public class NodeGen implements IConst {
 	}
 
 	public static final NodeGen create(IPosition pos) {
-		if (pos instanceof IPosition64)
-			return new NodeGen((IPosition64) pos);
-		return new NodeGen(new Position64Wrapper(pos));
+		return new NodeGen(Position64.getPosition64(pos));
 	}
 
 	public static final List<IPosition64> getLegalMoves64(IPosition pos) {

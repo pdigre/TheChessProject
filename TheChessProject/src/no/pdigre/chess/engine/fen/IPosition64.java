@@ -13,4 +13,8 @@ public interface IPosition64 extends IPosition {
 	@Override
 	public IPosition64 move(int bitmap);
 
+	boolean isCheckWhite();
+
+	boolean isCheckBlack();
+
 }

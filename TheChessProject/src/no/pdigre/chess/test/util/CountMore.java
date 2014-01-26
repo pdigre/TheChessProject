@@ -7,6 +7,7 @@ import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.base.KingSafe;
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position64;
 
 public class CountMore extends RecursiveTask<Counter[]> {
 
@@ -36,7 +37,7 @@ public class CountMore extends RecursiveTask<Counter[]> {
         }
         if (BITS.isPromotion(bitmap))
             counters[0].promotions++;
-        switch (KingSafe.getCheckState(pos)) {
+        switch (KingSafe.getCheckState(Position64.getPosition64(pos))) {
             case IConst.CHECK:
                 counters[0].checks++;
                 break;
