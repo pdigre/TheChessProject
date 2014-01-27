@@ -19,25 +19,25 @@ import org.junit.Test;
 public class Test_PERFT_Short {
 
     @Test
-    public void m1_1_847() {
+    public void m1_1_716() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         assertPERFT(fen, new CountMore(new StartGame(fen), 5).compute());
     }
  
     @Test
-    public void m1_2_353() {
+    public void m1_2_234() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         assertPERFT(fen, new CountForkJoinPool(new StartGame(fen), 5).compute());
     }
 
     @Test
-    public void m1_3_359() {
+    public void m1_3_223() {
         String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         assertPERFT(fen, new CountForkJoinPool2(new StartGame(fen), 5).compute());
     }
 
     @Test
-    public void e_1_1736() {
+    public void e_1_1637() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         assertPERFT(fen, new CountMore(new StartGame(fen), 5).compute());
     }
@@ -49,31 +49,31 @@ public class Test_PERFT_Short {
     }
 
     @Test
-    public void e_3_598() {
+    public void e_3_527() {
         String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
         assertPERFT(fen, new CountForkJoinPool2(new StartGame(fen), 5).compute());
     }
 
     @Test
-    public void m2_kiwipete_314() {
+    public void m2_kiwipete_199() {
         String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
         assertPERFT(fen, new CountForkJoinPool(new StartGame(fen), 4).compute());
     }
     
     @Test
-    public void m3_1171() {
+    public void m3_940() {
         String fen = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1";
         assertPERFT(fen, new CountForkJoinPool(new StartGame(fen), 6).compute());
     }
     
     @Test
-    public void m4a_1363() {
+    public void m4a_955() {
         String fen = "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1";
         assertPERFT(fen, new CountForkJoinPool(new StartGame(fen),5).compute());
     }
     
     @Test
-    public void m4b_1345() {
+    public void m4b_974() {
         String fen = "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1";
         assertPERFT(fen, new CountForkJoinPool(new StartGame(fen), 5).compute());
     }

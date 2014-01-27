@@ -38,17 +38,10 @@ public class KingSafe implements IConst {
 	}
 
 	final public boolean isCheckBlack() {
-		long nmap = (~bb_bit1 & bb_bit2 & bb_bit3 & ~bb_black);
-		if((nmap&IBase.M64_KNIGHT[bking])!=0)
+		if (((~bb_bit1 & bb_bit2 & bb_bit3 & ~bb_black) & IBase.M64_KNIGHT[bking]) != 0)
 			return true;
-		for (int p : IBase.M32_WHITE_KING[bking]) {
-			long bit = 1L << BITS.getTo(p);
-			if ((bb_piece & bit) == 0 || (bb_black & bit) != 0)
-				continue;
-			int type = type(bit);
-			if (type == WHITE_KING)
-				return true;
-		}
+		if (((bb_bit1 & bb_bit2 & bb_bit3 & ~bb_black) & IBase.M64_KING[bking]) != 0)
+			return true;
 		for (int[] slide : IBase.M32_WHITE_BISHOP[bking]) {
 			for (int p : slide) {
 				long bit = 1L << BITS.getTo(p);
@@ -86,21 +79,15 @@ public class KingSafe implements IConst {
 	}
 
 	private String format64(long b64) {
-		String string64=Long.toBinaryString(b64);
-		return ".0000000.0000000.0000000.0000000.0000000.0000000.0000000.0000000".substring(0,64-string64.length())+string64;
+		String string64 = Long.toBinaryString(b64);
+		return ".0000000.0000000.0000000.0000000.0000000.0000000.0000000.0000000".substring(0, 64 - string64.length()) + string64;
 	}
 
 	final public boolean isCheckWhite() {
-		long nmap = (~bb_bit1 & bb_bit2 & bb_bit3 & bb_black);
-		if((nmap&IBase.M64_KNIGHT[wking])!=0)
+		if (((~bb_bit1 & bb_bit2 & bb_bit3 & bb_black) & IBase.M64_KNIGHT[wking]) != 0)
 			return true;
-		for (int p : IBase.M32_WHITE_KING[wking]) {
-			long bit = 1L << BITS.getTo(p);
-			if ((bb_piece & bit) == 0 || (bb_black & bit) == 0)
-				continue;
-			if (type(bit) == WHITE_KING)
-				return true;
-		}
+		if (((bb_bit1 & bb_bit2 & bb_bit3 & bb_black) & IBase.M64_KING[wking]) != 0)
+			return true;
 		for (int[] slide : IBase.M32_WHITE_BISHOP[wking]) {
 			for (int p : slide) {
 				long bit = 1L << BITS.getTo(p);
