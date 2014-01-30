@@ -17,6 +17,11 @@ public interface IBase extends IConst {
 	int[][] M32_BLACK_KING = new int[64][];
 	long[] M64_KNIGHT = new long[64];
 	long[] M64_KING = new long[64];
+	long[] M64_QUEEN = new long[64];
+	long[] M64_ROOK = new long[64];
+	long[] M64_BISHOP = new long[64];
+	long[] M64_PAWN_WHITE = new long[64];
+	long[] M64_PAWN_BLACK = new long[64];
 	int[][][] M32_WHITE_BISHOP = new int[64][][];
 	int[][][] M32_BLACK_BISHOP = new int[64][][];
 	int[][][] M32_WHITE_ROOK = new int[64][][];
@@ -51,11 +56,10 @@ public interface IBase extends IConst {
 			for (int from = 0; from < 64; from++) {
 				int[] mw = getKnightMoves(from, WHITE_KNIGHT, CASTLING_STATE | HALFMOVES);
 				M32_WHITE_KNIGHT[from] = mw;
-				int[] mb = getKnightMoves(from, BLACK_KNIGHT, CASTLING_STATE | HALFMOVES);
-				M32_BLACK_KNIGHT[from] = mb;
-				long bfrom=1L<<from;
-				for (int bitmap : mw) 
-					M64_KNIGHT[IConst.BITS.getTo(bitmap)]|=bfrom;
+				M32_BLACK_KNIGHT[from] = getKnightMoves(from, BLACK_KNIGHT, CASTLING_STATE | HALFMOVES);
+				long bfrom = 1L << from;
+				for (int bitmap : mw)
+					M64_KNIGHT[IConst.BITS.getTo(bitmap)] |= bfrom;
 			}
 		}
 
@@ -75,7 +79,12 @@ public interface IBase extends IConst {
 		static {
 			for (int from = 0; from < 64; from++) {
 				M32_WHITE_ROOK[from] = getRookMoves(from, WHITE_ROOK, CASTLING_STATE | HALFMOVES);
-				M32_BLACK_ROOK[from] = getRookMoves(from, BLACK_ROOK, CASTLING_STATE | HALFMOVES);
+				int[][] mb = getRookMoves(from, BLACK_ROOK, CASTLING_STATE | HALFMOVES);
+				M32_BLACK_ROOK[from] = mb;
+				long bfrom = 1L << from;
+				for (int[] m2 : mb)
+					for (int bitmap : m2)
+						M64_ROOK[IConst.BITS.getTo(bitmap)] |= bfrom;
 			}
 			for (int[] b : M32_WHITE_ROOK[0])
 				for (int i = 0; i < b.length; i++)
@@ -103,7 +112,12 @@ public interface IBase extends IConst {
 		static {
 			for (int from = 0; from < 64; from++) {
 				M32_WHITE_BISHOP[from] = getBishopMoves(from, WHITE_BISHOP, CASTLING_STATE | HALFMOVES);
-				M32_BLACK_BISHOP[from] = getBishopMoves(from, BLACK_BISHOP, CASTLING_STATE | HALFMOVES);
+				int[][] mb = getBishopMoves(from, BLACK_BISHOP, CASTLING_STATE | HALFMOVES);
+				M32_BLACK_BISHOP[from] = mb;
+				long bfrom = 1L << from;
+				for (int[] m2 : mb)
+					for (int bitmap : m2)
+						M64_BISHOP[IConst.BITS.getTo(bitmap)] |= bfrom;
 			}
 		}
 
@@ -119,7 +133,12 @@ public interface IBase extends IConst {
 		static {
 			for (int from = 0; from < 64; from++) {
 				M32_WHITE_QUEEN[from] = getQueenMoves(from, WHITE_QUEEN, CASTLING_STATE | HALFMOVES);
-				M32_BLACK_QUEEN[from] = getQueenMoves(from, BLACK_QUEEN, CASTLING_STATE | HALFMOVES);
+				int[][] mb = getQueenMoves(from, BLACK_QUEEN, CASTLING_STATE | HALFMOVES);
+				M32_BLACK_QUEEN[from] = mb;
+				long bfrom = 1L << from;
+				for (int[] m2 : mb)
+					for (int bitmap : m2)
+						M64_QUEEN[IConst.BITS.getTo(bitmap)] |= bfrom;
 			}
 		}
 
@@ -142,9 +161,9 @@ public interface IBase extends IConst {
 				M32_WHITE_KING[from] = mw;
 				int[] mb = getKingMoves(from, BLACK_KING, CANCASTLE_WHITE | HALFMOVES);
 				M32_BLACK_KING[from] = mb;
-				long bfrom=1L<<from;
-				for (int bitmap : mw) 
-					M64_KING[IConst.BITS.getTo(bitmap)]|=bfrom;
+				long bfrom = 1L << from;
+				for (int bitmap : mw)
+					M64_KING[IConst.BITS.getTo(bitmap)] |= bfrom;
 			}
 		}
 
@@ -165,8 +184,16 @@ public interface IBase extends IConst {
 			for (int from = 0; from < 64; from++) {
 				M32_WHITE_PAWN[from] = getWhitePawnMoves(from);
 				M32_BLACK_PAWN[from] = getBlackPawnMoves(from);
-				M32_WHITE_PAWN_CAPTURE[from] = getWhitePawnCaptures(from);
-				M32_BLACK_PAWN_CAPTURE[from] = getBlackPawnCaptures(from);
+				int[] mw = getWhitePawnCaptures(from);
+				M32_WHITE_PAWN_CAPTURE[from] = mw;
+				int[] mb = getBlackPawnCaptures(from);
+				M32_BLACK_PAWN_CAPTURE[from] = mb;
+				long bfrom = 1L << from;
+				for (int bitmap : mw)
+					M64_PAWN_WHITE[IConst.BITS.getTo(bitmap)] |= bfrom;
+				for (int bitmap : mb)
+					M64_PAWN_BLACK[IConst.BITS.getTo(bitmap)] |= bfrom;
+
 			}
 		}
 
@@ -182,10 +209,10 @@ public interface IBase extends IConst {
 
 		private static void pwcapture(ArrayList<Integer> moves, int from, int to) {
 			if (to >= 56 && to < 64) {
-				moves.add(BITS.assemble(WHITE_QUEEN, from, to, CASTLING_STATE|SPECIAL));
-				moves.add(BITS.assemble(WHITE_ROOK, from, to, CASTLING_STATE|SPECIAL));
-				moves.add(BITS.assemble(WHITE_KNIGHT, from, to, CASTLING_STATE|SPECIAL));
-				moves.add(BITS.assemble(WHITE_BISHOP, from, to, CASTLING_STATE|SPECIAL));
+				moves.add(BITS.assemble(WHITE_QUEEN, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemble(WHITE_ROOK, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemble(WHITE_KNIGHT, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemble(WHITE_BISHOP, from, to, CASTLING_STATE | SPECIAL));
 			} else {
 				moves.add(BITS.assemble(WHITE_PAWN, from, to, CASTLING_STATE));
 			}
@@ -203,10 +230,10 @@ public interface IBase extends IConst {
 
 		private static void pbcapture(ArrayList<Integer> moves, int from, int to) {
 			if (to >= 0 && to < 8) {
-				moves.add(BITS.assemble(BLACK_QUEEN, from, to, CASTLING_STATE|SPECIAL));
-				moves.add(BITS.assemble(BLACK_ROOK, from, to, CASTLING_STATE|SPECIAL));
-				moves.add(BITS.assemble(BLACK_KNIGHT, from, to, CASTLING_STATE|SPECIAL));
-				moves.add(BITS.assemble(BLACK_BISHOP, from, to, CASTLING_STATE|SPECIAL));
+				moves.add(BITS.assemble(BLACK_QUEEN, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemble(BLACK_ROOK, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemble(BLACK_KNIGHT, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemble(BLACK_BISHOP, from, to, CASTLING_STATE | SPECIAL));
 			} else {
 				moves.add(BITS.assemble(BLACK_PAWN, from, to, CASTLING_STATE));
 			}
@@ -216,10 +243,12 @@ public interface IBase extends IConst {
 			ArrayList<int[]> moves = new ArrayList<int[]>();
 			int to = from + 8;
 			if (to >= 56 && to < 64) {
-				moves.add(new int[] { BITS.assemble(WHITE_QUEEN, from, to, CASTLING_STATE|SPECIAL), BITS.assemble(WHITE_ROOK, from, to, CASTLING_STATE|SPECIAL),
-						BITS.assemble(WHITE_KNIGHT, from, to, CASTLING_STATE|SPECIAL), BITS.assemble(WHITE_BISHOP, from, to, CASTLING_STATE|SPECIAL) });
+				moves.add(new int[] { BITS.assemble(WHITE_QUEEN, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemble(WHITE_ROOK, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemble(WHITE_KNIGHT, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemble(WHITE_BISHOP, from, to, CASTLING_STATE | SPECIAL) });
 			} else if (from >= 8 && from < 16) {
-				moves.add(new int[] { BITS.assemble(WHITE_PAWN, from, to, CASTLING_STATE), BITS.assemble(WHITE_PAWN, from, to + 8,CASTLING_STATE) });
+				moves.add(new int[] { BITS.assemble(WHITE_PAWN, from, to, CASTLING_STATE), BITS.assemble(WHITE_PAWN, from, to + 8, CASTLING_STATE) });
 			} else {
 				moves.add(new int[] { BITS.assemble(WHITE_PAWN, from, to, CASTLING_STATE) });
 			}
@@ -230,8 +259,10 @@ public interface IBase extends IConst {
 			ArrayList<int[]> moves = new ArrayList<int[]>();
 			int to = from - 8;
 			if (to >= 0 && to < 8) {
-				moves.add(new int[] { BITS.assemble(BLACK_QUEEN, from, to, CASTLING_STATE|SPECIAL), BITS.assemble(BLACK_ROOK, from, to, CASTLING_STATE|SPECIAL),
-						BITS.assemble(BLACK_KNIGHT, from, to, CASTLING_STATE|SPECIAL), BITS.assemble(BLACK_BISHOP, from, to, CASTLING_STATE|SPECIAL) });
+				moves.add(new int[] { BITS.assemble(BLACK_QUEEN, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemble(BLACK_ROOK, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemble(BLACK_KNIGHT, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemble(BLACK_BISHOP, from, to, CASTLING_STATE | SPECIAL) });
 			} else if (from >= 48 && from < 56) {
 				moves.add(new int[] { BITS.assemble(BLACK_PAWN, from, to, CASTLING_STATE), BITS.assemble(BLACK_PAWN, from, to - 8, CASTLING_STATE) });
 			} else {

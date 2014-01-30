@@ -17,7 +17,7 @@ public class Counter {
 
     public int promotions;
 
-	private void add(Counter count) {
+	void add(Counter count) {
         captures += count.captures;
         castlings += count.castlings;
         checks += count.checks;

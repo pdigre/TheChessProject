@@ -42,39 +42,38 @@ public class KingSafe implements IConst {
 			return true;
 		if (((bb_bit1 & bb_bit2 & bb_bit3 & ~bb_black) & IBase.M64_KING[bking]) != 0)
 			return true;
-		for (int[] slide : IBase.M32_WHITE_BISHOP[bking]) {
-			for (int p : slide) {
-				long bit = 1L << BITS.getTo(p);
-				if ((bb_piece & bit) == 0)
-					continue;
-				if ((bb_black & bit) != 0)
+		if (((bb_bit1 & ~bb_bit3 & ~bb_black) & IBase.M64_BISHOP[bking]) != 0) {
+			for (int[] slide : IBase.M32_WHITE_BISHOP[bking]) {
+				for (int p : slide) {
+					long bit = 1L << BITS.getTo(p);
+					if ((bb_piece & bit) == 0)
+						continue;
+					if ((bb_black & bit) != 0)
+						break;
+					int type = type(bit);
+					if (type == WHITE_QUEEN || type == WHITE_BISHOP)
+						return true;
 					break;
-				int type = type(bit);
-				if (type == WHITE_QUEEN || type == WHITE_BISHOP)
-					return true;
-				break;
+				}
 			}
 		}
-		for (int[] slide : IBase.M32_WHITE_ROOK[bking]) {
-			for (int p : slide) {
-				long bit = 1L << BITS.getTo(p);
-				if ((bb_piece & bit) == 0)
-					continue;
-				if ((bb_black & bit) != 0)
+		if (((bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.M64_ROOK[bking]) != 0) {
+			for (int[] slide : IBase.M32_WHITE_ROOK[bking]) {
+				for (int p : slide) {
+					long bit = 1L << BITS.getTo(p);
+					if ((bb_piece & bit) == 0)
+						continue;
+					if ((bb_black & bit) != 0)
+						break;
+					int type = type(bit);
+					if (type == WHITE_QUEEN || type == WHITE_ROOK)
+						return true;
 					break;
-				int type = type(bit);
-				if (type == WHITE_QUEEN || type == WHITE_ROOK)
-					return true;
-				break;
+				}
 			}
 		}
-		int x = bking & 7;
-		if (bking > 15) {
-			if ((x != 0) && testPiece(bking - 9, WHITE_PAWN))
-				return true;
-			if ((x != 7) && testPiece(bking - 7, WHITE_PAWN))
-				return true;
-		}
+		if (((bb_bit1 & ~bb_bit2 & bb_bit3 & ~bb_black) & IBase.M64_PAWN_WHITE[bking]) != 0)
+			return true;
 		return false;
 	}
 
@@ -88,39 +87,38 @@ public class KingSafe implements IConst {
 			return true;
 		if (((bb_bit1 & bb_bit2 & bb_bit3 & bb_black) & IBase.M64_KING[wking]) != 0)
 			return true;
-		for (int[] slide : IBase.M32_WHITE_BISHOP[wking]) {
-			for (int p : slide) {
-				long bit = 1L << BITS.getTo(p);
-				if ((bb_piece & bit) == 0)
-					continue;
-				if ((bb_black & bit) == 0)
+		if (((bb_bit1 & ~bb_bit3 & bb_black) & IBase.M64_BISHOP[wking]) != 0) {
+			for (int[] slide : IBase.M32_WHITE_BISHOP[wking]) {
+				for (int p : slide) {
+					long bit = 1L << BITS.getTo(p);
+					if ((bb_piece & bit) == 0)
+						continue;
+					if ((bb_black & bit) == 0)
+						break;
+					int type = type(bit);
+					if (type == WHITE_QUEEN || type == WHITE_BISHOP)
+						return true;
 					break;
-				int type = type(bit);
-				if (type == WHITE_QUEEN || type == WHITE_BISHOP)
-					return true;
-				break;
+				}
 			}
 		}
-		for (int[] slide : IBase.M32_WHITE_ROOK[wking]) {
-			for (int p : slide) {
-				long bit = 1L << BITS.getTo(p);
-				if ((bb_piece & bit) == 0)
-					continue;
-				if ((bb_black & bit) == 0)
+		if (((bb_bit2 & ~bb_bit3 & bb_black) & IBase.M64_ROOK[wking]) != 0) {
+			for (int[] slide : IBase.M32_WHITE_ROOK[wking]) {
+				for (int p : slide) {
+					long bit = 1L << BITS.getTo(p);
+					if ((bb_piece & bit) == 0)
+						continue;
+					if ((bb_black & bit) == 0)
+						break;
+					int type = type(bit);
+					if (type == WHITE_QUEEN || type == WHITE_ROOK)
+						return true;
 					break;
-				int type = type(bit);
-				if (type == WHITE_QUEEN || type == WHITE_ROOK)
-					return true;
-				break;
+				}
 			}
 		}
-		int x = wking & 7;
-		if (wking < 48) {
-			if ((x != 0) && testPiece(wking + 7, BLACK_PAWN))
-				return true;
-			if ((x != 7) && testPiece(wking + 9, BLACK_PAWN))
-				return true;
-		}
+		if (((bb_bit1 & ~bb_bit2 & bb_bit3 & bb_black) & IBase.M64_PAWN_BLACK[wking]) != 0)
+			return true;
 		return false;
 	}
 

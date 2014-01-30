@@ -239,4 +239,8 @@ public class FEN implements IConst {
         return "";
     }
 
+	public final static String move2literal(int bitmap) {
+		return FEN.pos2string(IConst.BITS.getFrom(bitmap))+FEN.pos2string(IConst.BITS.getTo(bitmap));
+	}
+
 }

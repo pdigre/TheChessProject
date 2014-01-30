@@ -6,28 +6,31 @@ import java.util.concurrent.ForkJoinPool;
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.IPosition;
 
-public class CountForkJoinPool extends CountMore {
+public class CountForkJoinPoolSimple extends CountSimple {
 
     private static final long serialVersionUID = -3058348904963758664L;
 
-    public CountForkJoinPool(IPosition pos, int depth) {
+    public CountForkJoinPoolSimple(IPosition pos, int depth) {
         super(pos, depth);
     }
 
     @Override
-    public Counter[] compute() {
+    public int[] compute() {
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
-        ArrayList<CountMore> tasks = new ArrayList<CountMore>();
+        ArrayList<CountSimple> tasks = new ArrayList<CountSimple>();
         for (IPosition next : NodeGen.getLegalMoves64(pos)) {
             count(next);
             if (counters.length > 1) {
-                CountMore task = new CountMore(next, counters.length - 1);
+            	CountSimple task = new CountSimple(next, counters.length - 1);
                 tasks.add(task);
                 pool.execute(task);
             }
         }
-        for (CountMore task : tasks)
-            Counter.total(counters, task.join());
+        for (CountSimple task : tasks){
+        	int[] add = task.join();
+            for (int i = 0; i < add.length; i++)
+            	counters[i+1]+=add[i];
+        }
         return counters;
     }
 

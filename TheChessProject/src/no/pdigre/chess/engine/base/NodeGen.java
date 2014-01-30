@@ -216,7 +216,14 @@ public class NodeGen implements IConst {
 			add((bitmap & castling) | halfmoves);
 			return true;
 		} else if (black(to)) {
-			add((bitmap & castling) | (type(to) << _CAPTURE));
+			int type = type(to);
+			if(type==WHITE_ROOK){
+				if(to==BLACK_ROOK_KING_STARTPOS)
+					bitmap=bitmap&~CANCASTLE_BLACKKING;
+				if(to==BLACK_ROOK_QUEEN_STARTPOS)
+					bitmap=bitmap&~CANCASTLE_BLACKQUEEN;
+			}
+			add((bitmap & castling) | (type << _CAPTURE));
 		}
 		return false;
 	}
@@ -227,7 +234,14 @@ public class NodeGen implements IConst {
 			add((bitmap & castling) | halfmoves);
 			return true;
 		} else if (white(to)) {
-			add((bitmap & castling) | (type(to) << _CAPTURE));
+			int type = type(to);
+			if(type==WHITE_ROOK){
+				if(to==WHITE_ROOK_KING_STARTPOS)
+					bitmap=bitmap&~CANCASTLE_WHITEKING;
+				if(to==WHITE_ROOK_QUEEN_STARTPOS)
+					bitmap=bitmap&~CANCASTLE_WHITEQUEEN;
+			}
+			add((bitmap & castling) | (type << _CAPTURE));
 		}
 		return false;
 	}
@@ -237,8 +251,16 @@ public class NodeGen implements IConst {
 		if (enpassant == to) {
 			add((bitmap & castling) | (WHITE_PAWN << _CAPTURE) | SPECIAL);
 		} else {
-			if (black(to))
-				add((bitmap & castling) | (type(to) << _CAPTURE));
+			if (black(to)) {
+				int type = type(to);
+				if(type==WHITE_ROOK){
+					if(to==BLACK_ROOK_KING_STARTPOS)
+						bitmap=bitmap&~CANCASTLE_BLACKKING;
+					if(to==BLACK_ROOK_QUEEN_STARTPOS)
+						bitmap=bitmap&~CANCASTLE_BLACKQUEEN;
+				}
+				add((bitmap & castling) | (type << _CAPTURE));
+			}
 		}
 	}
 
@@ -247,8 +269,16 @@ public class NodeGen implements IConst {
 		if (enpassant == to) {
 			add((bitmap & castling) | (WHITE_PAWN << _CAPTURE) | SPECIAL);
 		} else {
-			if (white(to))
-				add((bitmap & castling) | (type(to) << _CAPTURE));
+			if (white(to)) {
+				int type = type(to);
+				if(type==WHITE_ROOK){
+					if(to==WHITE_ROOK_KING_STARTPOS)
+						bitmap=bitmap&~CANCASTLE_WHITEKING;
+					if(to==WHITE_ROOK_QUEEN_STARTPOS)
+						bitmap=bitmap&~CANCASTLE_WHITEQUEEN;
+				}
+				add((bitmap & castling) | (type << _CAPTURE));
+			}
 		}
 	}
 
