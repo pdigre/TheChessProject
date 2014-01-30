@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,8 @@ import no.pdigre.chess.test.Test_PERFT_Short;
 
 public class PerftResults {
 
+	public static HashMap<String, String> allexpected;
+	
 	final List<IPosition64> rootmoves;
 	final public int[] rootcount;
 	public Counter[] counters;
@@ -32,10 +35,6 @@ public class PerftResults {
 	public static void total(Counter[] total, Counter[] add) {
 		for (int i = 0; i < add.length; i++)
 			total[i + 1].add(add[i]);
-	}
-
-	public String printCounter() {
-		return printCounter(counters);
 	}
 
 	public static String printCounter(Counter[] counters) {
@@ -99,36 +98,18 @@ public class PerftResults {
 
 	public static void assertPERFT(String fen, CountFull runner) {
 		Counter[] counters = runner.compute();
-		String results = readPerftFromFile(fen, counters.length);
-		assertEquals(results, "FEN=" + fen + "\r\n" + PerftResults.printCounter(counters));
+		String actual = "FEN=" + fen + "\r\n" + PerftResults.printCounter(counters);
+		String expected = allexpected.get(fen).substring(0, actual.length());
+		assertEquals(expected, actual);
 	}
 
 	public static void assertPERFT2(String fen, CountFull runner) {
 		PerftResults perft = runner.perft();
-		int depth = perft.counters.length;
-		String results = readPerftFromFile(fen, depth);
-		String cmp2 = "FEN=" + fen + "\r\n" + perft.printCounter();
-		if (!results.equals(cmp2))
+		String actual = "FEN=" + fen + "\r\n" + PerftResults.printCounter(perft.counters);
+		String expected = allexpected.get(fen).substring(0, actual.length());
+		if (!expected.equals(actual))
 			analyzePerft(fen, perft);
-		assertEquals(results, cmp2);
-	}
-
-	private static String readPerftFromFile(String fen, int depth) {
-		URL resource = new Test_PERFT_Short().getClass().getResource("perft.txt");
-		StringBuffer sb = new StringBuffer();
-		try {
-			String txt = FileUtils.stream2string((InputStream) resource.getContent());
-			String prefix = "FEN=" + fen;
-			int i = 0;
-			String[] split = txt.split("\\\r\\\n");
-			while (!split[++i].startsWith(prefix))
-				;
-			for (int j = 0; j < depth + 2; j++)
-				sb.append(split[i + j] + "\r\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return sb.toString();
+		assertEquals(expected, actual);
 	}
 
 	private static void analyzePerft(String fen, PerftResults perft) {
@@ -143,6 +124,29 @@ public class PerftResults {
 				PerftResults perft2 = runner2.perft();
 				analyzePerft(fen2, perft2);
 			}
+		}
+	}
+
+	public static void readAll() {
+		allexpected=new HashMap<String, String>();
+		URL resource = new Test_PERFT_Short().getClass().getResource("perft.txt");
+		try {
+			String txt = FileUtils.stream2string((InputStream) resource.getContent());
+			int i = 0;
+			String[] split = txt.split("\\\r\\\n");
+			loop:
+			while(i<split.length){
+				while (!split[++i].startsWith("FEN=")){
+					if(i+2>split.length) break loop;
+				}
+				String fen=split[i].substring(4);
+				StringBuffer sb = new StringBuffer();
+				for (; i<split.length && !split[i].equals(""); i++)
+					sb.append(split[i] + "\r\n");
+				allexpected.put(fen,sb.toString());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

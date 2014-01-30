@@ -38,7 +38,7 @@ FEN=r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1
          4    422333    131393         0      7795     60032     15492         5
          5  15833292   2046173      6512         0    329464    200568     50562
          6 706045033 210369132       212  10882006  81102984  26973664     81076
-         
+
 4b.
 FEN=r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1
      Depth     Moves  Captures Enpassant  Castling Promotion     Check      Mate

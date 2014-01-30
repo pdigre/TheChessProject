@@ -202,7 +202,7 @@ public class NodeGen implements IConst {
 		return ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4);
 	}
 
-	final private int piece(int i) {
+	final int piece(int i) {
 		return piece(1L << i);
 	}
 

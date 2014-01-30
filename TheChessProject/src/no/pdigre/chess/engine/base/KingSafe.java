@@ -77,7 +77,7 @@ public class KingSafe implements IConst {
 		return false;
 	}
 
-	private String format64(long b64) {
+	String format64(long b64) {
 		String string64 = Long.toBinaryString(b64);
 		return ".0000000.0000000.0000000.0000000.0000000.0000000.0000000.0000000".substring(0, 64 - string64.length()) + string64;
 	}
@@ -126,7 +126,7 @@ public class KingSafe implements IConst {
 		return ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4);
 	}
 
-	final private boolean testPiece(int i, int piece) {
+	final boolean testPiece(int i, int piece) {
 		long bit = 1L << i;
 		return (bb_piece & bit) != 0
 				&& (((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4) | ((bb_black & bit) == 0 ? 0 : 8)) == piece;
