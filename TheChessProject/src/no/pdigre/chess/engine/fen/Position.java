@@ -58,4 +58,8 @@ public class Position implements IPosition {
 		return BOARD88.getBKpos(this);
 	}
 
+	@Override
+	public long getZobristKey() {
+		return 0L;
+	}
 }

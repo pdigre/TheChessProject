@@ -1,9 +1,9 @@
 package no.pdigre.chess.test;
 
 import static org.junit.Assert.assertEquals;
+import no.pdigre.chess.engine.base.ZobristKey;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.engine.polyglot.Polyglot;
-import no.pdigre.chess.engine.polyglot.ZobristKey;
 
 import org.junit.Test;
 

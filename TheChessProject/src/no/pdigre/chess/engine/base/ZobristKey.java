@@ -1,6 +1,5 @@
-package no.pdigre.chess.engine.polyglot;
+package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.fen.IPosition;
 
 /**

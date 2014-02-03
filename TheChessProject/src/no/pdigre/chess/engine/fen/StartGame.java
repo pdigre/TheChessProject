@@ -80,4 +80,9 @@ public class StartGame implements IPositionWithLog {
 	public int getBKpos() {
 		return BOARD88.getBKpos(this);
 	}
+
+	@Override
+	public long getZobristKey() {
+		return 0L;
+	}
 }

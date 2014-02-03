@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import no.pdigre.chess.engine.base.ZobristKey;
 import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
@@ -14,7 +15,6 @@ import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.iterate.IIterator;
 import no.pdigre.chess.engine.polyglot.BookMove;
 import no.pdigre.chess.engine.polyglot.Polyglot;
-import no.pdigre.chess.engine.polyglot.ZobristKey;
 import no.pdigre.chess.test.util.IterateScores;
 
 public abstract class Player implements IPlayer {

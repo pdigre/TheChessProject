@@ -63,6 +63,7 @@ public abstract interface IPosition extends IConst {
 			}
 			return out;
 		}
-
 	}
+	
+	long getZobristKey();
 }

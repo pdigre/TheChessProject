@@ -190,4 +190,9 @@ public class Position64 implements IPosition64 {
 	public IPosition64 move(int bitmap) {
 		return move(this, bitmap);
 	}
+	
+	@Override
+	public long getZobristKey() {
+		return 0L;
+	}
 }

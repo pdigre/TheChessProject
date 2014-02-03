@@ -24,31 +24,31 @@ public class Test_PERFT_Short {
 	}
 
 	@Test
-	public void m1_2_162() {
+	public void m1_2_161() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5));
 	}
 
 	@Test
-	public void m1_3_167() {
+	public void m1_3_164() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPool2Full(new StartGame(fen), 5));
 	}
 
 	@Test
-	public void e_1_1006() {
+	public void e_1_999() {
 		String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
 		PerftResults.assertPERFT(fen, new CountFull(new StartGame(fen), 5));
 	}
 
 	@Test
-	public void e_2_598() {
+	public void e_2_419() {
 		String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5));
 	}
 
 	@Test
-	public void e_3_387() {
+	public void e_3_324() {
 		String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPool2Full(new StartGame(fen), 5));
 	}
@@ -60,19 +60,19 @@ public class Test_PERFT_Short {
 	}
 
 	@Test
-	public void m3_625() {
+	public void m3_607() {
 		String fen = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 6));
 	}
 
 	@Test
-	public void m4a_772() {
+	public void m4a_722() {
 		String fen = "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5));
 	}
 
 	@Test
-	public void m4b_780() {
+	public void m4b_719() {
 		String fen = "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5));
 	}

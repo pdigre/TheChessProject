@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import no.pdigre.chess.engine.base.ZobristKey;
+
 public class Polyglot {
 
     static public HashMap<ZobristKey, BookEntry> book = new HashMap<ZobristKey, BookEntry>();
