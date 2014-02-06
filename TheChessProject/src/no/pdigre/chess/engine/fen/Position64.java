@@ -1,6 +1,9 @@
 package no.pdigre.chess.engine.fen;
 
+import no.pdigre.chess.engine.base.EBase;
+import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.KingSafe;
+import no.pdigre.chess.engine.base.ZobristKey;
 
 public class Position64 implements IPosition64 {
 
@@ -14,6 +17,7 @@ public class Position64 implements IPosition64 {
 	final int bking;
 	final boolean whiteNext;
 	final int bitmap;
+	final long zobrist;
 	
 	@Override
 	public boolean isCheckWhite(){
@@ -60,6 +64,7 @@ public class Position64 implements IPosition64 {
 		}
 		this.wking = wking;
 		this.bking = bking;
+		this.zobrist = ZobristKey.getKey(pos);
 	}
 
 	public static Position64 move(IPosition in, int move) {
@@ -70,11 +75,15 @@ public class Position64 implements IPosition64 {
 		long bb_bit3 = pos.get64bit3();
 		int wking = pos.getWKpos();
 		int bking = pos.getBKpos();
+//		long zobrist = pos.getZobristKey();
+		long zobrist = 0L;
+		int bitmap0=pos.getBitmap();
 
 		// Apply move
 		int from = BITS.getFrom(move);
 		int to = BITS.getTo(move);
 		int piece = BITS.getPiece(move);
+		EBase b=EBase.TYPES[piece];
 		if (from == wking)
 			wking = to;
 		if (from == bking)
@@ -87,6 +96,10 @@ public class Position64 implements IPosition64 {
 			bb_bit2 = (bb_bit2 & mask) | ((piece & 2) == 0 ? 0 : bto);
 			bb_bit3 = (bb_bit3 & mask) | ((piece & 4) == 0 ? 0 : bto);
 			bb_black = (bb_black & mask) | ((piece & 8) == 0 ? 0 : bto);
+			zobrist^=b.zobrist[from]^b.zobrist[to]^ZobristKey.ZOBRIST_NXT;
+			int cstl = (move^bitmap0)&IConst.CASTLING_STATE;
+			if(cstl!=0)
+				zobrist=ZobristKey.castling(zobrist,cstl);
 		}
 
 		if (BITS.isCastling(move)) {
@@ -113,10 +126,10 @@ public class Position64 implements IPosition64 {
 			bb_bit2 = bb_bit2 & mask;
 			bb_bit3 = bb_bit3 & mask;
 		}
-		return new Position64(move, pos.whiteNext(), bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking);
+		return new Position64(move, pos.whiteNext(), bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking,zobrist);
 	}
 
-	public Position64(int bitmap, boolean whiteNext, long bb_black, long bb_bit1, long bb_bit2, long bb_bit3, int wking, int bking) {
+	public Position64(int bitmap, boolean whiteNext, long bb_black, long bb_bit1, long bb_bit2, long bb_bit3, int wking, int bking,long zobrist) {
 		this.bitmap = bitmap;
 		this.wking = wking;
 		this.bking = bking;
@@ -125,6 +138,7 @@ public class Position64 implements IPosition64 {
 		this.bb_bit1 = bb_bit1;
 		this.bb_bit2 = bb_bit2;
 		this.bb_bit3 = bb_bit3;
+		this.zobrist=zobrist;
 	}
 
 	@Override
@@ -193,6 +207,6 @@ public class Position64 implements IPosition64 {
 	
 	@Override
 	public long getZobristKey() {
-		return 0L;
+		return ZobristKey.getKey(this);
 	}
 }

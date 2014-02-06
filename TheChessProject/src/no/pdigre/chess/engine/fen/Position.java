@@ -1,5 +1,7 @@
 package no.pdigre.chess.engine.fen;
 
+import no.pdigre.chess.engine.base.ZobristKey;
+
 
 
 public class Position implements IPosition {
@@ -60,6 +62,6 @@ public class Position implements IPosition {
 
 	@Override
 	public long getZobristKey() {
-		return 0L;
+		return ZobristKey.getKey(this);
 	}
 }

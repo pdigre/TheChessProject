@@ -207,6 +207,9 @@ public interface IConst {
 		public static int getCapturedType(int bitmap) {
 			return (bitmap & IConst.CAPTURE) >>> IConst._CAPTURE;
 		}
+		
 
 	}
+	
+
 }

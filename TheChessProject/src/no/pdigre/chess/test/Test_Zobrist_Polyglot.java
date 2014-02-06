@@ -9,6 +9,11 @@ import org.junit.Test;
 
 public class Test_Zobrist_Polyglot {
 
+//	@BeforeClass
+//	public static void prepare() {
+//		EBase ebase=EBase.WHITE_BISHOP;
+//	}
+
     @SuppressWarnings("static-method")
     @Test
     public void zobringKeyStraight_0() {

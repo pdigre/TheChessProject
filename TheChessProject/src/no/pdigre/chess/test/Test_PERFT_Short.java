@@ -42,7 +42,7 @@ public class Test_PERFT_Short {
 	}
 
 	@Test
-	public void e_2_419() {
+	public void e_2_393() {
 		String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5));
 	}
