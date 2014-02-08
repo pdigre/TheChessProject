@@ -32,11 +32,6 @@ public enum EBase {
 		zobrist = longkey(i);
 	}
 
-	private int[] shortkey(long[] r642) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	private long[] longkey(int p) {
 		long[] l = new long[64];
 		int n = ZobristKey.getKindOfPiece(p) * 64;

@@ -43,8 +43,8 @@ public class KingSafe implements IConst {
 		if (((bb_bit1 & bb_bit2 & bb_bit3 & ~bb_black) & IBase.M64_KING[bking]) != 0)
 			return true;
 		if (((bb_bit1 & ~bb_bit3 & ~bb_black) & IBase.M64_BISHOP[bking]) != 0) {
-			for (int[] slide : IBase.M32_WHITE_BISHOP[bking]) {
-				for (int p : slide) {
+			for (long[] slide : IBase.M32_WHITE_BISHOP[bking]) {
+				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
 						continue;
@@ -58,8 +58,8 @@ public class KingSafe implements IConst {
 			}
 		}
 		if (((bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.M64_ROOK[bking]) != 0) {
-			for (int[] slide : IBase.M32_WHITE_ROOK[bking]) {
-				for (int p : slide) {
+			for (long[] slide : IBase.M32_WHITE_ROOK[bking]) {
+				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
 						continue;
@@ -88,8 +88,8 @@ public class KingSafe implements IConst {
 		if (((bb_bit1 & bb_bit2 & bb_bit3 & bb_black) & IBase.M64_KING[wking]) != 0)
 			return true;
 		if (((bb_bit1 & ~bb_bit3 & bb_black) & IBase.M64_BISHOP[wking]) != 0) {
-			for (int[] slide : IBase.M32_WHITE_BISHOP[wking]) {
-				for (int p : slide) {
+			for (long[] slide : IBase.M32_WHITE_BISHOP[wking]) {
+				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
 						continue;
@@ -103,8 +103,8 @@ public class KingSafe implements IConst {
 			}
 		}
 		if (((bb_bit2 & ~bb_bit3 & bb_black) & IBase.M64_ROOK[wking]) != 0) {
-			for (int[] slide : IBase.M32_WHITE_ROOK[wking]) {
-				for (int p : slide) {
+			for (long[] slide : IBase.M32_WHITE_ROOK[wking]) {
+				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
 						continue;

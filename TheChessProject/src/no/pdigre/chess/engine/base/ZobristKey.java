@@ -204,7 +204,7 @@ public class ZobristKey implements IConst {
 
 	public final static long getKey(IPosition pos) {
 		long key = 0;
-		int bitmap = pos.getBitmap();
+		long bitmap = pos.getBitmap();
 		for (int i = 0; i < 64; i++) {
 			int piece = pos.getPiece(i);
 			if(piece!=0)
@@ -235,7 +235,7 @@ public class ZobristKey implements IConst {
 		return key;
 	}
 
-	public static long castling(long key, int cstl) {
+	public static long castling(long key, long cstl) {
 		if ((cstl & CANCASTLE_WHITEKING) != 0)
 			key ^= ZOBRIST_CWK;
 		if ((cstl & CANCASTLE_WHITEQUEEN) != 0)

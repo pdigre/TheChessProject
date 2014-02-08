@@ -6,9 +6,9 @@ package no.pdigre.chess.engine.fen;
 public class PositionNext implements IPosition {
     int[] board;
     int[] parent;
-    int bitmap;
+    long bitmap;
     
-    public PositionNext(int[] parent, int bitmap) {
+    public PositionNext(int[] parent, long bitmap) {
         super();
         this.parent = parent;
         this.bitmap = bitmap;
@@ -27,12 +27,12 @@ public class PositionNext implements IPosition {
     }
     
     @Override
-    public int getBitmap() {
+    public long getBitmap() {
         return bitmap;
     }
 
     @Override
-    public IPosition move(int bitmap2) {
+    public IPosition move(long bitmap2) {
         if(board==null)
             board=IPosition.BOARD88.apply(parent, bitmap);
         return new PositionNext(board, bitmap2);
@@ -64,5 +64,15 @@ public class PositionNext implements IPosition {
 	@Override
 	public long getZobristKey() {
 		return 0L;
+	}
+
+	@Override
+	public int getScore() {
+		return 0;
+	}
+
+	@Override
+	public int getQuality() {
+		return 0;
 	}
 }

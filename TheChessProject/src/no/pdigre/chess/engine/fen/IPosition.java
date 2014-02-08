@@ -14,12 +14,16 @@ public abstract interface IPosition extends IConst {
 
 	int getBKpos();
 
+    int getScore();
+
+    int getQuality();
+
 	/**
 	 * Returns the castling and halfmoves state
 	 * 
 	 * @return
 	 */
-	public abstract int getBitmap();
+	public abstract long getBitmap();
 
 	/**
 	 * Returns a new IPosition based on current
@@ -27,7 +31,7 @@ public abstract interface IPosition extends IConst {
 	 * @param bitmap
 	 * @return
 	 */
-	public IPosition move(int bitmap);
+	public IPosition move(long bitmap);
 
 	class BOARD88 {
 		final static public int getWKpos(IPosition pos){
@@ -44,12 +48,12 @@ public abstract interface IPosition extends IConst {
 			return kingpos;
 		}
 		
-		final static public int[] apply(final int[] in, final int bitmap) {
+		final static public int[] apply(final int[] in, final long bitmap) {
 			int[] out = in.clone();
 			int from = BITS.getFrom(bitmap);
 			out[from] = 0;
 			int to = BITS.getTo(bitmap);
-			out[to] = bitmap & PIECE;
+			out[to] = (int) (bitmap & PIECE);
 			if (BITS.isCastling(bitmap)) {
 				if (from > to) {
 					out[from - 4] = 0;

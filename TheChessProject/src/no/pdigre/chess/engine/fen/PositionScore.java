@@ -2,7 +2,7 @@ package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.test.util.IterateScores;
 
-public class PositionScore extends Position implements IPositionScore {
+public class PositionScore extends Position implements IPosition {
 
     public int score = 0;
 
@@ -21,7 +21,7 @@ public class PositionScore extends Position implements IPositionScore {
 
     @Override
     public int hashCode() {
-        return getBitmap();
+        return (int) getBitmap();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class PositionScore extends Position implements IPositionScore {
     }
 
     @Override
-    public int getRun() {
+    public int getQuality() {
         return run;
     }
 }

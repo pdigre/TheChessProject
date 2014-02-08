@@ -19,15 +19,15 @@ public class Manual extends Player {
 
     @Override
     public int clickSquare(int i) {
-        int[] bitmaps = moves.getBitmaps();
+    	long[] bitmaps = moves.getBitmaps();
         if(from>-1){
-            int[] avail = NodeUtil.filterTo(NodeUtil.filterFrom(bitmaps, from), i);
+        	long[] avail = NodeUtil.filterTo(NodeUtil.filterFrom(bitmaps, from), i);
             from=-1;
             if(avail.length>0)
-                return avail[0];
+                return (int) avail[0];
         }
         if(from==-1){
-            int[] avail = NodeUtil.filterFrom(bitmaps, i);
+        	long[] avail = NodeUtil.filterFrom(bitmaps, i);
             if(avail.length>0)
                 from=i;
         } 
@@ -39,16 +39,16 @@ public class Manual extends Player {
         if(moves==null)
             return super.getMarkers();
         ArrayList<Marking> list = new ArrayList<Marking>();
-        int[] bitmaps = moves.getBitmaps();
+        long[] bitmaps = moves.getBitmaps();
         if(from == -1) {
             int best = BITS.getFrom(bitmaps[0]);
-            for (int n : bitmaps) {
+            for (long n : bitmaps) {
                 int fr = BITS.getFrom(n);
                 list.add(new Marking(fr == best ? MarkingType.BestMoveFrom : MarkingType.MoveFrom, fr));
             }
         } else {
             list.add(new Marking(MarkingType.MarkFrom, from));
-            for (int n : bitmaps) {
+            for (long n : bitmaps) {
                 if (BITS.getFrom(n) == from)
                     list.add(new Marking(MarkingType.MoveTo, BITS.getTo(n), 0));
             }

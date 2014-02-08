@@ -19,7 +19,7 @@ public class Test_BasicMoves {
         FEN.printPiece(type, from);
         StringBuffer sb = new StringBuffer();
         sb.append(PieceType.types[type].fen);
-        for (int bitmap : NodeUtil.filterFrom(NodeGen.getLegalMoves(start), from))
+        for (long bitmap : NodeUtil.filterFrom(NodeGen.getLegalMoves(start), from))
             sb.append(" "+FEN.pos2string(BITS.getTo(bitmap)));
         return sb.toString();
     }

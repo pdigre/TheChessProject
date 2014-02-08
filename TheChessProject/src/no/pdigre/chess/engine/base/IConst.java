@@ -57,15 +57,15 @@ public interface IConst {
 
 	int CANCASTLE_WHITEQUEEN = BITS1 << (_CASTLING);
 
-	int CANCASTLE_WHITEKING = BITS1 << (_CASTLING + 1);
+	long CANCASTLE_WHITEKING = BITS1 << (_CASTLING + 1);
 
-	int CANCASTLE_WHITE = CANCASTLE_WHITEQUEEN | CANCASTLE_WHITEKING;
+	long CANCASTLE_WHITE = CANCASTLE_WHITEQUEEN | CANCASTLE_WHITEKING;
 
-	int CANCASTLE_BLACKQUEEN = BITS1 << (_CASTLING + 2);
+	long CANCASTLE_BLACKQUEEN = BITS1 << (_CASTLING + 2);
 
-	int CANCASTLE_BLACKKING = BITS1 << (_CASTLING + 3);
+	long CANCASTLE_BLACKKING = BITS1 << (_CASTLING + 3);
 
-	int CANCASTLE_BLACK = CANCASTLE_BLACKQUEEN | CANCASTLE_BLACKKING;
+	long CANCASTLE_BLACK = CANCASTLE_BLACKQUEEN | CANCASTLE_BLACKKING;
 
 	int _HALFMOVES = 24;
 
@@ -113,23 +113,23 @@ public interface IConst {
 
 	class BITS {
 
-		final public static int assemble(int piece,int from,int to,int extra) {
+		final public static long assemble(int piece,int from,int to,long extra) {
 			return (piece <<_PIECE)|(from <<_FROM)|(to <<_TO)|extra;
 		}
 
-		final public static int getCastlingState(final int bitmap) {
+		final public static long getCastlingState(final long bitmap) {
 			return bitmap & CASTLING_STATE;
 		}
 
-		final static public int getFrom(final int bitmap) {
-			return (bitmap >> _FROM) & BITS6;
+		final static public int getFrom(final long bitmap) {
+			return (int) ((bitmap >> _FROM) & BITS6);
 		}
 
-		final static public int getTo(final int bitmap) {
-			return (bitmap >> _TO) & BITS6;
+		final static public int getTo(final long bitmap) {
+			return (int) ((bitmap >> _TO) & BITS6);
 		}
 
-		final public static boolean isCapture(final int bitmap) {
+		final public static boolean isCapture(final long bitmap) {
 			return (bitmap & CAPTURE) != 0;
 		}
 
@@ -139,7 +139,7 @@ public interface IConst {
 		 * @param bitmap
 		 * @return
 		 */
-		final static public boolean white(final int bitmap) {
+		final static public boolean white(final long bitmap) {
 			return (bitmap & IConst.BLACK) == 0;
 		}
 		
@@ -149,7 +149,7 @@ public interface IConst {
 		 * @param bitmap
 		 * @return
 		 */
-		final static public boolean black(final int bitmap) {
+		final static public boolean black(final long bitmap) {
 			return (bitmap & IConst.BLACK) != 0;
 		}
 
@@ -159,35 +159,35 @@ public interface IConst {
 		 * @param bitmap
 		 * @return
 		 */
-		final static public boolean whiteNext(final int bitmap) {
+		final static public boolean whiteNext(final long bitmap) {
 			return (bitmap & IConst.BLACK) > 0;
 		}
 
-		final static public boolean isCastling(final int bitmap) {
+		final static public boolean isCastling(final long bitmap) {
 			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == WHITE_KING;
 		}
 
-		final static public boolean isEnpassant(final int bitmap) {
+		final static public boolean isEnpassant(final long bitmap) {
 			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == WHITE_PAWN;
 		}
 
-		final public static boolean isPromotion(final int bitmap) {
+		final public static boolean isPromotion(final long bitmap) {
 			return ((bitmap & SPECIAL) != 0) && BITS.getType(bitmap) != WHITE_KING && BITS.getType(bitmap) != WHITE_PAWN;
 		}
 
-		final public static int getPiece(final int bitmap) {
-			return (bitmap & PIECE) >> _PIECE;
+		final public static int getPiece(final long bitmap) {
+			return (int) ((bitmap & PIECE) >> _PIECE);
 		}
 
-		final public static int getType(final int bitmap) {
-			return (bitmap & PIECETYPE) >> _PIECE;
+		final public static int getType(final long bitmap) {
+			return (int) ((bitmap & PIECETYPE) >> _PIECE);
 		}
 
-		final public static int halfMoves(final int bitmap) {
-			return (bitmap >> _HALFMOVES) & BITS6;
+		final public static int halfMoves(final long bitmap) {
+			return (int) ((bitmap >> _HALFMOVES) & BITS6);
 		}
 
-		public static int getEnpassant(final int bitmap) {
+		public static int getEnpassant(final long bitmap) {
 			int from2 = getFrom(bitmap);
 			int to2 = getTo(bitmap);
 			switch (getPiece(bitmap)) {
@@ -204,8 +204,8 @@ public interface IConst {
 			}
 		}
 
-		public static int getCapturedType(int bitmap) {
-			return (bitmap & IConst.CAPTURE) >>> IConst._CAPTURE;
+		public static int getCapturedType(long bitmap) {
+			return (int) ((bitmap & IConst.CAPTURE) >>> IConst._CAPTURE);
 		}
 		
 

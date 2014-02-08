@@ -11,7 +11,7 @@ public interface IPosition64 extends IPosition {
 	long get64bit3();
 
 	@Override
-	public IPosition64 move(int bitmap);
+	public IPosition64 move(long bitmap);
 
 	boolean isCheckWhite();
 

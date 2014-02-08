@@ -2,7 +2,7 @@ package no.pdigre.chess.profile;
 
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
-import no.pdigre.chess.engine.fen.IPositionScore;
+import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.iterate.IIterator;
 import no.pdigre.chess.engine.iterate.MiniMax;
 import no.pdigre.chess.engine.iterate.MiniMaxEnd;
@@ -25,20 +25,20 @@ public class Medium2 extends Player {
 
         setTimeout(9000);
         printScore(moves, "PASS 0");
-        for (IPositionScore m : moves.getSortedArray())
+        for (IPosition m : moves.getSortedArray())
             runThinker(m, moves, iter0);
         printScore(moves, "PASS 1");
-        for (IPositionScore m : moves.getSortedArray())
+        for (IPosition m : moves.getSortedArray())
             runThinker(m, moves, iter1);
         printScore(moves, "PASS 2");
-        for (IPositionScore m : moves.getSortedArray())
+        for (IPosition m : moves.getSortedArray())
             runThinker(m, moves, iter2);
         printScore(moves, "PASS 3");
-        for (IPositionScore m : moves.getSortedArray())
+        for (IPosition m : moves.getSortedArray())
             if (state == RunState.RUNNING)
             runThinker(m, moves, iter3);
         printScore(moves, "PASS 4");
-        for (IPositionScore m : moves.getSortedArray()) {
+        for (IPosition m : moves.getSortedArray()) {
             if (state != RunState.RUNNING)
                 break;
             System.out.println("Processing:"+FEN.notation(m));

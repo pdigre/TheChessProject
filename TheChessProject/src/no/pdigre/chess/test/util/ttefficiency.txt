@@ -8,7 +8,7 @@ level of 6 - 123M moves - 2min thinking time
 	24 bit size 16M seems good tradeoff with 3% collision
 	Max 91,5% hit rate
 	must replace and shift at first and 2nd level collisions
-	Running parallell (3 * speed) drops hits from 89 to 83 % 
+	Running parallell (2 * speed) drops hits from 89 to 85 % 
 
 
 Test 1: d5 zobrist 24bit end
@@ -54,37 +54,37 @@ Hitrate:4.7294945963236525%
 ***************************************************************************************
 Test 6: d5 zobrist 24bit end Double Key shift 1 
 Size:16777216
-Hits:4157788 = 81.97188918759704%
-Miss: 906504 = 17.87196591940558%
-Coll:   7920 =  0.15614489299737472%
+Hits:4166313 = 82.13996181547617%
+Miss:898176 = 17.707777198587124%
+Coll:7723 = 0.1522609859367077%
 Err:0 = 0.0%
-Hitrate:4.586618481551102%
+Hitrate:4.638637638948269%
 ***************************************************************************************
 
 ***************************************************************************************
-Test 7: d6 zobrist 24bit end Double Key shift 1 - 128secs
+Test 7: d6 zobrist 24bit end Double Key shift 1 - 55secs
 Size:16777216
-Hits:110396979 = 88.9347648548806%
-Miss:  9740031 = 7.846477091227718%
-Coll:  3995526 = 3.2187580538916887%
+Hits:110785662 = 89.2478842130479%
+Miss:9559022 = 7.700657948372214%
+Coll:3787852 = 3.051457838579887%
 Err:0 = 0.0%
-Hitrate:11.334356020016774%
+Hitrate:11.589644003330047%
 
-same running lightly parallel - 50sec
+same running lightly parallel - 27sec
 Size:16777216
-Hits:95921415 = 83.08842661902908%
-Miss:9745673 = 8.441833723090438%
-Coll:9777889 = 8.469739657880481%
+Hits:81661834 = 85.3259415379757%
+Miss:7676528 = 8.020968269493354%
+Coll:6367390 = 6.653090192530957%
 Err:0 = 0.0%
-Hitrate:9.842461880262142%
+Hitrate:10.637860501518395%
 
-same running highly parallel - 47sec
+same running highly parallel - 27sec
 Size:16777216
-Hits:93288021 = 82.76003648190188%
-Miss:9742344 = 8.642875432626424%
-Coll:9690732 = 8.597088085471702%
+Hits:79628041 = 84.68554382202909%
+Miss:5377027 = 5.718543994329003%
+Coll:9022835 = 9.595912183641913%
 Err:0 = 0.0%
-Hitrate:9.575521147682734%
+Hitrate:14.808934565513619%
 ***************************************************************************************
 
 Test 8: d6 zobrist 20bit end Double Key shift 1 - 136secs

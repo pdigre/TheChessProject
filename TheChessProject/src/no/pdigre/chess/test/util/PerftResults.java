@@ -61,7 +61,7 @@ public class PerftResults {
 		for (int i = 0; i < rootcount.length; i++) {
 			int count = rootcount[i];
 			IPosition64 pos = rootmoves.get(i);
-			int bitmap = pos.getBitmap();
+			long bitmap = pos.getBitmap();
 			map.put(FEN.move2literal(bitmap), count);
 		}
 		return map;

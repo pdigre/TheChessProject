@@ -126,7 +126,7 @@ public class FEN implements IConst {
 
     final public static String getFenCastling(IPosition move) {
         StringBuilder sb = new StringBuilder();
-        int state = BITS.getCastlingState(move.getBitmap());
+        long state = BITS.getCastlingState(move.getBitmap());
         if ((state & IConst.CANCASTLE_WHITEKING) != 0)
             sb.append("K");
         if ((state & IConst.CANCASTLE_WHITEQUEEN) != 0)
@@ -144,14 +144,14 @@ public class FEN implements IConst {
     }
 
     public static String printMove(IPosition pos) {
-        int bitmap = pos.getBitmap();
+    	long bitmap = pos.getBitmap();
         StringBuilder sb = new StringBuilder();
-        sb.append(PieceType.types[bitmap & PIECE]);
+        sb.append(PieceType.types[(int) (bitmap & PIECE)]);
         sb.append(" from " + FEN.pos2string(BITS.getFrom(bitmap)) + " to "
             + FEN.pos2string(BITS.getTo(bitmap)));
-        int capture = ((bitmap >> _CAPTURE) & 7);
+        long capture = ((bitmap >> _CAPTURE) & 7);
         if (capture != 0)
-            sb.append(" beats " + PieceType.types[capture | ((bitmap & BLACK) ^ BLACK)]);
+            sb.append(" beats " + PieceType.types[(int) (capture | ((bitmap & BLACK) ^ BLACK))]);
         if (BITS.isEnpassant(bitmap))
             sb.append(" enpassant");
         if (BITS.isCastling(bitmap))
@@ -171,11 +171,11 @@ public class FEN implements IConst {
     }
 
     public static String notation(IPosition pos) {
-        int bitmap = pos.getBitmap();
+    	long bitmap = pos.getBitmap();
         int from = BITS.getFrom(bitmap);
         int to = BITS.getTo(bitmap);
         String capture = ((bitmap >> _CAPTURE) & 7) != 0 ? "x" : "";
-        String p = piecePrefix(bitmap & PIECETYPE);
+        String p = piecePrefix((int) (bitmap & PIECETYPE));
         String prefix = capture + FEN.pos2string(from);
         String suffix = capture + FEN.pos2string(to);
         if (BITS.isPromotion(bitmap)) {
@@ -239,7 +239,7 @@ public class FEN implements IConst {
         return "";
     }
 
-	public final static String move2literal(int bitmap) {
+	public final static String move2literal(long bitmap) {
 		return FEN.pos2string(IConst.BITS.getFrom(bitmap))+FEN.pos2string(IConst.BITS.getTo(bitmap));
 	}
 

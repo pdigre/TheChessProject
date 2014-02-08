@@ -9,12 +9,12 @@ import no.pdigre.chess.engine.fen.Position64;
 
 public class NodeGen implements IConst {
 
-	final private int[] moves = new int[300];
+	final private long[] moves = new long[300];
 	private int imoves;
 	final private int enpassant;
 	final private IPosition64 pos;
 	final private int halfmoves;
-	final private int castling;
+	final private long castling;
 	final private long bb_piece;
 	final private long bb_white;
 	final private long bb_black;
@@ -27,7 +27,7 @@ public class NodeGen implements IConst {
 
 	private NodeGen(IPosition64 pos) {
 		this.pos = pos;
-		int inherit = pos.getBitmap();
+		long inherit = pos.getBitmap();
 		this.bb_black = pos.get64black();
 		this.bb_bit1 = pos.get64bit1();
 		this.bb_bit2 = pos.get64bit2();
@@ -43,9 +43,9 @@ public class NodeGen implements IConst {
 		enpassant = BITS.getEnpassant(inherit);
 	}
 
-	final private int[] getAllLegalMoves() {
+	final private long[] getAllLegalMoves() {
 		ArrayList<IPosition64> list = getAllLegalMoves64();
-		int[] ret = new int[list.size()];
+		long[] ret = new long[list.size()];
 		for (int i = 0; i < ret.length; i++) 
 			ret[i]=list.get(i).getBitmap();
 		return ret;
@@ -62,7 +62,7 @@ public class NodeGen implements IConst {
 				if ((bb_white & bit) != 0) {
 					getMoves(i, piece(bit));
 					while (test < imoves) {
-						int bitmap = moves[test++];
+						long bitmap = moves[test++];
 						IPosition64 next = pos.move(bitmap);
 						if (!next.isCheckWhite())
 							list.add(next);
@@ -79,7 +79,7 @@ public class NodeGen implements IConst {
 				if ((bb_black & bit) != 0) {
 					getMoves(i, piece(bit));
 					while (test < imoves) {
-						int bitmap = moves[test++];
+						long bitmap = moves[test++];
 						IPosition64 next = pos.move(bitmap);
 						if (!next.isCheckBlack())
 							list.add(next);
@@ -95,67 +95,67 @@ public class NodeGen implements IConst {
 	final private void getMoves(int from, int ptype) {
 		switch (ptype) {
 		case WHITE_BISHOP:
-			for (int[] slides : IBase.M32_WHITE_BISHOP[from])
+			for (long[] slides : IBase.M32_WHITE_BISHOP[from])
 				for (int i = 0; i < slides.length && slideWhite(slides[i]); i++)
 					;
 			break;
 		case BLACK_BISHOP:
-			for (int[] slides : IBase.M32_BLACK_BISHOP[from])
+			for (long[] slides : IBase.M32_BLACK_BISHOP[from])
 				for (int i = 0; i < slides.length && slideBlack(slides[i]); i++)
 					;
 			break;
 		case WHITE_ROOK:
-			for (int[] slides : IBase.M32_WHITE_ROOK[from])
+			for (long[] slides : IBase.M32_WHITE_ROOK[from])
 				for (int i1 = 0; i1 < slides.length && slideWhite(slides[i1]); i1++)
 					;
 			break;
 		case BLACK_ROOK:
-			for (int[] slides : IBase.M32_BLACK_ROOK[from])
+			for (long[] slides : IBase.M32_BLACK_ROOK[from])
 				for (int i = 0; i < slides.length && slideBlack(slides[i]); i++)
 					;
 			break;
 		case WHITE_QUEEN:
-			for (int[] slides : IBase.M32_WHITE_QUEEN[from])
+			for (long[] slides : IBase.M32_WHITE_QUEEN[from])
 				for (int i = 0; i < slides.length && slideWhite(slides[i]); i++)
 					;
 			break;
 		case BLACK_QUEEN:
-			for (int[] slides : IBase.M32_BLACK_QUEEN[from])
+			for (long[] slides : IBase.M32_BLACK_QUEEN[from])
 				for (int i = 0; i < slides.length && slideBlack(slides[i]); i++)
 					;
 			break;
 		case WHITE_KNIGHT:
-			for (int bitmap : IBase.M32_WHITE_KNIGHT[from])
-				slideWhite(bitmap);
+			for (long bitmap : IBase.M32_WHITE_KNIGHT[from])
+				slideWhite((int) bitmap);
 			break;
 		case BLACK_KNIGHT:
-			for (int bitmap : IBase.M32_BLACK_KNIGHT[from])
-				slideBlack(bitmap);
+			for (long bitmap : IBase.M32_BLACK_KNIGHT[from])
+				slideBlack((int) bitmap);
 			break;
 		case WHITE_KING:
 			break;
 		case BLACK_KING:
 			break;
 		case BLACK_PAWN:
-			for (int[] slides : IBase.M32_BLACK_PAWN[from])
+			for (long[] slides : IBase.M32_BLACK_PAWN[from])
 				for (int i = 0; i < slides.length && pawnSlide(slides[i]); i++)
 					;
-			for (int bitmap : IBase.M32_BLACK_PAWN_CAPTURE[from])
+			for (long bitmap : IBase.M32_BLACK_PAWN_CAPTURE[from])
 				pawnCaptureBlack(bitmap);
 			break;
 		case WHITE_PAWN:
-			for (int[] slides : IBase.M32_WHITE_PAWN[from])
+			for (long[] slides : IBase.M32_WHITE_PAWN[from])
 				for (int i = 0; i < slides.length && pawnSlide(slides[i]); i++)
 					;
-			for (int bitmap : IBase.M32_WHITE_PAWN_CAPTURE[from])
+			for (long bitmap : IBase.M32_WHITE_PAWN_CAPTURE[from])
 				pawnCaptureWhite(bitmap);
 			break;
 		}
 	}
 
 	final private void getWhiteKingMoves() {
-		for (int bitmap : IBase.M32_WHITE_KING[wking])
-			slideWhite(bitmap);
+		for (long bitmap : IBase.M32_WHITE_KING[wking])
+			slideWhite((int) bitmap);
 		if ((castling & CANCASTLE_WHITEQUEEN) != 0) {
 			if (!board(WHITE_KING_STARTPOS - 1) && !board(WHITE_KING_STARTPOS - 2) && !board(WHITE_KING_STARTPOS - 3))
 				if (!pos.isCheckWhite() && !pos.move(IBase.WHITE_QUEENSIDE).isCheckWhite())
@@ -169,8 +169,8 @@ public class NodeGen implements IConst {
 	}
 
 	final private void getBlackKingMoves() {
-		for (int bitmap : IBase.M32_BLACK_KING[bking])
-			slideBlack(bitmap);
+		for (long bitmap : IBase.M32_BLACK_KING[bking])
+			slideBlack((int) bitmap);
 		if ((castling & CANCASTLE_BLACKQUEEN) != 0) {
 			if (!board(BLACK_KING_STARTPOS - 1) && !board(BLACK_KING_STARTPOS - 2) && !board(BLACK_KING_STARTPOS - 3))
 				if (!pos.isCheckBlack() && !pos.move(IBase.BLACK_QUEENSIDE).isCheckBlack()) {
@@ -202,15 +202,11 @@ public class NodeGen implements IConst {
 		return ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4);
 	}
 
-	final int piece(int i) {
-		return piece(1L << i);
-	}
-
 	final private int piece(long bit) {
 		return ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4) | ((bb_black & bit) == 0 ? 0 : 8);
 	}
 
-	final private boolean slideWhite(int bitmap) {
+	final private boolean slideWhite(long bitmap) {
 		int to = BITS.getTo(bitmap);
 		if (!board(to)) {
 			add((bitmap & castling) | halfmoves);
@@ -228,7 +224,7 @@ public class NodeGen implements IConst {
 		return false;
 	}
 
-	final private boolean slideBlack(int bitmap) {
+	final private boolean slideBlack(long bitmap) {
 		int to = BITS.getTo(bitmap);
 		if (!board(to)) {
 			add((bitmap & castling) | halfmoves);
@@ -246,7 +242,7 @@ public class NodeGen implements IConst {
 		return false;
 	}
 
-	final private void pawnCaptureWhite(int bitmap) {
+	final private void pawnCaptureWhite(long bitmap) {
 		int to = BITS.getTo(bitmap);
 		if (enpassant == to) {
 			add((bitmap & castling) | (WHITE_PAWN << _CAPTURE) | SPECIAL);
@@ -264,7 +260,7 @@ public class NodeGen implements IConst {
 		}
 	}
 
-	final private void pawnCaptureBlack(int bitmap) {
+	final private void pawnCaptureBlack(long bitmap) {
 		int to = BITS.getTo(bitmap);
 		if (enpassant == to) {
 			add((bitmap & castling) | (WHITE_PAWN << _CAPTURE) | SPECIAL);
@@ -282,7 +278,7 @@ public class NodeGen implements IConst {
 		}
 	}
 
-	final private boolean pawnSlide(int bitmap) {
+	final private boolean pawnSlide(long bitmap) {
 		if (!board(BITS.getTo(bitmap))) {
 			add(bitmap & castling);
 			return true;
@@ -290,11 +286,11 @@ public class NodeGen implements IConst {
 		return false;
 	}
 
-	final private void add(int bitmap) {
-		moves[imoves++] = bitmap;
+	final private void add(long bitmap) {
+		moves[imoves++] = (int) bitmap;
 	}
 
-	public static final int[] getLegalMoves(IPosition pos) {
+	public static final long[] getLegalMoves(IPosition pos) {
 		return create(pos).getAllLegalMoves();
 	}
 

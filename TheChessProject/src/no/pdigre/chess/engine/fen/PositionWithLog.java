@@ -5,7 +5,7 @@ public final class PositionWithLog extends Position implements IPositionWithLog 
 
     final private IPositionWithLog parent;
 
-    public PositionWithLog(final IPositionWithLog parent, final int bitmap) {
+    public PositionWithLog(final IPositionWithLog parent, final long bitmap) {
         super(IPosition.BOARD88.apply(parent.getBoard(), bitmap), bitmap);
         this.parent = parent;
     }
@@ -19,7 +19,7 @@ public final class PositionWithLog extends Position implements IPositionWithLog 
     }
 
     @Override
-    public IPosition move(int bitmap2) {
+    public IPosition move(long bitmap2) {
         return new PositionWithLog(this, bitmap2);
     }
 

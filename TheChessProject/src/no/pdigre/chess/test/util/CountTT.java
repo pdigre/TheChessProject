@@ -31,7 +31,7 @@ public class CountTT extends RecursiveTask<Counter[]> {
 	protected void count(IPosition pos) {
 		CountTT.registerTT(pos);
 		counters[0].moves++;
-		int bitmap = pos.getBitmap();
+		long bitmap = pos.getBitmap();
 		if (BITS.isCapture(bitmap)) {
 			counters[0].captures++;
 			if (BITS.isEnpassant(bitmap))

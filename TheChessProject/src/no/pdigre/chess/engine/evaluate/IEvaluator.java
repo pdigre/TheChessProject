@@ -46,7 +46,7 @@ public abstract interface IEvaluator {
             }
         }
         
-        public final int tacticValue(int bitmap) {
+        public final int tacticValue(long bitmap) {
             int val = value(BITS.getCapturedType(bitmap));
             if(BITS.isPromotion(bitmap))
                 val+=value(BITS.getType(bitmap));

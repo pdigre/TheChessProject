@@ -21,21 +21,21 @@ public class Test_TT {
 	long total=0L;
 	
 	@Test
-	public void opening_1_4470() {
+	public void opening_1_1673() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-		printResults(fen, new CountTT(new StartGame(fen), 5));
+		printResults(fen, new CountTT(new StartGame(fen), 6));
 	}
 
 	@Test
-	public void opening_2_1199() {
+	public void opening_2_511() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-		printResults(fen, new CountForkJoinPoolTT(new StartGame(fen), 5));
+		printResults(fen, new CountForkJoinPoolTT(new StartGame(fen), 6));
 	}
 
 	@Test
-	public void opening_3_1037() {
+	public void opening_3_384() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-		printResults(fen, new CountForkJoinPool2TT(new StartGame(fen), 5));
+		printResults(fen, new CountForkJoinPool2TT(new StartGame(fen), 6));
 	}
 
 	public void printResults(String fen, CountTT countTT) {

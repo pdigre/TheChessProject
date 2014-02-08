@@ -5,7 +5,6 @@ import java.util.HashSet;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPositionScore;
 
 @SuppressWarnings("unused")
 public class NegaMaxTransposition implements IIterator {
@@ -121,12 +120,12 @@ public class NegaMaxTransposition implements IIterator {
     }
 
     @Override
-    public int black(IPositionScore pos, int total, int alpha, int beta) {
+    public int black(IPosition pos, int total, int alpha, int beta) {
         return think(pos, total, alpha, beta);
     }
 
     @Override
-    public int white(IPositionScore pos, int total, int alpha, int beta) {
+    public int white(IPosition pos, int total, int alpha, int beta) {
         return think(pos, total, alpha, beta);
     }
 }

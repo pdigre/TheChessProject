@@ -3,7 +3,6 @@ package no.pdigre.chess.engine.iterate;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPositionScore;
 import no.pdigre.chess.test.util.IterateScores;
 
 public class AlphaBeta implements IIterator {
@@ -24,8 +23,8 @@ public class AlphaBeta implements IIterator {
     }
 
     @Override
-    public int black(IPositionScore pos, int total, int min, int max) {
-        for (IPositionScore n:new IterateScores(pos, eval)) {
+    public int black(IPosition pos, int total, int min, int max) {
+        for (IPosition n:new IterateScores(pos, eval)) {
             int score = next.white(n, n.getScore(), min, max);
             if (score <= min)
                 return min;
@@ -36,8 +35,8 @@ public class AlphaBeta implements IIterator {
     }
 
     @Override
-    public int white(IPositionScore pos, int total, int min, int max) {
-        for (IPositionScore n:new IterateScores(pos, eval)) {
+    public int white(IPosition pos, int total, int min, int max) {
+        for (IPosition n:new IterateScores(pos, eval)) {
             int score = next.black(n, n.getScore(), min, max);
             if (score >= max)
                 return max;

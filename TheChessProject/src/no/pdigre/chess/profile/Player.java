@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import no.pdigre.chess.engine.base.ZobristKey;
 import no.pdigre.chess.engine.base.IConst.BITS;
+import no.pdigre.chess.engine.base.ZobristKey;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPositionScore;
 import no.pdigre.chess.engine.fen.IPositionWithLog;
 import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.iterate.IIterator;
@@ -46,12 +45,12 @@ public abstract class Player implements IPlayer {
         boolean white=pos.whiteNext();
         ArrayList<BookMove> list = Polyglot.get(ZobristKey.getKey(pos));
         int best = moves.first().getScore();
-        IPositionScore[] array = moves.toArray(new IPositionScore[moves.size()]);
+        IPosition[] array = moves.toArray(new IPosition[moves.size()]);
         for (BookMove book: list) {
             int bitmap = book.move;
             int f1 = Polyglot.getFrom(bitmap);
             int t1 = Polyglot.getTo(bitmap);
-            for (IPositionScore p : array) {
+            for (IPosition p : array) {
                 if (BITS.getFrom(p.getBitmap()) == f1 && BITS.getTo(p.getBitmap()) == t1){
                     moves.remove(p);
                     ((PositionScore)p).score=white?best+book.weight:best-book.weight;
@@ -62,7 +61,7 @@ public abstract class Player implements IPlayer {
         return list.size();
     }
 
-    protected void makeMove(int bitmap) {
+    protected void makeMove(long bitmap) {
         game.makeMove(bitmap);
     }
 
@@ -81,12 +80,12 @@ public abstract class Player implements IPlayer {
     public static void printScore(IterateScores moves, String txt) {
         if (debug) {
             System.out.println("\n**** " + txt + " ****");
-            for (IPositionScore m : moves)
-                System.out.println(m.getRun() + " "+m.getScore() + ":" + (m.whiteNext() ? "b " : "w ") + FEN.notation(m));
+            for (IPosition m : moves)
+                System.out.println(m.getQuality() + " "+m.getScore() + ":" + (m.whiteNext() ? "b " : "w ") + FEN.notation(m));
         }
     }
 
-    public static void runThinker(IPositionScore move, IterateScores moves, IIterator iter) {
+    public static void runThinker(IPosition move, IterateScores moves, IIterator iter) {
         int score = 0;
         final int total = move.getScore();
         score = move.whiteNext() ? iter.white(move, total, IIterator.MIN, IIterator.MAX) : iter.black(move, total,
@@ -110,7 +109,7 @@ public abstract class Player implements IPlayer {
 
     public void processAndMove(IIterator iterator) {
         IterateScores copy = (IterateScores) moves.clone();
-        for (IPositionScore m : copy)
+        for (IPosition m : copy)
             runThinker(m, moves, iterator);
         makeMove();
     }
@@ -135,7 +134,7 @@ public abstract class Player implements IPlayer {
     }
 
     public void processUntilTimeout(IIterator iterator) {
-        for (IPositionScore m : moves.toArray(new IPositionScore[moves.size()])) {
+        for (IPosition m : moves.toArray(new IPosition[moves.size()])) {
             if (state != RunState.RUNNING)
                 break;
             System.out.println("Processing:"+FEN.notation(m));
@@ -144,7 +143,7 @@ public abstract class Player implements IPlayer {
     }
 
     public void processSimple(IIterator iter3) {
-        for (IPositionScore m : (IterateScores) moves.clone())
+        for (IPosition m : (IterateScores) moves.clone())
             runThinker(m, moves, iter3);
     }
 

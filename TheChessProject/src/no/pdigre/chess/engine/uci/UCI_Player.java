@@ -2,7 +2,7 @@ package no.pdigre.chess.engine.uci;
 
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
-import no.pdigre.chess.engine.fen.IPositionScore;
+import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.iterate.AlphaBeta;
 import no.pdigre.chess.engine.iterate.IIterator;
 import no.pdigre.chess.engine.iterate.MiniMaxEnd;
@@ -27,16 +27,16 @@ public class UCI_Player extends Player {
 
 //        setTimeout(9000);
         printScore(moves, "PASS 0");
-        for (IPositionScore m : moves.getSortedArray())
+        for (IPosition m : moves.getSortedArray())
             runThinker(m, moves, iter0);
         printScore(moves, "PASS 1");
-        for (IPositionScore m : moves.getSortedArray())
+        for (IPosition m : moves.getSortedArray())
             runThinker(m, moves, iter1);
         printScore(moves, "PASS 2");
-        for (IPositionScore m : moves.getSortedArray())
+        for (IPosition m : moves.getSortedArray())
             runThinker(m, moves, iter2);
         printScore(moves, "PASS 3");
-        for (IPositionScore m : moves.getSortedArray())
+        for (IPosition m : moves.getSortedArray())
             runThinker(m, moves, iter3);
         printScore(moves, "PASS 4");
 //        processUntilTimeout(iter4);
@@ -59,7 +59,7 @@ public class UCI_Player extends Player {
 			}
 			
 			@Override
-			public void makeMove(int bitmap) {
+			public void makeMove(long bitmap) {
 				System.out.println(">"+FEN.printMove(pos.move(bitmap)));
 			}
 			

@@ -36,7 +36,7 @@ public class StartGame implements IPositionWithLog {
 		return fullMoves;
 	}
 
-	final private int getCastlingState() {
+	final private long getCastlingState() {
 		return (castling.contains("K") ? CANCASTLE_WHITEKING:0)
 				| (castling.contains("Q") ? CANCASTLE_WHITEQUEEN:0)
 				| (castling.contains("k") ? CANCASTLE_BLACKKING:0)
@@ -44,7 +44,7 @@ public class StartGame implements IPositionWithLog {
 	}
 
     @Override
-    public int getBitmap() {
+    public long getBitmap() {
         int enp=0;
         if(enpassant!=-1){
             if(white){
@@ -57,7 +57,7 @@ public class StartGame implements IPositionWithLog {
     }
 
     @Override
-    public IPosition move(int bitmap2) {
+    public IPosition move(long bitmap2) {
         return new Position(IPosition.BOARD88.apply(board, bitmap2), bitmap2);
     }
 
@@ -84,5 +84,15 @@ public class StartGame implements IPositionWithLog {
 	@Override
 	public long getZobristKey() {
 		return 0L;
+	}
+
+	@Override
+	public int getScore() {
+		return 0;
+	}
+
+	@Override
+	public int getQuality() {
+		return 0;
 	}
 }

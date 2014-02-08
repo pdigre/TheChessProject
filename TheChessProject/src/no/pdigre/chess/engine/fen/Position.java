@@ -6,7 +6,7 @@ import no.pdigre.chess.engine.base.ZobristKey;
 
 public class Position implements IPosition {
     int board[];
-    int bitmap;
+    long bitmap;
     
     public Position(IPosition pos) {
         super();
@@ -14,7 +14,7 @@ public class Position implements IPosition {
         this.bitmap = pos.getBitmap();
     }
 
-    public Position(int[] board, int bitmap) {
+    public Position(int[] board, long bitmap) {
         super();
         this.board = board;
         this.bitmap = bitmap;
@@ -36,12 +36,12 @@ public class Position implements IPosition {
     }
     
     @Override
-    public int getBitmap() {
+    public long getBitmap() {
         return bitmap;
     }
 
     @Override
-    public IPosition move(int bitmap2) {
+    public IPosition move(long bitmap2) {
         return new PositionNext(board, bitmap2);
     }
 
@@ -63,5 +63,15 @@ public class Position implements IPosition {
 	@Override
 	public long getZobristKey() {
 		return ZobristKey.getKey(this);
+	}
+
+	@Override
+	public int getScore() {
+		return 0;
+	}
+
+	@Override
+	public int getQuality() {
+		return 0;
 	}
 }
