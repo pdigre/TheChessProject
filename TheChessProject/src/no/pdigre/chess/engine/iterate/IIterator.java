@@ -9,25 +9,23 @@ public interface IIterator{
     final static int MIN = -MAX;
 
     /**
-     * Find best black score
+     * MIN - Find best black score
      * 
      * @param pos
-     * @param total
-     * @param min= Beta for AlphaBeta
-     * @param max = Alpha for AlphaBeta
+     * @param min = Alpha for AlphaBeta
+     * @param max = Beta  for AlphaBeta
      * @return
      */
-    int black(IPosition pos, int total, int min, int max);
+    int black(IPosition pos, int min, int max);
 
     /**
-     * Find best white score
+     * MAX - Find best white score
      * 
      * @param pos
-     * @param total
-     * @param min= Beta for AlphaBeta
-     * @param max = Alpha for AlphaBeta
+     * @param min = Alpha for AlphaBeta
+     * @param max = Beta for AlphaBeta
      * @return
      */
-    int white(IPosition pos, int total, int min, int max);
+    int white(IPosition pos, int min, int max);
 
 }

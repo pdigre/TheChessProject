@@ -6,7 +6,7 @@ import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.iterate.AlphaBeta;
 import no.pdigre.chess.engine.iterate.IIterator;
-import no.pdigre.chess.engine.iterate.MiniMaxEnd;
+import no.pdigre.chess.engine.iterate.IterateEnd;
 import no.pdigre.chess.test.util.IterateScores;
 
 public class Hard extends Player {
@@ -24,10 +24,10 @@ public class Hard extends Player {
             makeMove(((IPosition) moves.toArray()[pick]).getBitmap());
             return;
         }
-        IIterator iter0 = new MiniMaxEnd();
-        IIterator iter1 = new AlphaBeta(iter0, IEvaluator.FULL);
-        IIterator iter2 = new AlphaBeta(iter1, IEvaluator.FULL);
-        IIterator iter3 = new AlphaBeta(iter2, IEvaluator.FULL);
+        IIterator iter0 = new IterateEnd();
+        IIterator iter1 = new AlphaBeta(iter0);
+        IIterator iter2 = new AlphaBeta(iter1);
+        IIterator iter3 = new AlphaBeta(iter2);
 
         printTestHeader();
         setTimeout(20000);

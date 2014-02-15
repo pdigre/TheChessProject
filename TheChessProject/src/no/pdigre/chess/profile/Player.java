@@ -87,8 +87,7 @@ public abstract class Player implements IPlayer {
 
     public static void runThinker(IPosition move, IterateScores moves, IIterator iter) {
         int score = 0;
-        final int total = move.getScore();
-        score = move.whiteNext() ? iter.white(move, total, IIterator.MIN, IIterator.MAX) : iter.black(move, total,
+        score = move.whiteNext() ? iter.white(move, IIterator.MIN, IIterator.MAX) : iter.black(move,
             IIterator.MIN, IIterator.MAX);
         moves.improveScore((PositionScore) move,score);
     }

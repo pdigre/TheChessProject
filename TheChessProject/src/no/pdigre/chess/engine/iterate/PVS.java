@@ -5,12 +5,12 @@ import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.IPosition64;
 
-public class AlphaBeta2 implements IIterator {
+public class PVS implements IIterator {
 
 	private IIterator next;
 	private IPosition pos;
 
-	public AlphaBeta2(IIterator next) {
+	public PVS(int window, IIterator next) {
 		this.next = next;
 	}
 
@@ -20,30 +20,31 @@ public class AlphaBeta2 implements IIterator {
 	}
 
 	@Override
-	public int black(IPosition pos, int total, int min, int max) {
-		IPosition64[] moves = NodeGen.getLegalMoves64(pos);
-		for (int i = 0; i < moves.length; i++) {
-			IPosition64 n = moves[i];
-			int score = next.white(n, n.getScore(), min, max);
-			if (score <= min)
-				return min;
-			if (score < max)
-				max = score;
-		}
-		return max;
-	}
-
-	@Override
-	public int white(IPosition pos, int total, int min, int max) {
+	public int white(IPosition pos, int alpha, int beta) {
 		IPosition64[] moves = NodeGen.getLegalMoves64(pos);
 		for (int i = moves.length - 1; i >= 0; i--) {
 			IPosition64 n = moves[i];
-			int score = next.black(n, n.getScore(), min, max);
-			if (score >= max)
-				return max;
-			if (score > min)
-				min = score;
+			int score = next.black(n, alpha, beta);
+			if (score >= beta)
+				return beta;
+			if (score > alpha)
+				alpha = score;
 		}
-		return min;
+		return alpha;
 	}
+
+	@Override
+	public int black(IPosition pos, int alpha, int beta) {
+		IPosition64[] moves = NodeGen.getLegalMoves64(pos);
+		for (int i = 0; i < moves.length; i++) {
+			IPosition64 n = moves[i];
+			int score = next.white(n, alpha, beta);
+			if (score <= alpha)
+				return alpha;
+			if (score < beta)
+				beta = score;
+		}
+		return beta;
+	}
+
 }

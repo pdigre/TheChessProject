@@ -1,11 +1,10 @@
 package no.pdigre.chess.engine.uci;
 
-import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.iterate.AlphaBeta;
 import no.pdigre.chess.engine.iterate.IIterator;
-import no.pdigre.chess.engine.iterate.MiniMaxEnd;
+import no.pdigre.chess.engine.iterate.IterateEnd;
 import no.pdigre.chess.profile.GameData;
 import no.pdigre.chess.profile.Player;
 
@@ -19,10 +18,10 @@ public class UCI_Player extends Player {
     @Override
     public void run() {
         printTestHeader();
-        IIterator iter0 = new MiniMaxEnd();
-        IIterator iter1 = new AlphaBeta(iter0, IEvaluator.FULL);
-        IIterator iter2 = new AlphaBeta(iter1, IEvaluator.FULL);
-        IIterator iter3 = new AlphaBeta(iter2, IEvaluator.FULL);
+        IIterator iter0 = new IterateEnd();
+        IIterator iter1 = new AlphaBeta(iter0);
+        IIterator iter2 = new AlphaBeta(iter1);
+        IIterator iter3 = new AlphaBeta(iter2);
 //        IIterator iter4 = new AlphaBeta(iter3, IEvaluator.TACTICAL);
 
 //        setTimeout(9000);
