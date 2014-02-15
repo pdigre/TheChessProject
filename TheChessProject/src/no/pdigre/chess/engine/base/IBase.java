@@ -1,6 +1,8 @@
 package no.pdigre.chess.engine.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Arrays of possible moves for each position of the board sliders have sub
@@ -73,7 +75,7 @@ public interface IBase extends IConst {
 			add(moves, piece, from, DOWN + DOWN + LEFT, mask);
 			add(moves, piece, from, DOWN + RIGHT + RIGHT, mask);
 			add(moves, piece, from, DOWN + DOWN + RIGHT, mask);
-			return toArray(moves);
+			return toArraySorted(moves);
 		}
 
 		static {
@@ -177,7 +179,7 @@ public interface IBase extends IConst {
 			add(moves, piece, from, UP + RIGHT, mask);
 			add(moves, piece, from, DOWN + LEFT, mask);
 			add(moves, piece, from, DOWN + RIGHT, mask);
-			return toArray(moves);
+			return toArraySorted(moves);
 		}
 
 		static {
@@ -204,16 +206,16 @@ public interface IBase extends IConst {
 				pwcapture(moves, from, from + 7);
 			if (x != 7)
 				pwcapture(moves, from, from + 9);
-			return toArray(moves);
+			return toArraySorted(moves);
 		}
 
 		private static void pwcapture(ArrayList<Long> moves, int from, int to) {
 			if (to >= 56 && to < 64) {
-				moves.add(BITS.assemble(WHITE_QUEEN, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemble(WHITE_ROOK, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemble(WHITE_KNIGHT, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemble(WHITE_BISHOP, from, to, CASTLING_STATE | SPECIAL));
-			} else {
+				moves.add(BITS.assemblePromote(WHITE_PAWN, WHITE_QUEEN, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(WHITE_PAWN, WHITE_ROOK, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(WHITE_PAWN, WHITE_KNIGHT, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(WHITE_PAWN, WHITE_BISHOP, from, to, CASTLING_STATE | SPECIAL));
+			} else if(to<64){
 				moves.add(BITS.assemble(WHITE_PAWN, from, to, CASTLING_STATE));
 			}
 		}
@@ -225,16 +227,16 @@ public interface IBase extends IConst {
 				pbcapture(moves, from, from - 9);
 			if (x != 7)
 				pbcapture(moves, from, from - 7);
-			return toArray(moves);
+			return toArraySorted(moves);
 		}
 
 		private static void pbcapture(ArrayList<Long> moves, int from, int to) {
 			if (to >= 0 && to < 8) {
-				moves.add(BITS.assemble(BLACK_QUEEN, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemble(BLACK_ROOK, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemble(BLACK_KNIGHT, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemble(BLACK_BISHOP, from, to, CASTLING_STATE | SPECIAL));
-			} else {
+				moves.add(BITS.assemblePromote(BLACK_PAWN, BLACK_QUEEN, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(BLACK_PAWN, BLACK_ROOK, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(BLACK_PAWN, BLACK_KNIGHT, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(BLACK_PAWN, BLACK_BISHOP, from, to, CASTLING_STATE | SPECIAL));
+			} else if(to>=0){
 				moves.add(BITS.assemble(BLACK_PAWN, from, to, CASTLING_STATE));
 			}
 		}
@@ -243,13 +245,13 @@ public interface IBase extends IConst {
 			ArrayList<long[]> moves = new ArrayList<long[]>();
 			int to = from + 8;
 			if (to >= 56 && to < 64) {
-				moves.add(new long[] { BITS.assemble(WHITE_QUEEN, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemble(WHITE_ROOK, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemble(WHITE_KNIGHT, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemble(WHITE_BISHOP, from, to, CASTLING_STATE | SPECIAL) });
+				moves.add(new long[] { BITS.assemblePromote(WHITE_PAWN, WHITE_QUEEN, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(WHITE_PAWN, WHITE_ROOK, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(WHITE_PAWN, WHITE_KNIGHT, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(WHITE_PAWN, WHITE_BISHOP, from, to, CASTLING_STATE | SPECIAL) });
 			} else if (from >= 8 && from < 16) {
 				moves.add(new long[] { BITS.assemble(WHITE_PAWN, from, to, CASTLING_STATE), BITS.assemble(WHITE_PAWN, from, to + 8, CASTLING_STATE) });
-			} else {
+			} else if (to < 64) {
 				moves.add(new long[] { BITS.assemble(WHITE_PAWN, from, to, CASTLING_STATE) });
 			}
 			return toArray2(moves);
@@ -259,13 +261,13 @@ public interface IBase extends IConst {
 			ArrayList<long[]> moves = new ArrayList<long[]>();
 			int to = from - 8;
 			if (to >= 0 && to < 8) {
-				moves.add(new long[] { BITS.assemble(BLACK_QUEEN, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemble(BLACK_ROOK, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemble(BLACK_KNIGHT, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemble(BLACK_BISHOP, from, to, CASTLING_STATE | SPECIAL) });
+				moves.add(new long[] { BITS.assemblePromote(BLACK_PAWN, BLACK_QUEEN, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(BLACK_PAWN, BLACK_ROOK, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(BLACK_PAWN, BLACK_KNIGHT, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(BLACK_PAWN, BLACK_BISHOP, from, to, CASTLING_STATE | SPECIAL) });
 			} else if (from >= 48 && from < 56) {
 				moves.add(new long[] { BITS.assemble(BLACK_PAWN, from, to, CASTLING_STATE), BITS.assemble(BLACK_PAWN, from, to - 8, CASTLING_STATE) });
-			} else {
+			} else if (to >= 0) {
 				moves.add(new long[] { BITS.assemble(BLACK_PAWN, from, to, CASTLING_STATE) });
 			}
 			return toArray2(moves);
@@ -276,6 +278,15 @@ public interface IBase extends IConst {
 			for (int i = 0; i < moves.size(); i++) {
 				ret[i] = moves.get(i);
 			}
+			return ret;
+		}
+
+		static long[] toArraySorted(ArrayList<Long> moves) {
+			long[] ret = new long[moves.size()];
+			for (int i = 0; i < moves.size(); i++) {
+				ret[i] = moves.get(i);
+			}
+			Arrays.sort(ret);
 			return ret;
 		}
 
@@ -291,6 +302,14 @@ public interface IBase extends IConst {
 			for (int i = 0; i < moves.size(); i++) {
 				ret[i] = moves.get(i);
 			}
+			Arrays.sort(ret,new Comparator<long[]>(){
+
+				@Override
+				public int compare(long[] o1, long[] o2) {
+					return Long.compare(o1[0], o2[0]);
+				}
+				
+			});
 			return ret;
 		}
 

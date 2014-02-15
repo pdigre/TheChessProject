@@ -1,6 +1,5 @@
 package no.pdigre.chess.engine.base;
 
-
 /**
  * 4 1-4 - Piecetype
  * 
@@ -53,9 +52,9 @@ public interface IConst {
 	// Game state
 	int _CASTLING = 20;
 
-	int CASTLING_STATE = BITS4 << _CASTLING;
+	long CASTLING_STATE = BITS4 << _CASTLING;
 
-	int CANCASTLE_WHITEQUEEN = BITS1 << (_CASTLING);
+	long CANCASTLE_WHITEQUEEN = BITS1 << (_CASTLING);
 
 	long CANCASTLE_WHITEKING = BITS1 << (_CASTLING + 1);
 
@@ -69,7 +68,7 @@ public interface IConst {
 
 	int _HALFMOVES = 24;
 
-	int HALFMOVES = BITS6 << _HALFMOVES;
+	long HALFMOVES = BITS6 << _HALFMOVES;
 
 	// piecetype
 	int NONE = 0;
@@ -106,15 +105,26 @@ public interface IConst {
 	int GOAL_LINE = 56;
 	int WHITE_KING_STARTPOS = 4;
 	int BLACK_KING_STARTPOS = WHITE_KING_STARTPOS + GOAL_LINE;
-	int BLACK_ROOK_KING_STARTPOS=63;
-	int BLACK_ROOK_QUEEN_STARTPOS=56;
-	int WHITE_ROOK_KING_STARTPOS=7;
-	int WHITE_ROOK_QUEEN_STARTPOS=0;
+	int BLACK_ROOK_KING_STARTPOS = 63;
+	int BLACK_ROOK_QUEEN_STARTPOS = 56;
+	int WHITE_ROOK_KING_STARTPOS = 7;
+	int WHITE_ROOK_QUEEN_STARTPOS = 0;
 
 	class BITS {
 
-		final public static long assemble(int piece,int from,int to,long extra) {
-			return (piece <<_PIECE)|(from <<_FROM)|(to <<_TO)|extra;
+		final public static long assemble2(int piece, int from, int to, long extra) {
+			int score = 0;
+			return (piece << _PIECE) | (from << _FROM) | (to << _TO) | extra | ((score | 0L) << 32);
+		}
+
+		final public static long assemble(int piece, int from, int to, long extra) {
+			int score = Piece_Square_Tables.pVal(to, piece) - Piece_Square_Tables.pVal(from, piece);
+			return (piece << _PIECE) | (from << _FROM) | (to << _TO) | extra | ((score | 0L) << 32);
+		}
+
+		final public static long assemblePromote(int pawn, int promote, int from, int to, long extra) {
+			int score = Piece_Square_Tables.pVal(to, promote) - Piece_Square_Tables.pVal(from, pawn);
+			return (promote << _PIECE) | (from << _FROM) | (to << _TO) | extra | ((score | 0L) << 32);
 		}
 
 		final public static long getCastlingState(final long bitmap) {
@@ -125,8 +135,16 @@ public interface IConst {
 			return (int) ((bitmap >> _FROM) & BITS6);
 		}
 
+		final static public long bitsFrom(final long bitmap) {
+			return 1L << ((bitmap >> _FROM) & BITS6);
+		}
+
 		final static public int getTo(final long bitmap) {
 			return (int) ((bitmap >> _TO) & BITS6);
+		}
+
+		final static public long bitsTo(final long bitmap) {
+			return 1L << ((bitmap >> _TO) & BITS6);
 		}
 
 		final public static boolean isCapture(final long bitmap) {
@@ -142,7 +160,7 @@ public interface IConst {
 		final static public boolean white(final long bitmap) {
 			return (bitmap & IConst.BLACK) == 0;
 		}
-		
+
 		/**
 		 * Did black make the last move
 		 * 
@@ -207,9 +225,15 @@ public interface IConst {
 		public static int getCapturedType(long bitmap) {
 			return (int) ((bitmap & IConst.CAPTURE) >>> IConst._CAPTURE);
 		}
-		
+
+		public static int getCaptured(long bitmap) {
+			return (int) (((bitmap & IConst.CAPTURE) >>> IConst._CAPTURE) | (~bitmap&IConst.BLACK));
+		}
+
+		public static int score(long bitmap) {
+			return (int)(bitmap>>32);
+		}
 
 	}
-	
 
 }

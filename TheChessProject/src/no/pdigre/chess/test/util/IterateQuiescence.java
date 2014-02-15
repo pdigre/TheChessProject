@@ -10,7 +10,7 @@ import no.pdigre.chess.engine.fen.PositionScore;
 
 public final class IterateQuiescence extends TreeSet<IPosition> {
 
-    final static IEvaluator evaluator=IEvaluator.TACTICAL;
+    final static IEvaluator evaluator=IEvaluator.FULL;
     
     public static class Ascending implements Comparator<IPosition> {
 

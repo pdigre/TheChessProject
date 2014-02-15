@@ -2,7 +2,7 @@ package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.IConst;
 
-public abstract interface IPosition extends IConst {
+public abstract interface IPosition extends IConst, Comparable<IPosition>{
 
 	public abstract boolean whiteNext();
 

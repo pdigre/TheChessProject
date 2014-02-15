@@ -33,9 +33,9 @@ public class Position64 implements IPosition64 {
 		return (checkstate & 8)!=0 ;
 	}
 	
-	public static IPosition64 getPosition64(IPosition pos){
-		if(pos instanceof IPosition64)
-			return (IPosition64) pos;
+	public static Position64 getPosition64(IPosition pos){
+		if(pos instanceof Position64)
+			return (Position64) pos;
 		return new Position64(pos);
 	}
 
@@ -64,6 +64,7 @@ public class Position64 implements IPosition64 {
 		this.wking = wking;
 		this.bking = bking;
 		this.zobrist = ZobristKey.getKey(pos);
+		this.score=pos.getScore();
 	}
 
 	public static Position64 move(IPosition in, long move) {
@@ -125,10 +126,10 @@ public class Position64 implements IPosition64 {
 			bb_bit2 = bb_bit2 & mask;
 			bb_bit3 = bb_bit3 & mask;
 		}
-		return new Position64(move, pos.whiteNext(), bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking,zobrist);
+		return new Position64(move, pos.getScore()+(int)(move >>32),pos.whiteNext(), bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking,zobrist);
 	}
 
-	public Position64(long bitmap, boolean whiteNext, long bb_black, long bb_bit1, long bb_bit2, long bb_bit3, int wking, int bking,long zobrist) {
+	public Position64(long bitmap, int score,boolean whiteNext, long bb_black, long bb_bit1, long bb_bit2, long bb_bit3, int wking, int bking,long zobrist) {
 		this.bitmap = bitmap;
 		this.wking = wking;
 		this.bking = bking;
@@ -137,6 +138,7 @@ public class Position64 implements IPosition64 {
 		this.bb_bit2 = bb_bit2;
 		this.bb_bit3 = bb_bit3;
 		this.zobrist=zobrist;
+		this.score=score;
 	}
 
 	@Override
@@ -199,7 +201,7 @@ public class Position64 implements IPosition64 {
 	}
 
 	@Override
-	public IPosition64 move(long bitmap) {
+	public Position64 move(long bitmap) {
 		return move(this, bitmap);
 	}
 	
@@ -217,4 +219,10 @@ public class Position64 implements IPosition64 {
 	public int getQuality() {
 		return 0;
 	}
+
+	@Override
+	public int compareTo(IPosition o) {
+		return Integer.compare(score, o.getScore());
+	}
+
 }

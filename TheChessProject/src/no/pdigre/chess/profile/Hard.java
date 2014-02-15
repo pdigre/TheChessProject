@@ -25,18 +25,18 @@ public class Hard extends Player {
             return;
         }
         IIterator iter0 = new MiniMaxEnd();
-        IIterator iter1 = new AlphaBeta(iter0, IEvaluator.TACTICAL);
-        IIterator iter2 = new AlphaBeta(iter1, IEvaluator.TACTICAL);
-        IIterator iter3 = new AlphaBeta(iter2, IEvaluator.TACTICAL);
+        IIterator iter1 = new AlphaBeta(iter0, IEvaluator.FULL);
+        IIterator iter2 = new AlphaBeta(iter1, IEvaluator.FULL);
+        IIterator iter3 = new AlphaBeta(iter2, IEvaluator.FULL);
 
         printTestHeader();
         setTimeout(20000);
 
         for (int run = 1; run < 10; run++) {
-            System.out.println("**** Phase " + run + " ****");
+//            System.out.println("**** Phase " + run + " ****");
             IPosition pos = getPosition();
             recursive(pos, moves, iter3, run, "");
-            printScore(moves, "---- Phase " + run + " ----");
+//            printScore(moves, "---- Phase " + run + " ----");
         }
         makeMove();
     }
@@ -69,8 +69,8 @@ public class Hard extends Player {
                 int r = move.getQuality();
                 if (run < 4) {
                     if (r < 1) {
-                        if (!prefix.isEmpty())
-                            System.out.println("Processing " + prefix + " " + FEN.notation(move));
+//                        if (!prefix.isEmpty())
+//                            System.out.println("Processing " + prefix + " " + FEN.notation(move));
                         runThinker(move, children, iterator);
                         if (n-- < 1)
                             break;
@@ -93,8 +93,8 @@ public class Hard extends Player {
                 int r = move.getQuality();
                 if (run < 4) {
                     if (r < 1) {
-                        if (!prefix.isEmpty())
-                            System.out.println("Processing " + prefix + " " + FEN.notation(move));
+//                        if (!prefix.isEmpty())
+//                            System.out.println("Processing " + prefix + " " + FEN.notation(move));
                         runThinker(move, children, iterator);
                     }
                 } else {

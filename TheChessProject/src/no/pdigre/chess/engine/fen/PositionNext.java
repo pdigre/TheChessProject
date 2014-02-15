@@ -75,4 +75,10 @@ public class PositionNext implements IPosition {
 	public int getQuality() {
 		return 0;
 	}
+
+	@Override
+	public int compareTo(IPosition o) {
+		return Integer.compare(getScore(), o.getScore());
+	}
+
 }

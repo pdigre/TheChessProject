@@ -8,7 +8,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -23,13 +22,13 @@ public class PerftResults {
 
 	public static HashMap<String, String> allexpected;
 	
-	final List<IPosition64> rootmoves;
+	final IPosition64[] rootmoves;
 	final public int[] rootcount;
 	public Counter[] counters;
 
-	public PerftResults(List<IPosition64> rootmoves) {
+	public PerftResults(IPosition64[] rootmoves) {
 		this.rootmoves = rootmoves;
-		rootcount = new int[rootmoves.size()];
+		rootcount = new int[rootmoves.length];
 	}
 
 	public static void total(Counter[] total, Counter[] add) {
@@ -60,7 +59,7 @@ public class PerftResults {
 		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
 		for (int i = 0; i < rootcount.length; i++) {
 			int count = rootcount[i];
-			IPosition64 pos = rootmoves.get(i);
+			IPosition64 pos = rootmoves[i];
 			long bitmap = pos.getBitmap();
 			map.put(FEN.move2literal(bitmap), count);
 		}

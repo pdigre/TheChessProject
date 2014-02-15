@@ -1,6 +1,5 @@
 package no.pdigre.chess.test.util;
 
-import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 import no.pdigre.chess.engine.base.IConst;
@@ -54,11 +53,11 @@ public class CountTT extends RecursiveTask<Counter[]> {
 	}
 
 	public PerftResults perft() {
-		List<IPosition64> mvs = NodeGen.getLegalMoves64(pos);
+		IPosition64[] mvs = NodeGen.getLegalMoves64(pos);
 		perft = new PerftResults(mvs);
 		int depth = counters.length;
-		for (int i = 0; i < mvs.size(); i++) {
-			IPosition64 next = mvs.get(i);
+		for (int i = 0; i < mvs.length; i++) {
+			IPosition64 next = mvs[i];
 			count(next);
 			if (depth > 1) {
 				Counter[] compute = new CountTT(next, depth - 1).compute();

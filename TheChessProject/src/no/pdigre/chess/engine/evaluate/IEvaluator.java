@@ -61,5 +61,5 @@ public abstract interface IEvaluator {
     };
 
     public static IEvaluator FULL = new FullEval();
-    public static IEvaluator TACTICAL = new FullEval();
+    public static IEvaluator TACTICAL = new TacticEval();
 }

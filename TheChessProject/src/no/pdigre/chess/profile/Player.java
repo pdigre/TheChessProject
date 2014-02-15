@@ -137,14 +137,14 @@ public abstract class Player implements IPlayer {
         for (IPosition m : moves.toArray(new IPosition[moves.size()])) {
             if (state != RunState.RUNNING)
                 break;
-            System.out.println("Processing:"+FEN.notation(m));
+//            System.out.println("Processing:"+FEN.notation(m));
             runThinker(m, moves, iterator);
         }
     }
 
-    public void processSimple(IIterator iter3) {
+    public void processSimple(IIterator iterator) {
         for (IPosition m : (IterateScores) moves.clone())
-            runThinker(m, moves, iter3);
+            runThinker(m, moves, iterator);
     }
 
 

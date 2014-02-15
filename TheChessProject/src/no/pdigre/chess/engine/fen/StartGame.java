@@ -1,5 +1,7 @@
 package no.pdigre.chess.engine.fen;
 
+import no.pdigre.chess.engine.evaluate.IEvaluator;
+
 
 
 
@@ -88,11 +90,16 @@ public class StartGame implements IPositionWithLog {
 
 	@Override
 	public int getScore() {
-		return 0;
+		return IEvaluator.FULL.score(this, 0);
 	}
 
 	@Override
 	public int getQuality() {
 		return 0;
+	}
+
+	@Override
+	public int compareTo(IPosition o) {
+		return Integer.compare(getScore(), o.getScore());
 	}
 }

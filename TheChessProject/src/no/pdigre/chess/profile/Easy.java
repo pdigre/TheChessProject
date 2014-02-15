@@ -15,9 +15,9 @@ public class Easy extends Player {
     @Override
     public void run() {
         IIterator iter0 = new MiniMaxEnd();
-        IIterator iter1 = new AlphaBeta(iter0, IEvaluator.TACTICAL);
-        IIterator iter2 = new AlphaBeta(iter1, IEvaluator.TACTICAL);
-        IIterator iter3 = new AlphaBeta(iter2, IEvaluator.TACTICAL);
+        IIterator iter1 = new AlphaBeta(iter0, IEvaluator.FULL);
+        IIterator iter2 = new AlphaBeta(iter1, IEvaluator.FULL);
+        IIterator iter3 = new AlphaBeta(iter2, IEvaluator.FULL);
         processAndMove(iter3);
     }
 

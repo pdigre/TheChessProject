@@ -1,6 +1,7 @@
 package no.pdigre.chess.engine.evaluate;
 
 import no.pdigre.chess.engine.base.IConst;
+import no.pdigre.chess.engine.base.Piece_Square_Tables;
 import no.pdigre.chess.engine.fen.IPosition;
 
 public class FullEval implements IEvaluator {
@@ -22,8 +23,8 @@ public class FullEval implements IEvaluator {
                 pcs++;
             }
         }
-        score += pcs < 15 ? Piece_Square_Tables.WKING_END[wk] : Piece_Square_Tables.WKING_MIDDLE[wk];
-        score += pcs < 15 ? Piece_Square_Tables.BKING_END[bk] : Piece_Square_Tables.BKING_MIDDLE[bk];
+        score += pcs < 15 && false? Piece_Square_Tables.WKING_END[wk] : Piece_Square_Tables.WKING_MIDDLE[wk];
+        score += pcs < 15 && false? Piece_Square_Tables.BKING_END[bk] : Piece_Square_Tables.BKING_MIDDLE[bk];
         return score;
     }
 }

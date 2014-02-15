@@ -17,10 +17,10 @@ public class Medium3 extends Player {
     public void run() {
         printTestHeader();
         IIterator iter0 = new MiniMaxEnd();
-        IIterator iter1 = new AlphaBeta(iter0, IEvaluator.TACTICAL);
-        IIterator iter2 = new AlphaBeta(iter1, IEvaluator.TACTICAL);
-        IIterator iter3 = new AlphaBeta(iter2, IEvaluator.TACTICAL);
-        IIterator iter4 = new AlphaBeta(iter3, IEvaluator.TACTICAL);
+        IIterator iter1 = new AlphaBeta(iter0, IEvaluator.FULL);
+        IIterator iter2 = new AlphaBeta(iter1, IEvaluator.FULL);
+        IIterator iter3 = new AlphaBeta(iter2, IEvaluator.FULL);
+        IIterator iter4 = new AlphaBeta(iter3, IEvaluator.FULL);
 
         setTimeout(9000);
         printScore(moves, "PASS 0");

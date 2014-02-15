@@ -1,25 +1,16 @@
 package no.pdigre.chess.engine.iterate;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.IPosition64;
-import no.pdigre.chess.engine.fen.Position64;
 
 public class AlphaBeta2 implements IIterator {
 
 	private IIterator next;
-	private IEvaluator eval;
-
 	private IPosition pos;
 
-	public AlphaBeta2(IIterator next, IEvaluator eval) {
-		this.eval = eval;
+	public AlphaBeta2(IIterator next) {
 		this.next = next;
 	}
 
@@ -30,17 +21,9 @@ public class AlphaBeta2 implements IIterator {
 
 	@Override
 	public int black(IPosition pos, int total, int min, int max) {
-		List<IPosition64> moves = NodeGen.getLegalMoves64(pos);
-		for(IPosition64 move:moves)
-			((Position64)move).score=eval.score(move, total);
-		Collections.sort(moves, new Comparator<IPosition64>() {
-
-			@Override
-			public int compare(IPosition64 o1, IPosition64 o2) {
-				return Integer.compare(o1.getScore(), o2.getScore());
-			}
-		});
-		for (IPosition n : moves) {
+		IPosition64[] moves = NodeGen.getLegalMoves64(pos);
+		for (int i = 0; i < moves.length; i++) {
+			IPosition64 n = moves[i];
 			int score = next.white(n, n.getScore(), min, max);
 			if (score <= min)
 				return min;
@@ -52,17 +35,9 @@ public class AlphaBeta2 implements IIterator {
 
 	@Override
 	public int white(IPosition pos, int total, int min, int max) {
-		List<IPosition64> moves = NodeGen.getLegalMoves64(pos);
-		for(IPosition64 move:moves)
-			((Position64)move).score=eval.score(move, total);
-		Collections.sort(moves, new Comparator<IPosition64>() {
-
-			@Override
-			public int compare(IPosition64 o1, IPosition64 o2) {
-				return Integer.compare(o1.getScore(), o2.getScore());
-			}
-		});
-		for (IPosition n : moves) {
+		IPosition64[] moves = NodeGen.getLegalMoves64(pos);
+		for (int i = moves.length - 1; i >= 0; i--) {
+			IPosition64 n = moves[i];
 			int score = next.black(n, n.getScore(), min, max);
 			if (score >= max)
 				return max;

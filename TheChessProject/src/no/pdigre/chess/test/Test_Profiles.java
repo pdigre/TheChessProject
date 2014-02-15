@@ -7,6 +7,7 @@ import no.pdigre.chess.profile.Medium3;
 import no.pdigre.chess.profile.Medium4;
 import no.pdigre.chess.test.util.RunProfiles;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -48,22 +49,22 @@ public class Test_Profiles {
         RunProfiles.testMove(new Hard(),"5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w - - 0 1","f7");
     }
     
-    @Test
+    @Test @Ignore
     public void white1_Qf7_minimax_9230() {
         RunProfiles.testMove(new Medium2(),"5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w - - 0 1","f7");
     }
     
     @Test
-    public void white1_Qf7_medium3_145() {
+    public void white1_Qf7_medium3_1538() {
         RunProfiles.testMove(new Medium3(),"5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w - - 0 1","f7");
     }
     
     @Test
-    public void white1_Qf7_medium4_173() {
+    public void white1_Qf7_medium4_1969() {
         RunProfiles.testMove(new Medium4(),"5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w - - 0 1","f7");
     }
     
-    @Test
+    @Test @Ignore
     public void white1_Qf7_new_9230() {
         RunProfiles.testMove(new Medium2(),"5r1k/1P4pp/3P1p2/4p3/1P5P/3q2P1/Q2b2K1/B3R3 w - - 0 1","f7");
     }

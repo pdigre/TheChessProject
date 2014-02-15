@@ -9,7 +9,7 @@ public class KingSafe implements IConst {
 	public static int getCheckState(IPosition64 pos) {
 		if (!(pos.whiteNext() ? pos.isCheckWhite() : pos.isCheckBlack()))
 			return 0;
-		if (NodeGen.getLegalMoves64(pos).isEmpty())
+		if (NodeGen.getLegalMoves64(pos).length==0)
 			return MATE;
 		return CHECK;
 	}

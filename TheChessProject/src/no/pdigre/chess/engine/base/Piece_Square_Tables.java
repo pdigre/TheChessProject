@@ -1,6 +1,5 @@
-package no.pdigre.chess.engine.evaluate;
+package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.base.IConst;
 
 public class Piece_Square_Tables {
 
@@ -26,13 +25,13 @@ public class Piece_Square_Tables {
 
     final static int[] WBISHOP = new int[] //
     { -20, -10, -10, -10, -10, -10, -10, -20, //
-        -10, 0, 0, 0, 0, 0, 0, -10, //
-        -10, 0, 5, 10, 10, 5, 0, -10, //
-        -10, 5, 5, 10, 10, 5, 5, -10, //
-        -10, 0, 10, 10, 10, 10, 0, -10, //
+        -10, 0, 0, 0,     0, 0, 0, -10, //
+        -10, 0, 5, 10,   10, 5, 0, -10, //
+        -10, 5, 5, 10,   10, 5, 5, -10, //
+        -10, 0, 10, 10,  10, 10, 0, -10, //
         -10, 10, 10, 10, 10, 10, 10, -10, //
-        -10, 5, 0, 0, 0, 0, 5, -10, //
-        -20, -10, -10, -10, -10, -10, -10, -20 };
+        -10, 5, 0, 0,     0, 0, 5, -10, //
+        -20, -10, -10,  -10, -10, -10, -10, -20 };
 
     final static int[] WROOK = new int[] //
     { 0, 0, 0, 0, 0, 0, 0, 0, //
@@ -54,7 +53,7 @@ public class Piece_Square_Tables {
         -10, 0, 5, 0, 0, 0, 0, -10, //
         -20, -10, -10, -5, -5, -10, -10, -20 };
 
-    final static int[] WKING_MIDDLE = new int[] //
+    public final static int[] WKING_MIDDLE = new int[] //
     { -30, -40, -40, -50, -50, -40, -40, -30, //
         -30, -40, -40, -50, -50, -40, -40, -30, //
         -30, -40, -40, -50, -50, -40, -40, -30, //
@@ -64,7 +63,7 @@ public class Piece_Square_Tables {
         20, 20, 0, 0, 0, 0, 20, 20, //
         20, 30, 10, 0, 0, 10, 30, 20 };
 
-    final static int[] WKING_END = new int[] //
+    public final static int[] WKING_END = new int[] //
     { -50, -40, -30, -20, -20, -30, -40, -50, //
         -30, -20, -10, 0, 0, -10, -20, -30, //
         -30, -10, 20, 30, 30, 20, -10, -30, //
@@ -103,11 +102,11 @@ public class Piece_Square_Tables {
 
     final static int[] BQUEEN = invert(WQUEEN, 900);
 
-    final static int[] BKING_MIDDLE = invert(WKING_MIDDLE, 20000);
+    public final static int[] BKING_MIDDLE = invert(WKING_MIDDLE, 20000);
 
-    final static int[] BKING_END = invert(WKING_END, 20000);
+    public final static int[] BKING_END = invert(WKING_END, 20000);
 
-    final static int pVal(int p, int type) {
+    public final static int pVal(int p, int type) {
         switch (type) {
             case IConst.WHITE_PAWN:
                 return WPAWN[p];
@@ -119,6 +118,8 @@ public class Piece_Square_Tables {
                 return WROOK[p];
             case IConst.WHITE_QUEEN:
                 return WQUEEN[p];
+            case IConst.WHITE_KING:
+                return WKING_MIDDLE[p];
             case IConst.BLACK_PAWN:
                 return BPAWN[p];
             case IConst.BLACK_KNIGHT:
@@ -129,6 +130,8 @@ public class Piece_Square_Tables {
                 return BROOK[p];
             case IConst.BLACK_QUEEN:
                 return BQUEEN[p];
+            case IConst.BLACK_KING:
+                return BKING_MIDDLE[p];
         }
         return 0;
     }
