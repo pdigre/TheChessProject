@@ -110,6 +110,11 @@ public interface IConst {
 	int WHITE_ROOK_KING_STARTPOS = 7;
 	int WHITE_ROOK_QUEEN_STARTPOS = 0;
 
+	long CWQ = 7L << WHITE_KING_STARTPOS - 3;
+	long CWK = 3L << WHITE_KING_STARTPOS + 1;
+	long CBQ = 7L << BLACK_KING_STARTPOS - 3;
+	long CBK = 3L << BLACK_KING_STARTPOS + 1;
+
 	class BITS {
 
 		final public static long assemble2(int piece, int from, int to, long extra) {
@@ -227,11 +232,11 @@ public interface IConst {
 		}
 
 		public static int getCaptured(long bitmap) {
-			return (int) (((bitmap & IConst.CAPTURE) >>> IConst._CAPTURE) | (~bitmap&IConst.BLACK));
+			return (int) (((bitmap & IConst.CAPTURE) >>> IConst._CAPTURE) | (~bitmap & IConst.BLACK));
 		}
 
 		public static int score(long bitmap) {
-			return (int)(bitmap>>32);
+			return (int) (bitmap >> 32);
 		}
 
 	}
