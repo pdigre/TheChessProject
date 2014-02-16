@@ -28,4 +28,5 @@ public interface IIterator{
      */
     int white(IPosition pos, int min, int max);
 
+    int getQuality();
 }

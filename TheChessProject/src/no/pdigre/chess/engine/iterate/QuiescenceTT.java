@@ -4,7 +4,7 @@ import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position64;
 
-public class Quiescence implements IIterator {
+public class QuiescenceTT implements IIterator {
 
 	public static long quiesce=0;
 	
@@ -19,6 +19,7 @@ public class Quiescence implements IIterator {
 		int score = qwhite((Position64) pos, alpha, beta);
 		quiesce+=System.currentTimeMillis()-time1;
 		return score;
+//		return Math.min(score,pos.getScore());
 	}
 
 	@Override
@@ -27,6 +28,7 @@ public class Quiescence implements IIterator {
 		int score = qblack((Position64) pos, alpha, beta);
 		quiesce+=System.currentTimeMillis()-time1;
 		return score;
+//		return Math.max(score,pos.getScore());
 	}
 
 	private static int qwhite(Position64 pos, int alpha, int beta) {
@@ -35,7 +37,15 @@ public class Quiescence implements IIterator {
 			return pos.getScore();
 		for (int i = moves.length - 1; i >= 0; i--) {
 			Position64 next = moves[i];
-			int score = qblack(next, alpha, beta);
+			IPosition tt = Transposition.find(next, 0);
+			int score=0;
+			if(tt!=null){
+				score=tt.getScore();
+			} else {
+				score = qblack(next, alpha, beta);
+				next.score=score;
+				Transposition.register(next);
+			}
 			if (score >= beta)
 				return beta;
 			if (score > alpha)
@@ -50,7 +60,15 @@ public class Quiescence implements IIterator {
 			return pos.getScore();
 		for (int i = 0; i < moves.length; i++) {
 			Position64 next = moves[i];
-			int score = qwhite(next, alpha, beta);
+			IPosition tt = Transposition.find(next, 0);
+			int score=0;
+			if(tt!=null){
+				score=tt.getScore();
+			} else {
+				score = qwhite(next, alpha, beta);
+				next.score=score;
+				Transposition.register(next);
+			}
 			if (score <= alpha)
 				return alpha;
 			if (score < beta)

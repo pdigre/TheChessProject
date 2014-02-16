@@ -13,4 +13,9 @@ public class IterateEnd implements IIterator {
     public final int white(IPosition pos, int alpha, int beta) {
         return pos.getScore();
     }
+
+    @Override
+	public int getQuality() {
+		return 0;
+	}
 }

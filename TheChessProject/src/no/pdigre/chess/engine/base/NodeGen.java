@@ -35,7 +35,6 @@ public class NodeGen implements IConst {
 		this.whiteNext = pos.whiteNext();
 		this.bb_piece = bb_bit1 | bb_bit2 | bb_bit3;
 		this.bb_white = bb_piece ^ bb_black;
-
 		halfmoves = (BITS.halfMoves(inherit) + 1) << _HALFMOVES;
 		castling = ~CASTLING_STATE | inherit; // all other are set
 		enpassant = BITS.getEnpassant(inherit);
@@ -53,16 +52,14 @@ public class NodeGen implements IConst {
 		final Position64[] list = new Position64[99];
 		int n = 0;
 		int test = 0;
+		long bit = 1L;
+		int i = 0;
 		if (whiteNext) {
-			getWhiteKingMoves();
-			long bit = 1L;
-			int i = 0;
 			while (bit != 0) {
 				if ((bb_white & bit) != 0) {
 					getMoves(i, piece(bit));
 					while (test < imoves) {
-						long bitmap = moves[test++];
-						Position64 next = pos.move(bitmap);
+						Position64 next = pos.move(moves[test++]);
 						if (!next.isCheckWhite())
 							list[n++] = next;
 					}
@@ -71,15 +68,49 @@ public class NodeGen implements IConst {
 				i++;
 			}
 		} else {
-			getBlackKingMoves();
-			long bit = 1L;
-			int i = 0;
 			while (bit != 0) {
 				if ((bb_black & bit) != 0) {
 					getMoves(i, piece(bit));
 					while (test < imoves) {
-						long bitmap = moves[test++];
-						Position64 next = pos.move(bitmap);
+						Position64 next = pos.move(moves[test++]);
+						if (!next.isCheckBlack())
+							list[n++] = next;
+					}
+				}
+				bit = bit << 1;
+				i++;
+			}
+		}
+		Position64[] mvs = Arrays.copyOfRange(list, 0, n);
+		mergeSort(list, mvs, 0, n, 0);
+		return mvs;
+	}
+
+	final private Position64[] getQuiescence64() {
+		final Position64[] list = new Position64[99];
+		int n = 0;
+		int test = 0;
+		long bit = 1L;
+		int i = 0;
+		if (whiteNext) {
+			while (bit != 0) {
+				if ((bb_white & bit) != 0) {
+					getQMoves(i, piece(bit));
+					while (test < imoves) {
+						Position64 next = pos.move(moves[test++]);
+						if (!next.isCheckWhite())
+							list[n++] = next;
+					}
+				}
+				bit = bit << 1;
+				i++;
+			}
+		} else {
+			while (bit != 0) {
+				if ((bb_black & bit) != 0) {
+					getQMoves(i, piece(bit));
+					while (test < imoves) {
+						Position64 next = pos.move(moves[test++]);
 						if (!next.isCheckBlack())
 							list[n++] = next;
 					}
@@ -134,8 +165,34 @@ public class NodeGen implements IConst {
 				slideBlack(bitmap);
 			break;
 		case WHITE_KING:
+			for (long bitmap : IBase.M32_WHITE_KING[from])
+				slideWhite(bitmap);
+			if ((castling & CANCASTLE_WHITEQUEEN) != 0) {
+				if (!board(WHITE_KING_STARTPOS - 1) && !board(WHITE_KING_STARTPOS - 2) && !board(WHITE_KING_STARTPOS - 3))
+					if (!pos.isCheckWhite() && !pos.move(IBase.WHITE_QUEENSIDE).isCheckWhite())
+						add(IBase.CASTLING_WHITE_QUEEN & castling);
+			}
+			if ((castling & CANCASTLE_WHITEKING) != 0) {
+				if (!board(WHITE_KING_STARTPOS + 1) && !board(WHITE_KING_STARTPOS + 2))
+					if (!pos.isCheckWhite() && !pos.move(IBase.WHITE_KINGSIDE).isCheckWhite())
+						add(IBase.CASTLING_WHITE_KING & castling);
+			}
 			break;
 		case BLACK_KING:
+			for (long bitmap : IBase.M32_BLACK_KING[from])
+				slideBlack(bitmap);
+			if ((castling & CANCASTLE_BLACKQUEEN) != 0) {
+				if (!board(BLACK_KING_STARTPOS - 1) && !board(BLACK_KING_STARTPOS - 2) && !board(BLACK_KING_STARTPOS - 3))
+					if (!pos.isCheckBlack() && !pos.move(IBase.BLACK_QUEENSIDE).isCheckBlack()) {
+						add(IBase.CASTLING_BLACK_QUEEN & castling);
+					}
+			}
+			if ((castling & CANCASTLE_BLACKKING) != 0) {
+				if (!board(BLACK_KING_STARTPOS + 1) && !board(BLACK_KING_STARTPOS + 2))
+					if (!pos.isCheckBlack() && !pos.move(IBase.BLACK_KINGSIDE).isCheckBlack()) {
+						add(IBase.CASTLING_BLACK_KING & castling);
+					}
+			}
 			break;
 		case BLACK_PAWN:
 			for (long[] slides : IBase.M32_BLACK_PAWN[from])
@@ -154,35 +211,62 @@ public class NodeGen implements IConst {
 		}
 	}
 
-	final private void getWhiteKingMoves() {
-		for (long bitmap : IBase.M32_WHITE_KING[wking])
-			slideWhite(bitmap);
-		if ((castling & CANCASTLE_WHITEQUEEN) != 0) {
-			if (!board(WHITE_KING_STARTPOS - 1) && !board(WHITE_KING_STARTPOS - 2) && !board(WHITE_KING_STARTPOS - 3))
-				if (!pos.isCheckWhite() && !pos.move(IBase.WHITE_QUEENSIDE).isCheckWhite())
-					add(IBase.CASTLING_WHITE_QUEEN & castling);
-		}
-		if ((castling & CANCASTLE_WHITEKING) != 0) {
-			if (!board(WHITE_KING_STARTPOS + 1) && !board(WHITE_KING_STARTPOS + 2))
-				if (!pos.isCheckWhite() && !pos.move(IBase.WHITE_KINGSIDE).isCheckWhite())
-					add(IBase.CASTLING_WHITE_KING & castling);
-		}
-	}
-
-	final private void getBlackKingMoves() {
-		for (long bitmap : IBase.M32_BLACK_KING[bking])
-			slideBlack(bitmap);
-		if ((castling & CANCASTLE_BLACKQUEEN) != 0) {
-			if (!board(BLACK_KING_STARTPOS - 1) && !board(BLACK_KING_STARTPOS - 2) && !board(BLACK_KING_STARTPOS - 3))
-				if (!pos.isCheckBlack() && !pos.move(IBase.BLACK_QUEENSIDE).isCheckBlack()) {
-					add(IBase.CASTLING_BLACK_QUEEN & castling);
-				}
-		}
-		if ((castling & CANCASTLE_BLACKKING) != 0) {
-			if (!board(BLACK_KING_STARTPOS + 1) && !board(BLACK_KING_STARTPOS + 2))
-				if (!pos.isCheckBlack() && !pos.move(IBase.BLACK_KINGSIDE).isCheckBlack()) {
-					add(IBase.CASTLING_BLACK_KING & castling);
-				}
+	final private void getQMoves(int from, int ptype) {
+		switch (ptype) {
+		case WHITE_BISHOP:
+			for (long[] slides : IBase.M32_WHITE_BISHOP[from])
+				for (int i = 0; i < slides.length && slideQWhite(slides[i]); i++)
+					;
+			break;
+		case BLACK_BISHOP:
+			for (long[] slides : IBase.M32_BLACK_BISHOP[from])
+				for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
+					;
+			break;
+		case WHITE_ROOK:
+			for (long[] slides : IBase.M32_WHITE_ROOK[from])
+				for (int i1 = 0; i1 < slides.length && slideQWhite(slides[i1]); i1++)
+					;
+			break;
+		case BLACK_ROOK:
+			for (long[] slides : IBase.M32_BLACK_ROOK[from])
+				for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
+					;
+			break;
+		case WHITE_QUEEN:
+			for (long[] slides : IBase.M32_WHITE_QUEEN[from])
+				for (int i = 0; i < slides.length && slideQWhite(slides[i]); i++)
+					;
+			break;
+		case BLACK_QUEEN:
+			for (long[] slides : IBase.M32_BLACK_QUEEN[from])
+				for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
+					;
+			break;
+		case WHITE_KNIGHT:
+			for (long bitmap : IBase.M32_WHITE_KNIGHT[from])
+				slideQWhite(bitmap);
+			break;
+		case BLACK_KNIGHT:
+			for (long bitmap : IBase.M32_BLACK_KNIGHT[from])
+				slideQBlack(bitmap);
+			break;
+		case WHITE_KING:
+			for (long bitmap : IBase.M32_WHITE_KING[from])
+				slideQWhite(bitmap);
+			break;
+		case BLACK_KING:
+			for (long bitmap : IBase.M32_BLACK_KING[from])
+				slideQBlack(bitmap);
+			break;
+		case WHITE_PAWN:
+			for (long bitmap : IBase.M32_WHITE_PAWN_CAPTURE[from])
+				slideQWhite(bitmap);
+			break;
+		case BLACK_PAWN:
+			for (long bitmap : IBase.M32_BLACK_PAWN_CAPTURE[from])
+				slideQBlack(bitmap);
+			break;
 		}
 	}
 
@@ -212,7 +296,31 @@ public class NodeGen implements IConst {
 				if (to == BLACK_ROOK_QUEEN_STARTPOS)
 					bitmap = bitmap & ~CANCASTLE_BLACKQUEEN;
 			}
-			add((purge(bitmap,Piece_Square_Tables.pVal(to, type+8)) & castling) | (type << _CAPTURE));
+			add((purge(bitmap, Piece_Square_Tables.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
+		}
+		return false;
+	}
+
+	final private boolean slideQWhite(long bitmap) {
+		int to = BITS.getTo(bitmap);
+		long bto = 1L << to;
+		if ((bb_piece & bto) == 0) {
+			return true;
+		} else if ((bb_black & bto) != 0) {
+			int type = type(bto);
+			add((purge(bitmap, Piece_Square_Tables.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
+		}
+		return false;
+	}
+
+	final private boolean slideQBlack(long bitmap) {
+		int to = BITS.getTo(bitmap);
+		long bto = 1L << to;
+		if ((bb_piece & bto) == 0) {
+			return true;
+		} else if ((bb_white & bto) != 0) {
+			int type = type(bto);
+			add((purge(bitmap, Piece_Square_Tables.pVal(to, type)) & castling) | (type << _CAPTURE));
 		}
 		return false;
 	}
@@ -231,21 +339,21 @@ public class NodeGen implements IConst {
 				if (to == WHITE_ROOK_QUEEN_STARTPOS)
 					bitmap = bitmap & ~CANCASTLE_WHITEQUEEN;
 			}
-			add((purge(bitmap,Piece_Square_Tables.pVal(to, type)) & castling) | (type << _CAPTURE));
+			add((purge(bitmap, Piece_Square_Tables.pVal(to, type)) & castling) | (type << _CAPTURE));
 		}
 		return false;
 	}
 
-	final private long purge(long bitmap,int subtract){
-		int score=BITS.score(bitmap)-subtract;
-		return (((long)score)<<32) |((int)bitmap);
+	final private long purge(long bitmap, int subtract) {
+		int score = BITS.score(bitmap) - subtract;
+		return (((long) score) << 32) | ((int) bitmap);
 	}
-	
+
 	final private void pawnCaptureWhite(long bitmap) {
 		int to = BITS.getTo(bitmap);
 		long bto = 1L << to;
 		if (enpassant == to) {
-			add((purge(bitmap,Piece_Square_Tables.pVal(to-8, BLACK_PAWN)) & castling) | (WHITE_PAWN << _CAPTURE) | SPECIAL);
+			add((purge(bitmap, Piece_Square_Tables.pVal(to - 8, BLACK_PAWN)) & castling) | (WHITE_PAWN << _CAPTURE) | SPECIAL);
 		} else {
 			if ((bb_black & bto) != 0) {
 				int type = type(bto);
@@ -255,7 +363,7 @@ public class NodeGen implements IConst {
 					if (to == BLACK_ROOK_QUEEN_STARTPOS)
 						bitmap = bitmap & ~CANCASTLE_BLACKQUEEN;
 				}
-				add((purge(bitmap,Piece_Square_Tables.pVal(to, type+8)) & castling) | (type << _CAPTURE));
+				add((purge(bitmap, Piece_Square_Tables.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
 			}
 		}
 	}
@@ -264,7 +372,7 @@ public class NodeGen implements IConst {
 		int to = BITS.getTo(bitmap);
 		long bto = 1L << to;
 		if (enpassant == to) {
-			add((purge(bitmap,Piece_Square_Tables.pVal(to+8, WHITE_PAWN)) & castling) | (WHITE_PAWN << _CAPTURE) | SPECIAL);
+			add((purge(bitmap, Piece_Square_Tables.pVal(to + 8, WHITE_PAWN)) & castling) | (WHITE_PAWN << _CAPTURE) | SPECIAL);
 		} else {
 			if ((bb_white & bto) != 0) {
 				int type = type(bto);
@@ -274,7 +382,7 @@ public class NodeGen implements IConst {
 					if (to == WHITE_ROOK_QUEEN_STARTPOS)
 						bitmap = bitmap & ~CANCASTLE_WHITEQUEEN;
 				}
-				add((purge(bitmap,Piece_Square_Tables.pVal(to, type)) & castling) | (type << _CAPTURE));
+				add((purge(bitmap, Piece_Square_Tables.pVal(to, type)) & castling) | (type << _CAPTURE));
 			}
 		}
 	}
@@ -295,12 +403,16 @@ public class NodeGen implements IConst {
 		return create(pos).getAllLegalMoves();
 	}
 
-	public static final NodeGen create(IPosition pos) {
+	private static final NodeGen create(IPosition pos) {
 		return new NodeGen(Position64.getPosition64(pos));
 	}
 
 	public static final Position64[] getLegalMoves64(IPosition pos) {
 		return create(pos).getAllLegalMoves64();
+	}
+
+	public static final Position64[] getQuiescence64(IPosition pos) {
+		return create(pos).getQuiescence64();
 	}
 
 	/**

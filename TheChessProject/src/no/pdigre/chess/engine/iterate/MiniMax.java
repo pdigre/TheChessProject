@@ -43,5 +43,11 @@ public class MiniMax implements IIterator {
 		}
 		return min;
 	}
+	
+	@Override
+	public int getQuality() {
+		return deeper.getQuality()+1;
+	}
+
 
 }

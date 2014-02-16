@@ -217,7 +217,7 @@ public class Position64 implements IPosition64 {
 
 	@Override
 	public int getQuality() {
-		return 0;
+		return quality;
 	}
 
 	@Override

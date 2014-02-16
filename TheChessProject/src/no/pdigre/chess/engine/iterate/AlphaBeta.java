@@ -4,6 +4,7 @@ import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.IPosition64;
+import no.pdigre.chess.profile.TestPlayer;
 
 public class AlphaBeta implements IIterator {
 
@@ -45,6 +46,11 @@ public class AlphaBeta implements IIterator {
 				beta = score;
 		}
 		return beta;
+	}
+	
+	@Override
+	public int getQuality() {
+		return deeper.getQuality()+1;
 	}
 
 }

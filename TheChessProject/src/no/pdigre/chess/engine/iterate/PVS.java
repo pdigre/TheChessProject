@@ -46,5 +46,10 @@ public class PVS implements IIterator {
 		}
 		return beta;
 	}
+	
+	@Override
+	public int getQuality() {
+		return next.getQuality()+1;
+	}
 
 }
