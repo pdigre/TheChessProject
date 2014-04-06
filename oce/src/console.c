@@ -91,7 +91,7 @@ void mainExit(){
     exit(0);
 }
 
-void mainLoop(){
+void mainLoop(void (*command)(char** split, char* msg,FILE* s)){
     char * msg;
 	char ** split;
 	while (active && (msg = getLine()) !=NULL) {
@@ -99,21 +99,7 @@ void mainLoop(){
 		strcpy(msg2,msg);
 		strtok(msg2, "\n");
 		split = strSplit(msg2, ' ');
-		if (0 == strcasecmp(split[0], "perft")) {
-			puts("PERFT");
-		} else if (0 == strcasecmp(split[0], "divide")) {
-			puts("DIVIDE");
-		} else if (0 == strcasecmp(split[0], "exit")) {
-			mainExit();
-		} else if (0 == strcasecmp(split[0], "quit")) {
-			mainExit();
-		} else if(0 != strcmp(split[0], "")){
-			fputs("Unknown '",stdout);
-			fputs(split[0],stdout);
-			fputs("' in '",stdout);
-			fputs(msg,stdout);
-			puts("'");
-		}
+		command(split, msg, stdout);
 		free(msg);
 		free(msg2);
 		int n=sizeof(split)/sizeof(*split);

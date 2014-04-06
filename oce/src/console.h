@@ -1,5 +1,5 @@
 /*
- * uci.h
+ * console.h
  *
  *  Created on: 5. apr. 2014
  *      Author: pdigre
