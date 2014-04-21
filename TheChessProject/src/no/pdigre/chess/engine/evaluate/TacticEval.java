@@ -31,12 +31,12 @@ public class TacticEval implements IEvaluator {
 		}
 		if (BITS.isPromotion(bitmap)){
 			int vt = Piece_Square_Tables.pVal(to, piece);
-			int vf = Piece_Square_Tables.pVal(from, BITS.white(bitmap)?IConst.WHITE_PAWN:IConst.BLACK_PAWN);
+			int vf = Piece_Square_Tables.pVal(from, BITS.white(bitmap)?IConst.WP:IConst.BP);
 			return last + vt - vf;
 		}
-		if (piece == IConst.BLACK_KING) {
+		if (piece == IConst.BK) {
 			return last + Piece_Square_Tables.BKING_MIDDLE[to] - Piece_Square_Tables.BKING_MIDDLE[from];
-		} else if (piece == IConst.WHITE_KING) {
+		} else if (piece == IConst.WK) {
 			int vto = Piece_Square_Tables.WKING_MIDDLE[to];
 			int vfrom = Piece_Square_Tables.WKING_MIDDLE[from];
 			return last + vto - vfrom;
@@ -50,29 +50,29 @@ public class TacticEval implements IEvaluator {
 
 	public static final int value(final int type) {
 		switch (type) {
-		case IConst.WHITE_PAWN:
+		case IConst.WP:
 			return 100;
-		case IConst.WHITE_KNIGHT:
+		case IConst.WN:
 			return 320;
-		case IConst.WHITE_BISHOP:
+		case IConst.WB:
 			return 330;
-		case IConst.WHITE_ROOK:
+		case IConst.WR:
 			return 500;
-		case IConst.WHITE_QUEEN:
+		case IConst.WQ:
 			return 900;
-		case IConst.WHITE_KING:
+		case IConst.WK:
 			return 20000;
-		case IConst.BLACK_PAWN:
+		case IConst.BP:
 			return -100;
-		case IConst.BLACK_KNIGHT:
+		case IConst.BN:
 			return -320;
-		case IConst.BLACK_BISHOP:
+		case IConst.BB:
 			return -330;
-		case IConst.BLACK_ROOK:
+		case IConst.BR:
 			return -500;
-		case IConst.BLACK_QUEEN:
+		case IConst.BQ:
 			return -900;
-		case IConst.BLACK_KING:
+		case IConst.BK:
 			return -20000;
 		default:
 			return 0;
@@ -81,21 +81,21 @@ public class TacticEval implements IEvaluator {
 
 	public static final int promoValue(final int type) {
 		switch (type) {
-		case IConst.WHITE_KNIGHT:
+		case IConst.WN:
 			return 220;
-		case IConst.WHITE_BISHOP:
+		case IConst.WB:
 			return 230;
-		case IConst.WHITE_ROOK:
+		case IConst.WR:
 			return 400;
-		case IConst.WHITE_QUEEN:
+		case IConst.WQ:
 			return 800;
-		case IConst.BLACK_KNIGHT:
+		case IConst.BN:
 			return -220;
-		case IConst.BLACK_BISHOP:
+		case IConst.BB:
 			return -230;
-		case IConst.BLACK_ROOK:
+		case IConst.BR:
 			return -400;
-		case IConst.BLACK_QUEEN:
+		case IConst.BQ:
 			return -800;
 		default:
 			return 0;

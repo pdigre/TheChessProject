@@ -48,31 +48,31 @@ public class GNodegenQ implements IConst {
 					int ptype = ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4)
 							| ((bb_black & bit) == 0 ? 0 : 8);
 					switch (ptype) {
-					case WHITE_BISHOP:
-						for (long[] slides : IBase.M32_WHITE_BISHOP[from])
+					case WB:
+						for (long[] slides : IBase.M32_WB[from])
 							for (int i = 0; i < slides.length && slideQWhite(slides[i]); i++)
 								;
 						break;
-					case WHITE_ROOK:
-						for (long[] slides : IBase.M32_WHITE_ROOK[from])
+					case WR:
+						for (long[] slides : IBase.M32_WR[from])
 							for (int i1 = 0; i1 < slides.length && slideQWhite(slides[i1]); i1++)
 								;
 						break;
-					case WHITE_QUEEN:
-						for (long[] slides : IBase.M32_WHITE_QUEEN[from])
+					case WQ:
+						for (long[] slides : IBase.M32_WQ[from])
 							for (int i = 0; i < slides.length && slideQWhite(slides[i]); i++)
 								;
 						break;
-					case WHITE_KNIGHT:
-						for (long bitmap : IBase.M32_WHITE_KNIGHT[from])
+					case WN:
+						for (long bitmap : IBase.M32_WN[from])
 							slideQWhite(bitmap);
 						break;
-					case WHITE_KING:
-						for (long bitmap : IBase.M32_WHITE_KING[from])
+					case WK:
+						for (long bitmap : IBase.M32_WK[from])
 							slideQWhite(bitmap);
 						break;
-					case WHITE_PAWN:
-						for (long bitmap : IBase.M32_WHITE_PAWN_CAPTURE[from])
+					case WP:
+						for (long bitmap : IBase.M32_WP_CAPTURE[from])
 							slideQWhite(bitmap);
 						break;
 					}
@@ -91,31 +91,31 @@ public class GNodegenQ implements IConst {
 					int ptype = ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4)
 							| ((bb_black & bit) == 0 ? 0 : 8);
 					switch (ptype) {
-					case BLACK_BISHOP:
-						for (long[] slides : IBase.M32_BLACK_BISHOP[from])
+					case BB:
+						for (long[] slides : IBase.M32_BB[from])
 							for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
 								;
 						break;
-					case BLACK_ROOK:
-						for (long[] slides : IBase.M32_BLACK_ROOK[from])
+					case BR:
+						for (long[] slides : IBase.M32_BR[from])
 							for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
 								;
 						break;
-					case BLACK_QUEEN:
-						for (long[] slides : IBase.M32_BLACK_QUEEN[from])
+					case BQ:
+						for (long[] slides : IBase.M32_BQ[from])
 							for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
 								;
 						break;
-					case BLACK_KNIGHT:
-						for (long bitmap : IBase.M32_BLACK_KNIGHT[from])
+					case BN:
+						for (long bitmap : IBase.M32_BN[from])
 							slideQBlack(bitmap);
 						break;
-					case BLACK_KING:
-						for (long bitmap : IBase.M32_BLACK_KING[from])
+					case BK:
+						for (long bitmap : IBase.M32_BK[from])
 							slideQBlack(bitmap);
 						break;
-					case BLACK_PAWN:
-						for (long bitmap : IBase.M32_BLACK_PAWN_CAPTURE[from])
+					case BP:
+						for (long bitmap : IBase.M32_BP_CAPTURE[from])
 							slideQBlack(bitmap);
 						break;
 					}

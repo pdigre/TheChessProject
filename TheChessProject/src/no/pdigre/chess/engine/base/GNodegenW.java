@@ -49,53 +49,53 @@ public class GNodegenW implements IConst {
 			int ptype = ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4)
 					| ((bb_black & bit) == 0 ? 0 : 8);
 			switch (ptype) {
-			case WHITE_BISHOP:
-				for (long[] slides : IBase.M32_WHITE_BISHOP[from])
+			case WB:
+				for (long[] slides : IBase.M32_WB[from])
 					for (int i = 0; i < slides.length && slideWhite(slides[i]); i++);
 				break;
-			case WHITE_ROOK:
-				for (long[] slides : IBase.M32_WHITE_ROOK[from])
+			case WR:
+				for (long[] slides : IBase.M32_WR[from])
 					for (int i1 = 0; i1 < slides.length && slideWhite(slides[i1]); i1++);
 				break;
-			case WHITE_QUEEN:
-				for (long[] slides : IBase.M32_WHITE_QUEEN[from])
+			case WQ:
+				for (long[] slides : IBase.M32_WQ[from])
 					for (int i = 0; i < slides.length && slideWhite(slides[i]); i++);
 				break;
-			case WHITE_KNIGHT:
-				for (long bitmap : IBase.M32_WHITE_KNIGHT[from])
+			case WN:
+				for (long bitmap : IBase.M32_WN[from])
 					slideWhite(bitmap);
 				break;
-			case WHITE_KING:
-				for (long bitmap : IBase.M32_WHITE_KING[from])
+			case WK:
+				for (long bitmap : IBase.M32_WK[from])
 					slideWhite(bitmap);
-				if(from==IConst.WHITE_KING_STARTPOS){
+				if(from==IConst.WK_STARTPOS){
 				if ((castling & CANCASTLE_WHITEQUEEN) != 0) {
-					if (!board(WHITE_KING_STARTPOS - 1) && !board(WHITE_KING_STARTPOS - 2) && !board(WHITE_KING_STARTPOS - 3))
-						if (!pos.isCheckWhite() && !pos.move(IBase.WHITE_QUEENSIDE).isCheckWhite())
-							add(IBase.CASTLING_WHITE_QUEEN & castling);
+					if (!board(WK_STARTPOS - 1) && !board(WK_STARTPOS - 2) && !board(WK_STARTPOS - 3))
+						if (!pos.isCheckWhite() && !pos.move(IBase.SIDE_WQ).isCheckWhite())
+							add(IBase.CASTLING_WQ & castling);
 				}
 				if ((castling & CANCASTLE_WHITEKING) != 0) {
-					if (!board(WHITE_KING_STARTPOS + 1) && !board(WHITE_KING_STARTPOS + 2))
-						if (!pos.isCheckWhite() && !pos.move(IBase.WHITE_KINGSIDE).isCheckWhite())
-							add(IBase.CASTLING_WHITE_KING & castling);
+					if (!board(WK_STARTPOS + 1) && !board(WK_STARTPOS + 2))
+						if (!pos.isCheckWhite() && !pos.move(IBase.SIDE_WK).isCheckWhite())
+							add(IBase.CASTLING_WK & castling);
 				}
 				}
 				break;
-			case WHITE_PAWN:
-				for (long[] slides : IBase.M32_WHITE_PAWN[from])
+			case WP:
+				for (long[] slides : IBase.M32_WP[from])
 					for (int i = 0; i < slides.length && pawnSlide(slides[i]); i++);
-				for (long bitmap : IBase.M32_WHITE_PAWN_CAPTURE[from]) {
+				for (long bitmap : IBase.M32_WP_CAPTURE[from]) {
 					int to = BITS.getTo(bitmap);
 					long bto = 1L << to;
 					if (enpassant == to) {
-						add((purge(bitmap, Piece_Square_Tables.pVal(to - 8, BLACK_PAWN)) & castling) | (WHITE_PAWN << _CAPTURE) | SPECIAL);
+						add((purge(bitmap, Piece_Square_Tables.pVal(to - 8, BP)) & castling) | (WP << _CAPTURE) | SPECIAL);
 					} else {
 						if ((bb_black & bto) != 0) {
 							int type = type(bto);
-							if (type == WHITE_ROOK) {
-								if (to == BLACK_ROOK_KING_STARTPOS)
+							if (type == WR) {
+								if (to == BR_KING_STARTPOS)
 									bitmap = bitmap & ~CANCASTLE_BLACKKING;
-								if (to == BLACK_ROOK_QUEEN_STARTPOS)
+								if (to == BR_QUEEN_STARTPOS)
 									bitmap = bitmap & ~CANCASTLE_BLACKQUEEN;
 							}
 							add((purge(bitmap, Piece_Square_Tables.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
@@ -126,10 +126,10 @@ public class GNodegenW implements IConst {
 			return true;
 		} else if ((bb_black & bto) != 0) {
 			int type = type(bto);
-			if (type == WHITE_ROOK) {
-				if (to == BLACK_ROOK_KING_STARTPOS)
+			if (type == WR) {
+				if (to == BR_KING_STARTPOS)
 					bitmap = bitmap & ~CANCASTLE_BLACKKING;
-				if (to == BLACK_ROOK_QUEEN_STARTPOS)
+				if (to == BR_QUEEN_STARTPOS)
 					bitmap = bitmap & ~CANCASTLE_BLACKQUEEN;
 			}
 			add((purge(bitmap, Piece_Square_Tables.pVal(to, type + 8)) & castling) | (type << _CAPTURE));

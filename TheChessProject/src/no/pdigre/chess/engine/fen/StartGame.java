@@ -50,9 +50,9 @@ public class StartGame implements IPositionWithLog {
         int enp=0;
         if(enpassant!=-1){
             if(white){
-                enp=SPECIAL|WHITE_PAWN|(enpassant+8)<<_FROM|(enpassant-8)<<_TO;
+                enp=SPECIAL|WP|(enpassant+8)<<_FROM|(enpassant-8)<<_TO;
             }else {
-                enp=SPECIAL|WHITE_PAWN|(enpassant-8)<<_FROM|(enpassant+8)<<_TO;
+                enp=SPECIAL|WP|(enpassant-8)<<_FROM|(enpassant+8)<<_TO;
             }
         }
         return (halfMoves<<_HALFMOVES)|getCastlingState()|(white?BLACK:0)|enp;

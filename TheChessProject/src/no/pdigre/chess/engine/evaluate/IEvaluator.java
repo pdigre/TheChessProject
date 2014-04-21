@@ -17,29 +17,29 @@ public abstract interface IEvaluator {
     public final static IEvaluator BASIC = new IEvaluator() {
         public final int value(final int type) {
             switch (type) {
-                case IConst.WHITE_PAWN:
+                case IConst.WP:
                     return 100;
-                case IConst.WHITE_KNIGHT:
+                case IConst.WN:
                     return 320;
-                case IConst.WHITE_BISHOP:
+                case IConst.WB:
                     return 330;
-                case IConst.WHITE_ROOK:
+                case IConst.WR:
                     return 500;
-                case IConst.WHITE_QUEEN:
+                case IConst.WQ:
                     return 900;
-                case IConst.WHITE_KING:
+                case IConst.WK:
                     return 100000;
-                case IConst.BLACK_PAWN:
+                case IConst.BP:
                     return -100;
-                case IConst.BLACK_KNIGHT:
+                case IConst.BN:
                     return -300;
-                case IConst.BLACK_BISHOP:
+                case IConst.BB:
                     return -325;
-                case IConst.BLACK_ROOK:
+                case IConst.BR:
                     return -500;
-                case IConst.BLACK_QUEEN:
+                case IConst.BQ:
                     return -900;
-                case IConst.BLACK_KING:
+                case IConst.BK:
                     return -100000;
                 default:
                     return 0;

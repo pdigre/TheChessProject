@@ -36,14 +36,14 @@ public abstract interface IPosition extends IConst, Comparable<IPosition>{
 	class BOARD88 {
 		final static public int getWKpos(IPosition pos){
 			int kingpos=0;
-			while(pos.getPiece(kingpos) != WHITE_KING)
+			while(pos.getPiece(kingpos) != WK)
 				kingpos++;
 			return kingpos;
 		}
 
 		final static public int getBKpos(IPosition pos){
 			int kingpos=0;
-			while(pos.getPiece(kingpos) != BLACK_KING)
+			while(pos.getPiece(kingpos) != BK)
 				kingpos++;
 			return kingpos;
 		}

@@ -73,29 +73,33 @@ public interface IConst {
 	// piecetype
 	int NONE = 0;
 
-	int WHITE_BISHOP = 1;
+	int SLIDER = 4;
+	
+	int HIGHER = 2;
+	
+	int WP = 1;
 
-	int WHITE_ROOK = 2;
+	int WN = 2;
 
-	int WHITE_QUEEN = 3;
+	int WK = 3;
 
-	int WHITE_PAWN = 5;
+	int WB = 5;
 
-	int WHITE_KNIGHT = 6;
+	int WR = 6;
 
-	int WHITE_KING = 7;
+	int WQ = 7;
 
-	int BLACK_PAWN = WHITE_PAWN | BLACK;
+	int BP = WP | BLACK;
 
-	int BLACK_KNIGHT = WHITE_KNIGHT | BLACK;
+	int BN = WN | BLACK;
 
-	int BLACK_BISHOP = WHITE_BISHOP | BLACK;
+	int BB = WB | BLACK;
 
-	int BLACK_ROOK = WHITE_ROOK | BLACK;
+	int BR = WR | BLACK;
 
-	int BLACK_QUEEN = WHITE_QUEEN | BLACK;
+	int BQ = WQ | BLACK;
 
-	int BLACK_KING = WHITE_KING | BLACK;
+	int BK = WK | BLACK;
 
 	// game state
 	int CHECK = 1;
@@ -103,17 +107,17 @@ public interface IConst {
 	int MATE = 2;
 
 	int GOAL_LINE = 56;
-	int WHITE_KING_STARTPOS = 4;
-	int BLACK_KING_STARTPOS = WHITE_KING_STARTPOS + GOAL_LINE;
-	int BLACK_ROOK_KING_STARTPOS = 63;
-	int BLACK_ROOK_QUEEN_STARTPOS = 56;
-	int WHITE_ROOK_KING_STARTPOS = 7;
-	int WHITE_ROOK_QUEEN_STARTPOS = 0;
+	int WK_STARTPOS = 4;
+	int BK_STARTPOS = WK_STARTPOS + GOAL_LINE;
+	int BR_KING_STARTPOS = 63;
+	int BR_QUEEN_STARTPOS = 56;
+	int WR_KING_STARTPOS = 7;
+	int WR_QUEEN_STARTPOS = 0;
 
-	long CWQ = 7L << WHITE_KING_STARTPOS - 3;
-	long CWK = 3L << WHITE_KING_STARTPOS + 1;
-	long CBQ = 7L << BLACK_KING_STARTPOS - 3;
-	long CBK = 3L << BLACK_KING_STARTPOS + 1;
+	long CWQ = 7L << WK_STARTPOS - 3;
+	long CWK = 3L << WK_STARTPOS + 1;
+	long CBQ = 7L << BK_STARTPOS - 3;
+	long CBK = 3L << BK_STARTPOS + 1;
 
 	class BITS {
 
@@ -187,15 +191,15 @@ public interface IConst {
 		}
 
 		final static public boolean isCastling(final long bitmap) {
-			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == WHITE_KING;
+			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == WK;
 		}
 
 		final static public boolean isEnpassant(final long bitmap) {
-			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == WHITE_PAWN;
+			return (bitmap & SPECIAL) != 0 && BITS.getType(bitmap) == WP;
 		}
 
 		final public static boolean isPromotion(final long bitmap) {
-			return ((bitmap & SPECIAL) != 0) && BITS.getType(bitmap) != WHITE_KING && BITS.getType(bitmap) != WHITE_PAWN;
+			return ((bitmap & SPECIAL) != 0) && BITS.getType(bitmap) != WK && BITS.getType(bitmap) != WP;
 		}
 
 		final public static int getPiece(final long bitmap) {
@@ -214,11 +218,11 @@ public interface IConst {
 			int from2 = getFrom(bitmap);
 			int to2 = getTo(bitmap);
 			switch (getPiece(bitmap)) {
-			case WHITE_PAWN:
+			case WP:
 				if (from2 - to2 == -16)
 					return from2 + 8;
 				return -1;
-			case BLACK_PAWN:
+			case BP:
 				if (from2 - to2 == 16)
 					return from2 - 8;
 				return -1;

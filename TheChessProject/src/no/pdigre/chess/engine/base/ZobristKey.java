@@ -167,29 +167,29 @@ public class ZobristKey implements IConst {
      */
 	public final static int getKindOfPiece(int piece) {
 		switch (piece) {
-		case IConst.BLACK_PAWN:
+		case IConst.BP:
 			return 0;
-		case IConst.WHITE_PAWN:
+		case IConst.WP:
 			return 1;
-		case IConst.BLACK_KNIGHT:
+		case IConst.BN:
 			return 2;
-		case IConst.WHITE_KNIGHT:
+		case IConst.WN:
 			return 3;
-		case IConst.BLACK_BISHOP:
+		case IConst.BB:
 			return 4;
-		case IConst.WHITE_BISHOP:
+		case IConst.WB:
 			return 5;
-		case IConst.BLACK_ROOK:
+		case IConst.BR:
 			return 6;
-		case IConst.WHITE_ROOK:
+		case IConst.WR:
 			return 7;
-		case IConst.BLACK_QUEEN:
+		case IConst.BQ:
 			return 8;
-		case IConst.WHITE_QUEEN:
+		case IConst.WQ:
 			return 9;
-		case IConst.BLACK_KING:
+		case IConst.BK:
 			return 10;
-		case IConst.WHITE_KING:
+		case IConst.WK:
 			return 11;
 		}
 		return 0;
@@ -217,15 +217,15 @@ public class ZobristKey implements IConst {
 		if (enpassant != -1) {
 			int file = enpassant & 7;
 			if (BITS.whiteNext(bitmap)) {
-				if (file != 0 && pos.getPiece(enpassant - 7) == WHITE_PAWN) {
+				if (file != 0 && pos.getPiece(enpassant - 7) == WP) {
 					key ^= ZOBRIST_ENP[file];
-				} else if (file != 7 && pos.getPiece(enpassant - 9) == WHITE_PAWN) {
+				} else if (file != 7 && pos.getPiece(enpassant - 9) == WP) {
 					key ^= ZOBRIST_ENP[file];
 				}
 			} else {
-				if (file != 0 && pos.getPiece(enpassant + 7) == BLACK_PAWN) {
+				if (file != 0 && pos.getPiece(enpassant + 7) == BP) {
 					key ^= ZOBRIST_ENP[file];
-				} else if (file != 7 && pos.getPiece(enpassant + 9) == BLACK_PAWN) {
+				} else if (file != 7 && pos.getPiece(enpassant + 9) == BP) {
 					key ^= ZOBRIST_ENP[file];
 				}
 			}

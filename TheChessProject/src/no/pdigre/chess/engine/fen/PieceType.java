@@ -4,18 +4,18 @@ import no.pdigre.chess.engine.base.IConst;
 
 
 public enum PieceType {
-    WHITE_PAWN(100, 'P', IConst.WHITE_PAWN),
-    WHITE_KNIGHT(300, 'N', IConst.WHITE_KNIGHT),
-    WHITE_BISHOP(300, 'B', IConst.WHITE_BISHOP),
-    WHITE_ROOK(500, 'R', IConst.WHITE_ROOK),
-    WHITE_QUEEN(900, 'Q', IConst.WHITE_QUEEN),
-    WHITE_KING(20000, 'K', IConst.WHITE_KING),
-    BLACK_PAWN(-100, 'p', IConst.BLACK_PAWN),
-    BLACK_KNIGHT(-300, 'n', IConst.BLACK_KNIGHT),
-    BLACK_BISHOP(-300, 'b', IConst.BLACK_BISHOP),
-    BLACK_ROOK(-500, 'r', IConst.BLACK_ROOK),
-    BLACK_QUEEN(-900, 'q', IConst.BLACK_QUEEN),
-    BLACK_KING(-20000, 'k', IConst.BLACK_KING);
+    WHITE_PAWN(100, 'P', IConst.WP),
+    WHITE_KNIGHT(300, 'N', IConst.WN),
+    WHITE_BISHOP(300, 'B', IConst.WB),
+    WHITE_ROOK(500, 'R', IConst.WR),
+    WHITE_QUEEN(900, 'Q', IConst.WQ),
+    WHITE_KING(20000, 'K', IConst.WK),
+    BLACK_PAWN(-100, 'p', IConst.BP),
+    BLACK_KNIGHT(-300, 'n', IConst.BN),
+    BLACK_BISHOP(-300, 'b', IConst.BB),
+    BLACK_ROOK(-500, 'r', IConst.BR),
+    BLACK_QUEEN(-900, 'q', IConst.BQ),
+    BLACK_KING(-20000, 'k', IConst.BK);
 
     final public int weight;
 

@@ -1,18 +1,18 @@
 package no.pdigre.chess.engine.base;
 
 public enum EBase {
-	WHITE_BISHOP(IConst.WHITE_BISHOP, 330),
-	WHITE_ROOK(IConst.WHITE_ROOK, 500),
-	WHITE_QUEEN(IConst.WHITE_QUEEN, 900),
-	WHITE_PAWN(IConst.WHITE_PAWN, 100),
-	WHITE_KNIGHT(IConst.WHITE_KNIGHT, 320),
-	WHITE_KING(IConst.WHITE_KING, 20000),
-	BLACK_PAWN(IConst.BLACK_PAWN, -100),
-	BLACK_KNIGHT(IConst.BLACK_KNIGHT, -320),
-	BLACK_BISHOP(IConst.BLACK_BISHOP, -330),
-	BLACK_ROOK(IConst.BLACK_ROOK, -500),
-	BLACK_QUEEN(IConst.BLACK_QUEEN, -900),
-	BLACK_KING(IConst.BLACK_KING, -20000);
+	WB(IConst.WB, 330),
+	WR(IConst.WR, 500),
+	WQ(IConst.WQ, 900),
+	WP(IConst.WP, 100),
+	WN(IConst.WN, 320),
+	WK(IConst.WK, 20000),
+	BP(IConst.BP, -100),
+	BN(IConst.BN, -320),
+	BB(IConst.BB, -330),
+	BR(IConst.BR, -500),
+	BQ(IConst.BQ, -900),
+	BK(IConst.BK, -20000);
 
 	final public static EBase[] TYPES = fill();
 
@@ -50,30 +50,30 @@ public enum EBase {
 
 	static private Object[] moves(int i) {
 		switch (i) {
-		case IConst.BLACK_BISHOP:
-			return IBase.M32_BLACK_BISHOP;
-		case IConst.BLACK_KING:
-			return IBase.M32_BLACK_KING;
-		case IConst.BLACK_KNIGHT:
-			return IBase.M32_BLACK_KNIGHT;
-		case IConst.BLACK_PAWN:
-			return IBase.M32_BLACK_PAWN;
-		case IConst.BLACK_QUEEN:
-			return IBase.M32_BLACK_QUEEN;
-		case IConst.BLACK_ROOK:
-			return IBase.M32_BLACK_ROOK;
-		case IConst.WHITE_BISHOP:
-			return IBase.M32_WHITE_BISHOP;
-		case IConst.WHITE_KING:
-			return IBase.M32_WHITE_KING;
-		case IConst.WHITE_KNIGHT:
-			return IBase.M32_WHITE_KNIGHT;
-		case IConst.WHITE_PAWN:
-			return IBase.M32_WHITE_PAWN;
-		case IConst.WHITE_QUEEN:
-			return IBase.M32_WHITE_QUEEN;
-		case IConst.WHITE_ROOK:
-			return IBase.M32_WHITE_ROOK;
+		case IConst.BB:
+			return IBase.M32_BB;
+		case IConst.BK:
+			return IBase.M32_BK;
+		case IConst.BN:
+			return IBase.M32_BN;
+		case IConst.BP:
+			return IBase.M32_BP;
+		case IConst.BQ:
+			return IBase.M32_BQ;
+		case IConst.BR:
+			return IBase.M32_BR;
+		case IConst.WB:
+			return IBase.M32_WB;
+		case IConst.WK:
+			return IBase.M32_WK;
+		case IConst.WN:
+			return IBase.M32_WN;
+		case IConst.WP:
+			return IBase.M32_WP;
+		case IConst.WQ:
+			return IBase.M32_WQ;
+		case IConst.WR:
+			return IBase.M32_WR;
 		}
 		return null;
 	}

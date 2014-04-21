@@ -38,12 +38,12 @@ public class KingSafe implements IConst {
 	}
 
 	final public boolean isCheckBlack() {
-		if (((~bb_bit1 & bb_bit2 & bb_bit3 & ~bb_black) & IBase.M64_KNIGHT[bking]) != 0)
+		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.M64_KNIGHT[bking]) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit2 & bb_bit3 & ~bb_black) & IBase.M64_KING[bking]) != 0)
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.M64_KING[bking]) != 0)
 			return true;
-		if (((bb_bit1 & ~bb_bit3 & ~bb_black) & IBase.M64_BISHOP[bking]) != 0) {
-			for (long[] slide : IBase.M32_WHITE_BISHOP[bking]) {
+		if (((bb_bit1 & bb_bit3 & ~bb_black) & IBase.M64_BISHOP[bking]) != 0) {
+			for (long[] slide : IBase.M32_WB[bking]) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
@@ -51,14 +51,14 @@ public class KingSafe implements IConst {
 					if ((bb_black & bit) != 0)
 						break;
 					int type = type(bit);
-					if (type == WHITE_QUEEN || type == WHITE_BISHOP)
+					if (type == WQ || type == WB)
 						return true;
 					break;
 				}
 			}
 		}
-		if (((bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.M64_ROOK[bking]) != 0) {
-			for (long[] slide : IBase.M32_WHITE_ROOK[bking]) {
+		if (((bb_bit2 & bb_bit3 & ~bb_black) & IBase.M64_ROOK[bking]) != 0) {
+			for (long[] slide : IBase.M32_WR[bking]) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
@@ -66,13 +66,13 @@ public class KingSafe implements IConst {
 					if ((bb_black & bit) != 0)
 						break;
 					int type = type(bit);
-					if (type == WHITE_QUEEN || type == WHITE_ROOK)
+					if (type == WQ || type == WR)
 						return true;
 					break;
 				}
 			}
 		}
-		if (((bb_bit1 & ~bb_bit2 & bb_bit3 & ~bb_black) & IBase.M64_PAWN_WHITE[bking]) != 0)
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.M64_WP[bking]) != 0)
 			return true;
 		return false;
 	}
@@ -83,12 +83,12 @@ public class KingSafe implements IConst {
 	}
 
 	final public boolean isCheckWhite() {
-		if (((~bb_bit1 & bb_bit2 & bb_bit3 & bb_black) & IBase.M64_KNIGHT[wking]) != 0)
+		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.M64_KNIGHT[wking]) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit2 & bb_bit3 & bb_black) & IBase.M64_KING[wking]) != 0)
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.M64_KING[wking]) != 0)
 			return true;
-		if (((bb_bit1 & ~bb_bit3 & bb_black) & IBase.M64_BISHOP[wking]) != 0) {
-			for (long[] slide : IBase.M32_WHITE_BISHOP[wking]) {
+		if (((bb_bit1 & bb_bit3 & bb_black) & IBase.M64_BISHOP[wking]) != 0) {
+			for (long[] slide : IBase.M32_WB[wking]) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
@@ -96,14 +96,14 @@ public class KingSafe implements IConst {
 					if ((bb_black & bit) == 0)
 						break;
 					int type = type(bit);
-					if (type == WHITE_QUEEN || type == WHITE_BISHOP)
+					if (type == WQ || type == WB)
 						return true;
 					break;
 				}
 			}
 		}
-		if (((bb_bit2 & ~bb_bit3 & bb_black) & IBase.M64_ROOK[wking]) != 0) {
-			for (long[] slide : IBase.M32_WHITE_ROOK[wking]) {
+		if (((bb_bit2 & bb_bit3 & bb_black) & IBase.M64_ROOK[wking]) != 0) {
+			for (long[] slide : IBase.M32_WR[wking]) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
@@ -111,13 +111,13 @@ public class KingSafe implements IConst {
 					if ((bb_black & bit) == 0)
 						break;
 					int type = type(bit);
-					if (type == WHITE_QUEEN || type == WHITE_ROOK)
+					if (type == WQ || type == WR)
 						return true;
 					break;
 				}
 			}
 		}
-		if (((bb_bit1 & ~bb_bit2 & bb_bit3 & bb_black) & IBase.M64_PAWN_BLACK[wking]) != 0)
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & bb_black) & IBase.M64_BP[wking]) != 0)
 			return true;
 		return false;
 	}

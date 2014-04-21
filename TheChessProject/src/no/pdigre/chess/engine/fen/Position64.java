@@ -47,10 +47,10 @@ public class Position64 implements IPosition64 {
 			int p = pos.getPiece(i);
 			if (p != 0) {
 				switch (p) {
-				case WHITE_KING:
+				case WK:
 					wking = i;
 					break;
-				case BLACK_KING:
+				case BK:
 					bking = i;
 					break;
 				}
@@ -225,4 +225,83 @@ public class Position64 implements IPosition64 {
 		return Integer.compare(score, o.getScore());
 	}
 
+	public static Position64 fen2pos(String fen){
+		String[] split = fen.split(" ");
+		String fenboard = split[0];
+		boolean white = "w".equalsIgnoreCase(split[1]);
+		String castling = split[2];
+		int enpassant = FEN.text2pos(split[3]);
+		int halfMoves = Integer.parseInt(split[4]);
+//		int fullMoves = Integer.parseInt(split[5]);
+
+        long enp=0;
+        if(enpassant!=-1){
+            if(white){
+                enp=SPECIAL|WP|(enpassant+8)<<_FROM|(enpassant-8)<<_TO;
+            }else {
+                enp=SPECIAL|WP|(enpassant-8)<<_FROM|(enpassant+8)<<_TO;
+            }
+        }
+		long cstl = (castling.contains("K") ? CANCASTLE_WHITEKING:0)
+				| (castling.contains("Q") ? CANCASTLE_WHITEQUEEN:0)
+				| (castling.contains("k") ? CANCASTLE_BLACKKING:0)
+				| (castling.contains("q") ? CANCASTLE_BLACKQUEEN:0);
+		long bitmap=(halfMoves<<_HALFMOVES)|cstl|(white?BLACK:0)|enp;
+
+
+        /*********************************
+         * Read board
+         * *******************************/
+		int[] board = new int[64];
+        int y = 56;
+        int x = 0;
+        for (int i = 0; i < fenboard.length(); i++) {
+            char c = fenboard.charAt(i);
+            if (c == '/') {
+                y -= 8;
+                x = 0;
+            } else if (c == ' ') {
+                break;
+            } else if (c >= '0' && c <= '9') {
+                x += Integer.parseInt(String.valueOf(c));
+            } else if (c >= 'A' && c <= 'z') {
+                board[x + y] = PieceType.lookup(c).bitmap;
+                x++;
+            }
+        }
+
+        
+        /*********************************
+         * Assign bitmaps
+         * *******************************/
+        int wking = 0;
+		int bking = 0;
+		long bb_bit1=0L;
+		long bb_bit2=0L;
+		long bb_bit3=0L;
+		long bb_black=0L;
+		for (int i = 0; i < 64; i++) {
+			int p = board[i];
+			if (p != 0) {
+				switch (p) {
+				case WK:
+					wking = i;
+					break;
+				case BK:
+					bking = i;
+					break;
+				}
+				long bit = 1L << i;
+				bb_bit1 |= ((p & 1) == 0 ? 0 : bit);
+				bb_bit2 |= ((p & 2) == 0 ? 0 : bit);
+				bb_bit3 |= ((p & 4) == 0 ? 0 : bit);
+				bb_black |= ((p & 8) == 0 ? 0 : bit);
+			}
+		}
+		
+
+		long zobrist=0L;
+		int score=0;
+		return new Position64(bitmap, score, white, bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking, zobrist);
+	}
 }

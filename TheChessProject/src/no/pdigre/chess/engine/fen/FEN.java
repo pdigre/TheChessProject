@@ -225,15 +225,15 @@ public class FEN implements IConst {
 
     private static String piecePrefix(int type) {
         switch (type) {
-            case IConst.WHITE_KING:
+            case IConst.WK:
                 return "K";
-            case IConst.WHITE_QUEEN:
+            case IConst.WQ:
                 return "Q";
-            case IConst.WHITE_ROOK:
+            case IConst.WR:
                 return "R";
-            case IConst.WHITE_BISHOP:
+            case IConst.WB:
                 return "B";
-            case IConst.WHITE_KNIGHT:
+            case IConst.WN:
                 return "N";
         }
         return "";
