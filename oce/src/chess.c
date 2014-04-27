@@ -11,7 +11,8 @@
 #include <windows.h>
 #include <tchar.h>
 #include <signal.h>
-#include "uci.h"
+#include <stdio.h>
+#include "console.h"
 
 BOOL WINAPI consoleHandler(DWORD CEvent){
     switch(CEvent){
@@ -34,13 +35,31 @@ BOOL WINAPI consoleHandler(DWORD CEvent){
     return TRUE;
 }
 
+void command(char** prms, char* line,FILE* s) {
+	char* cmd = prms[0];
+	if (0 == strcasecmp(cmd, "perft")) {
+		fputs("PERFT\n",s);
+	} else if (0 == strcasecmp(cmd, "divide")) {
+		fputs("DIVIDE\n",s);
+	} else if (0 == strcasecmp(cmd, "exit")) {
+		mainExit();
+	} else if (0 == strcasecmp(cmd, "quit")) {
+		mainExit();
+	} else if (0 != strcmp(cmd, "")) {
+		fputs("Unknown '", s);
+		fputs(cmd, s);
+		fputs("' in '", s);
+		fputs(line, s);
+		fputs("'\n",s);
+	}
+}
 
 int main(void) {
     if (SetConsoleCtrlHandler( (PHANDLER_ROUTINE)consoleHandler,TRUE)==FALSE){
         printf("Unable to install handler!\n");
         return EXIT_FAILURE;
     }
-    mainLoop();
+    mainLoop(command);
 	return EXIT_SUCCESS;
 }
 
