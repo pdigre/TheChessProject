@@ -1,0 +1,5 @@
+loading: Roce.cfgRoce version: 0.0390 - Roman's Own Chess Engine
+Copyright (C) 2003-2007 Roman Hartmann, Switzerland. All rights reserved.
+
+
+roce: 
