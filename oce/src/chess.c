@@ -11,6 +11,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include <signal.h>
+#include <stdio.h>
 #include "uci.h"
 
 BOOL WINAPI consoleHandler(DWORD CEvent){
@@ -37,7 +38,7 @@ BOOL WINAPI consoleHandler(DWORD CEvent){
 
 int main(void) {
     if (SetConsoleCtrlHandler( (PHANDLER_ROUTINE)consoleHandler,TRUE)==FALSE){
-        printf("Unable to install handler!\n");
+        printf("Unable to install handler\n");
         return EXIT_FAILURE;
     }
     mainLoop();

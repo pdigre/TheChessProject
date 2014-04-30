@@ -161,6 +161,109 @@ void getINFO(M64 * m64) {
 	}
 }
 
+const char * LETTERS = "ABCDEFGH";
+const char * NUMBERS = "12345678";
+
+void move2code(int code,char * move){
+	move[0]=LETTERS[code&7];
+	move[1]=NUMBERS[(code>>3)&7];
+}
+
+int code2move(char * cmd){
+	int i=-1;
+	switch(cmd[0]){
+	case 'A':
+	case 'a':
+		i=0;
+		break;
+	case 'B':
+	case 'b':
+		i=1;
+		break;
+	case 'C':
+	case 'c':
+		i=2;
+		break;
+	case 'D':
+	case 'd':
+		i=3;
+		break;
+	case 'E':
+	case 'e':
+		i=4;
+		break;
+	case 'F':
+	case 'f':
+		i=5;
+		break;
+	case 'G':
+	case 'g':
+		i=6;
+		break;
+	case 'H':
+	case 'h':
+		i=7;
+		break;
+	default:
+		printf("wrong letter %c",cmd[0]);
+		return -1;
+	}
+
+	switch(cmd[1]){
+	case '1':
+		break;
+	case '2':
+		i+=8;
+		break;
+	case '3':
+		i+=16;
+		break;
+	case '4':
+		i+=24;
+		break;
+	case '5':
+		i+=32;
+		break;
+	case '6':
+		i+=40;
+		break;
+	case '7':
+		i+=48;
+		break;
+	case '8':
+		i+=56;
+		break;
+	default:
+		printf("wrong number %c",cmd[1]);
+		return -1;
+	}
+	return i;
+}
+
+int decodeMove(char * cmd){
+	int len = (int) strlen(cmd);
+	if (len != 4) {
+		printf("Wrong length %i",len);
+		return -1;
+	}
+	int from = code2move(cmd);
+	int to = code2move(&cmd[2]);
+	if(from<0 || to<0)
+		return -1;
+	return (to<<6) | from;
+}
+
+void printM64(M64 * m64){
+	unsigned long long state = m64->state;
+	int from = (state >> _FROM) & 63;
+	int to = (state >> _TO) & 63;
+	char a[2],b[2];
+	move2code(from,a);
+	move2code(to,b);
+	printf("from %c%c to %c%c\n",a[0],a[1],b[0],b[1]);
+}
+
+
 void getPerft(M64 * m64,int lvl){
 
 }
@@ -170,10 +273,9 @@ void getDivide(M64 * m64,int lvl){
 	MOVES64 *pmoves = &moves;
 	pmoves->count=0;
 	m_wn(m64,pmoves);
-	m_wn(m64,pmoves);
 	int i, n = pmoves->count;
 	for (i = 0; i < n; i++) {
-		printf("E2E4 %i\n",i);
+		printM64(&(pmoves->moves[i]));
 	}
 	printf("Total %i\n",n);
 }

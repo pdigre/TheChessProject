@@ -78,6 +78,7 @@ void mainExit() {
  show............gives valid moves for current pos.
  */
 
+
 void mainLoop() {
 	printf("Oslo Chess Engine\n:");
 	fflush(stdout);
@@ -103,7 +104,17 @@ void mainLoop() {
 			getDivide(m64,atoi(prm));
 		} else if (0 == strcasecmp(cmd, "join")) {
 			printf("JOIN\n:");
-		} else if (0 != strcmp(cmd, "")) {
+		} else if (decodeMove(cmd)!=-1) {
+			int move = decodeMove(cmd);
+			int from = move & 63;
+			int to = move >> 6;
+			printf("From %i to %i\n:", from, to);
+			char a[2];
+			char b[2];
+			move2code(from,a);
+			move2code(to,b);
+			printf("From %s to %s\n:",a,b);
+		} else if (0 != strlen(cmd)) {
 			fputs("Unknown '", stdout);
 			fputs(cmd, stdout);
 			fputs("' in '", stdout);
