@@ -1,18 +1,30 @@
 grammar no.pdigre.PSQT with org.eclipse.xtext.common.Terminals
 
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
 generate pSQT "http://www.pdigre.no/PSQT"
 
 Model:
-	tables+=Table*;
+	FDescription (tables+=Table)*;
 	
-Table: Description THeader '8' r8=Row '7' r7=Row '6' r6=Row '5' r5=Row '4' r4=Row '3' r3=Row '2' r2=Row '1' r1=Row;
-Description: PSQT WS* name=ID WS* BASE WS* base=INT EOL WS* piece=PIECE WS* value=VALUE WS* EOL;
-THeader: 'A' WS+ 'B' WS+ 'C' WS+ 'D' WS+ 'E' WS+ 'F' WS+ 'G' WS+ 'H' EOL;
-Row: m=Row1 e=Row1;
-Row1: a=INT WS+ b=INT WS+ c=INT WS+ d=INT WS+ e=INT WS+ f=INT WS+ h=INT WS* EOL;
-	
+enum PieceType : PAWN='Pawn' | KNIGHT='Knight' | BISHOP='Bishop' | ROOK='Rook' | QUEEN='Queen' | KING='King';
+//enum RowNumber : R1='1'|R2='2'|R3='3'|R4='4'|R5='5'|R6='6'|R7='7'|R8='8';
+
+FDescription: PSQT name=ID BASE base=INT;
+
+Table: TDescription THeader r+=Row r+=Row r+=Row r+=Row r+=Row r+=Row r+=Row r+=Row;
+TDescription: PIECE name=PieceType VALUE value=INT;
+THeader: 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H';
+Row: name=RowLabel m=MRow e=ERow;
+
+RowLabel returns ecore::EString: INT;
+MRow: name=Row1;
+ERow: name=Row1;
+Row1: c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT;
+
+terminal INT returns ecore::EInt: '-'? ('0'..'9')+;
 terminal PSQT: 'PSQT:';
 terminal BASE: 'Base:';
 terminal PIECE: 'Piece:';
 terminal VALUE: 'Value:';
-terminal EOL: WS* '\r'? '\n';
+
