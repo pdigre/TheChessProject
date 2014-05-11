@@ -211,6 +211,26 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getFDescription_Mgl()
+  {
+    return (EAttribute)fDescriptionEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getFDescription_Egl()
+  {
+    return (EAttribute)fDescriptionEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getTable()
   {
     return tableEClass;
@@ -251,9 +271,19 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTDescription_Value()
+  public EAttribute getTDescription_Mg()
   {
     return (EAttribute)tDescriptionEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTDescription_Eg()
+  {
+    return (EAttribute)tDescriptionEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -402,13 +432,16 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
     createEReference(fDescriptionEClass, FDESCRIPTION__TABLES);
     createEAttribute(fDescriptionEClass, FDESCRIPTION__NAME);
     createEAttribute(fDescriptionEClass, FDESCRIPTION__BASE);
+    createEAttribute(fDescriptionEClass, FDESCRIPTION__MGL);
+    createEAttribute(fDescriptionEClass, FDESCRIPTION__EGL);
 
     tableEClass = createEClass(TABLE);
 
     tDescriptionEClass = createEClass(TDESCRIPTION);
     createEReference(tDescriptionEClass, TDESCRIPTION__R);
     createEAttribute(tDescriptionEClass, TDESCRIPTION__NAME);
-    createEAttribute(tDescriptionEClass, TDESCRIPTION__VALUE);
+    createEAttribute(tDescriptionEClass, TDESCRIPTION__MG);
+    createEAttribute(tDescriptionEClass, TDESCRIPTION__EG);
 
     rowEClass = createEClass(ROW);
     createEAttribute(rowEClass, ROW__NAME);
@@ -467,13 +500,16 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
     initEReference(getFDescription_Tables(), this.getTable(), null, "tables", null, 0, -1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getFDescription_Name(), ecorePackage.getEString(), "name", null, 0, 1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getFDescription_Base(), ecorePackage.getEInt(), "base", null, 0, 1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFDescription_Mgl(), ecorePackage.getEInt(), "mgl", null, 0, 1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFDescription_Egl(), ecorePackage.getEInt(), "egl", null, 0, 1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tableEClass, Table.class, "Table", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(tDescriptionEClass, TDescription.class, "TDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTDescription_R(), this.getRow(), null, "r", null, 0, -1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTDescription_Name(), this.getPieceType(), "name", null, 0, 1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTDescription_Value(), ecorePackage.getEInt(), "value", null, 0, 1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTDescription_Mg(), ecorePackage.getEInt(), "mg", null, 0, 1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTDescription_Eg(), ecorePackage.getEInt(), "eg", null, 0, 1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(rowEClass, Row.class, "Row", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getRow_Name(), ecorePackage.getEString(), "name", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

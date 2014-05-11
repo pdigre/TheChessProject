@@ -10,10 +10,10 @@ Model:
 enum PieceType : PAWN='Pawn' | KNIGHT='Knight' | BISHOP='Bishop' | ROOK='Rook' | QUEEN='Queen' | KING='King';
 //enum RowNumber : R1='1'|R2='2'|R3='3'|R4='4'|R5='5'|R6='6'|R7='7'|R8='8';
 
-FDescription: PSQT name=ID BASE base=INT;
+FDescription: PSQT name=ID BASE base=INT MIDLIMIT mgl=INT ENDLIMIT egl=INT;
 
 Table: TDescription THeader r+=Row r+=Row r+=Row r+=Row r+=Row r+=Row r+=Row r+=Row;
-TDescription: PIECE name=PieceType VALUE value=INT;
+TDescription: PIECE name=PieceType MIDGAME mg=INT ENDGAME eg=INT;
 THeader: 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H';
 Row: name=RowLabel m=MRow e=ERow;
 
@@ -26,5 +26,8 @@ terminal INT returns ecore::EInt: '-'? ('0'..'9')+;
 terminal PSQT: 'PSQT:';
 terminal BASE: 'Base:';
 terminal PIECE: 'Piece:';
-terminal VALUE: 'Value:';
+terminal MIDLIMIT: 'MidLimit:';
+terminal ENDLIMIT: 'EndLimit:';
+terminal MIDGAME: 'MidGame:';
+terminal ENDGAME: 'EndGame:';
 

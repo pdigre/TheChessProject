@@ -25,14 +25,20 @@ public class PSQTSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if(ruleCall.getRule() == grammarAccess.getBASERule())
 			return getBASEToken(semanticObject, ruleCall, node);
+		else if(ruleCall.getRule() == grammarAccess.getENDGAMERule())
+			return getENDGAMEToken(semanticObject, ruleCall, node);
+		else if(ruleCall.getRule() == grammarAccess.getENDLIMITRule())
+			return getENDLIMITToken(semanticObject, ruleCall, node);
+		else if(ruleCall.getRule() == grammarAccess.getMIDGAMERule())
+			return getMIDGAMEToken(semanticObject, ruleCall, node);
+		else if(ruleCall.getRule() == grammarAccess.getMIDLIMITRule())
+			return getMIDLIMITToken(semanticObject, ruleCall, node);
 		else if(ruleCall.getRule() == grammarAccess.getPIECERule())
 			return getPIECEToken(semanticObject, ruleCall, node);
 		else if(ruleCall.getRule() == grammarAccess.getPSQTRule())
 			return getPSQTToken(semanticObject, ruleCall, node);
 		else if(ruleCall.getRule() == grammarAccess.getTHeaderRule())
 			return getTHeaderToken(semanticObject, ruleCall, node);
-		else if(ruleCall.getRule() == grammarAccess.getVALUERule())
-			return getVALUEToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
@@ -43,6 +49,42 @@ public class PSQTSyntacticSequencer extends AbstractSyntacticSequencer {
 		if (node != null)
 			return getTokenText(node);
 		return "Base:";
+	}
+	
+	/**
+	 * terminal ENDGAME: 'EndGame:';
+	 */
+	protected String getENDGAMEToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "EndGame:";
+	}
+	
+	/**
+	 * terminal ENDLIMIT: 'EndLimit:';
+	 */
+	protected String getENDLIMITToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "EndLimit:";
+	}
+	
+	/**
+	 * terminal MIDGAME: 'MidGame:';
+	 */
+	protected String getMIDGAMEToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "MidGame:";
+	}
+	
+	/**
+	 * terminal MIDLIMIT: 'MidLimit:';
+	 */
+	protected String getMIDLIMITToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "MidLimit:";
 	}
 	
 	/**
@@ -70,15 +112,6 @@ public class PSQTSyntacticSequencer extends AbstractSyntacticSequencer {
 		if (node != null)
 			return getTokenText(node);
 		return "ABCDEFGH";
-	}
-	
-	/**
-	 * terminal VALUE: 'Value:';
-	 */
-	protected String getVALUEToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "Value:";
 	}
 	
 	@Override

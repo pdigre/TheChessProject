@@ -51,13 +51,19 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cBASETerminalRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		private final Assignment cBaseAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cBaseINTTerminalRuleCall_3_0 = (RuleCall)cBaseAssignment_3.eContents().get(0);
+		private final RuleCall cMIDLIMITTerminalRuleCall_4 = (RuleCall)cGroup.eContents().get(4);
+		private final Assignment cMglAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cMglINTTerminalRuleCall_5_0 = (RuleCall)cMglAssignment_5.eContents().get(0);
+		private final RuleCall cENDLIMITTerminalRuleCall_6 = (RuleCall)cGroup.eContents().get(6);
+		private final Assignment cEglAssignment_7 = (Assignment)cGroup.eContents().get(7);
+		private final RuleCall cEglINTTerminalRuleCall_7_0 = (RuleCall)cEglAssignment_7.eContents().get(0);
 		
 		////enum RowNumber : R1='1'|R2='2'|R3='3'|R4='4'|R5='5'|R6='6'|R7='7'|R8='8';
 		//FDescription:
-		//	PSQT name=ID BASE base=INT;
+		//	PSQT name=ID BASE base=INT MIDLIMIT mgl=INT ENDLIMIT egl=INT;
 		public ParserRule getRule() { return rule; }
 
-		//PSQT name=ID BASE base=INT
+		//PSQT name=ID BASE base=INT MIDLIMIT mgl=INT ENDLIMIT egl=INT
 		public Group getGroup() { return cGroup; }
 
 		//PSQT
@@ -77,6 +83,24 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 
 		//INT
 		public RuleCall getBaseINTTerminalRuleCall_3_0() { return cBaseINTTerminalRuleCall_3_0; }
+
+		//MIDLIMIT
+		public RuleCall getMIDLIMITTerminalRuleCall_4() { return cMIDLIMITTerminalRuleCall_4; }
+
+		//mgl=INT
+		public Assignment getMglAssignment_5() { return cMglAssignment_5; }
+
+		//INT
+		public RuleCall getMglINTTerminalRuleCall_5_0() { return cMglINTTerminalRuleCall_5_0; }
+
+		//ENDLIMIT
+		public RuleCall getENDLIMITTerminalRuleCall_6() { return cENDLIMITTerminalRuleCall_6; }
+
+		//egl=INT
+		public Assignment getEglAssignment_7() { return cEglAssignment_7; }
+
+		//INT
+		public RuleCall getEglINTTerminalRuleCall_7_0() { return cEglINTTerminalRuleCall_7_0; }
 	}
 
 	public class TableElements extends AbstractParserRuleElementFinder {
@@ -169,15 +193,18 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cPIECETerminalRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNamePieceTypeEnumRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final RuleCall cVALUETerminalRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
-		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cValueINTTerminalRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		private final RuleCall cMIDGAMETerminalRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final Assignment cMgAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cMgINTTerminalRuleCall_3_0 = (RuleCall)cMgAssignment_3.eContents().get(0);
+		private final RuleCall cENDGAMETerminalRuleCall_4 = (RuleCall)cGroup.eContents().get(4);
+		private final Assignment cEgAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cEgINTTerminalRuleCall_5_0 = (RuleCall)cEgAssignment_5.eContents().get(0);
 		
 		//TDescription:
-		//	PIECE name=PieceType VALUE value=INT;
+		//	PIECE name=PieceType MIDGAME mg=INT ENDGAME eg=INT;
 		public ParserRule getRule() { return rule; }
 
-		//PIECE name=PieceType VALUE value=INT
+		//PIECE name=PieceType MIDGAME mg=INT ENDGAME eg=INT
 		public Group getGroup() { return cGroup; }
 
 		//PIECE
@@ -189,14 +216,23 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		//PieceType
 		public RuleCall getNamePieceTypeEnumRuleCall_1_0() { return cNamePieceTypeEnumRuleCall_1_0; }
 
-		//VALUE
-		public RuleCall getVALUETerminalRuleCall_2() { return cVALUETerminalRuleCall_2; }
+		//MIDGAME
+		public RuleCall getMIDGAMETerminalRuleCall_2() { return cMIDGAMETerminalRuleCall_2; }
 
-		//value=INT
-		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+		//mg=INT
+		public Assignment getMgAssignment_3() { return cMgAssignment_3; }
 
 		//INT
-		public RuleCall getValueINTTerminalRuleCall_3_0() { return cValueINTTerminalRuleCall_3_0; }
+		public RuleCall getMgINTTerminalRuleCall_3_0() { return cMgINTTerminalRuleCall_3_0; }
+
+		//ENDGAME
+		public RuleCall getENDGAMETerminalRuleCall_4() { return cENDGAMETerminalRuleCall_4; }
+
+		//eg=INT
+		public Assignment getEgAssignment_5() { return cEgAssignment_5; }
+
+		//INT
+		public RuleCall getEgINTTerminalRuleCall_5_0() { return cEgINTTerminalRuleCall_5_0; }
 	}
 
 	public class THeaderElements extends AbstractParserRuleElementFinder {
@@ -475,7 +511,10 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 	private TerminalRule tPSQT;
 	private TerminalRule tBASE;
 	private TerminalRule tPIECE;
-	private TerminalRule tVALUE;
+	private TerminalRule tMIDLIMIT;
+	private TerminalRule tENDLIMIT;
+	private TerminalRule tMIDGAME;
+	private TerminalRule tENDGAME;
 	
 	private final Grammar grammar;
 
@@ -537,7 +576,7 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 
 	////enum RowNumber : R1='1'|R2='2'|R3='3'|R4='4'|R5='5'|R6='6'|R7='7'|R8='8';
 	//FDescription:
-	//	PSQT name=ID BASE base=INT;
+	//	PSQT name=ID BASE base=INT MIDLIMIT mgl=INT ENDLIMIT egl=INT;
 	public FDescriptionElements getFDescriptionAccess() {
 		return (pFDescription != null) ? pFDescription : (pFDescription = new FDescriptionElements());
 	}
@@ -557,7 +596,7 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//TDescription:
-	//	PIECE name=PieceType VALUE value=INT;
+	//	PIECE name=PieceType MIDGAME mg=INT ENDGAME eg=INT;
 	public TDescriptionElements getTDescriptionAccess() {
 		return (pTDescription != null) ? pTDescription : (pTDescription = new TDescriptionElements());
 	}
@@ -650,10 +689,28 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		return (tPIECE != null) ? tPIECE : (tPIECE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "PIECE"));
 	} 
 
-	//terminal VALUE:
-	//	"Value:";
-	public TerminalRule getVALUERule() {
-		return (tVALUE != null) ? tVALUE : (tVALUE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "VALUE"));
+	//terminal MIDLIMIT:
+	//	"MidLimit:";
+	public TerminalRule getMIDLIMITRule() {
+		return (tMIDLIMIT != null) ? tMIDLIMIT : (tMIDLIMIT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "MIDLIMIT"));
+	} 
+
+	//terminal ENDLIMIT:
+	//	"EndLimit:";
+	public TerminalRule getENDLIMITRule() {
+		return (tENDLIMIT != null) ? tENDLIMIT : (tENDLIMIT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ENDLIMIT"));
+	} 
+
+	//terminal MIDGAME:
+	//	"MidGame:";
+	public TerminalRule getMIDGAMERule() {
+		return (tMIDGAME != null) ? tMIDGAME : (tMIDGAME = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "MIDGAME"));
+	} 
+
+	//terminal ENDGAME:
+	//	"EndGame:";
+	public TerminalRule getENDGAMERule() {
+		return (tENDGAME != null) ? tENDGAME : (tENDGAME = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ENDGAME"));
 	} 
 
 	//terminal ID:

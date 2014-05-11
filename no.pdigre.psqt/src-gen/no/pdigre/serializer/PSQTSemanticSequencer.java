@@ -96,7 +96,7 @@ public class PSQTSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ID base=INT)
+	 *     (name=ID base=INT mgl=INT egl=INT)
 	 */
 	protected void sequence_FDescription(EObject context, FDescription semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -105,7 +105,7 @@ public class PSQTSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ID base=INT tables+=Table*)
+	 *     (name=ID base=INT mgl=INT egl=INT tables+=Table*)
 	 */
 	protected void sequence_FDescription_Model(EObject context, FDescription semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -170,7 +170,7 @@ public class PSQTSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=PieceType value=INT)
+	 *     (name=PieceType mg=INT eg=INT)
 	 */
 	protected void sequence_TDescription(EObject context, TDescription semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -181,7 +181,8 @@ public class PSQTSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         name=PieceType 
-	 *         value=INT 
+	 *         mg=INT 
+	 *         eg=INT 
 	 *         r+=Row 
 	 *         r+=Row 
 	 *         r+=Row 

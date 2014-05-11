@@ -48,6 +48,8 @@ public class PSQTParser extends AbstractContentAssistParser {
 					put(grammarAccess.getModelAccess().getTablesAssignment_1(), "rule__Model__TablesAssignment_1");
 					put(grammarAccess.getFDescriptionAccess().getNameAssignment_1(), "rule__FDescription__NameAssignment_1");
 					put(grammarAccess.getFDescriptionAccess().getBaseAssignment_3(), "rule__FDescription__BaseAssignment_3");
+					put(grammarAccess.getFDescriptionAccess().getMglAssignment_5(), "rule__FDescription__MglAssignment_5");
+					put(grammarAccess.getFDescriptionAccess().getEglAssignment_7(), "rule__FDescription__EglAssignment_7");
 					put(grammarAccess.getTableAccess().getRAssignment_2(), "rule__Table__RAssignment_2");
 					put(grammarAccess.getTableAccess().getRAssignment_3(), "rule__Table__RAssignment_3");
 					put(grammarAccess.getTableAccess().getRAssignment_4(), "rule__Table__RAssignment_4");
@@ -57,7 +59,8 @@ public class PSQTParser extends AbstractContentAssistParser {
 					put(grammarAccess.getTableAccess().getRAssignment_8(), "rule__Table__RAssignment_8");
 					put(grammarAccess.getTableAccess().getRAssignment_9(), "rule__Table__RAssignment_9");
 					put(grammarAccess.getTDescriptionAccess().getNameAssignment_1(), "rule__TDescription__NameAssignment_1");
-					put(grammarAccess.getTDescriptionAccess().getValueAssignment_3(), "rule__TDescription__ValueAssignment_3");
+					put(grammarAccess.getTDescriptionAccess().getMgAssignment_3(), "rule__TDescription__MgAssignment_3");
+					put(grammarAccess.getTDescriptionAccess().getEgAssignment_5(), "rule__TDescription__EgAssignment_5");
 					put(grammarAccess.getRowAccess().getNameAssignment_0(), "rule__Row__NameAssignment_0");
 					put(grammarAccess.getRowAccess().getMAssignment_1(), "rule__Row__MAssignment_1");
 					put(grammarAccess.getRowAccess().getEAssignment_2(), "rule__Row__EAssignment_2");

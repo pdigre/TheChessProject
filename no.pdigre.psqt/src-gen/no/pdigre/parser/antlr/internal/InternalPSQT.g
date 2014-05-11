@@ -170,6 +170,50 @@ ruleFDescription returns [EObject current=null]
 	    }
 
 )
+)this_MIDLIMIT_4=RULE_MIDLIMIT
+    { 
+    newLeafNode(this_MIDLIMIT_4, grammarAccess.getFDescriptionAccess().getMIDLIMITTerminalRuleCall_4()); 
+    }
+(
+(
+		lv_mgl_5_0=RULE_INT
+		{
+			newLeafNode(lv_mgl_5_0, grammarAccess.getFDescriptionAccess().getMglINTTerminalRuleCall_5_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getFDescriptionRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"mgl",
+        		lv_mgl_5_0, 
+        		"INT");
+	    }
+
+)
+)this_ENDLIMIT_6=RULE_ENDLIMIT
+    { 
+    newLeafNode(this_ENDLIMIT_6, grammarAccess.getFDescriptionAccess().getENDLIMITTerminalRuleCall_6()); 
+    }
+(
+(
+		lv_egl_7_0=RULE_INT
+		{
+			newLeafNode(lv_egl_7_0, grammarAccess.getFDescriptionAccess().getEglINTTerminalRuleCall_7_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getFDescriptionRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"egl",
+        		lv_egl_7_0, 
+        		"INT");
+	    }
+
+)
 ))
 ;
 
@@ -395,15 +439,15 @@ ruleTDescription returns [EObject current=null]
 	    }
 
 )
-)this_VALUE_2=RULE_VALUE
+)this_MIDGAME_2=RULE_MIDGAME
     { 
-    newLeafNode(this_VALUE_2, grammarAccess.getTDescriptionAccess().getVALUETerminalRuleCall_2()); 
+    newLeafNode(this_MIDGAME_2, grammarAccess.getTDescriptionAccess().getMIDGAMETerminalRuleCall_2()); 
     }
 (
 (
-		lv_value_3_0=RULE_INT
+		lv_mg_3_0=RULE_INT
 		{
-			newLeafNode(lv_value_3_0, grammarAccess.getTDescriptionAccess().getValueINTTerminalRuleCall_3_0()); 
+			newLeafNode(lv_mg_3_0, grammarAccess.getTDescriptionAccess().getMgINTTerminalRuleCall_3_0()); 
 		}
 		{
 	        if ($current==null) {
@@ -411,8 +455,30 @@ ruleTDescription returns [EObject current=null]
 	        }
        		setWithLastConsumed(
        			$current, 
-       			"value",
-        		lv_value_3_0, 
+       			"mg",
+        		lv_mg_3_0, 
+        		"INT");
+	    }
+
+)
+)this_ENDGAME_4=RULE_ENDGAME
+    { 
+    newLeafNode(this_ENDGAME_4, grammarAccess.getTDescriptionAccess().getENDGAMETerminalRuleCall_4()); 
+    }
+(
+(
+		lv_eg_5_0=RULE_INT
+		{
+			newLeafNode(lv_eg_5_0, grammarAccess.getTDescriptionAccess().getEgINTTerminalRuleCall_5_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getTDescriptionRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"eg",
+        		lv_eg_5_0, 
         		"INT");
 	    }
 
@@ -890,7 +956,13 @@ RULE_BASE : 'Base:';
 
 RULE_PIECE : 'Piece:';
 
-RULE_VALUE : 'Value:';
+RULE_MIDLIMIT : 'MidLimit:';
+
+RULE_ENDLIMIT : 'EndLimit:';
+
+RULE_MIDGAME : 'MidGame:';
+
+RULE_ENDGAME : 'EndGame:';
 
 RULE_ID : '^'? ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
 

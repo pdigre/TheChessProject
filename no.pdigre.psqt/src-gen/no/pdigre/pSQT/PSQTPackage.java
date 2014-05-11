@@ -114,13 +114,31 @@ public interface PSQTPackage extends EPackage
   int FDESCRIPTION__BASE = MODEL_FEATURE_COUNT + 2;
 
   /**
+   * The feature id for the '<em><b>Mgl</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FDESCRIPTION__MGL = MODEL_FEATURE_COUNT + 3;
+
+  /**
+   * The feature id for the '<em><b>Egl</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FDESCRIPTION__EGL = MODEL_FEATURE_COUNT + 4;
+
+  /**
    * The number of structural features of the '<em>FDescription</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int FDESCRIPTION_FEATURE_COUNT = MODEL_FEATURE_COUNT + 3;
+  int FDESCRIPTION_FEATURE_COUNT = MODEL_FEATURE_COUNT + 5;
 
   /**
    * The meta object id for the '{@link no.pdigre.pSQT.impl.TableImpl <em>Table</em>}' class.
@@ -170,13 +188,22 @@ public interface PSQTPackage extends EPackage
   int TDESCRIPTION__NAME = TABLE_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * The feature id for the '<em><b>Mg</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TDESCRIPTION__VALUE = TABLE_FEATURE_COUNT + 2;
+  int TDESCRIPTION__MG = TABLE_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Eg</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TDESCRIPTION__EG = TABLE_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>TDescription</em>' class.
@@ -185,7 +212,7 @@ public interface PSQTPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TDESCRIPTION_FEATURE_COUNT = TABLE_FEATURE_COUNT + 3;
+  int TDESCRIPTION_FEATURE_COUNT = TABLE_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link no.pdigre.pSQT.impl.RowImpl <em>Row</em>}' class.
@@ -382,6 +409,28 @@ public interface PSQTPackage extends EPackage
   EAttribute getFDescription_Base();
 
   /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.FDescription#getMgl <em>Mgl</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Mgl</em>'.
+   * @see no.pdigre.pSQT.FDescription#getMgl()
+   * @see #getFDescription()
+   * @generated
+   */
+  EAttribute getFDescription_Mgl();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.FDescription#getEgl <em>Egl</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Egl</em>'.
+   * @see no.pdigre.pSQT.FDescription#getEgl()
+   * @see #getFDescription()
+   * @generated
+   */
+  EAttribute getFDescription_Egl();
+
+  /**
    * Returns the meta object for class '{@link no.pdigre.pSQT.Table <em>Table</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -424,15 +473,26 @@ public interface PSQTPackage extends EPackage
   EAttribute getTDescription_Name();
 
   /**
-   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.TDescription#getValue <em>Value</em>}'.
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.TDescription#getMg <em>Mg</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Value</em>'.
-   * @see no.pdigre.pSQT.TDescription#getValue()
+   * @return the meta object for the attribute '<em>Mg</em>'.
+   * @see no.pdigre.pSQT.TDescription#getMg()
    * @see #getTDescription()
    * @generated
    */
-  EAttribute getTDescription_Value();
+  EAttribute getTDescription_Mg();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.TDescription#getEg <em>Eg</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Eg</em>'.
+   * @see no.pdigre.pSQT.TDescription#getEg()
+   * @see #getTDescription()
+   * @generated
+   */
+  EAttribute getTDescription_Eg();
 
   /**
    * Returns the meta object for class '{@link no.pdigre.pSQT.Row <em>Row</em>}'.
@@ -618,6 +678,22 @@ public interface PSQTPackage extends EPackage
     EAttribute FDESCRIPTION__BASE = eINSTANCE.getFDescription_Base();
 
     /**
+     * The meta object literal for the '<em><b>Mgl</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FDESCRIPTION__MGL = eINSTANCE.getFDescription_Mgl();
+
+    /**
+     * The meta object literal for the '<em><b>Egl</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FDESCRIPTION__EGL = eINSTANCE.getFDescription_Egl();
+
+    /**
      * The meta object literal for the '{@link no.pdigre.pSQT.impl.TableImpl <em>Table</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -654,12 +730,20 @@ public interface PSQTPackage extends EPackage
     EAttribute TDESCRIPTION__NAME = eINSTANCE.getTDescription_Name();
 
     /**
-     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Mg</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute TDESCRIPTION__VALUE = eINSTANCE.getTDescription_Value();
+    EAttribute TDESCRIPTION__MG = eINSTANCE.getTDescription_Mg();
+
+    /**
+     * The meta object literal for the '<em><b>Eg</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TDESCRIPTION__EG = eINSTANCE.getTDescription_Eg();
 
     /**
      * The meta object literal for the '{@link no.pdigre.pSQT.impl.RowImpl <em>Row</em>}' class.

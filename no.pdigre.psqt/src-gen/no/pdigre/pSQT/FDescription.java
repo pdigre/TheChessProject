@@ -15,6 +15,8 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link no.pdigre.pSQT.FDescription#getTables <em>Tables</em>}</li>
  *   <li>{@link no.pdigre.pSQT.FDescription#getName <em>Name</em>}</li>
  *   <li>{@link no.pdigre.pSQT.FDescription#getBase <em>Base</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.FDescription#getMgl <em>Mgl</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.FDescription#getEgl <em>Egl</em>}</li>
  * </ul>
  * </p>
  *
@@ -91,5 +93,57 @@ public interface FDescription extends Model
    * @generated
    */
   void setBase(int value);
+
+  /**
+   * Returns the value of the '<em><b>Mgl</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Mgl</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Mgl</em>' attribute.
+   * @see #setMgl(int)
+   * @see no.pdigre.pSQT.PSQTPackage#getFDescription_Mgl()
+   * @model
+   * @generated
+   */
+  int getMgl();
+
+  /**
+   * Sets the value of the '{@link no.pdigre.pSQT.FDescription#getMgl <em>Mgl</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Mgl</em>' attribute.
+   * @see #getMgl()
+   * @generated
+   */
+  void setMgl(int value);
+
+  /**
+   * Returns the value of the '<em><b>Egl</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Egl</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Egl</em>' attribute.
+   * @see #setEgl(int)
+   * @see no.pdigre.pSQT.PSQTPackage#getFDescription_Egl()
+   * @model
+   * @generated
+   */
+  int getEgl();
+
+  /**
+   * Sets the value of the '{@link no.pdigre.pSQT.FDescription#getEgl <em>Egl</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Egl</em>' attribute.
+   * @see #getEgl()
+   * @generated
+   */
+  void setEgl(int value);
 
 } // FDescription
