@@ -15,11 +15,10 @@ FDescription: PSQT name=ID BASE base=INT MIDLIMIT mgl=INT ENDLIMIT egl=INT;
 Table: TDescription THeader r+=Row r+=Row r+=Row r+=Row r+=Row r+=Row r+=Row r+=Row;
 TDescription: PIECE name=PieceType MIDGAME mg=INT ENDGAME eg=INT;
 THeader: 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H';
-Row: name=RowLabel midrow=MRow endrow=ERow;
+Row: name=RowLabel midrow=MRow endrow=MRow;
 
 RowLabel returns ecore::EString: INT;
 MRow: c1=INT c2=INT c3=INT c4=INT c5=INT c6=INT c7=INT c8=INT;
-ERow: c1=INT c2=INT c3=INT c4=INT c5=INT c6=INT c7=INT c8=INT;
 
 terminal INT returns ecore::EInt: '-'? ('0'..'9')+;
 terminal PSQT: 'PSQT:';

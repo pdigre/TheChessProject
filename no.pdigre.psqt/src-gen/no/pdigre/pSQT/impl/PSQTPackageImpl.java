@@ -2,7 +2,6 @@
  */
 package no.pdigre.pSQT.impl;
 
-import no.pdigre.pSQT.ERow;
 import no.pdigre.pSQT.FDescription;
 import no.pdigre.pSQT.MRow;
 import no.pdigre.pSQT.PSQTFactory;
@@ -70,13 +69,6 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * @generated
    */
   private EClass mRowEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass eRowEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -413,96 +405,6 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getERow()
-  {
-    return eRowEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getERow_C1()
-  {
-    return (EAttribute)eRowEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getERow_C2()
-  {
-    return (EAttribute)eRowEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getERow_C3()
-  {
-    return (EAttribute)eRowEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getERow_C4()
-  {
-    return (EAttribute)eRowEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getERow_C5()
-  {
-    return (EAttribute)eRowEClass.getEStructuralFeatures().get(4);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getERow_C6()
-  {
-    return (EAttribute)eRowEClass.getEStructuralFeatures().get(5);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getERow_C7()
-  {
-    return (EAttribute)eRowEClass.getEStructuralFeatures().get(6);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getERow_C8()
-  {
-    return (EAttribute)eRowEClass.getEStructuralFeatures().get(7);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EEnum getPieceType()
   {
     return pieceTypeEEnum;
@@ -570,16 +472,6 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
     createEAttribute(mRowEClass, MROW__C7);
     createEAttribute(mRowEClass, MROW__C8);
 
-    eRowEClass = createEClass(EROW);
-    createEAttribute(eRowEClass, EROW__C1);
-    createEAttribute(eRowEClass, EROW__C2);
-    createEAttribute(eRowEClass, EROW__C3);
-    createEAttribute(eRowEClass, EROW__C4);
-    createEAttribute(eRowEClass, EROW__C5);
-    createEAttribute(eRowEClass, EROW__C6);
-    createEAttribute(eRowEClass, EROW__C7);
-    createEAttribute(eRowEClass, EROW__C8);
-
     // Create enums
     pieceTypeEEnum = createEEnum(PIECE_TYPE);
   }
@@ -637,7 +529,7 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
     initEClass(rowEClass, Row.class, "Row", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getRow_Name(), ecorePackage.getEString(), "name", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRow_Midrow(), this.getMRow(), null, "midrow", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRow_Endrow(), this.getERow(), null, "endrow", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRow_Endrow(), this.getMRow(), null, "endrow", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mRowEClass, MRow.class, "MRow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getMRow_C1(), ecorePackage.getEInt(), "c1", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -648,16 +540,6 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
     initEAttribute(getMRow_C6(), ecorePackage.getEInt(), "c6", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMRow_C7(), ecorePackage.getEInt(), "c7", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMRow_C8(), ecorePackage.getEInt(), "c8", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(eRowEClass, ERow.class, "ERow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getERow_C1(), ecorePackage.getEInt(), "c1", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getERow_C2(), ecorePackage.getEInt(), "c2", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getERow_C3(), ecorePackage.getEInt(), "c3", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getERow_C4(), ecorePackage.getEInt(), "c4", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getERow_C5(), ecorePackage.getEInt(), "c5", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getERow_C6(), ecorePackage.getEInt(), "c6", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getERow_C7(), ecorePackage.getEInt(), "c7", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getERow_C8(), ecorePackage.getEInt(), "c8", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(pieceTypeEEnum, PieceType.class, "PieceType");

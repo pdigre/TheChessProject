@@ -45,7 +45,6 @@ public class PSQTParser extends AbstractContentAssistParser {
 					put(grammarAccess.getTHeaderAccess().getGroup(), "rule__THeader__Group__0");
 					put(grammarAccess.getRowAccess().getGroup(), "rule__Row__Group__0");
 					put(grammarAccess.getMRowAccess().getGroup(), "rule__MRow__Group__0");
-					put(grammarAccess.getERowAccess().getGroup(), "rule__ERow__Group__0");
 					put(grammarAccess.getPSQT_ModelAccess().getTablesAssignment_1(), "rule__PSQT_Model__TablesAssignment_1");
 					put(grammarAccess.getFDescriptionAccess().getNameAssignment_1(), "rule__FDescription__NameAssignment_1");
 					put(grammarAccess.getFDescriptionAccess().getBaseAssignment_3(), "rule__FDescription__BaseAssignment_3");
@@ -73,14 +72,6 @@ public class PSQTParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMRowAccess().getC6Assignment_5(), "rule__MRow__C6Assignment_5");
 					put(grammarAccess.getMRowAccess().getC7Assignment_6(), "rule__MRow__C7Assignment_6");
 					put(grammarAccess.getMRowAccess().getC8Assignment_7(), "rule__MRow__C8Assignment_7");
-					put(grammarAccess.getERowAccess().getC1Assignment_0(), "rule__ERow__C1Assignment_0");
-					put(grammarAccess.getERowAccess().getC2Assignment_1(), "rule__ERow__C2Assignment_1");
-					put(grammarAccess.getERowAccess().getC3Assignment_2(), "rule__ERow__C3Assignment_2");
-					put(grammarAccess.getERowAccess().getC4Assignment_3(), "rule__ERow__C4Assignment_3");
-					put(grammarAccess.getERowAccess().getC5Assignment_4(), "rule__ERow__C5Assignment_4");
-					put(grammarAccess.getERowAccess().getC6Assignment_5(), "rule__ERow__C6Assignment_5");
-					put(grammarAccess.getERowAccess().getC7Assignment_6(), "rule__ERow__C7Assignment_6");
-					put(grammarAccess.getERowAccess().getC8Assignment_7(), "rule__ERow__C8Assignment_7");
 				}
 			};
 		}

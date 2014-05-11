@@ -346,10 +346,10 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1038:10: ( ( '-' )? ( '0' .. '9' )+ )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1038:12: ( '-' )? ( '0' .. '9' )+
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:873:10: ( ( '-' )? ( '0' .. '9' )+ )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:873:12: ( '-' )? ( '0' .. '9' )+
             {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1038:12: ( '-' )?
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:873:12: ( '-' )?
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -358,7 +358,7 @@ public class InternalPSQTLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1038:12: '-'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:873:12: '-'
                     {
                     match('-'); 
 
@@ -367,7 +367,7 @@ public class InternalPSQTLexer extends Lexer {
 
             }
 
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1038:17: ( '0' .. '9' )+
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:873:17: ( '0' .. '9' )+
             int cnt2=0;
             loop2:
             do {
@@ -381,7 +381,7 @@ public class InternalPSQTLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1038:18: '0' .. '9'
+            	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:873:18: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -413,8 +413,8 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_PSQT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1040:11: ( 'PSQT:' )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1040:13: 'PSQT:'
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:875:11: ( 'PSQT:' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:875:13: 'PSQT:'
             {
             match("PSQT:"); 
 
@@ -434,8 +434,8 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_BASE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1042:11: ( 'Base:' )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1042:13: 'Base:'
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:877:11: ( 'Base:' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:877:13: 'Base:'
             {
             match("Base:"); 
 
@@ -455,8 +455,8 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_PIECE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1044:12: ( 'Piece:' )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1044:14: 'Piece:'
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:879:12: ( 'Piece:' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:879:14: 'Piece:'
             {
             match("Piece:"); 
 
@@ -476,8 +476,8 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_MIDLIMIT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1046:15: ( 'MidLimit:' )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1046:17: 'MidLimit:'
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:881:15: ( 'MidLimit:' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:881:17: 'MidLimit:'
             {
             match("MidLimit:"); 
 
@@ -497,8 +497,8 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_ENDLIMIT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1048:15: ( 'EndLimit:' )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1048:17: 'EndLimit:'
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:883:15: ( 'EndLimit:' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:883:17: 'EndLimit:'
             {
             match("EndLimit:"); 
 
@@ -518,8 +518,8 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_MIDGAME;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1050:14: ( 'MidGame:' )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1050:16: 'MidGame:'
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:885:14: ( 'MidGame:' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:885:16: 'MidGame:'
             {
             match("MidGame:"); 
 
@@ -539,8 +539,8 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_ENDGAME;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1052:14: ( 'EndGame:' )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1052:16: 'EndGame:'
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:887:14: ( 'EndGame:' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:887:16: 'EndGame:'
             {
             match("EndGame:"); 
 
@@ -560,10 +560,10 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1054:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1054:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:889:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:889:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1054:11: ( '^' )?
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:889:11: ( '^' )?
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -572,7 +572,7 @@ public class InternalPSQTLexer extends Lexer {
             }
             switch (alt3) {
                 case 1 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1054:11: '^'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:889:11: '^'
                     {
                     match('^'); 
 
@@ -590,7 +590,7 @@ public class InternalPSQTLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1054:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:889:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop4:
             do {
                 int alt4=2;
@@ -639,10 +639,10 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:13: ( ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:13: ( ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -660,10 +660,10 @@ public class InternalPSQTLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:16: '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:16: '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
                     {
                     match('\"'); 
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:20: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:20: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop5:
                     do {
                         int alt5=3;
@@ -679,7 +679,7 @@ public class InternalPSQTLexer extends Lexer {
 
                         switch (alt5) {
                     	case 1 :
-                    	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:21: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
+                    	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:21: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
                     	    {
                     	    match('\\'); 
                     	    if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||(input.LA(1)>='t' && input.LA(1)<='u') ) {
@@ -695,7 +695,7 @@ public class InternalPSQTLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:66: ~ ( ( '\\\\' | '\"' ) )
+                    	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:66: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -720,10 +720,10 @@ public class InternalPSQTLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:86: '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:86: '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
                     {
                     match('\''); 
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:91: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:91: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop6:
                     do {
                         int alt6=3;
@@ -739,7 +739,7 @@ public class InternalPSQTLexer extends Lexer {
 
                         switch (alt6) {
                     	case 1 :
-                    	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:92: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
+                    	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:92: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
                     	    {
                     	    match('\\'); 
                     	    if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||(input.LA(1)>='t' && input.LA(1)<='u') ) {
@@ -755,7 +755,7 @@ public class InternalPSQTLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1056:137: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:891:137: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -798,12 +798,12 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1058:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1058:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:893:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:893:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1058:24: ( options {greedy=false; } : . )*
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:893:24: ( options {greedy=false; } : . )*
             loop8:
             do {
                 int alt8=2;
@@ -828,7 +828,7 @@ public class InternalPSQTLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1058:52: .
+            	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:893:52: .
             	    {
             	    matchAny(); 
 
@@ -858,12 +858,12 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1060:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1060:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:895:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:895:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1060:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:895:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop9:
             do {
                 int alt9=2;
@@ -876,7 +876,7 @@ public class InternalPSQTLexer extends Lexer {
 
                 switch (alt9) {
             	case 1 :
-            	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1060:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:895:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -896,7 +896,7 @@ public class InternalPSQTLexer extends Lexer {
                 }
             } while (true);
 
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1060:40: ( ( '\\r' )? '\\n' )?
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:895:40: ( ( '\\r' )? '\\n' )?
             int alt11=2;
             int LA11_0 = input.LA(1);
 
@@ -905,9 +905,9 @@ public class InternalPSQTLexer extends Lexer {
             }
             switch (alt11) {
                 case 1 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1060:41: ( '\\r' )? '\\n'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:895:41: ( '\\r' )? '\\n'
                     {
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1060:41: ( '\\r' )?
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:895:41: ( '\\r' )?
                     int alt10=2;
                     int LA10_0 = input.LA(1);
 
@@ -916,7 +916,7 @@ public class InternalPSQTLexer extends Lexer {
                     }
                     switch (alt10) {
                         case 1 :
-                            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1060:41: '\\r'
+                            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:895:41: '\\r'
                             {
                             match('\r'); 
 
@@ -948,10 +948,10 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1062:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1062:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:897:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:897:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1062:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:897:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt12=0;
             loop12:
             do {
@@ -1005,8 +1005,8 @@ public class InternalPSQTLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1064:16: ( . )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1064:18: .
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:899:16: ( . )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:899:18: .
             {
             matchAny(); 
 

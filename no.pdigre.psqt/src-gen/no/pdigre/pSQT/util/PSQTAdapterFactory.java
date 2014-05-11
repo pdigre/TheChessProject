@@ -105,11 +105,6 @@ public class PSQTAdapterFactory extends AdapterFactoryImpl
         return createMRowAdapter();
       }
       @Override
-      public Adapter caseERow(ERow object)
-      {
-        return createERowAdapter();
-      }
-      @Override
       public Adapter defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -217,21 +212,6 @@ public class PSQTAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMRowAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link no.pdigre.pSQT.ERow <em>ERow</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see no.pdigre.pSQT.ERow
-   * @generated
-   */
-  public Adapter createERowAdapter()
   {
     return null;
   }

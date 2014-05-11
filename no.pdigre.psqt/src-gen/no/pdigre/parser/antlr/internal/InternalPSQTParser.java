@@ -1109,7 +1109,7 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleRow"
-    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:572:1: ruleRow returns [EObject current=null] : ( ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleERow ) ) ) ;
+    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:572:1: ruleRow returns [EObject current=null] : ( ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleMRow ) ) ) ;
     public final EObject ruleRow() throws RecognitionException {
         EObject current = null;
 
@@ -1123,11 +1123,11 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:575:28: ( ( ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleERow ) ) ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:576:1: ( ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleERow ) ) )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:575:28: ( ( ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleMRow ) ) ) )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:576:1: ( ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleMRow ) ) )
             {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:576:1: ( ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleERow ) ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:576:2: ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleERow ) )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:576:1: ( ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleMRow ) ) )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:576:2: ( (lv_name_0_0= ruleRowLabel ) ) ( (lv_midrow_1_0= ruleMRow ) ) ( (lv_endrow_2_0= ruleMRow ) )
             {
             // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:576:2: ( (lv_name_0_0= ruleRowLabel ) )
             // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:577:1: (lv_name_0_0= ruleRowLabel )
@@ -1191,17 +1191,17 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:612:2: ( (lv_endrow_2_0= ruleERow ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:613:1: (lv_endrow_2_0= ruleERow )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:612:2: ( (lv_endrow_2_0= ruleMRow ) )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:613:1: (lv_endrow_2_0= ruleMRow )
             {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:613:1: (lv_endrow_2_0= ruleERow )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:614:3: lv_endrow_2_0= ruleERow
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:613:1: (lv_endrow_2_0= ruleMRow )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:614:3: lv_endrow_2_0= ruleMRow
             {
              
-            	        newCompositeNode(grammarAccess.getRowAccess().getEndrowERowParserRuleCall_2_0()); 
+            	        newCompositeNode(grammarAccess.getRowAccess().getEndrowMRowParserRuleCall_2_0()); 
             	    
-            pushFollow(FOLLOW_ruleERow_in_ruleRow1108);
-            lv_endrow_2_0=ruleERow();
+            pushFollow(FOLLOW_ruleMRow_in_ruleRow1108);
+            lv_endrow_2_0=ruleMRow();
 
             state._fsp--;
 
@@ -1213,7 +1213,7 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
                    			current, 
                    			"endrow",
                     		lv_endrow_2_0, 
-                    		"ERow");
+                    		"MRow");
             	        afterParserOrEnumRuleCall();
             	    
 
@@ -1602,295 +1602,8 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
     // $ANTLR end "ruleMRow"
 
 
-    // $ANTLR start "entryRuleERow"
-    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:831:1: entryRuleERow returns [EObject current=null] : iv_ruleERow= ruleERow EOF ;
-    public final EObject entryRuleERow() throws RecognitionException {
-        EObject current = null;
-
-        EObject iv_ruleERow = null;
-
-
-        try {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:832:2: (iv_ruleERow= ruleERow EOF )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:833:2: iv_ruleERow= ruleERow EOF
-            {
-             newCompositeNode(grammarAccess.getERowRule()); 
-            pushFollow(FOLLOW_ruleERow_in_entryRuleERow1486);
-            iv_ruleERow=ruleERow();
-
-            state._fsp--;
-
-             current =iv_ruleERow; 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleERow1496); 
-
-            }
-
-        }
-         
-            catch (RecognitionException re) { 
-                recover(input,re); 
-                appendSkippedTokens();
-            } 
-        finally {
-        }
-        return current;
-    }
-    // $ANTLR end "entryRuleERow"
-
-
-    // $ANTLR start "ruleERow"
-    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:840:1: ruleERow returns [EObject current=null] : ( ( (lv_c1_0_0= RULE_INT ) ) ( (lv_c2_1_0= RULE_INT ) ) ( (lv_c3_2_0= RULE_INT ) ) ( (lv_c4_3_0= RULE_INT ) ) ( (lv_c5_4_0= RULE_INT ) ) ( (lv_c6_5_0= RULE_INT ) ) ( (lv_c7_6_0= RULE_INT ) ) ( (lv_c8_7_0= RULE_INT ) ) ) ;
-    public final EObject ruleERow() throws RecognitionException {
-        EObject current = null;
-
-        Token lv_c1_0_0=null;
-        Token lv_c2_1_0=null;
-        Token lv_c3_2_0=null;
-        Token lv_c4_3_0=null;
-        Token lv_c5_4_0=null;
-        Token lv_c6_5_0=null;
-        Token lv_c7_6_0=null;
-        Token lv_c8_7_0=null;
-
-         enterRule(); 
-            
-        try {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:843:28: ( ( ( (lv_c1_0_0= RULE_INT ) ) ( (lv_c2_1_0= RULE_INT ) ) ( (lv_c3_2_0= RULE_INT ) ) ( (lv_c4_3_0= RULE_INT ) ) ( (lv_c5_4_0= RULE_INT ) ) ( (lv_c6_5_0= RULE_INT ) ) ( (lv_c7_6_0= RULE_INT ) ) ( (lv_c8_7_0= RULE_INT ) ) ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:844:1: ( ( (lv_c1_0_0= RULE_INT ) ) ( (lv_c2_1_0= RULE_INT ) ) ( (lv_c3_2_0= RULE_INT ) ) ( (lv_c4_3_0= RULE_INT ) ) ( (lv_c5_4_0= RULE_INT ) ) ( (lv_c6_5_0= RULE_INT ) ) ( (lv_c7_6_0= RULE_INT ) ) ( (lv_c8_7_0= RULE_INT ) ) )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:844:1: ( ( (lv_c1_0_0= RULE_INT ) ) ( (lv_c2_1_0= RULE_INT ) ) ( (lv_c3_2_0= RULE_INT ) ) ( (lv_c4_3_0= RULE_INT ) ) ( (lv_c5_4_0= RULE_INT ) ) ( (lv_c6_5_0= RULE_INT ) ) ( (lv_c7_6_0= RULE_INT ) ) ( (lv_c8_7_0= RULE_INT ) ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:844:2: ( (lv_c1_0_0= RULE_INT ) ) ( (lv_c2_1_0= RULE_INT ) ) ( (lv_c3_2_0= RULE_INT ) ) ( (lv_c4_3_0= RULE_INT ) ) ( (lv_c5_4_0= RULE_INT ) ) ( (lv_c6_5_0= RULE_INT ) ) ( (lv_c7_6_0= RULE_INT ) ) ( (lv_c8_7_0= RULE_INT ) )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:844:2: ( (lv_c1_0_0= RULE_INT ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:845:1: (lv_c1_0_0= RULE_INT )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:845:1: (lv_c1_0_0= RULE_INT )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:846:3: lv_c1_0_0= RULE_INT
-            {
-            lv_c1_0_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleERow1538); 
-
-            			newLeafNode(lv_c1_0_0, grammarAccess.getERowAccess().getC1INTTerminalRuleCall_0_0()); 
-            		
-
-            	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getERowRule());
-            	        }
-                   		setWithLastConsumed(
-                   			current, 
-                   			"c1",
-                    		lv_c1_0_0, 
-                    		"INT");
-            	    
-
-            }
-
-
-            }
-
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:862:2: ( (lv_c2_1_0= RULE_INT ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:863:1: (lv_c2_1_0= RULE_INT )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:863:1: (lv_c2_1_0= RULE_INT )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:864:3: lv_c2_1_0= RULE_INT
-            {
-            lv_c2_1_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleERow1560); 
-
-            			newLeafNode(lv_c2_1_0, grammarAccess.getERowAccess().getC2INTTerminalRuleCall_1_0()); 
-            		
-
-            	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getERowRule());
-            	        }
-                   		setWithLastConsumed(
-                   			current, 
-                   			"c2",
-                    		lv_c2_1_0, 
-                    		"INT");
-            	    
-
-            }
-
-
-            }
-
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:880:2: ( (lv_c3_2_0= RULE_INT ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:881:1: (lv_c3_2_0= RULE_INT )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:881:1: (lv_c3_2_0= RULE_INT )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:882:3: lv_c3_2_0= RULE_INT
-            {
-            lv_c3_2_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleERow1582); 
-
-            			newLeafNode(lv_c3_2_0, grammarAccess.getERowAccess().getC3INTTerminalRuleCall_2_0()); 
-            		
-
-            	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getERowRule());
-            	        }
-                   		setWithLastConsumed(
-                   			current, 
-                   			"c3",
-                    		lv_c3_2_0, 
-                    		"INT");
-            	    
-
-            }
-
-
-            }
-
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:898:2: ( (lv_c4_3_0= RULE_INT ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:899:1: (lv_c4_3_0= RULE_INT )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:899:1: (lv_c4_3_0= RULE_INT )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:900:3: lv_c4_3_0= RULE_INT
-            {
-            lv_c4_3_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleERow1604); 
-
-            			newLeafNode(lv_c4_3_0, grammarAccess.getERowAccess().getC4INTTerminalRuleCall_3_0()); 
-            		
-
-            	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getERowRule());
-            	        }
-                   		setWithLastConsumed(
-                   			current, 
-                   			"c4",
-                    		lv_c4_3_0, 
-                    		"INT");
-            	    
-
-            }
-
-
-            }
-
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:916:2: ( (lv_c5_4_0= RULE_INT ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:917:1: (lv_c5_4_0= RULE_INT )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:917:1: (lv_c5_4_0= RULE_INT )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:918:3: lv_c5_4_0= RULE_INT
-            {
-            lv_c5_4_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleERow1626); 
-
-            			newLeafNode(lv_c5_4_0, grammarAccess.getERowAccess().getC5INTTerminalRuleCall_4_0()); 
-            		
-
-            	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getERowRule());
-            	        }
-                   		setWithLastConsumed(
-                   			current, 
-                   			"c5",
-                    		lv_c5_4_0, 
-                    		"INT");
-            	    
-
-            }
-
-
-            }
-
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:934:2: ( (lv_c6_5_0= RULE_INT ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:935:1: (lv_c6_5_0= RULE_INT )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:935:1: (lv_c6_5_0= RULE_INT )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:936:3: lv_c6_5_0= RULE_INT
-            {
-            lv_c6_5_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleERow1648); 
-
-            			newLeafNode(lv_c6_5_0, grammarAccess.getERowAccess().getC6INTTerminalRuleCall_5_0()); 
-            		
-
-            	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getERowRule());
-            	        }
-                   		setWithLastConsumed(
-                   			current, 
-                   			"c6",
-                    		lv_c6_5_0, 
-                    		"INT");
-            	    
-
-            }
-
-
-            }
-
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:952:2: ( (lv_c7_6_0= RULE_INT ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:953:1: (lv_c7_6_0= RULE_INT )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:953:1: (lv_c7_6_0= RULE_INT )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:954:3: lv_c7_6_0= RULE_INT
-            {
-            lv_c7_6_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleERow1670); 
-
-            			newLeafNode(lv_c7_6_0, grammarAccess.getERowAccess().getC7INTTerminalRuleCall_6_0()); 
-            		
-
-            	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getERowRule());
-            	        }
-                   		setWithLastConsumed(
-                   			current, 
-                   			"c7",
-                    		lv_c7_6_0, 
-                    		"INT");
-            	    
-
-            }
-
-
-            }
-
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:970:2: ( (lv_c8_7_0= RULE_INT ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:971:1: (lv_c8_7_0= RULE_INT )
-            {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:971:1: (lv_c8_7_0= RULE_INT )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:972:3: lv_c8_7_0= RULE_INT
-            {
-            lv_c8_7_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleERow1692); 
-
-            			newLeafNode(lv_c8_7_0, grammarAccess.getERowAccess().getC8INTTerminalRuleCall_7_0()); 
-            		
-
-            	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getERowRule());
-            	        }
-                   		setWithLastConsumed(
-                   			current, 
-                   			"c8",
-                    		lv_c8_7_0, 
-                    		"INT");
-            	    
-
-            }
-
-
-            }
-
-
-            }
-
-
-            }
-
-             leaveRule(); 
-        }
-         
-            catch (RecognitionException re) { 
-                recover(input,re); 
-                appendSkippedTokens();
-            } 
-        finally {
-        }
-        return current;
-    }
-    // $ANTLR end "ruleERow"
-
-
     // $ANTLR start "rulePieceType"
-    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:996:1: rulePieceType returns [Enumerator current=null] : ( (enumLiteral_0= 'Pawn' ) | (enumLiteral_1= 'Knight' ) | (enumLiteral_2= 'Bishop' ) | (enumLiteral_3= 'Rook' ) | (enumLiteral_4= 'Queen' ) | (enumLiteral_5= 'King' ) ) ;
+    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:831:1: rulePieceType returns [Enumerator current=null] : ( (enumLiteral_0= 'Pawn' ) | (enumLiteral_1= 'Knight' ) | (enumLiteral_2= 'Bishop' ) | (enumLiteral_3= 'Rook' ) | (enumLiteral_4= 'Queen' ) | (enumLiteral_5= 'King' ) ) ;
     public final Enumerator rulePieceType() throws RecognitionException {
         Enumerator current = null;
 
@@ -1903,10 +1616,10 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
 
          enterRule(); 
         try {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:998:28: ( ( (enumLiteral_0= 'Pawn' ) | (enumLiteral_1= 'Knight' ) | (enumLiteral_2= 'Bishop' ) | (enumLiteral_3= 'Rook' ) | (enumLiteral_4= 'Queen' ) | (enumLiteral_5= 'King' ) ) )
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:999:1: ( (enumLiteral_0= 'Pawn' ) | (enumLiteral_1= 'Knight' ) | (enumLiteral_2= 'Bishop' ) | (enumLiteral_3= 'Rook' ) | (enumLiteral_4= 'Queen' ) | (enumLiteral_5= 'King' ) )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:833:28: ( ( (enumLiteral_0= 'Pawn' ) | (enumLiteral_1= 'Knight' ) | (enumLiteral_2= 'Bishop' ) | (enumLiteral_3= 'Rook' ) | (enumLiteral_4= 'Queen' ) | (enumLiteral_5= 'King' ) ) )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:834:1: ( (enumLiteral_0= 'Pawn' ) | (enumLiteral_1= 'Knight' ) | (enumLiteral_2= 'Bishop' ) | (enumLiteral_3= 'Rook' ) | (enumLiteral_4= 'Queen' ) | (enumLiteral_5= 'King' ) )
             {
-            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:999:1: ( (enumLiteral_0= 'Pawn' ) | (enumLiteral_1= 'Knight' ) | (enumLiteral_2= 'Bishop' ) | (enumLiteral_3= 'Rook' ) | (enumLiteral_4= 'Queen' ) | (enumLiteral_5= 'King' ) )
+            // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:834:1: ( (enumLiteral_0= 'Pawn' ) | (enumLiteral_1= 'Knight' ) | (enumLiteral_2= 'Bishop' ) | (enumLiteral_3= 'Rook' ) | (enumLiteral_4= 'Queen' ) | (enumLiteral_5= 'King' ) )
             int alt2=6;
             switch ( input.LA(1) ) {
             case 26:
@@ -1948,12 +1661,12 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
 
             switch (alt2) {
                 case 1 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:999:2: (enumLiteral_0= 'Pawn' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:834:2: (enumLiteral_0= 'Pawn' )
                     {
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:999:2: (enumLiteral_0= 'Pawn' )
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:999:4: enumLiteral_0= 'Pawn'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:834:2: (enumLiteral_0= 'Pawn' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:834:4: enumLiteral_0= 'Pawn'
                     {
-                    enumLiteral_0=(Token)match(input,26,FOLLOW_26_in_rulePieceType1747); 
+                    enumLiteral_0=(Token)match(input,26,FOLLOW_26_in_rulePieceType1500); 
 
                             current = grammarAccess.getPieceTypeAccess().getPAWNEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getPieceTypeAccess().getPAWNEnumLiteralDeclaration_0()); 
@@ -1965,12 +1678,12 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1005:6: (enumLiteral_1= 'Knight' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:840:6: (enumLiteral_1= 'Knight' )
                     {
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1005:6: (enumLiteral_1= 'Knight' )
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1005:8: enumLiteral_1= 'Knight'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:840:6: (enumLiteral_1= 'Knight' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:840:8: enumLiteral_1= 'Knight'
                     {
-                    enumLiteral_1=(Token)match(input,27,FOLLOW_27_in_rulePieceType1764); 
+                    enumLiteral_1=(Token)match(input,27,FOLLOW_27_in_rulePieceType1517); 
 
                             current = grammarAccess.getPieceTypeAccess().getKNIGHTEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getPieceTypeAccess().getKNIGHTEnumLiteralDeclaration_1()); 
@@ -1982,12 +1695,12 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1011:6: (enumLiteral_2= 'Bishop' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:846:6: (enumLiteral_2= 'Bishop' )
                     {
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1011:6: (enumLiteral_2= 'Bishop' )
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1011:8: enumLiteral_2= 'Bishop'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:846:6: (enumLiteral_2= 'Bishop' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:846:8: enumLiteral_2= 'Bishop'
                     {
-                    enumLiteral_2=(Token)match(input,28,FOLLOW_28_in_rulePieceType1781); 
+                    enumLiteral_2=(Token)match(input,28,FOLLOW_28_in_rulePieceType1534); 
 
                             current = grammarAccess.getPieceTypeAccess().getBISHOPEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getPieceTypeAccess().getBISHOPEnumLiteralDeclaration_2()); 
@@ -1999,12 +1712,12 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1017:6: (enumLiteral_3= 'Rook' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:852:6: (enumLiteral_3= 'Rook' )
                     {
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1017:6: (enumLiteral_3= 'Rook' )
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1017:8: enumLiteral_3= 'Rook'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:852:6: (enumLiteral_3= 'Rook' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:852:8: enumLiteral_3= 'Rook'
                     {
-                    enumLiteral_3=(Token)match(input,29,FOLLOW_29_in_rulePieceType1798); 
+                    enumLiteral_3=(Token)match(input,29,FOLLOW_29_in_rulePieceType1551); 
 
                             current = grammarAccess.getPieceTypeAccess().getROOKEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_3, grammarAccess.getPieceTypeAccess().getROOKEnumLiteralDeclaration_3()); 
@@ -2016,12 +1729,12 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1023:6: (enumLiteral_4= 'Queen' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:858:6: (enumLiteral_4= 'Queen' )
                     {
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1023:6: (enumLiteral_4= 'Queen' )
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1023:8: enumLiteral_4= 'Queen'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:858:6: (enumLiteral_4= 'Queen' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:858:8: enumLiteral_4= 'Queen'
                     {
-                    enumLiteral_4=(Token)match(input,30,FOLLOW_30_in_rulePieceType1815); 
+                    enumLiteral_4=(Token)match(input,30,FOLLOW_30_in_rulePieceType1568); 
 
                             current = grammarAccess.getPieceTypeAccess().getQUEENEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_4, grammarAccess.getPieceTypeAccess().getQUEENEnumLiteralDeclaration_4()); 
@@ -2033,12 +1746,12 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1029:6: (enumLiteral_5= 'King' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:864:6: (enumLiteral_5= 'King' )
                     {
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1029:6: (enumLiteral_5= 'King' )
-                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:1029:8: enumLiteral_5= 'King'
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:864:6: (enumLiteral_5= 'King' )
+                    // ../no.pdigre.psqt/src-gen/no/pdigre/parser/antlr/internal/InternalPSQT.g:864:8: enumLiteral_5= 'King'
                     {
-                    enumLiteral_5=(Token)match(input,31,FOLLOW_31_in_rulePieceType1832); 
+                    enumLiteral_5=(Token)match(input,31,FOLLOW_31_in_rulePieceType1585); 
 
                             current = grammarAccess.getPieceTypeAccess().getKINGEnumLiteralDeclaration_5().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_5, grammarAccess.getPieceTypeAccess().getKINGEnumLiteralDeclaration_5()); 
@@ -2121,7 +1834,7 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_EOF_in_entryRuleRow1020 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleRowLabel_in_ruleRow1066 = new BitSet(new long[]{0x0000000000000080L});
     public static final BitSet FOLLOW_ruleMRow_in_ruleRow1087 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_ruleERow_in_ruleRow1108 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleMRow_in_ruleRow1108 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleRowLabel_in_entryRuleRowLabel1145 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_entryRuleRowLabel1156 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_INT_in_ruleRowLabel1195 = new BitSet(new long[]{0x0000000000000002L});
@@ -2135,21 +1848,11 @@ public class InternalPSQTParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_RULE_INT_in_ruleMRow1401 = new BitSet(new long[]{0x0000000000000080L});
     public static final BitSet FOLLOW_RULE_INT_in_ruleMRow1423 = new BitSet(new long[]{0x0000000000000080L});
     public static final BitSet FOLLOW_RULE_INT_in_ruleMRow1445 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleERow_in_entryRuleERow1486 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleERow1496 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleERow1538 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleERow1560 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleERow1582 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleERow1604 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleERow1626 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleERow1648 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleERow1670 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleERow1692 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_rulePieceType1747 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_27_in_rulePieceType1764 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_28_in_rulePieceType1781 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_rulePieceType1798 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_30_in_rulePieceType1815 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_31_in_rulePieceType1832 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_rulePieceType1500 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_27_in_rulePieceType1517 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_28_in_rulePieceType1534 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_rulePieceType1551 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_30_in_rulePieceType1568 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_31_in_rulePieceType1585 = new BitSet(new long[]{0x0000000000000002L});
 
 }

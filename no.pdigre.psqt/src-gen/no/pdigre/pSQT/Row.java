@@ -85,12 +85,12 @@ public interface Row extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Endrow</em>' containment reference.
-   * @see #setEndrow(ERow)
+   * @see #setEndrow(MRow)
    * @see no.pdigre.pSQT.PSQTPackage#getRow_Endrow()
    * @model containment="true"
    * @generated
    */
-  ERow getEndrow();
+  MRow getEndrow();
 
   /**
    * Sets the value of the '{@link no.pdigre.pSQT.Row#getEndrow <em>Endrow</em>}' containment reference.
@@ -100,6 +100,6 @@ public interface Row extends EObject
    * @see #getEndrow()
    * @generated
    */
-  void setEndrow(ERow value);
+  void setEndrow(MRow value);
 
 } // Row

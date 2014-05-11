@@ -116,13 +116,6 @@ public class PSQTSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case PSQTPackage.EROW:
-      {
-        ERow eRow = (ERow)theEObject;
-        T result = caseERow(eRow);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       default: return defaultCase(theEObject);
     }
   }
@@ -219,22 +212,6 @@ public class PSQTSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseMRow(MRow object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>ERow</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>ERow</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseERow(ERow object)
   {
     return null;
   }

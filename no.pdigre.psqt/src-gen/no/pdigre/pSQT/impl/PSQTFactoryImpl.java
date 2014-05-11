@@ -71,7 +71,6 @@ public class PSQTFactoryImpl extends EFactoryImpl implements PSQTFactory
       case PSQTPackage.TDESCRIPTION: return createTDescription();
       case PSQTPackage.ROW: return createRow();
       case PSQTPackage.MROW: return createMRow();
-      case PSQTPackage.EROW: return createERow();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -175,17 +174,6 @@ public class PSQTFactoryImpl extends EFactoryImpl implements PSQTFactory
   {
     MRowImpl mRow = new MRowImpl();
     return mRow;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ERow createERow()
-  {
-    ERowImpl eRow = new ERowImpl();
-    return eRow;
   }
 
   /**

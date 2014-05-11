@@ -2,7 +2,6 @@ package no.pdigre.serializer;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import no.pdigre.pSQT.ERow;
 import no.pdigre.pSQT.FDescription;
 import no.pdigre.pSQT.MRow;
 import no.pdigre.pSQT.PSQTPackage;
@@ -29,12 +28,6 @@ public class PSQTSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	public void createSequence(EObject context, EObject semanticObject) {
 		if(semanticObject.eClass().getEPackage() == PSQTPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
-			case PSQTPackage.EROW:
-				if(context == grammarAccess.getERowRule()) {
-					sequence_ERow(context, (ERow) semanticObject); 
-					return; 
-				}
-				else break;
 			case PSQTPackage.FDESCRIPTION:
 				if(context == grammarAccess.getFDescriptionRule()) {
 					sequence_FDescription(context, (FDescription) semanticObject); 
@@ -70,52 +63,6 @@ public class PSQTSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			}
 		if (errorAcceptor != null) errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
 	}
-	
-	/**
-	 * Constraint:
-	 *     (
-	 *         c1=INT 
-	 *         c2=INT 
-	 *         c3=INT 
-	 *         c4=INT 
-	 *         c5=INT 
-	 *         c6=INT 
-	 *         c7=INT 
-	 *         c8=INT
-	 *     )
-	 */
-	protected void sequence_ERow(EObject context, ERow semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, PSQTPackage.Literals.EROW__C1) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, PSQTPackage.Literals.EROW__C1));
-			if(transientValues.isValueTransient(semanticObject, PSQTPackage.Literals.EROW__C2) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, PSQTPackage.Literals.EROW__C2));
-			if(transientValues.isValueTransient(semanticObject, PSQTPackage.Literals.EROW__C3) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, PSQTPackage.Literals.EROW__C3));
-			if(transientValues.isValueTransient(semanticObject, PSQTPackage.Literals.EROW__C4) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, PSQTPackage.Literals.EROW__C4));
-			if(transientValues.isValueTransient(semanticObject, PSQTPackage.Literals.EROW__C5) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, PSQTPackage.Literals.EROW__C5));
-			if(transientValues.isValueTransient(semanticObject, PSQTPackage.Literals.EROW__C6) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, PSQTPackage.Literals.EROW__C6));
-			if(transientValues.isValueTransient(semanticObject, PSQTPackage.Literals.EROW__C7) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, PSQTPackage.Literals.EROW__C7));
-			if(transientValues.isValueTransient(semanticObject, PSQTPackage.Literals.EROW__C8) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, PSQTPackage.Literals.EROW__C8));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getERowAccess().getC1INTTerminalRuleCall_0_0(), semanticObject.getC1());
-		feeder.accept(grammarAccess.getERowAccess().getC2INTTerminalRuleCall_1_0(), semanticObject.getC2());
-		feeder.accept(grammarAccess.getERowAccess().getC3INTTerminalRuleCall_2_0(), semanticObject.getC3());
-		feeder.accept(grammarAccess.getERowAccess().getC4INTTerminalRuleCall_3_0(), semanticObject.getC4());
-		feeder.accept(grammarAccess.getERowAccess().getC5INTTerminalRuleCall_4_0(), semanticObject.getC5());
-		feeder.accept(grammarAccess.getERowAccess().getC6INTTerminalRuleCall_5_0(), semanticObject.getC6());
-		feeder.accept(grammarAccess.getERowAccess().getC7INTTerminalRuleCall_6_0(), semanticObject.getC7());
-		feeder.accept(grammarAccess.getERowAccess().getC8INTTerminalRuleCall_7_0(), semanticObject.getC8());
-		feeder.finish();
-	}
-	
 	
 	/**
 	 * Constraint:
@@ -183,7 +130,7 @@ public class PSQTSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=RowLabel midrow=MRow endrow=ERow)
+	 *     (name=RowLabel midrow=MRow endrow=MRow)
 	 */
 	protected void sequence_Row(EObject context, Row semanticObject) {
 		if(errorAcceptor != null) {
@@ -198,7 +145,7 @@ public class PSQTSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getRowAccess().getNameRowLabelParserRuleCall_0_0(), semanticObject.getName());
 		feeder.accept(grammarAccess.getRowAccess().getMidrowMRowParserRuleCall_1_0(), semanticObject.getMidrow());
-		feeder.accept(grammarAccess.getRowAccess().getEndrowERowParserRuleCall_2_0(), semanticObject.getEndrow());
+		feeder.accept(grammarAccess.getRowAccess().getEndrowMRowParserRuleCall_2_0(), semanticObject.getEndrow());
 		feeder.finish();
 	}
 	

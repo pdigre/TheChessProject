@@ -77,15 +77,6 @@ public interface PSQTFactory extends EFactory
   MRow createMRow();
 
   /**
-   * Returns a new object of class '<em>ERow</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>ERow</em>'.
-   * @generated
-   */
-  ERow createERow();
-
-  /**
    * Returns the package supported by this factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

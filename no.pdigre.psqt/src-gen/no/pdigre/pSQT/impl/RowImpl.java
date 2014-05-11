@@ -2,7 +2,6 @@
  */
 package no.pdigre.pSQT.impl;
 
-import no.pdigre.pSQT.ERow;
 import no.pdigre.pSQT.MRow;
 import no.pdigre.pSQT.PSQTPackage;
 import no.pdigre.pSQT.Row;
@@ -71,7 +70,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * @generated
    * @ordered
    */
-  protected ERow endrow;
+  protected MRow endrow;
 
   /**
    * <!-- begin-user-doc -->
@@ -170,7 +169,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * <!-- end-user-doc -->
    * @generated
    */
-  public ERow getEndrow()
+  public MRow getEndrow()
   {
     return endrow;
   }
@@ -180,9 +179,9 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetEndrow(ERow newEndrow, NotificationChain msgs)
+  public NotificationChain basicSetEndrow(MRow newEndrow, NotificationChain msgs)
   {
-    ERow oldEndrow = endrow;
+    MRow oldEndrow = endrow;
     endrow = newEndrow;
     if (eNotificationRequired())
     {
@@ -197,7 +196,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setEndrow(ERow newEndrow)
+  public void setEndrow(MRow newEndrow)
   {
     if (newEndrow != endrow)
     {
@@ -268,7 +267,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
         setMidrow((MRow)newValue);
         return;
       case PSQTPackage.ROW__ENDROW:
-        setEndrow((ERow)newValue);
+        setEndrow((MRow)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -291,7 +290,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
         setMidrow((MRow)null);
         return;
       case PSQTPackage.ROW__ENDROW:
-        setEndrow((ERow)null);
+        setEndrow((MRow)null);
         return;
     }
     super.eUnset(featureID);

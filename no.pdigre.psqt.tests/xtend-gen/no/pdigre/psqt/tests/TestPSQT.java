@@ -21,6 +21,7 @@ import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,35 +72,103 @@ public class TestPSQT {
         int p = 0;
         gc.setColor(Color.YELLOW);
         gc.fillRect(0, 0, 260, 260);
+        int min = 0;
+        int max = 0;
         EList<Row> _r = table.getR();
         for (final Row r : _r) {
           {
-            MRow _midrow = r.getMidrow();
-            final MRow m = ((MRow) _midrow);
+            MRow _xifexpression = null;
+            if (isEnd) {
+              _xifexpression = r.getEndrow();
+            } else {
+              _xifexpression = r.getMidrow();
+            }
+            final MRow m = ((MRow) _xifexpression);
+            int _c1 = m.getC1();
+            int _min = Math.min(min, _c1);
+            min = _min;
+            int _c1_1 = m.getC1();
+            int _max = Math.max(max, _c1_1);
+            max = _max;
+            int _c2 = m.getC2();
+            int _min_1 = Math.min(min, _c2);
+            min = _min_1;
+            int _c2_1 = m.getC2();
+            int _max_1 = Math.max(max, _c2_1);
+            max = _max_1;
+            int _c3 = m.getC3();
+            int _min_2 = Math.min(min, _c3);
+            min = _min_2;
+            int _c3_1 = m.getC3();
+            int _max_2 = Math.max(max, _c3_1);
+            max = _max_2;
+            int _c4 = m.getC4();
+            int _min_3 = Math.min(min, _c4);
+            min = _min_3;
+            int _c4_1 = m.getC4();
+            int _max_3 = Math.max(max, _c4_1);
+            max = _max_3;
+            int _c5 = m.getC5();
+            int _min_4 = Math.min(min, _c5);
+            min = _min_4;
+            int _c5_1 = m.getC5();
+            int _max_4 = Math.max(max, _c5_1);
+            max = _max_4;
+            int _c6 = m.getC6();
+            int _min_5 = Math.min(min, _c6);
+            min = _min_5;
+            int _c6_1 = m.getC6();
+            int _max_5 = Math.max(max, _c6_1);
+            max = _max_5;
+            int _c7 = m.getC7();
+            int _min_6 = Math.min(min, _c7);
+            min = _min_6;
+            int _c7_1 = m.getC7();
+            int _max_6 = Math.max(max, _c7_1);
+            max = _max_6;
+            int _c8 = m.getC8();
+            int _min_7 = Math.min(min, _c8);
+            min = _min_7;
+            int _c8_1 = m.getC8();
+            int _max_7 = Math.max(max, _c8_1);
+            max = _max_7;
+          }
+        }
+        final int adj = ((max + min) / 2);
+        EList<Row> _r_1 = table.getR();
+        for (final Row r_1 : _r_1) {
+          {
+            MRow _xifexpression = null;
+            if (isEnd) {
+              _xifexpression = r_1.getEndrow();
+            } else {
+              _xifexpression = r_1.getMidrow();
+            }
+            final MRow m = ((MRow) _xifexpression);
             int _plusPlus = p++;
             int _c1 = m.getC1();
-            this.rect(gc, _plusPlus, _c1);
+            this.rect(gc, _plusPlus, _c1, adj);
             int _plusPlus_1 = p++;
             int _c2 = m.getC2();
-            this.rect(gc, _plusPlus_1, _c2);
+            this.rect(gc, _plusPlus_1, _c2, adj);
             int _plusPlus_2 = p++;
             int _c3 = m.getC3();
-            this.rect(gc, _plusPlus_2, _c3);
+            this.rect(gc, _plusPlus_2, _c3, adj);
             int _plusPlus_3 = p++;
             int _c4 = m.getC4();
-            this.rect(gc, _plusPlus_3, _c4);
+            this.rect(gc, _plusPlus_3, _c4, adj);
             int _plusPlus_4 = p++;
             int _c5 = m.getC5();
-            this.rect(gc, _plusPlus_4, _c5);
+            this.rect(gc, _plusPlus_4, _c5, adj);
             int _plusPlus_5 = p++;
             int _c6 = m.getC6();
-            this.rect(gc, _plusPlus_5, _c6);
+            this.rect(gc, _plusPlus_5, _c6, adj);
             int _plusPlus_6 = p++;
             int _c7 = m.getC7();
-            this.rect(gc, _plusPlus_6, _c7);
+            this.rect(gc, _plusPlus_6, _c7, adj);
             int _plusPlus_7 = p++;
             int _c8 = m.getC8();
-            this.rect(gc, _plusPlus_7, _c8);
+            this.rect(gc, _plusPlus_7, _c8, adj);
           }
         }
         gc.setColor(Color.BLACK);
@@ -112,13 +181,19 @@ public class TestPSQT {
             gc.drawString(_substring, 5, (20 + (30 * (i).intValue())));
           }
         }
+        final File dir = new File("testdata/output");
+        boolean _exists = dir.exists();
+        boolean _not = (!_exists);
+        if (_not) {
+          dir.mkdir();
+        }
         String _xifexpression = null;
         if (isEnd) {
           _xifexpression = "Mid";
         } else {
           _xifexpression = "End";
         }
-        String _plus = ((("testdata/" + name) + "_") + _xifexpression);
+        String _plus = ((("testdata/output/" + name) + "_") + _xifexpression);
         PieceType _name = table.getName();
         String _plus_1 = (_plus + _name);
         String _plus_2 = (_plus_1 + ".png");
@@ -131,12 +206,15 @@ public class TestPSQT {
     }
   }
   
-  public void rect(final Graphics2D gc, final int p, final int i) {
+  public void rect(final Graphics2D gc, final int p, final int i, final int adj) {
     final int c = (p % 8);
     final int r = (p / 8);
-    final int str = ((int) (255 - ((((float) Math.abs(i)) * 255) / this.base)));
+    final int str = ((int) (255 - ((((float) Math.abs((i - adj))) * 255) / this.base)));
+    if (((str > 255) || (str < 0))) {
+      InputOutput.<String>println("hi");
+    }
     Color _xifexpression = null;
-    if ((i > 0)) {
+    if (((i - adj) > 0)) {
       _xifexpression = new Color(str, 255, str);
     } else {
       _xifexpression = new Color(255, str, str);

@@ -45,15 +45,5 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c7"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c8"/>
     </genClasses>
-    <genClasses ecoreClass="PSQT.ecore#//ERow">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c1"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c2"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c3"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c4"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c5"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c6"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c7"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c8"/>
-    </genClasses>
   </genPackages>
 </genmodel:GenModel>
