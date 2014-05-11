@@ -2,8 +2,8 @@
  */
 package no.pdigre.pSQT.impl;
 
-import no.pdigre.pSQT.Model;
 import no.pdigre.pSQT.PSQTPackage;
+import no.pdigre.pSQT.PSQT_Model;
 
 import org.eclipse.emf.ecore.EClass;
 
@@ -11,21 +11,21 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Model</b></em>'.
+ * An implementation of the model object '<em><b>PSQT Model</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class ModelImpl extends MinimalEObjectImpl.Container implements Model
+public class PSQT_ModelImpl extends MinimalEObjectImpl.Container implements PSQT_Model
 {
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ModelImpl()
+  protected PSQT_ModelImpl()
   {
     super();
   }
@@ -38,7 +38,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
   @Override
   protected EClass eStaticClass()
   {
-    return PSQTPackage.Literals.MODEL;
+    return PSQTPackage.Literals.PSQT_MODEL;
   }
 
-} //ModelImpl
+} //PSQT_ModelImpl

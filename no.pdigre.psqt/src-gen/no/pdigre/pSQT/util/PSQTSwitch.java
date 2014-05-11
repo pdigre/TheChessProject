@@ -72,10 +72,10 @@ public class PSQTSwitch<T> extends Switch<T>
   {
     switch (classifierID)
     {
-      case PSQTPackage.MODEL:
+      case PSQTPackage.PSQT_MODEL:
       {
-        Model model = (Model)theEObject;
-        T result = caseModel(model);
+        PSQT_Model psqT_Model = (PSQT_Model)theEObject;
+        T result = casePSQT_Model(psqT_Model);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -83,7 +83,7 @@ public class PSQTSwitch<T> extends Switch<T>
       {
         FDescription fDescription = (FDescription)theEObject;
         T result = caseFDescription(fDescription);
-        if (result == null) result = caseModel(fDescription);
+        if (result == null) result = casePSQT_Model(fDescription);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -123,29 +123,22 @@ public class PSQTSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case PSQTPackage.ROW1:
-      {
-        Row1 row1 = (Row1)theEObject;
-        T result = caseRow1(row1);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       default: return defaultCase(theEObject);
     }
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Model</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>PSQT Model</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Model</em>'.
+   * @return the result of interpreting the object as an instance of '<em>PSQT Model</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseModel(Model object)
+  public T casePSQT_Model(PSQT_Model object)
   {
     return null;
   }
@@ -242,22 +235,6 @@ public class PSQTSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseERow(ERow object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Row1</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Row1</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseRow1(Row1 object)
   {
     return null;
   }

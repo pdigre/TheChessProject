@@ -24,8 +24,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link no.pdigre.pSQT.impl.RowImpl#getName <em>Name</em>}</li>
- *   <li>{@link no.pdigre.pSQT.impl.RowImpl#getM <em>M</em>}</li>
- *   <li>{@link no.pdigre.pSQT.impl.RowImpl#getE <em>E</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.impl.RowImpl#getMidrow <em>Midrow</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.impl.RowImpl#getEndrow <em>Endrow</em>}</li>
  * </ul>
  * </p>
  *
@@ -54,24 +54,24 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getM() <em>M</em>}' containment reference.
+   * The cached value of the '{@link #getMidrow() <em>Midrow</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getM()
+   * @see #getMidrow()
    * @generated
    * @ordered
    */
-  protected MRow m;
+  protected MRow midrow;
 
   /**
-   * The cached value of the '{@link #getE() <em>E</em>}' containment reference.
+   * The cached value of the '{@link #getEndrow() <em>Endrow</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getE()
+   * @see #getEndrow()
    * @generated
    * @ordered
    */
-  protected ERow e;
+  protected ERow endrow;
 
   /**
    * <!-- begin-user-doc -->
@@ -122,9 +122,9 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * <!-- end-user-doc -->
    * @generated
    */
-  public MRow getM()
+  public MRow getMidrow()
   {
-    return m;
+    return midrow;
   }
 
   /**
@@ -132,13 +132,13 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetM(MRow newM, NotificationChain msgs)
+  public NotificationChain basicSetMidrow(MRow newMidrow, NotificationChain msgs)
   {
-    MRow oldM = m;
-    m = newM;
+    MRow oldMidrow = midrow;
+    midrow = newMidrow;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PSQTPackage.ROW__M, oldM, newM);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PSQTPackage.ROW__MIDROW, oldMidrow, newMidrow);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -149,20 +149,20 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setM(MRow newM)
+  public void setMidrow(MRow newMidrow)
   {
-    if (newM != m)
+    if (newMidrow != midrow)
     {
       NotificationChain msgs = null;
-      if (m != null)
-        msgs = ((InternalEObject)m).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PSQTPackage.ROW__M, null, msgs);
-      if (newM != null)
-        msgs = ((InternalEObject)newM).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PSQTPackage.ROW__M, null, msgs);
-      msgs = basicSetM(newM, msgs);
+      if (midrow != null)
+        msgs = ((InternalEObject)midrow).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PSQTPackage.ROW__MIDROW, null, msgs);
+      if (newMidrow != null)
+        msgs = ((InternalEObject)newMidrow).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PSQTPackage.ROW__MIDROW, null, msgs);
+      msgs = basicSetMidrow(newMidrow, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PSQTPackage.ROW__M, newM, newM));
+      eNotify(new ENotificationImpl(this, Notification.SET, PSQTPackage.ROW__MIDROW, newMidrow, newMidrow));
   }
 
   /**
@@ -170,9 +170,9 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * <!-- end-user-doc -->
    * @generated
    */
-  public ERow getE()
+  public ERow getEndrow()
   {
-    return e;
+    return endrow;
   }
 
   /**
@@ -180,13 +180,13 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetE(ERow newE, NotificationChain msgs)
+  public NotificationChain basicSetEndrow(ERow newEndrow, NotificationChain msgs)
   {
-    ERow oldE = e;
-    e = newE;
+    ERow oldEndrow = endrow;
+    endrow = newEndrow;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PSQTPackage.ROW__E, oldE, newE);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PSQTPackage.ROW__ENDROW, oldEndrow, newEndrow);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -197,20 +197,20 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setE(ERow newE)
+  public void setEndrow(ERow newEndrow)
   {
-    if (newE != e)
+    if (newEndrow != endrow)
     {
       NotificationChain msgs = null;
-      if (e != null)
-        msgs = ((InternalEObject)e).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PSQTPackage.ROW__E, null, msgs);
-      if (newE != null)
-        msgs = ((InternalEObject)newE).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PSQTPackage.ROW__E, null, msgs);
-      msgs = basicSetE(newE, msgs);
+      if (endrow != null)
+        msgs = ((InternalEObject)endrow).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PSQTPackage.ROW__ENDROW, null, msgs);
+      if (newEndrow != null)
+        msgs = ((InternalEObject)newEndrow).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PSQTPackage.ROW__ENDROW, null, msgs);
+      msgs = basicSetEndrow(newEndrow, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PSQTPackage.ROW__E, newE, newE));
+      eNotify(new ENotificationImpl(this, Notification.SET, PSQTPackage.ROW__ENDROW, newEndrow, newEndrow));
   }
 
   /**
@@ -223,10 +223,10 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
   {
     switch (featureID)
     {
-      case PSQTPackage.ROW__M:
-        return basicSetM(null, msgs);
-      case PSQTPackage.ROW__E:
-        return basicSetE(null, msgs);
+      case PSQTPackage.ROW__MIDROW:
+        return basicSetMidrow(null, msgs);
+      case PSQTPackage.ROW__ENDROW:
+        return basicSetEndrow(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -243,10 +243,10 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
     {
       case PSQTPackage.ROW__NAME:
         return getName();
-      case PSQTPackage.ROW__M:
-        return getM();
-      case PSQTPackage.ROW__E:
-        return getE();
+      case PSQTPackage.ROW__MIDROW:
+        return getMidrow();
+      case PSQTPackage.ROW__ENDROW:
+        return getEndrow();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -264,11 +264,11 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
       case PSQTPackage.ROW__NAME:
         setName((String)newValue);
         return;
-      case PSQTPackage.ROW__M:
-        setM((MRow)newValue);
+      case PSQTPackage.ROW__MIDROW:
+        setMidrow((MRow)newValue);
         return;
-      case PSQTPackage.ROW__E:
-        setE((ERow)newValue);
+      case PSQTPackage.ROW__ENDROW:
+        setEndrow((ERow)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -287,11 +287,11 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
       case PSQTPackage.ROW__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case PSQTPackage.ROW__M:
-        setM((MRow)null);
+      case PSQTPackage.ROW__MIDROW:
+        setMidrow((MRow)null);
         return;
-      case PSQTPackage.ROW__E:
-        setE((ERow)null);
+      case PSQTPackage.ROW__ENDROW:
+        setEndrow((ERow)null);
         return;
     }
     super.eUnset(featureID);
@@ -309,10 +309,10 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row
     {
       case PSQTPackage.ROW__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case PSQTPackage.ROW__M:
-        return m != null;
-      case PSQTPackage.ROW__E:
-        return e != null;
+      case PSQTPackage.ROW__MIDROW:
+        return midrow != null;
+      case PSQTPackage.ROW__ENDROW:
+        return endrow != null;
     }
     return super.eIsSet(featureID);
   }

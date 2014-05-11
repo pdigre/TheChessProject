@@ -13,8 +13,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link no.pdigre.pSQT.Row#getName <em>Name</em>}</li>
- *   <li>{@link no.pdigre.pSQT.Row#getM <em>M</em>}</li>
- *   <li>{@link no.pdigre.pSQT.Row#getE <em>E</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.Row#getMidrow <em>Midrow</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.Row#getEndrow <em>Endrow</em>}</li>
  * </ul>
  * </p>
  *
@@ -51,55 +51,55 @@ public interface Row extends EObject
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>M</b></em>' containment reference.
+   * Returns the value of the '<em><b>Midrow</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>M</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Midrow</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>M</em>' containment reference.
-   * @see #setM(MRow)
-   * @see no.pdigre.pSQT.PSQTPackage#getRow_M()
+   * @return the value of the '<em>Midrow</em>' containment reference.
+   * @see #setMidrow(MRow)
+   * @see no.pdigre.pSQT.PSQTPackage#getRow_Midrow()
    * @model containment="true"
    * @generated
    */
-  MRow getM();
+  MRow getMidrow();
 
   /**
-   * Sets the value of the '{@link no.pdigre.pSQT.Row#getM <em>M</em>}' containment reference.
+   * Sets the value of the '{@link no.pdigre.pSQT.Row#getMidrow <em>Midrow</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>M</em>' containment reference.
-   * @see #getM()
+   * @param value the new value of the '<em>Midrow</em>' containment reference.
+   * @see #getMidrow()
    * @generated
    */
-  void setM(MRow value);
+  void setMidrow(MRow value);
 
   /**
-   * Returns the value of the '<em><b>E</b></em>' containment reference.
+   * Returns the value of the '<em><b>Endrow</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>E</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Endrow</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>E</em>' containment reference.
-   * @see #setE(ERow)
-   * @see no.pdigre.pSQT.PSQTPackage#getRow_E()
+   * @return the value of the '<em>Endrow</em>' containment reference.
+   * @see #setEndrow(ERow)
+   * @see no.pdigre.pSQT.PSQTPackage#getRow_Endrow()
    * @model containment="true"
    * @generated
    */
-  ERow getE();
+  ERow getEndrow();
 
   /**
-   * Sets the value of the '{@link no.pdigre.pSQT.Row#getE <em>E</em>}' containment reference.
+   * Sets the value of the '{@link no.pdigre.pSQT.Row#getEndrow <em>Endrow</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>E</em>' containment reference.
-   * @see #getE()
+   * @param value the new value of the '<em>Endrow</em>' containment reference.
+   * @see #getEndrow()
    * @generated
    */
-  void setE(ERow value);
+  void setEndrow(ERow value);
 
 } // Row

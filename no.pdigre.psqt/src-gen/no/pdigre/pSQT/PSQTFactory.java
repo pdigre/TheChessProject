@@ -23,13 +23,13 @@ public interface PSQTFactory extends EFactory
   PSQTFactory eINSTANCE = no.pdigre.pSQT.impl.PSQTFactoryImpl.init();
 
   /**
-   * Returns a new object of class '<em>Model</em>'.
+   * Returns a new object of class '<em>PSQT Model</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Model</em>'.
+   * @return a new object of class '<em>PSQT Model</em>'.
    * @generated
    */
-  Model createModel();
+  PSQT_Model createPSQT_Model();
 
   /**
    * Returns a new object of class '<em>FDescription</em>'.
@@ -84,15 +84,6 @@ public interface PSQTFactory extends EFactory
    * @generated
    */
   ERow createERow();
-
-  /**
-   * Returns a new object of class '<em>Row1</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Row1</em>'.
-   * @generated
-   */
-  Row1 createRow1();
 
   /**
    * Returns the package supported by this factory.

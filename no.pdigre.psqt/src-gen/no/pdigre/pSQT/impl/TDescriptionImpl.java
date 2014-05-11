@@ -31,7 +31,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <ul>
  *   <li>{@link no.pdigre.pSQT.impl.TDescriptionImpl#getR <em>R</em>}</li>
  *   <li>{@link no.pdigre.pSQT.impl.TDescriptionImpl#getName <em>Name</em>}</li>
- *   <li>{@link no.pdigre.pSQT.impl.TDescriptionImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.impl.TDescriptionImpl#getMg <em>Mg</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.impl.TDescriptionImpl#getEg <em>Eg</em>}</li>
  * </ul>
  * </p>
  *
@@ -70,24 +71,44 @@ public class TDescriptionImpl extends TableImpl implements TDescription
   protected PieceType name = NAME_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+   * The default value of the '{@link #getMg() <em>Mg</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getValue()
+   * @see #getMg()
    * @generated
    * @ordered
    */
-  protected static final int VALUE_EDEFAULT = 0;
+  protected static final int MG_EDEFAULT = 0;
 
   /**
-   * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
+   * The cached value of the '{@link #getMg() <em>Mg</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getValue()
+   * @see #getMg()
    * @generated
    * @ordered
    */
-  protected int value = VALUE_EDEFAULT;
+  protected int mg = MG_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getEg() <em>Eg</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEg()
+   * @generated
+   * @ordered
+   */
+  protected static final int EG_EDEFAULT = 0;
+
+  /**
+   * The cached value of the '{@link #getEg() <em>Eg</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEg()
+   * @generated
+   * @ordered
+   */
+  protected int eg = EG_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -152,9 +173,9 @@ public class TDescriptionImpl extends TableImpl implements TDescription
    * <!-- end-user-doc -->
    * @generated
    */
-  public int getValue()
+  public int getMg()
   {
-    return value;
+    return mg;
   }
 
   /**
@@ -162,12 +183,35 @@ public class TDescriptionImpl extends TableImpl implements TDescription
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setValue(int newValue)
+  public void setMg(int newMg)
   {
-    int oldValue = value;
-    value = newValue;
+    int oldMg = mg;
+    mg = newMg;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PSQTPackage.TDESCRIPTION__VALUE, oldValue, value));
+      eNotify(new ENotificationImpl(this, Notification.SET, PSQTPackage.TDESCRIPTION__MG, oldMg, mg));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public int getEg()
+  {
+    return eg;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setEg(int newEg)
+  {
+    int oldEg = eg;
+    eg = newEg;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PSQTPackage.TDESCRIPTION__EG, oldEg, eg));
   }
 
   /**
@@ -200,8 +244,10 @@ public class TDescriptionImpl extends TableImpl implements TDescription
         return getR();
       case PSQTPackage.TDESCRIPTION__NAME:
         return getName();
-      case PSQTPackage.TDESCRIPTION__VALUE:
-        return getValue();
+      case PSQTPackage.TDESCRIPTION__MG:
+        return getMg();
+      case PSQTPackage.TDESCRIPTION__EG:
+        return getEg();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -224,8 +270,11 @@ public class TDescriptionImpl extends TableImpl implements TDescription
       case PSQTPackage.TDESCRIPTION__NAME:
         setName((PieceType)newValue);
         return;
-      case PSQTPackage.TDESCRIPTION__VALUE:
-        setValue((Integer)newValue);
+      case PSQTPackage.TDESCRIPTION__MG:
+        setMg((Integer)newValue);
+        return;
+      case PSQTPackage.TDESCRIPTION__EG:
+        setEg((Integer)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -247,8 +296,11 @@ public class TDescriptionImpl extends TableImpl implements TDescription
       case PSQTPackage.TDESCRIPTION__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case PSQTPackage.TDESCRIPTION__VALUE:
-        setValue(VALUE_EDEFAULT);
+      case PSQTPackage.TDESCRIPTION__MG:
+        setMg(MG_EDEFAULT);
+        return;
+      case PSQTPackage.TDESCRIPTION__EG:
+        setEg(EG_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -268,8 +320,10 @@ public class TDescriptionImpl extends TableImpl implements TDescription
         return r != null && !r.isEmpty();
       case PSQTPackage.TDESCRIPTION__NAME:
         return name != NAME_EDEFAULT;
-      case PSQTPackage.TDESCRIPTION__VALUE:
-        return value != VALUE_EDEFAULT;
+      case PSQTPackage.TDESCRIPTION__MG:
+        return mg != MG_EDEFAULT;
+      case PSQTPackage.TDESCRIPTION__EG:
+        return eg != EG_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }
@@ -287,8 +341,10 @@ public class TDescriptionImpl extends TableImpl implements TDescription
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");
     result.append(name);
-    result.append(", value: ");
-    result.append(value);
+    result.append(", mg: ");
+    result.append(mg);
+    result.append(", eg: ");
+    result.append(eg);
     result.append(')');
     return result.toString();
   }

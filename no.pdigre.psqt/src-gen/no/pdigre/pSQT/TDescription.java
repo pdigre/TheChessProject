@@ -14,7 +14,8 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link no.pdigre.pSQT.TDescription#getR <em>R</em>}</li>
  *   <li>{@link no.pdigre.pSQT.TDescription#getName <em>Name</em>}</li>
- *   <li>{@link no.pdigre.pSQT.TDescription#getValue <em>Value</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.TDescription#getMg <em>Mg</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.TDescription#getEg <em>Eg</em>}</li>
  * </ul>
  * </p>
  *
@@ -70,29 +71,55 @@ public interface TDescription extends Table
   void setName(PieceType value);
 
   /**
-   * Returns the value of the '<em><b>Value</b></em>' attribute.
+   * Returns the value of the '<em><b>Mg</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Value</em>' attribute isn't clear,
+   * If the meaning of the '<em>Mg</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Value</em>' attribute.
-   * @see #setValue(int)
-   * @see no.pdigre.pSQT.PSQTPackage#getTDescription_Value()
+   * @return the value of the '<em>Mg</em>' attribute.
+   * @see #setMg(int)
+   * @see no.pdigre.pSQT.PSQTPackage#getTDescription_Mg()
    * @model
    * @generated
    */
-  int getValue();
+  int getMg();
 
   /**
-   * Sets the value of the '{@link no.pdigre.pSQT.TDescription#getValue <em>Value</em>}' attribute.
+   * Sets the value of the '{@link no.pdigre.pSQT.TDescription#getMg <em>Mg</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Value</em>' attribute.
-   * @see #getValue()
+   * @param value the new value of the '<em>Mg</em>' attribute.
+   * @see #getMg()
    * @generated
    */
-  void setValue(int value);
+  void setMg(int value);
+
+  /**
+   * Returns the value of the '<em><b>Eg</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Eg</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Eg</em>' attribute.
+   * @see #setEg(int)
+   * @see no.pdigre.pSQT.PSQTPackage#getTDescription_Eg()
+   * @model
+   * @generated
+   */
+  int getEg();
+
+  /**
+   * Sets the value of the '{@link no.pdigre.pSQT.TDescription#getEg <em>Eg</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Eg</em>' attribute.
+   * @see #getEg()
+   * @generated
+   */
+  void setEg(int value);
 
 } // TDescription

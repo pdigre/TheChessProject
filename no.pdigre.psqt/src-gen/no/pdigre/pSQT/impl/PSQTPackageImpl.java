@@ -5,12 +5,11 @@ package no.pdigre.pSQT.impl;
 import no.pdigre.pSQT.ERow;
 import no.pdigre.pSQT.FDescription;
 import no.pdigre.pSQT.MRow;
-import no.pdigre.pSQT.Model;
 import no.pdigre.pSQT.PSQTFactory;
 import no.pdigre.pSQT.PSQTPackage;
+import no.pdigre.pSQT.PSQT_Model;
 import no.pdigre.pSQT.PieceType;
 import no.pdigre.pSQT.Row;
-import no.pdigre.pSQT.Row1;
 import no.pdigre.pSQT.TDescription;
 import no.pdigre.pSQT.Table;
 
@@ -35,7 +34,7 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass modelEClass = null;
+  private EClass psqT_ModelEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -78,13 +77,6 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * @generated
    */
   private EClass eRowEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass row1EClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -161,9 +153,9 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getModel()
+  public EClass getPSQT_Model()
   {
-    return modelEClass;
+    return psqT_ModelEClass;
   }
 
   /**
@@ -211,6 +203,26 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getFDescription_Mgl()
+  {
+    return (EAttribute)fDescriptionEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getFDescription_Egl()
+  {
+    return (EAttribute)fDescriptionEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getTable()
   {
     return tableEClass;
@@ -251,9 +263,19 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTDescription_Value()
+  public EAttribute getTDescription_Mg()
   {
     return (EAttribute)tDescriptionEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTDescription_Eg()
+  {
+    return (EAttribute)tDescriptionEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -281,7 +303,7 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRow_M()
+  public EReference getRow_Midrow()
   {
     return (EReference)rowEClass.getEStructuralFeatures().get(1);
   }
@@ -291,7 +313,7 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRow_E()
+  public EReference getRow_Endrow()
   {
     return (EReference)rowEClass.getEStructuralFeatures().get(2);
   }
@@ -311,9 +333,79 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMRow_Name()
+  public EAttribute getMRow_C1()
   {
-    return (EReference)mRowEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)mRowEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getMRow_C2()
+  {
+    return (EAttribute)mRowEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getMRow_C3()
+  {
+    return (EAttribute)mRowEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getMRow_C4()
+  {
+    return (EAttribute)mRowEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getMRow_C5()
+  {
+    return (EAttribute)mRowEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getMRow_C6()
+  {
+    return (EAttribute)mRowEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getMRow_C7()
+  {
+    return (EAttribute)mRowEClass.getEStructuralFeatures().get(6);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getMRow_C8()
+  {
+    return (EAttribute)mRowEClass.getEStructuralFeatures().get(7);
   }
 
   /**
@@ -331,9 +423,9 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getERow_Name()
+  public EAttribute getERow_C1()
   {
-    return (EReference)eRowEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)eRowEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -341,9 +433,9 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getRow1()
+  public EAttribute getERow_C2()
   {
-    return row1EClass;
+    return (EAttribute)eRowEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -351,9 +443,59 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getRow1_C()
+  public EAttribute getERow_C3()
   {
-    return (EAttribute)row1EClass.getEStructuralFeatures().get(0);
+    return (EAttribute)eRowEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getERow_C4()
+  {
+    return (EAttribute)eRowEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getERow_C5()
+  {
+    return (EAttribute)eRowEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getERow_C6()
+  {
+    return (EAttribute)eRowEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getERow_C7()
+  {
+    return (EAttribute)eRowEClass.getEStructuralFeatures().get(6);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getERow_C8()
+  {
+    return (EAttribute)eRowEClass.getEStructuralFeatures().get(7);
   }
 
   /**
@@ -396,33 +538,47 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
     isCreated = true;
 
     // Create classes and their features
-    modelEClass = createEClass(MODEL);
+    psqT_ModelEClass = createEClass(PSQT_MODEL);
 
     fDescriptionEClass = createEClass(FDESCRIPTION);
     createEReference(fDescriptionEClass, FDESCRIPTION__TABLES);
     createEAttribute(fDescriptionEClass, FDESCRIPTION__NAME);
     createEAttribute(fDescriptionEClass, FDESCRIPTION__BASE);
+    createEAttribute(fDescriptionEClass, FDESCRIPTION__MGL);
+    createEAttribute(fDescriptionEClass, FDESCRIPTION__EGL);
 
     tableEClass = createEClass(TABLE);
 
     tDescriptionEClass = createEClass(TDESCRIPTION);
     createEReference(tDescriptionEClass, TDESCRIPTION__R);
     createEAttribute(tDescriptionEClass, TDESCRIPTION__NAME);
-    createEAttribute(tDescriptionEClass, TDESCRIPTION__VALUE);
+    createEAttribute(tDescriptionEClass, TDESCRIPTION__MG);
+    createEAttribute(tDescriptionEClass, TDESCRIPTION__EG);
 
     rowEClass = createEClass(ROW);
     createEAttribute(rowEClass, ROW__NAME);
-    createEReference(rowEClass, ROW__M);
-    createEReference(rowEClass, ROW__E);
+    createEReference(rowEClass, ROW__MIDROW);
+    createEReference(rowEClass, ROW__ENDROW);
 
     mRowEClass = createEClass(MROW);
-    createEReference(mRowEClass, MROW__NAME);
+    createEAttribute(mRowEClass, MROW__C1);
+    createEAttribute(mRowEClass, MROW__C2);
+    createEAttribute(mRowEClass, MROW__C3);
+    createEAttribute(mRowEClass, MROW__C4);
+    createEAttribute(mRowEClass, MROW__C5);
+    createEAttribute(mRowEClass, MROW__C6);
+    createEAttribute(mRowEClass, MROW__C7);
+    createEAttribute(mRowEClass, MROW__C8);
 
     eRowEClass = createEClass(EROW);
-    createEReference(eRowEClass, EROW__NAME);
-
-    row1EClass = createEClass(ROW1);
-    createEAttribute(row1EClass, ROW1__C);
+    createEAttribute(eRowEClass, EROW__C1);
+    createEAttribute(eRowEClass, EROW__C2);
+    createEAttribute(eRowEClass, EROW__C3);
+    createEAttribute(eRowEClass, EROW__C4);
+    createEAttribute(eRowEClass, EROW__C5);
+    createEAttribute(eRowEClass, EROW__C6);
+    createEAttribute(eRowEClass, EROW__C7);
+    createEAttribute(eRowEClass, EROW__C8);
 
     // Create enums
     pieceTypeEEnum = createEEnum(PIECE_TYPE);
@@ -457,37 +613,51 @@ public class PSQTPackageImpl extends EPackageImpl implements PSQTPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
-    fDescriptionEClass.getESuperTypes().add(this.getModel());
+    fDescriptionEClass.getESuperTypes().add(this.getPSQT_Model());
     tDescriptionEClass.getESuperTypes().add(this.getTable());
 
     // Initialize classes and features; add operations and parameters
-    initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(psqT_ModelEClass, PSQT_Model.class, "PSQT_Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(fDescriptionEClass, FDescription.class, "FDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFDescription_Tables(), this.getTable(), null, "tables", null, 0, -1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getFDescription_Name(), ecorePackage.getEString(), "name", null, 0, 1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getFDescription_Base(), ecorePackage.getEInt(), "base", null, 0, 1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFDescription_Mgl(), ecorePackage.getEInt(), "mgl", null, 0, 1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFDescription_Egl(), ecorePackage.getEInt(), "egl", null, 0, 1, FDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tableEClass, Table.class, "Table", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(tDescriptionEClass, TDescription.class, "TDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTDescription_R(), this.getRow(), null, "r", null, 0, -1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTDescription_Name(), this.getPieceType(), "name", null, 0, 1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTDescription_Value(), ecorePackage.getEInt(), "value", null, 0, 1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTDescription_Mg(), ecorePackage.getEInt(), "mg", null, 0, 1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTDescription_Eg(), ecorePackage.getEInt(), "eg", null, 0, 1, TDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(rowEClass, Row.class, "Row", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getRow_Name(), ecorePackage.getEString(), "name", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRow_M(), this.getMRow(), null, "m", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRow_E(), this.getERow(), null, "e", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRow_Midrow(), this.getMRow(), null, "midrow", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRow_Endrow(), this.getERow(), null, "endrow", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mRowEClass, MRow.class, "MRow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMRow_Name(), this.getRow1(), null, "name", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMRow_C1(), ecorePackage.getEInt(), "c1", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMRow_C2(), ecorePackage.getEInt(), "c2", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMRow_C3(), ecorePackage.getEInt(), "c3", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMRow_C4(), ecorePackage.getEInt(), "c4", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMRow_C5(), ecorePackage.getEInt(), "c5", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMRow_C6(), ecorePackage.getEInt(), "c6", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMRow_C7(), ecorePackage.getEInt(), "c7", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMRow_C8(), ecorePackage.getEInt(), "c8", null, 0, 1, MRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(eRowEClass, ERow.class, "ERow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getERow_Name(), this.getRow1(), null, "name", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(row1EClass, Row1.class, "Row1", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getRow1_C(), ecorePackage.getEInt(), "c", null, 0, -1, Row1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getERow_C1(), ecorePackage.getEInt(), "c1", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getERow_C2(), ecorePackage.getEInt(), "c2", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getERow_C3(), ecorePackage.getEInt(), "c3", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getERow_C4(), ecorePackage.getEInt(), "c4", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getERow_C5(), ecorePackage.getEInt(), "c5", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getERow_C6(), ecorePackage.getEInt(), "c6", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getERow_C7(), ecorePackage.getEInt(), "c7", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getERow_C8(), ecorePackage.getEInt(), "c8", null, 0, 1, ERow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(pieceTypeEEnum, PieceType.class, "PieceType");

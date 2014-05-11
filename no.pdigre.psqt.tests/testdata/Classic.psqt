@@ -1,8 +1,9 @@
 // Top row Start & Middle game
 // Bottom row end game
 PSQT: Classic       Base:   100
+MidLimit: 7000 EndLimit: 2000
 
-Piece: Pawn   	    Value:  100
+Piece: Pawn    MidGame:  100  EndGame: 100
 	 A    B    C    D    E    F    G    H
 
 8    0    0    0    0    0    0    0    0
@@ -30,7 +31,7 @@ Piece: Pawn   	    Value:  100
      0    0    0    0    0    0    0    0
 
 
-Piece: Knight       Value:   320
+Piece: Knight  MidGame:  320  EndGame:320
 	 A    B    C    D    E    F    G    H
 
 8  -50  -40  -30  -30  -30  -30  -40  -50
@@ -57,7 +58,7 @@ Piece: Knight       Value:   320
 1  -50  -40  -30  -30  -30  -30  -40  -50
    -50  -40  -30  -30  -30  -30  -40  -50
 
-Piece: Bishop       Value:   330
+Piece: Bishop  MidGame:  330  EndGame:330
 	 A    B    C    D    E    F    G    H
 
 8  -20  -10  -10  -10  -10  -10  -10  -20
@@ -85,7 +86,7 @@ Piece: Bishop       Value:   330
    -20  -10  -10  -10  -10  -10  -10  -20
 
 
-Piece: Rook         Value:  500
+Piece: Rook    MidGame:  500  EndGame:500
 	 A    B    C    D    E    F    G    H
 
 8    0    0    0    0    0    0    0    0
@@ -113,7 +114,7 @@ Piece: Rook         Value:  500
      0    0    0    5    5    0    0    0
 
 
-Piece: Queen        Value:   900
+Piece: Queen   MidGame:  900  EndGame:900
 	 A    B    C    D    E    F    G    H
 
 8  -20  -10  -10   -5   -5  -10  -10  -20
@@ -141,7 +142,7 @@ Piece: Queen        Value:   900
    -20  -10  -10   -5   -5  -10  -10  -20
 
 
-Piece:  King        Value: 20000
+Piece:  King   MidGame: 20000 EndGame: 20000
 	 A    B    C    D    E    F    G    H
 
 8  -30  -40  -40  -50  -50  -40  -40  -30

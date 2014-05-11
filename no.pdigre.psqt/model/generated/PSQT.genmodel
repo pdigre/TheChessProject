@@ -15,31 +15,45 @@
       <genEnumLiterals ecoreEnumLiteral="PSQT.ecore#//PieceType/QUEEN"/>
       <genEnumLiterals ecoreEnumLiteral="PSQT.ecore#//PieceType/KING"/>
     </genEnums>
-    <genClasses ecoreClass="PSQT.ecore#//Model"/>
+    <genClasses ecoreClass="PSQT.ecore#//PSQT_Model"/>
     <genClasses ecoreClass="PSQT.ecore#//FDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PSQT.ecore#//FDescription/tables"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//FDescription/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//FDescription/base"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//FDescription/mgl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//FDescription/egl"/>
     </genClasses>
     <genClasses ecoreClass="PSQT.ecore#//Table"/>
     <genClasses ecoreClass="PSQT.ecore#//TDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PSQT.ecore#//TDescription/r"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//TDescription/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//TDescription/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//TDescription/mg"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//TDescription/eg"/>
     </genClasses>
     <genClasses ecoreClass="PSQT.ecore#//Row">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//Row/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PSQT.ecore#//Row/m"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PSQT.ecore#//Row/e"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PSQT.ecore#//Row/midrow"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PSQT.ecore#//Row/endrow"/>
     </genClasses>
     <genClasses ecoreClass="PSQT.ecore#//MRow">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PSQT.ecore#//MRow/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c2"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c3"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c4"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c5"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c6"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c7"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//MRow/c8"/>
     </genClasses>
     <genClasses ecoreClass="PSQT.ecore#//ERow">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PSQT.ecore#//ERow/name"/>
-    </genClasses>
-    <genClasses ecoreClass="PSQT.ecore#//Row1">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//Row1/c"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c2"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c3"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c4"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c5"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c6"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c7"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PSQT.ecore#//ERow/c8"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

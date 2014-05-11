@@ -65,14 +65,13 @@ public class PSQTFactoryImpl extends EFactoryImpl implements PSQTFactory
   {
     switch (eClass.getClassifierID())
     {
-      case PSQTPackage.MODEL: return createModel();
+      case PSQTPackage.PSQT_MODEL: return createPSQT_Model();
       case PSQTPackage.FDESCRIPTION: return createFDescription();
       case PSQTPackage.TABLE: return createTable();
       case PSQTPackage.TDESCRIPTION: return createTDescription();
       case PSQTPackage.ROW: return createRow();
       case PSQTPackage.MROW: return createMRow();
       case PSQTPackage.EROW: return createERow();
-      case PSQTPackage.ROW1: return createRow1();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -117,10 +116,10 @@ public class PSQTFactoryImpl extends EFactoryImpl implements PSQTFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Model createModel()
+  public PSQT_Model createPSQT_Model()
   {
-    ModelImpl model = new ModelImpl();
-    return model;
+    PSQT_ModelImpl psqT_Model = new PSQT_ModelImpl();
+    return psqT_Model;
   }
 
   /**
@@ -187,17 +186,6 @@ public class PSQTFactoryImpl extends EFactoryImpl implements PSQTFactory
   {
     ERowImpl eRow = new ERowImpl();
     return eRow;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Row1 createRow1()
-  {
-    Row1Impl row1 = new Row1Impl();
-    return row1;
   }
 
   /**

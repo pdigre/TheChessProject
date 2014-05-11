@@ -58,23 +58,23 @@ public interface PSQTPackage extends EPackage
   PSQTPackage eINSTANCE = no.pdigre.pSQT.impl.PSQTPackageImpl.init();
 
   /**
-   * The meta object id for the '{@link no.pdigre.pSQT.impl.ModelImpl <em>Model</em>}' class.
+   * The meta object id for the '{@link no.pdigre.pSQT.impl.PSQT_ModelImpl <em>PSQT Model</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see no.pdigre.pSQT.impl.ModelImpl
-   * @see no.pdigre.pSQT.impl.PSQTPackageImpl#getModel()
+   * @see no.pdigre.pSQT.impl.PSQT_ModelImpl
+   * @see no.pdigre.pSQT.impl.PSQTPackageImpl#getPSQT_Model()
    * @generated
    */
-  int MODEL = 0;
+  int PSQT_MODEL = 0;
 
   /**
-   * The number of structural features of the '<em>Model</em>' class.
+   * The number of structural features of the '<em>PSQT Model</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MODEL_FEATURE_COUNT = 0;
+  int PSQT_MODEL_FEATURE_COUNT = 0;
 
   /**
    * The meta object id for the '{@link no.pdigre.pSQT.impl.FDescriptionImpl <em>FDescription</em>}' class.
@@ -93,7 +93,7 @@ public interface PSQTPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FDESCRIPTION__TABLES = MODEL_FEATURE_COUNT + 0;
+  int FDESCRIPTION__TABLES = PSQT_MODEL_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -102,7 +102,7 @@ public interface PSQTPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FDESCRIPTION__NAME = MODEL_FEATURE_COUNT + 1;
+  int FDESCRIPTION__NAME = PSQT_MODEL_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Base</b></em>' attribute.
@@ -111,7 +111,25 @@ public interface PSQTPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FDESCRIPTION__BASE = MODEL_FEATURE_COUNT + 2;
+  int FDESCRIPTION__BASE = PSQT_MODEL_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Mgl</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FDESCRIPTION__MGL = PSQT_MODEL_FEATURE_COUNT + 3;
+
+  /**
+   * The feature id for the '<em><b>Egl</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FDESCRIPTION__EGL = PSQT_MODEL_FEATURE_COUNT + 4;
 
   /**
    * The number of structural features of the '<em>FDescription</em>' class.
@@ -120,7 +138,7 @@ public interface PSQTPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FDESCRIPTION_FEATURE_COUNT = MODEL_FEATURE_COUNT + 3;
+  int FDESCRIPTION_FEATURE_COUNT = PSQT_MODEL_FEATURE_COUNT + 5;
 
   /**
    * The meta object id for the '{@link no.pdigre.pSQT.impl.TableImpl <em>Table</em>}' class.
@@ -170,13 +188,22 @@ public interface PSQTPackage extends EPackage
   int TDESCRIPTION__NAME = TABLE_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * The feature id for the '<em><b>Mg</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TDESCRIPTION__VALUE = TABLE_FEATURE_COUNT + 2;
+  int TDESCRIPTION__MG = TABLE_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Eg</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TDESCRIPTION__EG = TABLE_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>TDescription</em>' class.
@@ -185,7 +212,7 @@ public interface PSQTPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TDESCRIPTION_FEATURE_COUNT = TABLE_FEATURE_COUNT + 3;
+  int TDESCRIPTION_FEATURE_COUNT = TABLE_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link no.pdigre.pSQT.impl.RowImpl <em>Row</em>}' class.
@@ -207,22 +234,22 @@ public interface PSQTPackage extends EPackage
   int ROW__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>M</b></em>' containment reference.
+   * The feature id for the '<em><b>Midrow</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ROW__M = 1;
+  int ROW__MIDROW = 1;
 
   /**
-   * The feature id for the '<em><b>E</b></em>' containment reference.
+   * The feature id for the '<em><b>Endrow</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ROW__E = 2;
+  int ROW__ENDROW = 2;
 
   /**
    * The number of structural features of the '<em>Row</em>' class.
@@ -244,13 +271,76 @@ public interface PSQTPackage extends EPackage
   int MROW = 5;
 
   /**
-   * The feature id for the '<em><b>Name</b></em>' containment reference.
+   * The feature id for the '<em><b>C1</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MROW__NAME = 0;
+  int MROW__C1 = 0;
+
+  /**
+   * The feature id for the '<em><b>C2</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MROW__C2 = 1;
+
+  /**
+   * The feature id for the '<em><b>C3</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MROW__C3 = 2;
+
+  /**
+   * The feature id for the '<em><b>C4</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MROW__C4 = 3;
+
+  /**
+   * The feature id for the '<em><b>C5</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MROW__C5 = 4;
+
+  /**
+   * The feature id for the '<em><b>C6</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MROW__C6 = 5;
+
+  /**
+   * The feature id for the '<em><b>C7</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MROW__C7 = 6;
+
+  /**
+   * The feature id for the '<em><b>C8</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MROW__C8 = 7;
 
   /**
    * The number of structural features of the '<em>MRow</em>' class.
@@ -259,7 +349,7 @@ public interface PSQTPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MROW_FEATURE_COUNT = 1;
+  int MROW_FEATURE_COUNT = 8;
 
   /**
    * The meta object id for the '{@link no.pdigre.pSQT.impl.ERowImpl <em>ERow</em>}' class.
@@ -272,13 +362,76 @@ public interface PSQTPackage extends EPackage
   int EROW = 6;
 
   /**
-   * The feature id for the '<em><b>Name</b></em>' containment reference.
+   * The feature id for the '<em><b>C1</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int EROW__NAME = 0;
+  int EROW__C1 = 0;
+
+  /**
+   * The feature id for the '<em><b>C2</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EROW__C2 = 1;
+
+  /**
+   * The feature id for the '<em><b>C3</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EROW__C3 = 2;
+
+  /**
+   * The feature id for the '<em><b>C4</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EROW__C4 = 3;
+
+  /**
+   * The feature id for the '<em><b>C5</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EROW__C5 = 4;
+
+  /**
+   * The feature id for the '<em><b>C6</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EROW__C6 = 5;
+
+  /**
+   * The feature id for the '<em><b>C7</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EROW__C7 = 6;
+
+  /**
+   * The feature id for the '<em><b>C8</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EROW__C8 = 7;
 
   /**
    * The number of structural features of the '<em>ERow</em>' class.
@@ -287,35 +440,7 @@ public interface PSQTPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EROW_FEATURE_COUNT = 1;
-
-  /**
-   * The meta object id for the '{@link no.pdigre.pSQT.impl.Row1Impl <em>Row1</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see no.pdigre.pSQT.impl.Row1Impl
-   * @see no.pdigre.pSQT.impl.PSQTPackageImpl#getRow1()
-   * @generated
-   */
-  int ROW1 = 7;
-
-  /**
-   * The feature id for the '<em><b>C</b></em>' attribute list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ROW1__C = 0;
-
-  /**
-   * The number of structural features of the '<em>Row1</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ROW1_FEATURE_COUNT = 1;
+  int EROW_FEATURE_COUNT = 8;
 
   /**
    * The meta object id for the '{@link no.pdigre.pSQT.PieceType <em>Piece Type</em>}' enum.
@@ -325,18 +450,18 @@ public interface PSQTPackage extends EPackage
    * @see no.pdigre.pSQT.impl.PSQTPackageImpl#getPieceType()
    * @generated
    */
-  int PIECE_TYPE = 8;
+  int PIECE_TYPE = 7;
 
 
   /**
-   * Returns the meta object for class '{@link no.pdigre.pSQT.Model <em>Model</em>}'.
+   * Returns the meta object for class '{@link no.pdigre.pSQT.PSQT_Model <em>PSQT Model</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Model</em>'.
-   * @see no.pdigre.pSQT.Model
+   * @return the meta object for class '<em>PSQT Model</em>'.
+   * @see no.pdigre.pSQT.PSQT_Model
    * @generated
    */
-  EClass getModel();
+  EClass getPSQT_Model();
 
   /**
    * Returns the meta object for class '{@link no.pdigre.pSQT.FDescription <em>FDescription</em>}'.
@@ -382,6 +507,28 @@ public interface PSQTPackage extends EPackage
   EAttribute getFDescription_Base();
 
   /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.FDescription#getMgl <em>Mgl</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Mgl</em>'.
+   * @see no.pdigre.pSQT.FDescription#getMgl()
+   * @see #getFDescription()
+   * @generated
+   */
+  EAttribute getFDescription_Mgl();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.FDescription#getEgl <em>Egl</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Egl</em>'.
+   * @see no.pdigre.pSQT.FDescription#getEgl()
+   * @see #getFDescription()
+   * @generated
+   */
+  EAttribute getFDescription_Egl();
+
+  /**
    * Returns the meta object for class '{@link no.pdigre.pSQT.Table <em>Table</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -424,15 +571,26 @@ public interface PSQTPackage extends EPackage
   EAttribute getTDescription_Name();
 
   /**
-   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.TDescription#getValue <em>Value</em>}'.
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.TDescription#getMg <em>Mg</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Value</em>'.
-   * @see no.pdigre.pSQT.TDescription#getValue()
+   * @return the meta object for the attribute '<em>Mg</em>'.
+   * @see no.pdigre.pSQT.TDescription#getMg()
    * @see #getTDescription()
    * @generated
    */
-  EAttribute getTDescription_Value();
+  EAttribute getTDescription_Mg();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.TDescription#getEg <em>Eg</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Eg</em>'.
+   * @see no.pdigre.pSQT.TDescription#getEg()
+   * @see #getTDescription()
+   * @generated
+   */
+  EAttribute getTDescription_Eg();
 
   /**
    * Returns the meta object for class '{@link no.pdigre.pSQT.Row <em>Row</em>}'.
@@ -456,26 +614,26 @@ public interface PSQTPackage extends EPackage
   EAttribute getRow_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link no.pdigre.pSQT.Row#getM <em>M</em>}'.
+   * Returns the meta object for the containment reference '{@link no.pdigre.pSQT.Row#getMidrow <em>Midrow</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>M</em>'.
-   * @see no.pdigre.pSQT.Row#getM()
+   * @return the meta object for the containment reference '<em>Midrow</em>'.
+   * @see no.pdigre.pSQT.Row#getMidrow()
    * @see #getRow()
    * @generated
    */
-  EReference getRow_M();
+  EReference getRow_Midrow();
 
   /**
-   * Returns the meta object for the containment reference '{@link no.pdigre.pSQT.Row#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link no.pdigre.pSQT.Row#getEndrow <em>Endrow</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>E</em>'.
-   * @see no.pdigre.pSQT.Row#getE()
+   * @return the meta object for the containment reference '<em>Endrow</em>'.
+   * @see no.pdigre.pSQT.Row#getEndrow()
    * @see #getRow()
    * @generated
    */
-  EReference getRow_E();
+  EReference getRow_Endrow();
 
   /**
    * Returns the meta object for class '{@link no.pdigre.pSQT.MRow <em>MRow</em>}'.
@@ -488,15 +646,92 @@ public interface PSQTPackage extends EPackage
   EClass getMRow();
 
   /**
-   * Returns the meta object for the containment reference '{@link no.pdigre.pSQT.MRow#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.MRow#getC1 <em>C1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Name</em>'.
-   * @see no.pdigre.pSQT.MRow#getName()
+   * @return the meta object for the attribute '<em>C1</em>'.
+   * @see no.pdigre.pSQT.MRow#getC1()
    * @see #getMRow()
    * @generated
    */
-  EReference getMRow_Name();
+  EAttribute getMRow_C1();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.MRow#getC2 <em>C2</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C2</em>'.
+   * @see no.pdigre.pSQT.MRow#getC2()
+   * @see #getMRow()
+   * @generated
+   */
+  EAttribute getMRow_C2();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.MRow#getC3 <em>C3</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C3</em>'.
+   * @see no.pdigre.pSQT.MRow#getC3()
+   * @see #getMRow()
+   * @generated
+   */
+  EAttribute getMRow_C3();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.MRow#getC4 <em>C4</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C4</em>'.
+   * @see no.pdigre.pSQT.MRow#getC4()
+   * @see #getMRow()
+   * @generated
+   */
+  EAttribute getMRow_C4();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.MRow#getC5 <em>C5</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C5</em>'.
+   * @see no.pdigre.pSQT.MRow#getC5()
+   * @see #getMRow()
+   * @generated
+   */
+  EAttribute getMRow_C5();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.MRow#getC6 <em>C6</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C6</em>'.
+   * @see no.pdigre.pSQT.MRow#getC6()
+   * @see #getMRow()
+   * @generated
+   */
+  EAttribute getMRow_C6();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.MRow#getC7 <em>C7</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C7</em>'.
+   * @see no.pdigre.pSQT.MRow#getC7()
+   * @see #getMRow()
+   * @generated
+   */
+  EAttribute getMRow_C7();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.MRow#getC8 <em>C8</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C8</em>'.
+   * @see no.pdigre.pSQT.MRow#getC8()
+   * @see #getMRow()
+   * @generated
+   */
+  EAttribute getMRow_C8();
 
   /**
    * Returns the meta object for class '{@link no.pdigre.pSQT.ERow <em>ERow</em>}'.
@@ -509,36 +744,92 @@ public interface PSQTPackage extends EPackage
   EClass getERow();
 
   /**
-   * Returns the meta object for the containment reference '{@link no.pdigre.pSQT.ERow#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.ERow#getC1 <em>C1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Name</em>'.
-   * @see no.pdigre.pSQT.ERow#getName()
+   * @return the meta object for the attribute '<em>C1</em>'.
+   * @see no.pdigre.pSQT.ERow#getC1()
    * @see #getERow()
    * @generated
    */
-  EReference getERow_Name();
+  EAttribute getERow_C1();
 
   /**
-   * Returns the meta object for class '{@link no.pdigre.pSQT.Row1 <em>Row1</em>}'.
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.ERow#getC2 <em>C2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Row1</em>'.
-   * @see no.pdigre.pSQT.Row1
+   * @return the meta object for the attribute '<em>C2</em>'.
+   * @see no.pdigre.pSQT.ERow#getC2()
+   * @see #getERow()
    * @generated
    */
-  EClass getRow1();
+  EAttribute getERow_C2();
 
   /**
-   * Returns the meta object for the attribute list '{@link no.pdigre.pSQT.Row1#getC <em>C</em>}'.
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.ERow#getC3 <em>C3</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute list '<em>C</em>'.
-   * @see no.pdigre.pSQT.Row1#getC()
-   * @see #getRow1()
+   * @return the meta object for the attribute '<em>C3</em>'.
+   * @see no.pdigre.pSQT.ERow#getC3()
+   * @see #getERow()
    * @generated
    */
-  EAttribute getRow1_C();
+  EAttribute getERow_C3();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.ERow#getC4 <em>C4</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C4</em>'.
+   * @see no.pdigre.pSQT.ERow#getC4()
+   * @see #getERow()
+   * @generated
+   */
+  EAttribute getERow_C4();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.ERow#getC5 <em>C5</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C5</em>'.
+   * @see no.pdigre.pSQT.ERow#getC5()
+   * @see #getERow()
+   * @generated
+   */
+  EAttribute getERow_C5();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.ERow#getC6 <em>C6</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C6</em>'.
+   * @see no.pdigre.pSQT.ERow#getC6()
+   * @see #getERow()
+   * @generated
+   */
+  EAttribute getERow_C6();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.ERow#getC7 <em>C7</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C7</em>'.
+   * @see no.pdigre.pSQT.ERow#getC7()
+   * @see #getERow()
+   * @generated
+   */
+  EAttribute getERow_C7();
+
+  /**
+   * Returns the meta object for the attribute '{@link no.pdigre.pSQT.ERow#getC8 <em>C8</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>C8</em>'.
+   * @see no.pdigre.pSQT.ERow#getC8()
+   * @see #getERow()
+   * @generated
+   */
+  EAttribute getERow_C8();
 
   /**
    * Returns the meta object for enum '{@link no.pdigre.pSQT.PieceType <em>Piece Type</em>}'.
@@ -574,14 +865,14 @@ public interface PSQTPackage extends EPackage
   interface Literals
   {
     /**
-     * The meta object literal for the '{@link no.pdigre.pSQT.impl.ModelImpl <em>Model</em>}' class.
+     * The meta object literal for the '{@link no.pdigre.pSQT.impl.PSQT_ModelImpl <em>PSQT Model</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see no.pdigre.pSQT.impl.ModelImpl
-     * @see no.pdigre.pSQT.impl.PSQTPackageImpl#getModel()
+     * @see no.pdigre.pSQT.impl.PSQT_ModelImpl
+     * @see no.pdigre.pSQT.impl.PSQTPackageImpl#getPSQT_Model()
      * @generated
      */
-    EClass MODEL = eINSTANCE.getModel();
+    EClass PSQT_MODEL = eINSTANCE.getPSQT_Model();
 
     /**
      * The meta object literal for the '{@link no.pdigre.pSQT.impl.FDescriptionImpl <em>FDescription</em>}' class.
@@ -616,6 +907,22 @@ public interface PSQTPackage extends EPackage
      * @generated
      */
     EAttribute FDESCRIPTION__BASE = eINSTANCE.getFDescription_Base();
+
+    /**
+     * The meta object literal for the '<em><b>Mgl</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FDESCRIPTION__MGL = eINSTANCE.getFDescription_Mgl();
+
+    /**
+     * The meta object literal for the '<em><b>Egl</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FDESCRIPTION__EGL = eINSTANCE.getFDescription_Egl();
 
     /**
      * The meta object literal for the '{@link no.pdigre.pSQT.impl.TableImpl <em>Table</em>}' class.
@@ -654,12 +961,20 @@ public interface PSQTPackage extends EPackage
     EAttribute TDESCRIPTION__NAME = eINSTANCE.getTDescription_Name();
 
     /**
-     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Mg</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute TDESCRIPTION__VALUE = eINSTANCE.getTDescription_Value();
+    EAttribute TDESCRIPTION__MG = eINSTANCE.getTDescription_Mg();
+
+    /**
+     * The meta object literal for the '<em><b>Eg</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TDESCRIPTION__EG = eINSTANCE.getTDescription_Eg();
 
     /**
      * The meta object literal for the '{@link no.pdigre.pSQT.impl.RowImpl <em>Row</em>}' class.
@@ -680,20 +995,20 @@ public interface PSQTPackage extends EPackage
     EAttribute ROW__NAME = eINSTANCE.getRow_Name();
 
     /**
-     * The meta object literal for the '<em><b>M</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Midrow</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ROW__M = eINSTANCE.getRow_M();
+    EReference ROW__MIDROW = eINSTANCE.getRow_Midrow();
 
     /**
-     * The meta object literal for the '<em><b>E</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Endrow</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ROW__E = eINSTANCE.getRow_E();
+    EReference ROW__ENDROW = eINSTANCE.getRow_Endrow();
 
     /**
      * The meta object literal for the '{@link no.pdigre.pSQT.impl.MRowImpl <em>MRow</em>}' class.
@@ -706,12 +1021,68 @@ public interface PSQTPackage extends EPackage
     EClass MROW = eINSTANCE.getMRow();
 
     /**
-     * The meta object literal for the '<em><b>Name</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>C1</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MROW__NAME = eINSTANCE.getMRow_Name();
+    EAttribute MROW__C1 = eINSTANCE.getMRow_C1();
+
+    /**
+     * The meta object literal for the '<em><b>C2</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MROW__C2 = eINSTANCE.getMRow_C2();
+
+    /**
+     * The meta object literal for the '<em><b>C3</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MROW__C3 = eINSTANCE.getMRow_C3();
+
+    /**
+     * The meta object literal for the '<em><b>C4</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MROW__C4 = eINSTANCE.getMRow_C4();
+
+    /**
+     * The meta object literal for the '<em><b>C5</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MROW__C5 = eINSTANCE.getMRow_C5();
+
+    /**
+     * The meta object literal for the '<em><b>C6</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MROW__C6 = eINSTANCE.getMRow_C6();
+
+    /**
+     * The meta object literal for the '<em><b>C7</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MROW__C7 = eINSTANCE.getMRow_C7();
+
+    /**
+     * The meta object literal for the '<em><b>C8</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MROW__C8 = eINSTANCE.getMRow_C8();
 
     /**
      * The meta object literal for the '{@link no.pdigre.pSQT.impl.ERowImpl <em>ERow</em>}' class.
@@ -724,30 +1095,68 @@ public interface PSQTPackage extends EPackage
     EClass EROW = eINSTANCE.getERow();
 
     /**
-     * The meta object literal for the '<em><b>Name</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>C1</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference EROW__NAME = eINSTANCE.getERow_Name();
+    EAttribute EROW__C1 = eINSTANCE.getERow_C1();
 
     /**
-     * The meta object literal for the '{@link no.pdigre.pSQT.impl.Row1Impl <em>Row1</em>}' class.
+     * The meta object literal for the '<em><b>C2</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see no.pdigre.pSQT.impl.Row1Impl
-     * @see no.pdigre.pSQT.impl.PSQTPackageImpl#getRow1()
      * @generated
      */
-    EClass ROW1 = eINSTANCE.getRow1();
+    EAttribute EROW__C2 = eINSTANCE.getERow_C2();
 
     /**
-     * The meta object literal for the '<em><b>C</b></em>' attribute list feature.
+     * The meta object literal for the '<em><b>C3</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute ROW1__C = eINSTANCE.getRow1_C();
+    EAttribute EROW__C3 = eINSTANCE.getERow_C3();
+
+    /**
+     * The meta object literal for the '<em><b>C4</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EROW__C4 = eINSTANCE.getERow_C4();
+
+    /**
+     * The meta object literal for the '<em><b>C5</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EROW__C5 = eINSTANCE.getERow_C5();
+
+    /**
+     * The meta object literal for the '<em><b>C6</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EROW__C6 = eINSTANCE.getERow_C6();
+
+    /**
+     * The meta object literal for the '<em><b>C7</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EROW__C7 = eINSTANCE.getERow_C7();
+
+    /**
+     * The meta object literal for the '<em><b>C8</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EROW__C8 = eINSTANCE.getERow_C8();
 
     /**
      * The meta object literal for the '{@link no.pdigre.pSQT.PieceType <em>Piece Type</em>}' enum.

@@ -31,12 +31,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link no.pdigre.pSQT.impl.FDescriptionImpl#getTables <em>Tables</em>}</li>
  *   <li>{@link no.pdigre.pSQT.impl.FDescriptionImpl#getName <em>Name</em>}</li>
  *   <li>{@link no.pdigre.pSQT.impl.FDescriptionImpl#getBase <em>Base</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.impl.FDescriptionImpl#getMgl <em>Mgl</em>}</li>
+ *   <li>{@link no.pdigre.pSQT.impl.FDescriptionImpl#getEgl <em>Egl</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class FDescriptionImpl extends ModelImpl implements FDescription
+public class FDescriptionImpl extends PSQT_ModelImpl implements FDescription
 {
   /**
    * The cached value of the '{@link #getTables() <em>Tables</em>}' containment reference list.
@@ -87,6 +89,46 @@ public class FDescriptionImpl extends ModelImpl implements FDescription
    * @ordered
    */
   protected int base = BASE_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getMgl() <em>Mgl</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getMgl()
+   * @generated
+   * @ordered
+   */
+  protected static final int MGL_EDEFAULT = 0;
+
+  /**
+   * The cached value of the '{@link #getMgl() <em>Mgl</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getMgl()
+   * @generated
+   * @ordered
+   */
+  protected int mgl = MGL_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getEgl() <em>Egl</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEgl()
+   * @generated
+   * @ordered
+   */
+  protected static final int EGL_EDEFAULT = 0;
+
+  /**
+   * The cached value of the '{@link #getEgl() <em>Egl</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEgl()
+   * @generated
+   * @ordered
+   */
+  protected int egl = EGL_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -174,6 +216,52 @@ public class FDescriptionImpl extends ModelImpl implements FDescription
    * <!-- end-user-doc -->
    * @generated
    */
+  public int getMgl()
+  {
+    return mgl;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setMgl(int newMgl)
+  {
+    int oldMgl = mgl;
+    mgl = newMgl;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PSQTPackage.FDESCRIPTION__MGL, oldMgl, mgl));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public int getEgl()
+  {
+    return egl;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setEgl(int newEgl)
+  {
+    int oldEgl = egl;
+    egl = newEgl;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PSQTPackage.FDESCRIPTION__EGL, oldEgl, egl));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -201,6 +289,10 @@ public class FDescriptionImpl extends ModelImpl implements FDescription
         return getName();
       case PSQTPackage.FDESCRIPTION__BASE:
         return getBase();
+      case PSQTPackage.FDESCRIPTION__MGL:
+        return getMgl();
+      case PSQTPackage.FDESCRIPTION__EGL:
+        return getEgl();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -226,6 +318,12 @@ public class FDescriptionImpl extends ModelImpl implements FDescription
       case PSQTPackage.FDESCRIPTION__BASE:
         setBase((Integer)newValue);
         return;
+      case PSQTPackage.FDESCRIPTION__MGL:
+        setMgl((Integer)newValue);
+        return;
+      case PSQTPackage.FDESCRIPTION__EGL:
+        setEgl((Integer)newValue);
+        return;
     }
     super.eSet(featureID, newValue);
   }
@@ -249,6 +347,12 @@ public class FDescriptionImpl extends ModelImpl implements FDescription
       case PSQTPackage.FDESCRIPTION__BASE:
         setBase(BASE_EDEFAULT);
         return;
+      case PSQTPackage.FDESCRIPTION__MGL:
+        setMgl(MGL_EDEFAULT);
+        return;
+      case PSQTPackage.FDESCRIPTION__EGL:
+        setEgl(EGL_EDEFAULT);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -269,6 +373,10 @@ public class FDescriptionImpl extends ModelImpl implements FDescription
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case PSQTPackage.FDESCRIPTION__BASE:
         return base != BASE_EDEFAULT;
+      case PSQTPackage.FDESCRIPTION__MGL:
+        return mgl != MGL_EDEFAULT;
+      case PSQTPackage.FDESCRIPTION__EGL:
+        return egl != EGL_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }
@@ -288,6 +396,10 @@ public class FDescriptionImpl extends ModelImpl implements FDescription
     result.append(name);
     result.append(", base: ");
     result.append(base);
+    result.append(", mgl: ");
+    result.append(mgl);
+    result.append(", egl: ");
+    result.append(egl);
     result.append(')');
     return result.toString();
   }

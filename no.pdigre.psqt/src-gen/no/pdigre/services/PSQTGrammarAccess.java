@@ -18,14 +18,14 @@ import org.eclipse.xtext.common.services.TerminalsGrammarAccess;
 public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 	
 	
-	public class ModelElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Model");
+	public class PSQT_ModelElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "PSQT_Model");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cFDescriptionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Assignment cTablesAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cTablesTableParserRuleCall_1_0 = (RuleCall)cTablesAssignment_1.eContents().get(0);
 		
-		//Model:
+		//PSQT_Model:
 		//	FDescription tables+=Table*;
 		public ParserRule getRule() { return rule; }
 
@@ -51,13 +51,19 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cBASETerminalRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		private final Assignment cBaseAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cBaseINTTerminalRuleCall_3_0 = (RuleCall)cBaseAssignment_3.eContents().get(0);
+		private final RuleCall cMIDLIMITTerminalRuleCall_4 = (RuleCall)cGroup.eContents().get(4);
+		private final Assignment cMglAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cMglINTTerminalRuleCall_5_0 = (RuleCall)cMglAssignment_5.eContents().get(0);
+		private final RuleCall cENDLIMITTerminalRuleCall_6 = (RuleCall)cGroup.eContents().get(6);
+		private final Assignment cEglAssignment_7 = (Assignment)cGroup.eContents().get(7);
+		private final RuleCall cEglINTTerminalRuleCall_7_0 = (RuleCall)cEglAssignment_7.eContents().get(0);
 		
 		////enum RowNumber : R1='1'|R2='2'|R3='3'|R4='4'|R5='5'|R6='6'|R7='7'|R8='8';
 		//FDescription:
-		//	PSQT name=ID BASE base=INT;
+		//	PSQT name=ID BASE base=INT MIDLIMIT mgl=INT ENDLIMIT egl=INT;
 		public ParserRule getRule() { return rule; }
 
-		//PSQT name=ID BASE base=INT
+		//PSQT name=ID BASE base=INT MIDLIMIT mgl=INT ENDLIMIT egl=INT
 		public Group getGroup() { return cGroup; }
 
 		//PSQT
@@ -77,6 +83,24 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 
 		//INT
 		public RuleCall getBaseINTTerminalRuleCall_3_0() { return cBaseINTTerminalRuleCall_3_0; }
+
+		//MIDLIMIT
+		public RuleCall getMIDLIMITTerminalRuleCall_4() { return cMIDLIMITTerminalRuleCall_4; }
+
+		//mgl=INT
+		public Assignment getMglAssignment_5() { return cMglAssignment_5; }
+
+		//INT
+		public RuleCall getMglINTTerminalRuleCall_5_0() { return cMglINTTerminalRuleCall_5_0; }
+
+		//ENDLIMIT
+		public RuleCall getENDLIMITTerminalRuleCall_6() { return cENDLIMITTerminalRuleCall_6; }
+
+		//egl=INT
+		public Assignment getEglAssignment_7() { return cEglAssignment_7; }
+
+		//INT
+		public RuleCall getEglINTTerminalRuleCall_7_0() { return cEglINTTerminalRuleCall_7_0; }
 	}
 
 	public class TableElements extends AbstractParserRuleElementFinder {
@@ -169,15 +193,18 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cPIECETerminalRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNamePieceTypeEnumRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final RuleCall cVALUETerminalRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
-		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cValueINTTerminalRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		private final RuleCall cMIDGAMETerminalRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final Assignment cMgAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cMgINTTerminalRuleCall_3_0 = (RuleCall)cMgAssignment_3.eContents().get(0);
+		private final RuleCall cENDGAMETerminalRuleCall_4 = (RuleCall)cGroup.eContents().get(4);
+		private final Assignment cEgAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cEgINTTerminalRuleCall_5_0 = (RuleCall)cEgAssignment_5.eContents().get(0);
 		
 		//TDescription:
-		//	PIECE name=PieceType VALUE value=INT;
+		//	PIECE name=PieceType MIDGAME mg=INT ENDGAME eg=INT;
 		public ParserRule getRule() { return rule; }
 
-		//PIECE name=PieceType VALUE value=INT
+		//PIECE name=PieceType MIDGAME mg=INT ENDGAME eg=INT
 		public Group getGroup() { return cGroup; }
 
 		//PIECE
@@ -189,14 +216,23 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		//PieceType
 		public RuleCall getNamePieceTypeEnumRuleCall_1_0() { return cNamePieceTypeEnumRuleCall_1_0; }
 
-		//VALUE
-		public RuleCall getVALUETerminalRuleCall_2() { return cVALUETerminalRuleCall_2; }
+		//MIDGAME
+		public RuleCall getMIDGAMETerminalRuleCall_2() { return cMIDGAMETerminalRuleCall_2; }
 
-		//value=INT
-		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+		//mg=INT
+		public Assignment getMgAssignment_3() { return cMgAssignment_3; }
 
 		//INT
-		public RuleCall getValueINTTerminalRuleCall_3_0() { return cValueINTTerminalRuleCall_3_0; }
+		public RuleCall getMgINTTerminalRuleCall_3_0() { return cMgINTTerminalRuleCall_3_0; }
+
+		//ENDGAME
+		public RuleCall getENDGAMETerminalRuleCall_4() { return cENDGAMETerminalRuleCall_4; }
+
+		//eg=INT
+		public Assignment getEgAssignment_5() { return cEgAssignment_5; }
+
+		//INT
+		public RuleCall getEgINTTerminalRuleCall_5_0() { return cEgINTTerminalRuleCall_5_0; }
 	}
 
 	public class THeaderElements extends AbstractParserRuleElementFinder {
@@ -248,16 +284,16 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cNameAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cNameRowLabelParserRuleCall_0_0 = (RuleCall)cNameAssignment_0.eContents().get(0);
-		private final Assignment cMAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cMMRowParserRuleCall_1_0 = (RuleCall)cMAssignment_1.eContents().get(0);
-		private final Assignment cEAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cEERowParserRuleCall_2_0 = (RuleCall)cEAssignment_2.eContents().get(0);
+		private final Assignment cMidrowAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cMidrowMRowParserRuleCall_1_0 = (RuleCall)cMidrowAssignment_1.eContents().get(0);
+		private final Assignment cEndrowAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cEndrowERowParserRuleCall_2_0 = (RuleCall)cEndrowAssignment_2.eContents().get(0);
 		
 		//Row:
-		//	name=RowLabel m=MRow e=ERow;
+		//	name=RowLabel midrow=MRow endrow=ERow;
 		public ParserRule getRule() { return rule; }
 
-		//name=RowLabel m=MRow e=ERow
+		//name=RowLabel midrow=MRow endrow=ERow
 		public Group getGroup() { return cGroup; }
 
 		//name=RowLabel
@@ -266,17 +302,17 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		//RowLabel
 		public RuleCall getNameRowLabelParserRuleCall_0_0() { return cNameRowLabelParserRuleCall_0_0; }
 
-		//m=MRow
-		public Assignment getMAssignment_1() { return cMAssignment_1; }
+		//midrow=MRow
+		public Assignment getMidrowAssignment_1() { return cMidrowAssignment_1; }
 
 		//MRow
-		public RuleCall getMMRowParserRuleCall_1_0() { return cMMRowParserRuleCall_1_0; }
+		public RuleCall getMidrowMRowParserRuleCall_1_0() { return cMidrowMRowParserRuleCall_1_0; }
 
-		//e=ERow
-		public Assignment getEAssignment_2() { return cEAssignment_2; }
+		//endrow=ERow
+		public Assignment getEndrowAssignment_2() { return cEndrowAssignment_2; }
 
 		//ERow
-		public RuleCall getEERowParserRuleCall_2_0() { return cEERowParserRuleCall_2_0; }
+		public RuleCall getEndrowERowParserRuleCall_2_0() { return cEndrowERowParserRuleCall_2_0; }
 	}
 
 	public class RowLabelElements extends AbstractParserRuleElementFinder {
@@ -293,110 +329,154 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class MRowElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "MRow");
-		private final Assignment cNameAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cNameRow1ParserRuleCall_0 = (RuleCall)cNameAssignment.eContents().get(0);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cC1Assignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cC1INTTerminalRuleCall_0_0 = (RuleCall)cC1Assignment_0.eContents().get(0);
+		private final Assignment cC2Assignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cC2INTTerminalRuleCall_1_0 = (RuleCall)cC2Assignment_1.eContents().get(0);
+		private final Assignment cC3Assignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cC3INTTerminalRuleCall_2_0 = (RuleCall)cC3Assignment_2.eContents().get(0);
+		private final Assignment cC4Assignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cC4INTTerminalRuleCall_3_0 = (RuleCall)cC4Assignment_3.eContents().get(0);
+		private final Assignment cC5Assignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cC5INTTerminalRuleCall_4_0 = (RuleCall)cC5Assignment_4.eContents().get(0);
+		private final Assignment cC6Assignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cC6INTTerminalRuleCall_5_0 = (RuleCall)cC6Assignment_5.eContents().get(0);
+		private final Assignment cC7Assignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cC7INTTerminalRuleCall_6_0 = (RuleCall)cC7Assignment_6.eContents().get(0);
+		private final Assignment cC8Assignment_7 = (Assignment)cGroup.eContents().get(7);
+		private final RuleCall cC8INTTerminalRuleCall_7_0 = (RuleCall)cC8Assignment_7.eContents().get(0);
 		
 		//MRow:
-		//	name=Row1;
+		//	c1=INT c2=INT c3=INT c4=INT c5=INT c6=INT c7=INT c8=INT;
 		public ParserRule getRule() { return rule; }
 
-		//name=Row1
-		public Assignment getNameAssignment() { return cNameAssignment; }
+		//c1=INT c2=INT c3=INT c4=INT c5=INT c6=INT c7=INT c8=INT
+		public Group getGroup() { return cGroup; }
 
-		//Row1
-		public RuleCall getNameRow1ParserRuleCall_0() { return cNameRow1ParserRuleCall_0; }
+		//c1=INT
+		public Assignment getC1Assignment_0() { return cC1Assignment_0; }
+
+		//INT
+		public RuleCall getC1INTTerminalRuleCall_0_0() { return cC1INTTerminalRuleCall_0_0; }
+
+		//c2=INT
+		public Assignment getC2Assignment_1() { return cC2Assignment_1; }
+
+		//INT
+		public RuleCall getC2INTTerminalRuleCall_1_0() { return cC2INTTerminalRuleCall_1_0; }
+
+		//c3=INT
+		public Assignment getC3Assignment_2() { return cC3Assignment_2; }
+
+		//INT
+		public RuleCall getC3INTTerminalRuleCall_2_0() { return cC3INTTerminalRuleCall_2_0; }
+
+		//c4=INT
+		public Assignment getC4Assignment_3() { return cC4Assignment_3; }
+
+		//INT
+		public RuleCall getC4INTTerminalRuleCall_3_0() { return cC4INTTerminalRuleCall_3_0; }
+
+		//c5=INT
+		public Assignment getC5Assignment_4() { return cC5Assignment_4; }
+
+		//INT
+		public RuleCall getC5INTTerminalRuleCall_4_0() { return cC5INTTerminalRuleCall_4_0; }
+
+		//c6=INT
+		public Assignment getC6Assignment_5() { return cC6Assignment_5; }
+
+		//INT
+		public RuleCall getC6INTTerminalRuleCall_5_0() { return cC6INTTerminalRuleCall_5_0; }
+
+		//c7=INT
+		public Assignment getC7Assignment_6() { return cC7Assignment_6; }
+
+		//INT
+		public RuleCall getC7INTTerminalRuleCall_6_0() { return cC7INTTerminalRuleCall_6_0; }
+
+		//c8=INT
+		public Assignment getC8Assignment_7() { return cC8Assignment_7; }
+
+		//INT
+		public RuleCall getC8INTTerminalRuleCall_7_0() { return cC8INTTerminalRuleCall_7_0; }
 	}
 
 	public class ERowElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ERow");
-		private final Assignment cNameAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cNameRow1ParserRuleCall_0 = (RuleCall)cNameAssignment.eContents().get(0);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cC1Assignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cC1INTTerminalRuleCall_0_0 = (RuleCall)cC1Assignment_0.eContents().get(0);
+		private final Assignment cC2Assignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cC2INTTerminalRuleCall_1_0 = (RuleCall)cC2Assignment_1.eContents().get(0);
+		private final Assignment cC3Assignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cC3INTTerminalRuleCall_2_0 = (RuleCall)cC3Assignment_2.eContents().get(0);
+		private final Assignment cC4Assignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cC4INTTerminalRuleCall_3_0 = (RuleCall)cC4Assignment_3.eContents().get(0);
+		private final Assignment cC5Assignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cC5INTTerminalRuleCall_4_0 = (RuleCall)cC5Assignment_4.eContents().get(0);
+		private final Assignment cC6Assignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cC6INTTerminalRuleCall_5_0 = (RuleCall)cC6Assignment_5.eContents().get(0);
+		private final Assignment cC7Assignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cC7INTTerminalRuleCall_6_0 = (RuleCall)cC7Assignment_6.eContents().get(0);
+		private final Assignment cC8Assignment_7 = (Assignment)cGroup.eContents().get(7);
+		private final RuleCall cC8INTTerminalRuleCall_7_0 = (RuleCall)cC8Assignment_7.eContents().get(0);
 		
 		//ERow:
-		//	name=Row1;
+		//	c1=INT c2=INT c3=INT c4=INT c5=INT c6=INT c7=INT c8=INT;
 		public ParserRule getRule() { return rule; }
 
-		//name=Row1
-		public Assignment getNameAssignment() { return cNameAssignment; }
-
-		//Row1
-		public RuleCall getNameRow1ParserRuleCall_0() { return cNameRow1ParserRuleCall_0; }
-	}
-
-	public class Row1Elements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Row1");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cCAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cCINTTerminalRuleCall_0_0 = (RuleCall)cCAssignment_0.eContents().get(0);
-		private final Assignment cCAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cCINTTerminalRuleCall_1_0 = (RuleCall)cCAssignment_1.eContents().get(0);
-		private final Assignment cCAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cCINTTerminalRuleCall_2_0 = (RuleCall)cCAssignment_2.eContents().get(0);
-		private final Assignment cCAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cCINTTerminalRuleCall_3_0 = (RuleCall)cCAssignment_3.eContents().get(0);
-		private final Assignment cCAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cCINTTerminalRuleCall_4_0 = (RuleCall)cCAssignment_4.eContents().get(0);
-		private final Assignment cCAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cCINTTerminalRuleCall_5_0 = (RuleCall)cCAssignment_5.eContents().get(0);
-		private final Assignment cCAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final RuleCall cCINTTerminalRuleCall_6_0 = (RuleCall)cCAssignment_6.eContents().get(0);
-		private final Assignment cCAssignment_7 = (Assignment)cGroup.eContents().get(7);
-		private final RuleCall cCINTTerminalRuleCall_7_0 = (RuleCall)cCAssignment_7.eContents().get(0);
-		
-		//Row1:
-		//	c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT;
-		public ParserRule getRule() { return rule; }
-
-		//c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT
+		//c1=INT c2=INT c3=INT c4=INT c5=INT c6=INT c7=INT c8=INT
 		public Group getGroup() { return cGroup; }
 
-		//c+=INT
-		public Assignment getCAssignment_0() { return cCAssignment_0; }
+		//c1=INT
+		public Assignment getC1Assignment_0() { return cC1Assignment_0; }
 
 		//INT
-		public RuleCall getCINTTerminalRuleCall_0_0() { return cCINTTerminalRuleCall_0_0; }
+		public RuleCall getC1INTTerminalRuleCall_0_0() { return cC1INTTerminalRuleCall_0_0; }
 
-		//c+=INT
-		public Assignment getCAssignment_1() { return cCAssignment_1; }
-
-		//INT
-		public RuleCall getCINTTerminalRuleCall_1_0() { return cCINTTerminalRuleCall_1_0; }
-
-		//c+=INT
-		public Assignment getCAssignment_2() { return cCAssignment_2; }
+		//c2=INT
+		public Assignment getC2Assignment_1() { return cC2Assignment_1; }
 
 		//INT
-		public RuleCall getCINTTerminalRuleCall_2_0() { return cCINTTerminalRuleCall_2_0; }
+		public RuleCall getC2INTTerminalRuleCall_1_0() { return cC2INTTerminalRuleCall_1_0; }
 
-		//c+=INT
-		public Assignment getCAssignment_3() { return cCAssignment_3; }
-
-		//INT
-		public RuleCall getCINTTerminalRuleCall_3_0() { return cCINTTerminalRuleCall_3_0; }
-
-		//c+=INT
-		public Assignment getCAssignment_4() { return cCAssignment_4; }
+		//c3=INT
+		public Assignment getC3Assignment_2() { return cC3Assignment_2; }
 
 		//INT
-		public RuleCall getCINTTerminalRuleCall_4_0() { return cCINTTerminalRuleCall_4_0; }
+		public RuleCall getC3INTTerminalRuleCall_2_0() { return cC3INTTerminalRuleCall_2_0; }
 
-		//c+=INT
-		public Assignment getCAssignment_5() { return cCAssignment_5; }
-
-		//INT
-		public RuleCall getCINTTerminalRuleCall_5_0() { return cCINTTerminalRuleCall_5_0; }
-
-		//c+=INT
-		public Assignment getCAssignment_6() { return cCAssignment_6; }
+		//c4=INT
+		public Assignment getC4Assignment_3() { return cC4Assignment_3; }
 
 		//INT
-		public RuleCall getCINTTerminalRuleCall_6_0() { return cCINTTerminalRuleCall_6_0; }
+		public RuleCall getC4INTTerminalRuleCall_3_0() { return cC4INTTerminalRuleCall_3_0; }
 
-		//c+=INT
-		public Assignment getCAssignment_7() { return cCAssignment_7; }
+		//c5=INT
+		public Assignment getC5Assignment_4() { return cC5Assignment_4; }
 
 		//INT
-		public RuleCall getCINTTerminalRuleCall_7_0() { return cCINTTerminalRuleCall_7_0; }
+		public RuleCall getC5INTTerminalRuleCall_4_0() { return cC5INTTerminalRuleCall_4_0; }
+
+		//c6=INT
+		public Assignment getC6Assignment_5() { return cC6Assignment_5; }
+
+		//INT
+		public RuleCall getC6INTTerminalRuleCall_5_0() { return cC6INTTerminalRuleCall_5_0; }
+
+		//c7=INT
+		public Assignment getC7Assignment_6() { return cC7Assignment_6; }
+
+		//INT
+		public RuleCall getC7INTTerminalRuleCall_6_0() { return cC7INTTerminalRuleCall_6_0; }
+
+		//c8=INT
+		public Assignment getC8Assignment_7() { return cC8Assignment_7; }
+
+		//INT
+		public RuleCall getC8INTTerminalRuleCall_7_0() { return cC8INTTerminalRuleCall_7_0; }
 	}
 	
 	
@@ -460,7 +540,7 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getKINGKingKeyword_5_0() { return cKINGKingKeyword_5_0; }
 	}
 	
-	private ModelElements pModel;
+	private PSQT_ModelElements pPSQT_Model;
 	private PieceTypeElements unknownRulePieceType;
 	private FDescriptionElements pFDescription;
 	private TableElements pTable;
@@ -470,12 +550,14 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 	private RowLabelElements pRowLabel;
 	private MRowElements pMRow;
 	private ERowElements pERow;
-	private Row1Elements pRow1;
 	private TerminalRule tINT;
 	private TerminalRule tPSQT;
 	private TerminalRule tBASE;
 	private TerminalRule tPIECE;
-	private TerminalRule tVALUE;
+	private TerminalRule tMIDLIMIT;
+	private TerminalRule tENDLIMIT;
+	private TerminalRule tMIDGAME;
+	private TerminalRule tENDGAME;
 	
 	private final Grammar grammar;
 
@@ -515,14 +597,14 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	
-	//Model:
+	//PSQT_Model:
 	//	FDescription tables+=Table*;
-	public ModelElements getModelAccess() {
-		return (pModel != null) ? pModel : (pModel = new ModelElements());
+	public PSQT_ModelElements getPSQT_ModelAccess() {
+		return (pPSQT_Model != null) ? pPSQT_Model : (pPSQT_Model = new PSQT_ModelElements());
 	}
 	
-	public ParserRule getModelRule() {
-		return getModelAccess().getRule();
+	public ParserRule getPSQT_ModelRule() {
+		return getPSQT_ModelAccess().getRule();
 	}
 
 	//enum PieceType:
@@ -537,7 +619,7 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 
 	////enum RowNumber : R1='1'|R2='2'|R3='3'|R4='4'|R5='5'|R6='6'|R7='7'|R8='8';
 	//FDescription:
-	//	PSQT name=ID BASE base=INT;
+	//	PSQT name=ID BASE base=INT MIDLIMIT mgl=INT ENDLIMIT egl=INT;
 	public FDescriptionElements getFDescriptionAccess() {
 		return (pFDescription != null) ? pFDescription : (pFDescription = new FDescriptionElements());
 	}
@@ -557,7 +639,7 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//TDescription:
-	//	PIECE name=PieceType VALUE value=INT;
+	//	PIECE name=PieceType MIDGAME mg=INT ENDGAME eg=INT;
 	public TDescriptionElements getTDescriptionAccess() {
 		return (pTDescription != null) ? pTDescription : (pTDescription = new TDescriptionElements());
 	}
@@ -577,7 +659,7 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Row:
-	//	name=RowLabel m=MRow e=ERow;
+	//	name=RowLabel midrow=MRow endrow=ERow;
 	public RowElements getRowAccess() {
 		return (pRow != null) ? pRow : (pRow = new RowElements());
 	}
@@ -597,7 +679,7 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//MRow:
-	//	name=Row1;
+	//	c1=INT c2=INT c3=INT c4=INT c5=INT c6=INT c7=INT c8=INT;
 	public MRowElements getMRowAccess() {
 		return (pMRow != null) ? pMRow : (pMRow = new MRowElements());
 	}
@@ -607,23 +689,13 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//ERow:
-	//	name=Row1;
+	//	c1=INT c2=INT c3=INT c4=INT c5=INT c6=INT c7=INT c8=INT;
 	public ERowElements getERowAccess() {
 		return (pERow != null) ? pERow : (pERow = new ERowElements());
 	}
 	
 	public ParserRule getERowRule() {
 		return getERowAccess().getRule();
-	}
-
-	//Row1:
-	//	c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT c+=INT;
-	public Row1Elements getRow1Access() {
-		return (pRow1 != null) ? pRow1 : (pRow1 = new Row1Elements());
-	}
-	
-	public ParserRule getRow1Rule() {
-		return getRow1Access().getRule();
 	}
 
 	//terminal INT returns ecore::EInt:
@@ -650,10 +722,28 @@ public class PSQTGrammarAccess extends AbstractGrammarElementFinder {
 		return (tPIECE != null) ? tPIECE : (tPIECE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "PIECE"));
 	} 
 
-	//terminal VALUE:
-	//	"Value:";
-	public TerminalRule getVALUERule() {
-		return (tVALUE != null) ? tVALUE : (tVALUE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "VALUE"));
+	//terminal MIDLIMIT:
+	//	"MidLimit:";
+	public TerminalRule getMIDLIMITRule() {
+		return (tMIDLIMIT != null) ? tMIDLIMIT : (tMIDLIMIT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "MIDLIMIT"));
+	} 
+
+	//terminal ENDLIMIT:
+	//	"EndLimit:";
+	public TerminalRule getENDLIMITRule() {
+		return (tENDLIMIT != null) ? tENDLIMIT : (tENDLIMIT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ENDLIMIT"));
+	} 
+
+	//terminal MIDGAME:
+	//	"MidGame:";
+	public TerminalRule getMIDGAMERule() {
+		return (tMIDGAME != null) ? tMIDGAME : (tMIDGAME = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "MIDGAME"));
+	} 
+
+	//terminal ENDGAME:
+	//	"EndGame:";
+	public TerminalRule getENDGAMERule() {
+		return (tENDGAME != null) ? tENDGAME : (tENDGAME = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ENDGAME"));
 	} 
 
 	//terminal ID:

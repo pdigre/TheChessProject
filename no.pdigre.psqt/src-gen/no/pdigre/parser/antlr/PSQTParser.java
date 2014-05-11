@@ -25,7 +25,7 @@ public class PSQTParser extends org.eclipse.xtext.parser.antlr.AbstractAntlrPars
 	
 	@Override 
 	protected String getDefaultRuleName() {
-		return "Model";
+		return "PSQT_Model";
 	}
 	
 	public PSQTGrammarAccess getGrammarAccess() {

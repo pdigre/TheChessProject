@@ -75,9 +75,9 @@ public class PSQTAdapterFactory extends AdapterFactoryImpl
     new PSQTSwitch<Adapter>()
     {
       @Override
-      public Adapter caseModel(Model object)
+      public Adapter casePSQT_Model(PSQT_Model object)
       {
-        return createModelAdapter();
+        return createPSQT_ModelAdapter();
       }
       @Override
       public Adapter caseFDescription(FDescription object)
@@ -110,11 +110,6 @@ public class PSQTAdapterFactory extends AdapterFactoryImpl
         return createERowAdapter();
       }
       @Override
-      public Adapter caseRow1(Row1 object)
-      {
-        return createRow1Adapter();
-      }
-      @Override
       public Adapter defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -137,16 +132,16 @@ public class PSQTAdapterFactory extends AdapterFactoryImpl
 
 
   /**
-   * Creates a new adapter for an object of class '{@link no.pdigre.pSQT.Model <em>Model</em>}'.
+   * Creates a new adapter for an object of class '{@link no.pdigre.pSQT.PSQT_Model <em>PSQT Model</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see no.pdigre.pSQT.Model
+   * @see no.pdigre.pSQT.PSQT_Model
    * @generated
    */
-  public Adapter createModelAdapter()
+  public Adapter createPSQT_ModelAdapter()
   {
     return null;
   }
@@ -237,21 +232,6 @@ public class PSQTAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createERowAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link no.pdigre.pSQT.Row1 <em>Row1</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see no.pdigre.pSQT.Row1
-   * @generated
-   */
-  public Adapter createRow1Adapter()
   {
     return null;
   }
