@@ -1,6 +1,8 @@
 package no.pdigre.psqt.tests;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,4 +36,14 @@ public class FileUtils {
 	    return sb.toString();
     }
 
+    public static void string2file(String text,File file){
+    	byte[] b = text.getBytes();
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			fos.write(b);
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
 }
