@@ -3,10 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: no.pdigre.psqt.tests
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: no.pdigre.psqt.tests; singleton:=true
+Bundle-SymbolicName: no.pdigre.chessutil.psqt.tests;singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: no.pdigre.psqt,
- no.pdigre.psqt.ui,
+Require-Bundle: no.pdigre.chessutil.psqt,
+ no.pdigre.chessutil.psqt.ui,
  org.eclipse.core.runtime,
  org.eclipse.xtext.junit4,
  org.eclipse.ui.workbench;resolution:=optional

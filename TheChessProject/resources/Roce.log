@@ -1,4 +1,4 @@
-date: 29.3.2014, 18:55.31
+date: 6.6.2014, 10:4.23
 roce-roman's own chess engine
 version: 0.0390
 values read from file: Roce.cfg
@@ -17,3 +17,10 @@ black rook: 500
 black bishop: 300
 black knight: 300
 black pawn: 100
+roce: setboard
+roce: perft
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: quit

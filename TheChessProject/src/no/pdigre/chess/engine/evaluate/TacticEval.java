@@ -2,7 +2,7 @@ package no.pdigre.chess.engine.evaluate;
 
 import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.base.IConst;
-import no.pdigre.chess.engine.base.Piece_Square_Tables;
+import no.pdigre.chess.engine.base.PSQT;
 import no.pdigre.chess.engine.fen.IPosition;
 
 public class TacticEval implements IEvaluator {
@@ -21,28 +21,28 @@ public class TacticEval implements IEvaluator {
 			if(BITS.isEnpassant(bitmap)){
 				int captured = BITS.getCaptured(bitmap);
 				int to2 = BITS.white(bitmap)?(to-8):(to+8);
-				int pVal = Piece_Square_Tables.pVal(to2, captured);
+				int pVal = PSQT.pVal(to2, captured);
 				last -= pVal;
 			} else {
 				int captured = BITS.getCaptured(bitmap);
-				int pVal = Piece_Square_Tables.pVal(to, captured);
+				int pVal = PSQT.pVal(to, captured);
 				last -= pVal;
 			}
 		}
 		if (BITS.isPromotion(bitmap)){
-			int vt = Piece_Square_Tables.pVal(to, piece);
-			int vf = Piece_Square_Tables.pVal(from, BITS.white(bitmap)?IConst.WP:IConst.BP);
+			int vt = PSQT.pVal(to, piece);
+			int vf = PSQT.pVal(from, BITS.white(bitmap)?IConst.WP:IConst.BP);
 			return last + vt - vf;
 		}
 		if (piece == IConst.BK) {
-			return last + Piece_Square_Tables.BKING_MIDDLE[to] - Piece_Square_Tables.BKING_MIDDLE[from];
+			return last + PSQT.BKING[0][to] - PSQT.BKING[0][from];
 		} else if (piece == IConst.WK) {
-			int vto = Piece_Square_Tables.WKING_MIDDLE[to];
-			int vfrom = Piece_Square_Tables.WKING_MIDDLE[from];
+			int vto = PSQT.KING[0][to];
+			int vfrom = PSQT.KING[0][from];
 			return last + vto - vfrom;
 		} else if (piece > 0) {
-			int vt = Piece_Square_Tables.pVal(to, piece);
-			int vf = Piece_Square_Tables.pVal(from, piece);
+			int vt = PSQT.pVal(to, piece);
+			int vf = PSQT.pVal(from, piece);
 			return last + vt - vf;
 		}
 		return last;

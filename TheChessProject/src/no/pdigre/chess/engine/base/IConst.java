@@ -127,12 +127,12 @@ public interface IConst {
 		}
 
 		final public static long assemble(int piece, int from, int to, long extra) {
-			int score = Piece_Square_Tables.pVal(to, piece) - Piece_Square_Tables.pVal(from, piece);
+			int score = PSQT.pVal(to, piece) - PSQT.pVal(from, piece);
 			return (piece << _PIECE) | (from << _FROM) | (to << _TO) | extra | ((score | 0L) << 32);
 		}
 
 		final public static long assemblePromote(int pawn, int promote, int from, int to, long extra) {
-			int score = Piece_Square_Tables.pVal(to, promote) - Piece_Square_Tables.pVal(from, pawn);
+			int score = PSQT.pVal(to, promote) - PSQT.pVal(from, pawn);
 			return (promote << _PIECE) | (from << _FROM) | (to << _TO) | extra | ((score | 0L) << 32);
 		}
 

@@ -88,7 +88,7 @@ public class GNodegenW implements IConst {
 					int to = BITS.getTo(bitmap);
 					long bto = 1L << to;
 					if (enpassant == to) {
-						add((purge(bitmap, Piece_Square_Tables.pVal(to - 8, BP)) & castling) | (WP << _CAPTURE) | SPECIAL);
+						add((purge(bitmap, PSQT.pVal(to - 8, BP)) & castling) | (WP << _CAPTURE) | SPECIAL);
 					} else {
 						if ((bb_black & bto) != 0) {
 							int type = type(bto);
@@ -98,7 +98,7 @@ public class GNodegenW implements IConst {
 								if (to == BR_QUEEN_STARTPOS)
 									bitmap = bitmap & ~CANCASTLE_BLACKQUEEN;
 							}
-							add((purge(bitmap, Piece_Square_Tables.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
+							add((purge(bitmap, PSQT.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
 						}
 					}
 				}
@@ -132,7 +132,7 @@ public class GNodegenW implements IConst {
 				if (to == BR_QUEEN_STARTPOS)
 					bitmap = bitmap & ~CANCASTLE_BLACKQUEEN;
 			}
-			add((purge(bitmap, Piece_Square_Tables.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
+			add((purge(bitmap, PSQT.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
 		}
 		return false;
 	}

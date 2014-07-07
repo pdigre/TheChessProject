@@ -141,7 +141,7 @@ public class G_NodegenQ implements IConst {
 			return true;
 		} else if ((bb_black & bto) != 0) {
 			int type = type(bto);
-			add((purge(bitmap, Piece_Square_Tables.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
+			add((purge(bitmap, PSQT.pVal(to, type + 8)) & castling) | (type << _CAPTURE));
 		}
 		return false;
 	}
@@ -153,7 +153,7 @@ public class G_NodegenQ implements IConst {
 			return true;
 		} else if ((bb_white & bto) != 0) {
 			int type = type(bto);
-			add((purge(bitmap, Piece_Square_Tables.pVal(to, type)) & castling) | (type << _CAPTURE));
+			add((purge(bitmap, PSQT.pVal(to, type)) & castling) | (type << _CAPTURE));
 		}
 		return false;
 	}
