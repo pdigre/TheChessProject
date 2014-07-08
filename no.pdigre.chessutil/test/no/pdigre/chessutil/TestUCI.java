@@ -54,4 +54,12 @@ public class TestUCI {
 		engine.loop();
 	}
 
+	@Test
+	public void testQperft() {
+		EngineQperft engine = new EngineQperft();
+		int perft= engine.perft(STARTPOS,6);
+		HashMap<String, Integer> divide= engine.divide(STARTPOS,6);
+		System.out.println("hi");
+	}
+
 }
