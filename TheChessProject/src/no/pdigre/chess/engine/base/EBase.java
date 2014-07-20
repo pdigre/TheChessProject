@@ -18,15 +18,11 @@ public enum EBase {
 
 	public final int key;
 	public final int value;
-	public final Object[] moves;
-	public final long[] move64;
 	public final int[] score;
 	public final long[] zobrist;
 
 	EBase(int i, int pval) {
 		key = i;
-		moves = moves(i);
-		move64 = move64(moves);
 		value = pval;
 		score = score(i);
 		zobrist = longkey(i);
@@ -41,40 +37,6 @@ public enum EBase {
 	}
 
 	private int[] score(int i) {
-		return null;
-	}
-
-	static private long[] move64(Object[] moves) {
-		return null;
-	}
-
-	static private Object[] moves(int i) {
-		switch (i) {
-		case IConst.BB:
-			return IBase.M32_BB;
-		case IConst.BK:
-			return IBase.M32_BK;
-		case IConst.BN:
-			return IBase.M32_BN;
-		case IConst.BP:
-			return IBase.M32_BP;
-		case IConst.BQ:
-			return IBase.M32_BQ;
-		case IConst.BR:
-			return IBase.M32_BR;
-		case IConst.WB:
-			return IBase.M32_WB;
-		case IConst.WK:
-			return IBase.M32_WK;
-		case IConst.WN:
-			return IBase.M32_WN;
-		case IConst.WP:
-			return IBase.M32_WP;
-		case IConst.WQ:
-			return IBase.M32_WQ;
-		case IConst.WR:
-			return IBase.M32_WR;
-		}
 		return null;
 	}
 

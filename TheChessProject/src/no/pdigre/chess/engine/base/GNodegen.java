@@ -48,28 +48,22 @@ public class GNodegen implements IConst {
 			while (bit != 0) {
 				if ((bb_white & bit) != 0) {
 					int ptype = ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4);
+					MOVEMAP mm = IBase.MM[from];
 					switch (ptype) {
 					case WB:
-						for (long[] slides : IBase.M32_WB[from])
-							for (int i = 0; i < slides.length && slideWhite(slides[i]); i++)
-								;
+						mm.B.moveW(this);
 						break;
 					case WR:
-						for (long[] slides : IBase.M32_WR[from])
-							for (int i1 = 0; i1 < slides.length && slideWhite(slides[i1]); i1++)
-								;
+						mm.R.moveW(this);
 						break;
 					case WQ:
-						for (long[] slides : IBase.M32_WQ[from])
-							for (int i = 0; i < slides.length && slideWhite(slides[i]); i++)
-								;
+						mm.Q.moveW(this);
 						break;
 					case WN:
-						for (long bitmap : IBase.M32_WN[from])
-							slideWhite(bitmap);
+						mm.N.moveW(this);
 						break;
 					case WK:
-						for (long bitmap : IBase.M32_WK[from])
+						for (long bitmap : mm.K.MW)
 							slideWhite(bitmap);
 						if (from == WK_STARTPOS) {
 							if ((CWQ & bb_piece) == 0 && (castling & CANCASTLE_WHITEQUEEN) != 0 && !pos.isCheckWhite()
@@ -83,10 +77,10 @@ public class GNodegen implements IConst {
 						}
 						break;
 					case WP:
-						for (long[] slides : IBase.M32_WP[from])
+						for (long[] slides : mm.P.MW)
 							for (int i = 0; i < slides.length && pawnSlide(slides[i]); i++)
 								;
-						for (long bitmap : IBase.M32_WP_CAPTURE[from]) {
+						for (long bitmap : mm.P.CW) {
 							int to = BITS.getTo(bitmap);
 							long bto = 1L << to;
 							if (enpassant == to) {
@@ -122,28 +116,22 @@ public class GNodegen implements IConst {
 				if ((bb_black & bit) != 0) {
 					int ptype = ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4)
 							| 8;
+					MOVEMAP mm = IBase.MM[from];
 					switch (ptype) {
 					case BB:
-						for (long[] slides : IBase.M32_BB[from])
-							for (int i = 0; i < slides.length && slideBlack(slides[i]); i++)
-								;
+						mm.B.moveB(this);
 						break;
 					case BR:
-						for (long[] slides : IBase.M32_BR[from])
-							for (int i = 0; i < slides.length && slideBlack(slides[i]); i++)
-								;
+						mm.R.moveB(this);
 						break;
 					case BQ:
-						for (long[] slides : IBase.M32_BQ[from])
-							for (int i = 0; i < slides.length && slideBlack(slides[i]); i++)
-								;
+						mm.Q.moveB(this);
 						break;
 					case BN:
-						for (long bitmap : IBase.M32_BN[from])
-							slideBlack(bitmap);
+						mm.N.moveB(this);
 						break;
 					case BK:
-						for (long bitmap : IBase.M32_BK[from])
+						for (long bitmap : mm.K.MB)
 							slideBlack(bitmap);
 						if (from == BK_STARTPOS) {
 							if ((CBQ & bb_piece) == 0 && (castling & CANCASTLE_BLACKQUEEN) != 0 && !pos.isCheckBlack()
@@ -156,10 +144,10 @@ public class GNodegen implements IConst {
 						}
 						break;
 					case BP:
-						for (long[] slides : IBase.M32_BP[from])
+						for (long[] slides : mm.P.MB)
 							for (int i = 0; i < slides.length && pawnSlide(slides[i]); i++)
 								;
-						for (long bitmap : IBase.M32_BP_CAPTURE[from]) {
+						for (long bitmap : mm.P.CB) {
 							int to = BITS.getTo(bitmap);
 							long bto = 1L << to;
 							if (enpassant == to) {
@@ -195,7 +183,7 @@ public class GNodegen implements IConst {
 	}
 
 
-	final private boolean slideWhite(long bitmap) {
+	final boolean slideWhite(long bitmap) {
 		int to = BITS.getTo(bitmap);
 		long bto = 1L << to;
 		if (!((bb_piece & bto) != 0)) {
@@ -214,7 +202,7 @@ public class GNodegen implements IConst {
 		return false;
 	}
 
-	final private boolean slideBlack(long bitmap) {
+	final boolean slideBlack(long bitmap) {
 		int to = BITS.getTo(bitmap);
 		long bto = 1L << to;
 		if (!((bb_piece & bto) != 0)) {
