@@ -49,30 +49,30 @@ public class GNodegenQ implements IConst {
 							| ((bb_black & bit) == 0 ? 0 : 8);
 					switch (ptype) {
 					case WB:
-						for (long[] slides : IBase.M32_WB[from])
+						for (long[] slides : IBase.MM[from].WB.M)
 							for (int i = 0; i < slides.length && slideQWhite(slides[i]); i++)
 								;
 						break;
 					case WR:
-						for (long[] slides : IBase.M32_WR[from])
+						for (long[] slides : IBase.MM[from].WR.M)
 							for (int i1 = 0; i1 < slides.length && slideQWhite(slides[i1]); i1++)
 								;
 						break;
 					case WQ:
-						for (long[] slides : IBase.M32_WQ[from])
+						for (long[] slides : IBase.MM[from].WQ.M)
 							for (int i = 0; i < slides.length && slideQWhite(slides[i]); i++)
 								;
 						break;
 					case WN:
-						for (long bitmap : IBase.M32_WN[from])
+						for (long bitmap : IBase.MM[from].WN.M)
 							slideQWhite(bitmap);
 						break;
 					case WK:
-						for (long bitmap : IBase.M32_WK[from])
+						for (long bitmap : IBase.MM[from].WK.M)
 							slideQWhite(bitmap);
 						break;
 					case WP:
-						for (long bitmap : IBase.M32_WP_CAPTURE[from])
+						for (long bitmap : IBase.MM[from].WP.C)
 							slideQWhite(bitmap);
 						break;
 					}
@@ -92,30 +92,30 @@ public class GNodegenQ implements IConst {
 							| ((bb_black & bit) == 0 ? 0 : 8);
 					switch (ptype) {
 					case BB:
-						for (long[] slides : IBase.M32_BB[from])
+						for (long[] slides : IBase.MM[from].BB.M)
 							for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
 								;
 						break;
 					case BR:
-						for (long[] slides : IBase.M32_BR[from])
+						for (long[] slides : IBase.MM[from].BR.M)
 							for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
 								;
 						break;
 					case BQ:
-						for (long[] slides : IBase.M32_BQ[from])
+						for (long[] slides : IBase.MM[from].BQ.M)
 							for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
 								;
 						break;
 					case BN:
-						for (long bitmap : IBase.M32_BN[from])
+						for (long bitmap : IBase.MM[from].BN.M)
 							slideQBlack(bitmap);
 						break;
 					case BK:
-						for (long bitmap : IBase.M32_BK[from])
+						for (long bitmap : IBase.MM[from].BK.M)
 							slideQBlack(bitmap);
 						break;
 					case BP:
-						for (long bitmap : IBase.M32_BP_CAPTURE[from])
+						for (long bitmap : IBase.MM[from].BP.C)
 							slideQBlack(bitmap);
 						break;
 					}

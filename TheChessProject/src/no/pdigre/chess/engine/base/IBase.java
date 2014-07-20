@@ -13,23 +13,7 @@ import java.util.Comparator;
  */
 public interface IBase extends IConst {
 
-	long[][] M32_WN = new long[64][];
-	long[][] M32_BN = new long[64][];
-	long[][] M32_WK = new long[64][];
-	long[][] M32_BK = new long[64][];
-	long[] M64_KNIGHT = new long[64];
-	long[] M64_KING = new long[64];
-	long[] M64_QUEEN = new long[64];
-	long[] M64_ROOK = new long[64];
-	long[] M64_BISHOP = new long[64];
-	long[] M64_WP = new long[64];
-	long[] M64_BP = new long[64];
-	long[][][] M32_WB = new long[64][][];
-	long[][][] M32_BB = new long[64][][];
-	long[][][] M32_WR = new long[64][][];
-	long[][][] M32_BR = new long[64][][];
-	long[][][] M32_WQ = new long[64][][];
-	long[][][] M32_BQ = new long[64][][];
+	MOVEMAP[] MM = new MOVEMAP[64];
 	long CASTLING_WK = BITS.assemble(WK, WK_STARTPOS, WK_STARTPOS + 2, CANCASTLE_BLACK | SPECIAL);
 	long CASTLING_WQ = BITS.assemble(WK, WK_STARTPOS, WK_STARTPOS - 2, CANCASTLE_BLACK | SPECIAL);
 	long CASTLING_BK = BITS.assemble(BK, BK_STARTPOS, BK_STARTPOS + 2, CANCASTLE_WHITE | SPECIAL);
@@ -38,10 +22,6 @@ public interface IBase extends IConst {
 	long SIDE_WQ = BITS.assemble(WK, WK_STARTPOS, WK_STARTPOS - 1, CANCASTLE_BLACK);
 	long SIDE_BK = BITS.assemble(BK, BK_STARTPOS, BK_STARTPOS + 1, CANCASTLE_WHITE);
 	long SIDE_BQ = BITS.assemble(BK, BK_STARTPOS, BK_STARTPOS - 1, CANCASTLE_WHITE);
-	long[][][] M32_WP = new long[64][][];
-	long[][][] M32_BP = new long[64][][];
-	long[][] M32_WP_CAPTURE = new long[64][];
-	long[][] M32_BP_CAPTURE = new long[64][];
 
 	BASE base = new BASE();
 
@@ -56,12 +36,18 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				long[] mw = getKnightMoves(from, WN, CASTLING_STATE | HALFMOVES);
-				M32_WN[from] = mw;
-				M32_BN[from] = getKnightMoves(from, BN, CASTLING_STATE | HALFMOVES);
+				MM[from]=new MOVEMAP();
+			}
+		}
+
+		static {
+			for (int from = 0; from < 64; from++) {
+				MOVEMAP mm = MM[from];
+				mm.WN.M = getKnightMoves(from, WN, CASTLING_STATE | HALFMOVES);
+				mm.BN.M = getKnightMoves(from, BN, CASTLING_STATE | HALFMOVES);
 				long bfrom = 1L << from;
-				for (long bitmap : mw)
-					M64_KNIGHT[IConst.BITS.getTo(bitmap)] |= bfrom;
+				for (long bitmap : mm.WN.M)
+					MM[IConst.BITS.getTo(bitmap)].WN.M64 |= bfrom;
 			}
 		}
 
@@ -80,24 +66,24 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				M32_WR[from] = getRookMoves(from, WR, CASTLING_STATE | HALFMOVES);
-				long[][] mb = getRookMoves(from, BR, CASTLING_STATE | HALFMOVES);
-				M32_BR[from] = mb;
+				MOVEMAP mm = MM[from];
+				mm.WR.M = getRookMoves(from, WR, CASTLING_STATE | HALFMOVES);
+				mm.BR.M = getRookMoves(from, BR, CASTLING_STATE | HALFMOVES);
 				long bfrom = 1L << from;
-				for (long[] m2 : mb)
+				for (long[] m2 : mm.WR.M)
 					for (long bitmap : m2)
-						M64_ROOK[IConst.BITS.getTo(bitmap)] |= bfrom;
+						MM[IConst.BITS.getTo(bitmap)].WR.M64 |= bfrom;
 			}
-			for (long[] b : M32_WR[0])
+			for (long[] b : MM[0].WR.M)
 				for (int i = 0; i < b.length; i++)
 					b[i] ^= CANCASTLE_WHITEQUEEN;
-			for (long[] b : M32_WR[7])
+			for (long[] b : MM[7].WR.M)
 				for (int i = 0; i < b.length; i++)
 					b[i] ^= CANCASTLE_WHITEKING;
-			for (long[] b : M32_BR[56])
+			for (long[] b : MM[56].BR.M)
 				for (int i = 0; i < b.length; i++)
 					b[i] ^= CANCASTLE_BLACKQUEEN;
-			for (long[] b : M32_BR[63])
+			for (long[] b : MM[63].BR.M)
 				for (int i = 0; i < b.length; i++)
 					b[i] ^= CANCASTLE_BLACKKING;
 		}
@@ -113,13 +99,13 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				M32_WB[from] = getBishopMoves(from, WB, CASTLING_STATE | HALFMOVES);
-				long[][] mb = getBishopMoves(from, BB, CASTLING_STATE | HALFMOVES);
-				M32_BB[from] = mb;
+				MOVEMAP mm = MM[from];
+				mm.WB.M = getBishopMoves(from, WB, CASTLING_STATE | HALFMOVES);
+				mm.BB.M = getBishopMoves(from, BB, CASTLING_STATE | HALFMOVES);
 				long bfrom = 1L << from;
-				for (long[] m2 : mb)
+				for (long[] m2 : mm.WB.M)
 					for (long bitmap : m2)
-						M64_BISHOP[IConst.BITS.getTo(bitmap)] |= bfrom;
+						MM[IConst.BITS.getTo(bitmap)].WB.M64 |= bfrom;
 			}
 		}
 
@@ -134,13 +120,13 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				M32_WQ[from] = getQueenMoves(from, WQ, CASTLING_STATE | HALFMOVES);
-				long[][] mb = getQueenMoves(from, BQ, CASTLING_STATE | HALFMOVES);
-				M32_BQ[from] = mb;
+				MOVEMAP mm = MM[from];
+				mm.WQ.M = getQueenMoves(from, WQ, CASTLING_STATE | HALFMOVES);
+				mm.BQ.M = getQueenMoves(from, BQ, CASTLING_STATE | HALFMOVES);
 				long bfrom = 1L << from;
-				for (long[] m2 : mb)
+				for (long[] m2 : mm.WQ.M)
 					for (long bitmap : m2)
-						M64_QUEEN[IConst.BITS.getTo(bitmap)] |= bfrom;
+						MM[IConst.BITS.getTo(bitmap)].WQ.M64 |= bfrom;
 			}
 		}
 
@@ -159,13 +145,12 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				long[] mw = getKingMoves(from, WK, CANCASTLE_BLACK | HALFMOVES);
-				M32_WK[from] = mw;
-				long[] mb = getKingMoves(from, BK, CANCASTLE_WHITE | HALFMOVES);
-				M32_BK[from] = mb;
+				MOVEMAP mm = MM[from];
+				mm.WK.M = getKingMoves(from, WK, CANCASTLE_BLACK | HALFMOVES);
+				mm.BK.M = getKingMoves(from, BK, CANCASTLE_WHITE | HALFMOVES);
 				long bfrom = 1L << from;
-				for (long bitmap : mw)
-					M64_KING[IConst.BITS.getTo(bitmap)] |= bfrom;
+				for (long bitmap : mm.WK.M)
+					MM[IConst.BITS.getTo(bitmap)].WK.M64 |= bfrom;
 			}
 		}
 
@@ -184,17 +169,16 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				M32_WP[from] = getWhitePawnMoves(from);
-				M32_BP[from] = getBlackPawnMoves(from);
-				long[] mw = getWhitePawnCaptures(from);
-				M32_WP_CAPTURE[from] = mw;
-				long[] mb = getBlackPawnCaptures(from);
-				M32_BP_CAPTURE[from] = mb;
+				MOVEMAP mm = MM[from];
+				mm.WP.M = getWhitePawnMoves(from);
+				mm.BP.M = getBlackPawnMoves(from);
+				mm.WP.C = getWhitePawnCaptures(from);
+				mm.BP.C = getBlackPawnCaptures(from);
 				long bfrom = 1L << from;
-				for (long bitmap : mw)
-					M64_WP[IConst.BITS.getTo(bitmap)] |= bfrom;
-				for (long bitmap : mb)
-					M64_BP[IConst.BITS.getTo(bitmap)] |= bfrom;
+				for (long bitmap : mm.WP.C)
+					MM[IConst.BITS.getTo(bitmap)].WP.M64 |= bfrom;
+				for (long bitmap : mm.BP.C)
+					MM[IConst.BITS.getTo(bitmap)].BP.M64 |= bfrom;
 
 			}
 		}
