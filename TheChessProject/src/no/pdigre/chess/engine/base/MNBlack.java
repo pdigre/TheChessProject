@@ -1,12 +1,15 @@
 package no.pdigre.chess.engine.base;
 
-public class MNBlack extends MBase{
-	long M64=0L;
+public class MNBlack extends MBase {
+	public MNBlack(int from) {
+		super(from);
+	}
+
 	long[] M;
 
-	public void move(GNodegen gen){
+	public void move(GNodegen gen) {
 		for (long m : M)
-			gen.slideBlack(m);
+			slideBlack(gen,m);
 	}
 
 }

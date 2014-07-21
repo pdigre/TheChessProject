@@ -2,12 +2,15 @@ package no.pdigre.chess.engine.base;
 
 
 public class MSliderBlack extends MBase{
-	long M64=0L;
+	public MSliderBlack(int from) {
+		super(from);
+	}
+
 	long[][] M;
 	
 	public void move(GNodegen gen){
 		for (long[] slides : M)
-			for (int i = 0; i < slides.length && gen.slideBlack(slides[i]); i++)
+			for (int i = 0; i < slides.length && slideBlack(gen,slides[i]); i++)
 				;
 	}
 }

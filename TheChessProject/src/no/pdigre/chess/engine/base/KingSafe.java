@@ -38,11 +38,11 @@ public class KingSafe implements IConst {
 	}
 
 	final public boolean isCheckBlack() {
-		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.MM[bking].WN.M64) != 0)
+		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.MM[bking].RN) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.MM[bking].WK.M64) != 0)
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.MM[bking].RK) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit3 & ~bb_black) & IBase.MM[bking].WB.M64) != 0) {
+		if (((bb_bit1 & bb_bit3 & ~bb_black) & IBase.MM[bking].RB) != 0) {
 			for (long[] slide : IBase.MM[bking].WB.M) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
@@ -57,7 +57,7 @@ public class KingSafe implements IConst {
 				}
 			}
 		}
-		if (((bb_bit2 & bb_bit3 & ~bb_black) & IBase.MM[bking].WR.M64) != 0) {
+		if (((bb_bit2 & bb_bit3 & ~bb_black) & IBase.MM[bking].RR) != 0) {
 			for (long[] slide : IBase.MM[bking].WR.M) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
@@ -72,7 +72,7 @@ public class KingSafe implements IConst {
 				}
 			}
 		}
-		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.MM[bking].WP.M64) != 0)
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.MM[bking].RPW) != 0)
 			return true;
 		return false;
 	}
@@ -83,11 +83,11 @@ public class KingSafe implements IConst {
 	}
 
 	final public boolean isCheckWhite() {
-		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.MM[wking].WN.M64) != 0)
+		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.MM[wking].RN) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.MM[wking].WK.M64) != 0)
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.MM[wking].RK) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit3 & bb_black) & IBase.MM[wking].WB.M64) != 0) {
+		if (((bb_bit1 & bb_bit3 & bb_black) & IBase.MM[wking].RB) != 0) {
 			for (long[] slide : IBase.MM[wking].WB.M) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
@@ -102,7 +102,7 @@ public class KingSafe implements IConst {
 				}
 			}
 		}
-		if (((bb_bit2 & bb_bit3 & bb_black) & IBase.MM[wking].WR.M64) != 0) {
+		if (((bb_bit2 & bb_bit3 & bb_black) & IBase.MM[wking].RR) != 0) {
 			for (long[] slide : IBase.MM[wking].WR.M) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
@@ -117,7 +117,7 @@ public class KingSafe implements IConst {
 				}
 			}
 		}
-		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & bb_black) & IBase.MM[wking].BP.M64) != 0)
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & bb_black) & IBase.MM[wking].RPB) != 0)
 			return true;
 		return false;
 	}

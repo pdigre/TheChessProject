@@ -1,12 +1,16 @@
 package no.pdigre.chess.engine.base;
 
 public class MNWhite extends MBase{
-	long M64=0L;
+	public MNWhite(int from) {
+		super(from);
+		// TODO Auto-generated constructor stub
+	}
+
 	long[] M;
 
 	public void move(GNodegen gen){
 		for (long m : M)
-			gen.slideWhite(m);
+			slideWhite(gen,m);
 	}
 
 }
