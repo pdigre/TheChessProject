@@ -3,7 +3,6 @@ package no.pdigre.chess.engine.base;
 public class MOVEMAP {
 	final MBase[] base=new MBase[16];
 	final public int from;
-	
 	// White maps
 	final MPWhite WP;
 	final MNWhite WN;
@@ -56,6 +55,5 @@ public class MOVEMAP {
 		base[IConst.BQ]=BQ;
 		base[IConst.BK]=BK;
 	}
-	
 	
 }
