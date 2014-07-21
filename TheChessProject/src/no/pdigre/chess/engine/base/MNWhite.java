@@ -3,7 +3,6 @@ package no.pdigre.chess.engine.base;
 public class MNWhite extends MBase{
 	public MNWhite(int from) {
 		super(from);
-		// TODO Auto-generated constructor stub
 	}
 
 	long[] M;

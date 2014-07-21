@@ -36,21 +36,23 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				MM[from]=new MOVEMAP(from);
-			}
-		}
+				MOVEMAP mm=new MOVEMAP(from);
+				MM[from] = mm;
+				mm.WN.M = getKnightMoves(from, WN, CASTLING_STATE | HALFMOVES);
+				mm.BN.M = getKnightMoves(from, BN, CASTLING_STATE | HALFMOVES);
+				mm.WR.M = getRookMoves(from, WR, CASTLING_STATE | HALFMOVES);
+				mm.BR.M = getRookMoves(from, BR, CASTLING_STATE | HALFMOVES);
+				mm.WB.M = getBishopMoves(from, WB, CASTLING_STATE | HALFMOVES);
+				mm.BB.M = getBishopMoves(from, BB, CASTLING_STATE | HALFMOVES);
+				mm.WQ.M = getQueenMoves(from, WQ, CASTLING_STATE | HALFMOVES);
+				mm.BQ.M = getQueenMoves(from, BQ, CASTLING_STATE | HALFMOVES);
+				mm.WP.M = getWhitePawnMoves(from);
+				mm.BP.M = getBlackPawnMoves(from);
+				mm.WP.C = getWhitePawnCaptures(from);
+				mm.BP.C = getBlackPawnCaptures(from);
+				mm.WK.M = getKingMoves(from, WK, CANCASTLE_BLACK | HALFMOVES);
+				mm.BK.M = getKingMoves(from, BK, CANCASTLE_WHITE | HALFMOVES);
 
-		static {
-			for (int from = 0; from < 64; from++) {
-				MM[from].WN.M = getKnightMoves(from, WN, CASTLING_STATE | HALFMOVES);
-				MM[from].BN.M = getKnightMoves(from, BN, CASTLING_STATE | HALFMOVES);
-			}
-		}
-
-		static {
-			for (int from = 0; from < 64; from++) {
-				MM[from].WR.M = getRookMoves(from, WR, CASTLING_STATE | HALFMOVES);
-				MM[from].BR.M = getRookMoves(from, BR, CASTLING_STATE | HALFMOVES);
 			}
 			for (long[] b : MM[0].WR.M)
 				for (int i = 0; i < b.length; i++)
@@ -64,40 +66,7 @@ public interface IBase extends IConst {
 			for (long[] b : MM[63].BR.M)
 				for (int i = 0; i < b.length; i++)
 					b[i] ^= CANCASTLE_BLACKKING;
-		}
 
-		static {
-			for (int from = 0; from < 64; from++) {
-				MM[from].WB.M = getBishopMoves(from, WB, CASTLING_STATE | HALFMOVES);
-				MM[from].BB.M = getBishopMoves(from, BB, CASTLING_STATE | HALFMOVES);
-			}
-		}
-
-		static {
-			for (int from = 0; from < 64; from++) {
-				MM[from].WQ.M = getQueenMoves(from, WQ, CASTLING_STATE | HALFMOVES);
-				MM[from].BQ.M = getQueenMoves(from, BQ, CASTLING_STATE | HALFMOVES);
-			}
-		}
-
-		static {
-			for (int from = 0; from < 64; from++) {
-				MM[from].WP.M = getWhitePawnMoves(from);
-				MM[from].BP.M = getBlackPawnMoves(from);
-				MM[from].WP.C = getWhitePawnCaptures(from);
-				MM[from].BP.C = getBlackPawnCaptures(from);
-
-			}
-		}
-
-		static {
-			for (int from = 0; from < 64; from++) {
-				MM[from].WK.M = getKingMoves(from, WK, CANCASTLE_BLACK | HALFMOVES);
-				MM[from].BK.M = getKingMoves(from, BK, CANCASTLE_WHITE | HALFMOVES);
-			}
-		}
-
-		static {
 			// initialize reverse King in-check
 			for (int from = 0; from < 64; from++) {
 				MOVEMAP mm = MM[from];
@@ -122,7 +91,7 @@ public interface IBase extends IConst {
 			}
 		}
 
-		private static long[] getKnightMoves(int from, int piece, long mask) {
+		static long[] getKnightMoves(int from, int piece, long mask) {
 			ArrayList<Long> moves = new ArrayList<Long>();
 			add(moves, piece, from, UP + LEFT + LEFT, mask);
 			add(moves, piece, from, UP + UP + LEFT, mask);
@@ -135,7 +104,7 @@ public interface IBase extends IConst {
 			return toArraySorted(moves);
 		}
 
-		private static long[][] getRookMoves(int from, int piece, long mask) {
+		static long[][] getRookMoves(int from, int piece, long mask) {
 			ArrayList<long[]> slide = new ArrayList<long[]>();
 			slide(slide, from, UP, piece, mask);
 			slide(slide, from, DOWN, piece, mask);
@@ -144,7 +113,7 @@ public interface IBase extends IConst {
 			return toArray2(slide);
 		}
 
-		private static long[][] getBishopMoves(int from, int piece, long mask) {
+		static long[][] getBishopMoves(int from, int piece, long mask) {
 			ArrayList<long[]> slide = new ArrayList<long[]>();
 			slide(slide, from, UP + LEFT, piece, mask);
 			slide(slide, from, UP + RIGHT, piece, mask);
@@ -153,7 +122,7 @@ public interface IBase extends IConst {
 			return toArray2(slide);
 		}
 
-		private static long[][] getQueenMoves(int from, int piece, long mask) {
+		static long[][] getQueenMoves(int from, int piece, long mask) {
 			ArrayList<long[]> slide = new ArrayList<long[]>();
 			slide(slide, from, UP, piece, mask);
 			slide(slide, from, DOWN, piece, mask);
@@ -166,7 +135,7 @@ public interface IBase extends IConst {
 			return toArray2(slide);
 		}
 
-		private static long[] getKingMoves(int from, int piece, long mask) {
+		static long[] getKingMoves(int from, int piece, long mask) {
 			ArrayList<Long> moves = new ArrayList<Long>();
 			add(moves, piece, from, UP, mask);
 			add(moves, piece, from, DOWN, mask);
@@ -180,7 +149,7 @@ public interface IBase extends IConst {
 		}
 
 
-		private static long[] getWhitePawnCaptures(int from) {
+		static long[] getWhitePawnCaptures(int from) {
 			ArrayList<Long> moves = new ArrayList<Long>();
 			int x = from & 7;
 			if (x != 0)
@@ -190,7 +159,7 @@ public interface IBase extends IConst {
 			return toArraySorted(moves);
 		}
 
-		private static void pwcapture(ArrayList<Long> moves, int from, int to) {
+		static void pwcapture(ArrayList<Long> moves, int from, int to) {
 			if (to >= 56 && to < 64) {
 				moves.add(BITS.assemblePromote(WP, WQ, from, to, CASTLING_STATE | SPECIAL));
 				moves.add(BITS.assemblePromote(WP, WR, from, to, CASTLING_STATE | SPECIAL));
@@ -201,7 +170,7 @@ public interface IBase extends IConst {
 			}
 		}
 
-		private static long[] getBlackPawnCaptures(int from) {
+		static long[] getBlackPawnCaptures(int from) {
 			ArrayList<Long> moves = new ArrayList<Long>();
 			int x = from & 7;
 			if (x != 0)
@@ -211,7 +180,7 @@ public interface IBase extends IConst {
 			return toArraySorted(moves);
 		}
 
-		private static void pbcapture(ArrayList<Long> moves, int from, int to) {
+		static void pbcapture(ArrayList<Long> moves, int from, int to) {
 			if (to >= 0 && to < 8) {
 				moves.add(BITS.assemblePromote(BP, BQ, from, to, CASTLING_STATE | SPECIAL));
 				moves.add(BITS.assemblePromote(BP, BR, from, to, CASTLING_STATE | SPECIAL));
@@ -222,7 +191,7 @@ public interface IBase extends IConst {
 			}
 		}
 
-		private static long[][] getWhitePawnMoves(int from) {
+		static long[][] getWhitePawnMoves(int from) {
 			ArrayList<long[]> moves = new ArrayList<long[]>();
 			int to = from + 8;
 			if (to >= 56 && to < 64) {
@@ -238,7 +207,7 @@ public interface IBase extends IConst {
 			return toArray2(moves);
 		}
 
-		private static long[][] getBlackPawnMoves(int from) {
+		static long[][] getBlackPawnMoves(int from) {
 			ArrayList<long[]> moves = new ArrayList<long[]>();
 			int to = from - 8;
 			if (to >= 0 && to < 8) {

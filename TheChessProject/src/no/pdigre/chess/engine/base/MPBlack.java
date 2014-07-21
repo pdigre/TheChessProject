@@ -17,10 +17,10 @@ public class MPBlack  extends MBase{
 				;
 		for (long bitmap : C) {
 			int to = BITS.getTo(bitmap);
-			long bto = 1L << to;
 			if (gen.enpassant == to) {
 				add(gen,(purge(bitmap, PSQT.pVal(to + 8, IConst.WP)) & gen.castling) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
 			} else {
+				long bto = 1L << to;
 				if ((gen.bb_white & bto) != 0) {
 					int type = type(gen,bto);
 					add(gen,(purge(bitmap, PSQT.pVal(to, type)) & gen.castling) | (type << IConst._CAPTURE));

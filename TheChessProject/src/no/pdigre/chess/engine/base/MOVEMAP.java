@@ -3,7 +3,6 @@ package no.pdigre.chess.engine.base;
 public class MOVEMAP {
 	final MBase[] base=new MBase[16];
 	final public int from;
-	
 	// White maps
 	final MPWhite WP;
 	final MNWhite WN;
@@ -36,13 +35,13 @@ public class MOVEMAP {
 		WB=new MSliderWhite(from);
 		WR=new MSliderWhite(from);
 		WQ=new MSliderWhite(from);
-		WK=new MKWhite(from);
+		WK=from == IConst.WK_STARTPOS ?new MKWhiteStart(from):new MKWhite(from);
 		BP=new MPBlack(from);
 		BN=new MNBlack(from);
 		BB=new MSliderBlack(from);
 		BR=new MSliderBlack(from);
 		BQ=new MSliderBlack(from);
-		BK=new MKBlack(from);
+		BK=from == IConst.BK_STARTPOS ?new MKBlackStart(from):new MKBlack(from);
 		base[IConst.WP]=WP;
 		base[IConst.WN]=WN;
 		base[IConst.WB]=WB;
@@ -56,6 +55,5 @@ public class MOVEMAP {
 		base[IConst.BQ]=BQ;
 		base[IConst.BK]=BK;
 	}
-	
 	
 }
