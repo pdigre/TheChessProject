@@ -36,7 +36,7 @@ public interface IBase extends IConst {
 
 		static {
 			for (int from = 0; from < 64; from++) {
-				MM[from]=new MOVEMAP();
+				MM[from]=new MOVEMAP(from);
 			}
 		}
 
