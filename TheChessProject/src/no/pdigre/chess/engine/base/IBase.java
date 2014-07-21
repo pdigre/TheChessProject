@@ -13,10 +13,25 @@ import java.util.Comparator;
  */
 public interface IBase extends IConst {
 
-	MOVEMAP[] MM = new MOVEMAP[64];
+//	MOVEMAP[] MM = new MOVEMAP[64];
+
+	REVERSE[] REV = new REVERSE[64];
 
 	BASE base = new BASE();
 
+
+	
+	class REVERSE {
+		// Reverse lookup for in-check
+		public long RPW=0L;
+		public long RPB=0L;
+		public long RN=0L;
+		public long RB=0L;
+		public long RR=0L;
+		public long RQ=0L;
+		public long RK=0L;
+	}
+	
 	class BASE {
 		final public static int LEFT = -1;
 
@@ -26,60 +41,85 @@ public interface IBase extends IConst {
 
 		final public static int DOWN = -8;
 
+		static MPWhite[] WP=new MPWhite[64];
+		static MNWhite[] WN=new MNWhite[64];
+		static MSliderWhite[] WB=new MSliderWhite[64];
+		static MSliderWhite[] WR=new MSliderWhite[64];
+		static MSliderWhite[] WQ=new MSliderWhite[64];
+		static MKWhite[] WK=new MKWhite[64];
+		static MPBlack[] BP=new MPBlack[64];
+		static MNBlack[] BN=new MNBlack[64];
+		static MSliderBlack[] BB=new MSliderBlack[64];
+		static MSliderBlack[] BR=new MSliderBlack[64];
+		static MSliderBlack[] BQ=new MSliderBlack[64];
+		static MKBlack[] BK=new MKBlack[64];
+
 		static {
+
 			for (int from = 0; from < 64; from++) {
-				MOVEMAP mm=new MOVEMAP(from);
-				MM[from] = mm;
-				mm.WN.M = getKnightMoves(from, WN, CASTLING_STATE | HALFMOVES);
-				mm.BN.M = getKnightMoves(from, BN, CASTLING_STATE | HALFMOVES);
-				mm.WR.M = getRookMoves(from, WR, CASTLING_STATE | HALFMOVES);
-				mm.BR.M = getRookMoves(from, BR, CASTLING_STATE | HALFMOVES);
-				mm.WB.M = getBishopMoves(from, WB, CASTLING_STATE | HALFMOVES);
-				mm.BB.M = getBishopMoves(from, BB, CASTLING_STATE | HALFMOVES);
-				mm.WQ.M = getQueenMoves(from, WQ, CASTLING_STATE | HALFMOVES);
-				mm.BQ.M = getQueenMoves(from, BQ, CASTLING_STATE | HALFMOVES);
-				mm.WP.M = getWhitePawnMoves(from);
-				mm.BP.M = getBlackPawnMoves(from);
-				mm.WP.C = getWhitePawnCaptures(from);
-				mm.BP.C = getBlackPawnCaptures(from);
-				mm.WK.M = getKingMoves(from, WK, CANCASTLE_BLACK | HALFMOVES);
-				mm.BK.M = getKingMoves(from, BK, CANCASTLE_WHITE | HALFMOVES);
+				REV[from] = new REVERSE();
+				WN[from] = new MNWhite(from);
+                BN[from] = new MNBlack(from);
+				WR[from] = new MSliderWhite(from);
+				BR[from] = new MSliderBlack(from);
+				WB[from] = new MSliderWhite(from);
+				BB[from] = new MSliderBlack(from);
+				WQ[from] = new MSliderWhite(from);
+				BQ[from] = new MSliderBlack(from);
+				WP[from] = new MPWhite(from);
+				BP[from] = new MPBlack(from);
+				WK[from] = from == IConst.WK_STARTPOS ?new MKWhiteStart(from):new MKWhite(from);
+				BK[from] = from == IConst.BK_STARTPOS ?new MKBlackStart(from):new MKBlack(from);
+
+				WN[from].M = getKnightMoves(from, IConst.WN, CASTLING_STATE | HALFMOVES);
+				BN[from].M = getKnightMoves(from, IConst.BN, CASTLING_STATE | HALFMOVES);
+				WR[from].M = getRookMoves(from, IConst.WR, CASTLING_STATE | HALFMOVES);
+				BR[from].M = getRookMoves(from, IConst.BR, CASTLING_STATE | HALFMOVES);
+				WB[from].M = getBishopMoves(from, IConst.WB, CASTLING_STATE | HALFMOVES);
+				BB[from].M = getBishopMoves(from, IConst.BB, CASTLING_STATE | HALFMOVES);
+				WQ[from].M = getQueenMoves(from, IConst.WQ, CASTLING_STATE | HALFMOVES);
+				BQ[from].M = getQueenMoves(from, IConst.BQ, CASTLING_STATE | HALFMOVES);
+				WP[from].M = getWhitePawnMoves(from);
+				BP[from].M = getBlackPawnMoves(from);
+				WP[from].C = getWhitePawnCaptures(from);
+				BP[from].C = getBlackPawnCaptures(from);
+				WK[from].M = getKingMoves(from, IConst.WK, CANCASTLE_BLACK | HALFMOVES);
+				BK[from].M = getKingMoves(from, IConst.BK, CANCASTLE_WHITE | HALFMOVES);
 
 			}
-			for (long[] b : MM[0].WR.M)
+			for (long[] b : WR[0].M)
 				for (int i = 0; i < b.length; i++)
 					b[i] ^= CANCASTLE_WHITEQUEEN;
-			for (long[] b : MM[7].WR.M)
+			for (long[] b : WR[7].M)
 				for (int i = 0; i < b.length; i++)
 					b[i] ^= CANCASTLE_WHITEKING;
-			for (long[] b : MM[56].BR.M)
+			for (long[] b : BR[56].M)
 				for (int i = 0; i < b.length; i++)
 					b[i] ^= CANCASTLE_BLACKQUEEN;
-			for (long[] b : MM[63].BR.M)
+			for (long[] b : BR[63].M)
 				for (int i = 0; i < b.length; i++)
 					b[i] ^= CANCASTLE_BLACKKING;
 
 			// initialize reverse King in-check
 			for (int from = 0; from < 64; from++) {
-				MOVEMAP mm = MM[from];
 				long bfrom = 1L << from;
-				for (long bitmap : mm.WN.M)
-					MM[IConst.BITS.getTo(bitmap)].RN |= bfrom;
-				for (long[] m2 : mm.WB.M)
+				for (long bitmap : WN[from].M)
+					REV[IConst.BITS.getTo(bitmap)].RN |= bfrom;
+				for (long[] m2 : WB[from].M)
 					for (long bitmap : m2)
-						MM[IConst.BITS.getTo(bitmap)].RB |= bfrom;
-				for (long[] m2 : mm.WR.M)
+						REV[IConst.BITS.getTo(bitmap)].RB |= bfrom;
+				for (long[] m2 : WR[from].M)
 					for (long bitmap : m2)
-						MM[IConst.BITS.getTo(bitmap)].RR |= bfrom;
-				for (long[] m2 : mm.WQ.M)
+						REV[IConst.BITS.getTo(bitmap)].RR |= bfrom;
+				for (long[] m2 : WQ[from].M)
 					for (long bitmap : m2)
-						MM[IConst.BITS.getTo(bitmap)].RQ |= bfrom;
-				for (long bitmap : mm.WK.M)
-					MM[IConst.BITS.getTo(bitmap)].RK |= bfrom;
-				for (long bitmap : mm.WP.C)
-					MM[IConst.BITS.getTo(bitmap)].RPW |= bfrom;
-				for (long bitmap : mm.BP.C)
-					MM[IConst.BITS.getTo(bitmap)].RPB |= bfrom;
+						REV[IConst.BITS.getTo(bitmap)].RQ |= bfrom;
+				for (long bitmap : WK[from].M)
+					REV[IConst.BITS.getTo(bitmap)].RK |= bfrom;
+				for (long bitmap : WP[from].C)
+					REV[IConst.BITS.getTo(bitmap)].RPW |= bfrom;
+				for (long bitmap : BP[from].C)
+					REV[IConst.BITS.getTo(bitmap)].RPB |= bfrom;
 			}
 		}
 
@@ -153,12 +193,12 @@ public interface IBase extends IConst {
 
 		static void pwcapture(ArrayList<Long> moves, int from, int to) {
 			if (to >= 56 && to < 64) {
-				moves.add(BITS.assemblePromote(WP, WQ, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(WP, WR, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(WP, WN, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(WP, WB, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(IConst.WP, IConst.WQ, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(IConst.WP, IConst.WR, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(IConst.WP, IConst.WN, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(IConst.WP, IConst.WB, from, to, CASTLING_STATE | SPECIAL));
 			} else if(to<64){
-				moves.add(BITS.assemble(WP, from, to, CASTLING_STATE));
+				moves.add(BITS.assemble(IConst.WP, from, to, CASTLING_STATE));
 			}
 		}
 
@@ -174,12 +214,12 @@ public interface IBase extends IConst {
 
 		static void pbcapture(ArrayList<Long> moves, int from, int to) {
 			if (to >= 0 && to < 8) {
-				moves.add(BITS.assemblePromote(BP, BQ, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(BP, BR, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(BP, BN, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(BP, BB, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(IConst.BP, IConst.BQ, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(IConst.BP, IConst.BR, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(IConst.BP, IConst.BN, from, to, CASTLING_STATE | SPECIAL));
+				moves.add(BITS.assemblePromote(IConst.BP, IConst.BB, from, to, CASTLING_STATE | SPECIAL));
 			} else if(to>=0){
-				moves.add(BITS.assemble(BP, from, to, CASTLING_STATE));
+				moves.add(BITS.assemble(IConst.BP, from, to, CASTLING_STATE));
 			}
 		}
 
@@ -187,14 +227,14 @@ public interface IBase extends IConst {
 			ArrayList<long[]> moves = new ArrayList<long[]>();
 			int to = from + 8;
 			if (to >= 56 && to < 64) {
-				moves.add(new long[] { BITS.assemblePromote(WP, WQ, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemblePromote(WP, WR, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemblePromote(WP, WN, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemblePromote(WP, WB, from, to, CASTLING_STATE | SPECIAL) });
+				moves.add(new long[] { BITS.assemblePromote(IConst.WP, IConst.WQ, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(IConst.WP, IConst.WR, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(IConst.WP, IConst.WN, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(IConst.WP, IConst.WB, from, to, CASTLING_STATE | SPECIAL) });
 			} else if (from >= 8 && from < 16) {
-				moves.add(new long[] { BITS.assemble(WP, from, to, CASTLING_STATE), BITS.assemble(WP, from, to + 8, CASTLING_STATE) });
+				moves.add(new long[] { BITS.assemble(IConst.WP, from, to, CASTLING_STATE), BITS.assemble(IConst.WP, from, to + 8, CASTLING_STATE) });
 			} else if (to < 64) {
-				moves.add(new long[] { BITS.assemble(WP, from, to, CASTLING_STATE) });
+				moves.add(new long[] { BITS.assemble(IConst.WP, from, to, CASTLING_STATE) });
 			}
 			return toArray2(moves);
 		}
@@ -203,14 +243,14 @@ public interface IBase extends IConst {
 			ArrayList<long[]> moves = new ArrayList<long[]>();
 			int to = from - 8;
 			if (to >= 0 && to < 8) {
-				moves.add(new long[] { BITS.assemblePromote(BP, BQ, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemblePromote(BP, BR, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemblePromote(BP, BN, from, to, CASTLING_STATE | SPECIAL),
-						BITS.assemblePromote(BP, BB, from, to, CASTLING_STATE | SPECIAL) });
+				moves.add(new long[] { BITS.assemblePromote(IConst.BP, IConst.BQ, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(IConst.BP, IConst.BR, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(IConst.BP, IConst.BN, from, to, CASTLING_STATE | SPECIAL),
+						BITS.assemblePromote(IConst.BP, IConst.BB, from, to, CASTLING_STATE | SPECIAL) });
 			} else if (from >= 48 && from < 56) {
-				moves.add(new long[] { BITS.assemble(BP, from, to, CASTLING_STATE), BITS.assemble(BP, from, to - 8, CASTLING_STATE) });
+				moves.add(new long[] { BITS.assemble(IConst.BP, from, to, CASTLING_STATE), BITS.assemble(IConst.BP, from, to - 8, CASTLING_STATE) });
 			} else if (to >= 0) {
-				moves.add(new long[] { BITS.assemble(BP, from, to, CASTLING_STATE) });
+				moves.add(new long[] { BITS.assemble(IConst.BP, from, to, CASTLING_STATE) });
 			}
 			return toArray2(moves);
 		}

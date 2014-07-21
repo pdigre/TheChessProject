@@ -1,5 +1,6 @@
 package no.pdigre.chess.engine.base;
 
+import no.pdigre.chess.engine.base.IBase.BASE;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.IPosition64;
 import no.pdigre.chess.engine.fen.Position64;
@@ -38,12 +39,12 @@ public class KingSafe implements IConst {
 	}
 
 	final public boolean isCheckBlack() {
-		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.MM[bking].RN) != 0)
+		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.REV[bking].RN) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.MM[bking].RK) != 0)
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.REV[bking].RK) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit3 & ~bb_black) & IBase.MM[bking].RB) != 0) {
-			for (long[] slide : IBase.MM[bking].WB.M) {
+		if (((bb_bit1 & bb_bit3 & ~bb_black) & IBase.REV[bking].RB) != 0) {
+			for (long[] slide : BASE.WB[bking].M) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
@@ -57,8 +58,8 @@ public class KingSafe implements IConst {
 				}
 			}
 		}
-		if (((bb_bit2 & bb_bit3 & ~bb_black) & IBase.MM[bking].RR) != 0) {
-			for (long[] slide : IBase.MM[bking].WR.M) {
+		if (((bb_bit2 & bb_bit3 & ~bb_black) & IBase.REV[bking].RR) != 0) {
+			for (long[] slide : BASE.WR[bking].M) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
@@ -72,7 +73,7 @@ public class KingSafe implements IConst {
 				}
 			}
 		}
-		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.MM[bking].RPW) != 0)
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.REV[bking].RPW) != 0)
 			return true;
 		return false;
 	}
@@ -83,12 +84,12 @@ public class KingSafe implements IConst {
 	}
 
 	final public boolean isCheckWhite() {
-		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.MM[wking].RN) != 0)
+		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.REV[wking].RN) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.MM[wking].RK) != 0)
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.REV[wking].RK) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit3 & bb_black) & IBase.MM[wking].RB) != 0) {
-			for (long[] slide : IBase.MM[wking].WB.M) {
+		if (((bb_bit1 & bb_bit3 & bb_black) & IBase.REV[wking].RB) != 0) {
+			for (long[] slide : BASE.WB[wking].M) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
@@ -102,8 +103,8 @@ public class KingSafe implements IConst {
 				}
 			}
 		}
-		if (((bb_bit2 & bb_bit3 & bb_black) & IBase.MM[wking].RR) != 0) {
-			for (long[] slide : IBase.MM[wking].WR.M) {
+		if (((bb_bit2 & bb_bit3 & bb_black) & IBase.REV[wking].RR) != 0) {
+			for (long[] slide : BASE.WR[wking].M) {
 				for (long p : slide) {
 					long bit = 1L << BITS.getTo(p);
 					if ((bb_piece & bit) == 0)
@@ -117,19 +118,13 @@ public class KingSafe implements IConst {
 				}
 			}
 		}
-		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & bb_black) & IBase.MM[wking].RPB) != 0)
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & bb_black) & IBase.REV[wking].RPB) != 0)
 			return true;
 		return false;
 	}
 
 	final private int type(long bit) {
 		return ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4);
-	}
-
-	final boolean testPiece(int i, int piece) {
-		long bit = 1L << i;
-		return (bb_piece & bit) != 0
-				&& (((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4) | ((bb_black & bit) == 0 ? 0 : 8)) == piece;
 	}
 
 }

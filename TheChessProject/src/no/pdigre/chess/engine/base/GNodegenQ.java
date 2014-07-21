@@ -2,6 +2,7 @@ package no.pdigre.chess.engine.base;
 
 import java.util.Arrays;
 
+import no.pdigre.chess.engine.base.IBase.BASE;
 import no.pdigre.chess.engine.fen.Position64;
 
 public class GNodegenQ implements IConst {
@@ -49,30 +50,30 @@ public class GNodegenQ implements IConst {
 							| ((bb_black & bit) == 0 ? 0 : 8);
 					switch (ptype) {
 					case WB:
-						for (long[] slides : IBase.MM[from].WB.M)
+						for (long[] slides : BASE.WB[from].M)
 							for (int i = 0; i < slides.length && slideQWhite(slides[i]); i++)
 								;
 						break;
 					case WR:
-						for (long[] slides : IBase.MM[from].WR.M)
+						for (long[] slides : BASE.WR[from].M)
 							for (int i1 = 0; i1 < slides.length && slideQWhite(slides[i1]); i1++)
 								;
 						break;
 					case WQ:
-						for (long[] slides : IBase.MM[from].WQ.M)
+						for (long[] slides : BASE.WQ[from].M)
 							for (int i = 0; i < slides.length && slideQWhite(slides[i]); i++)
 								;
 						break;
 					case WN:
-						for (long bitmap : IBase.MM[from].WN.M)
+						for (long bitmap : BASE.WN[from].M)
 							slideQWhite(bitmap);
 						break;
 					case WK:
-						for (long bitmap : IBase.MM[from].WK.M)
+						for (long bitmap : BASE.WK[from].M)
 							slideQWhite(bitmap);
 						break;
 					case WP:
-						for (long bitmap : IBase.MM[from].WP.C)
+						for (long bitmap : BASE.WP[from].C)
 							slideQWhite(bitmap);
 						break;
 					}
@@ -92,30 +93,30 @@ public class GNodegenQ implements IConst {
 							| ((bb_black & bit) == 0 ? 0 : 8);
 					switch (ptype) {
 					case BB:
-						for (long[] slides : IBase.MM[from].BB.M)
+						for (long[] slides : BASE.BB[from].M)
 							for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
 								;
 						break;
 					case BR:
-						for (long[] slides : IBase.MM[from].BR.M)
+						for (long[] slides : BASE.BR[from].M)
 							for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
 								;
 						break;
 					case BQ:
-						for (long[] slides : IBase.MM[from].BQ.M)
+						for (long[] slides : BASE.BQ[from].M)
 							for (int i = 0; i < slides.length && slideQBlack(slides[i]); i++)
 								;
 						break;
 					case BN:
-						for (long bitmap : IBase.MM[from].BN.M)
+						for (long bitmap : BASE.BN[from].M)
 							slideQBlack(bitmap);
 						break;
 					case BK:
-						for (long bitmap : IBase.MM[from].BK.M)
+						for (long bitmap : BASE.BK[from].M)
 							slideQBlack(bitmap);
 						break;
 					case BP:
-						for (long bitmap : IBase.MM[from].BP.C)
+						for (long bitmap : BASE.BP[from].C)
 							slideQBlack(bitmap);
 						break;
 					}

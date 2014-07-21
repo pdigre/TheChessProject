@@ -2,6 +2,7 @@ package no.pdigre.chess.engine.base;
 
 import java.util.Arrays;
 
+import no.pdigre.chess.engine.base.IBase.BASE;
 import no.pdigre.chess.engine.fen.Position64;
 
 public class GNodegen implements IConst {
@@ -14,9 +15,11 @@ public class GNodegen implements IConst {
 	final long bb_black;
 	final long bb_bit1;
 	final long bb_bit2;
-	final  long bb_bit3;
+	final long bb_bit3;
 	final long[] moves = new long[99];
 	int imoves = 0;
+	final int wking;
+	final int bking;
 	final public int enpassant;
 
 	GNodegen(Position64 pos) {
@@ -29,6 +32,8 @@ public class GNodegen implements IConst {
 		this.bb_piece = bb_bit1 | bb_bit2 | bb_bit3;
 		this.bb_white = bb_piece ^ bb_black;
 		this.enpassant = BITS.getEnpassant(inherit);
+		this.wking=pos.getWKpos();
+		this.bking=pos.getBKpos();
 		halfmoves = (BITS.halfMoves(inherit) + 1) << _HALFMOVES;
 		castling = ~CASTLING_STATE | inherit; // all other are set
 	}
@@ -43,80 +48,42 @@ public class GNodegen implements IConst {
 		int n = 0;
 		int test = 0;
 		if (pos.whiteNext()) {
-			long bit = 1L;
-			int from = 0;
-			while (bit != 0) {
-				if ((bb_white & bit) != 0) {
-					int ptype = ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4);
-					switch (ptype) {
-					case WB:
-						IBase.MM[from].WB.move(this);
-						break;
-					case WR:
-						IBase.MM[from].WR.move(this);
-						break;
-					case WQ:
-						IBase.MM[from].WQ.move(this);
-						break;
-					case WN:
-						IBase.MM[from].WN.move(this);
-						break;
-					case WK:
-						IBase.MM[from].WK.move(this);
-						break;
-					case WP:
-						IBase.MM[from].WP.move(this);
-						break;
-					}
-					while (test < imoves) {
-						Position64 next = pos.move(moves[test++]);
-						if (!next.isCheckWhite())
-							list[n++] = next;
-					}
-				}
-				bit = bit << 1;
-				from++;
+			genMoves(bb_white &(bb_bit1)&(~bb_bit2)&(~bb_bit3), BASE.WP);
+			genMoves(bb_white &(~bb_bit1)&(bb_bit2)&(~bb_bit3), BASE.WN);
+			genMoves(bb_white &(bb_bit1)&(~bb_bit2)&(bb_bit3), BASE.WB);
+			genMoves(bb_white &(~bb_bit1)&(bb_bit2)&(bb_bit3), BASE.WR);
+			genMoves(bb_white &(bb_bit1)&(bb_bit2)&(bb_bit3), BASE.WQ);
+			BASE.WK[wking].move(this);
+			while (test < imoves) {
+			Position64 next = pos.move(moves[test++]);
+			if (!next.isCheckWhite())
+				list[n++] = next;
 			}
 		} else {
-			long bit = 1L;
-			int from = 0;
-			while (bit != 0) {
-				if ((bb_black & bit) != 0) {
-					int ptype = ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4)
-							| 8;
-					switch (ptype) {
-					case BB:
-						IBase.MM[from].BB.move(this);
-						break;
-					case BR:
-						IBase.MM[from].BR.move(this);
-						break;
-					case BQ:
-						IBase.MM[from].BQ.move(this);
-						break;
-					case BN:
-						IBase.MM[from].BN.move(this);
-						break;
-					case BK:
-						IBase.MM[from].BK.move(this);
-						break;
-					case BP:
-						IBase.MM[from].BP.move(this);
-						break;
-					}
-					while (test < imoves) {
-						Position64 next = pos.move(moves[test++]);
-						if (!next.isCheckBlack())
-							list[n++] = next;
-					}
-				}
-				bit = bit << 1;
-				from++;
+			genMoves(bb_black &(bb_bit1)&(~bb_bit2)&(~bb_bit3), BASE.BP);
+			genMoves(bb_black &(~bb_bit1)&(bb_bit2)&(~bb_bit3), BASE.BN);
+			genMoves(bb_black &(bb_bit1)&(~bb_bit2)&(bb_bit3), BASE.BB);
+			genMoves(bb_black &(~bb_bit1)&(bb_bit2)&(bb_bit3), BASE.BR);
+			genMoves(bb_black &(bb_bit1)&(bb_bit2)&(bb_bit3), BASE.BQ);
+			BASE.BK[bking].move(this);
+			while (test < imoves) {
+			Position64 next = pos.move(moves[test++]);
+			if (!next.isCheckBlack())
+				list[n++] = next;
 			}
 		}
 		Position64[] mvs = Arrays.copyOfRange(list, 0, n);
 		NodeGen.mergeSort(list, mvs, 0, n, 0);
 		return mvs;
+	}
+
+	private <X extends MBase>void genMoves(long b, X[] arr) {
+		long bits=Long.bitCount(b);
+		for (int j = 0; j < bits; j++) {
+			int from = Long.numberOfTrailingZeros(b);
+			arr[from].move(this);
+			b&=~(1L<<from);
+		}
 	}
 
 }
