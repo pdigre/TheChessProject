@@ -78,11 +78,11 @@ public class GNodegen implements IConst {
 	}
 
 	private <X extends MBase> void genMoves(long b, X[] arr) {
-		long bits = Long.bitCount(b);
+		int bits = Long.bitCount(b);
 		for (int j = 0; j < bits; j++) {
 			int from = Long.numberOfTrailingZeros(b);
+			b ^= 1L << from;
 			arr[from].move(this);
-			b &= ~(1L << from);
 		}
 	}
 

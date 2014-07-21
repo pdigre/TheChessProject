@@ -16,7 +16,6 @@ public interface IBase extends IConst {
 //	MOVEMAP[] MM = new MOVEMAP[64];
 
 	REVERSE[] REV = new REVERSE[64];
-
 	BASE base = new BASE();
 
 
@@ -34,11 +33,8 @@ public interface IBase extends IConst {
 	
 	class BASE {
 		final public static int LEFT = -1;
-
 		final public static int RIGHT = 1;
-
 		final public static int UP = 8;
-
 		final public static int DOWN = -8;
 
 		static MPWhite[] WP=new MPWhite[64];
@@ -53,6 +49,10 @@ public interface IBase extends IConst {
 		static MSliderBlack[] BR=new MSliderBlack[64];
 		static MSliderBlack[] BQ=new MSliderBlack[64];
 		static MKBlack[] BK=new MKBlack[64];
+		static long[] TEMP=new long[8];
+		static int itemp=0;
+		static long[] DATA=new long[40000];
+		static int idata=0;
 
 		static {
 
@@ -124,16 +124,15 @@ public interface IBase extends IConst {
 		}
 
 		static long[] getKnightMoves(int from, int piece, long mask) {
-			ArrayList<Long> moves = new ArrayList<Long>();
-			add(moves, piece, from, UP + LEFT + LEFT, mask);
-			add(moves, piece, from, UP + UP + LEFT, mask);
-			add(moves, piece, from, UP + RIGHT + RIGHT, mask);
-			add(moves, piece, from, UP + UP + RIGHT, mask);
-			add(moves, piece, from, DOWN + LEFT + LEFT, mask);
-			add(moves, piece, from, DOWN + DOWN + LEFT, mask);
-			add(moves, piece, from, DOWN + RIGHT + RIGHT, mask);
-			add(moves, piece, from, DOWN + DOWN + RIGHT, mask);
-			return toArraySorted(moves);
+			add(piece, from, UP + LEFT + LEFT, mask);
+			add(piece, from, UP + UP + LEFT, mask);
+			add(piece, from, UP + RIGHT + RIGHT, mask);
+			add(piece, from, UP + UP + RIGHT, mask);
+			add(piece, from, DOWN + LEFT + LEFT, mask);
+			add(piece, from, DOWN + DOWN + LEFT, mask);
+			add(piece, from, DOWN + RIGHT + RIGHT, mask);
+			add(piece, from, DOWN + DOWN + RIGHT, mask);
+			return toArraySorted();
 		}
 
 		static long[][] getRookMoves(int from, int piece, long mask) {
@@ -168,58 +167,55 @@ public interface IBase extends IConst {
 		}
 
 		static long[] getKingMoves(int from, int piece, long mask) {
-			ArrayList<Long> moves = new ArrayList<Long>();
-			add(moves, piece, from, UP, mask);
-			add(moves, piece, from, DOWN, mask);
-			add(moves, piece, from, LEFT, mask);
-			add(moves, piece, from, RIGHT, mask);
-			add(moves, piece, from, UP + LEFT, mask);
-			add(moves, piece, from, UP + RIGHT, mask);
-			add(moves, piece, from, DOWN + LEFT, mask);
-			add(moves, piece, from, DOWN + RIGHT, mask);
-			return toArraySorted(moves);
+			add(piece, from, UP, mask);
+			add(piece, from, DOWN, mask);
+			add(piece, from, LEFT, mask);
+			add(piece, from, RIGHT, mask);
+			add(piece, from, UP + LEFT, mask);
+			add(piece, from, UP + RIGHT, mask);
+			add(piece, from, DOWN + LEFT, mask);
+			add(piece, from, DOWN + RIGHT, mask);
+			return toArraySorted();
 		}
 
 
 		static long[] getWhitePawnCaptures(int from) {
-			ArrayList<Long> moves = new ArrayList<Long>();
 			int x = from & 7;
 			if (x != 0)
-				pwcapture(moves, from, from + 7);
+				pwcapture(from, from + 7);
 			if (x != 7)
-				pwcapture(moves, from, from + 9);
-			return toArraySorted(moves);
+				pwcapture(from, from + 9);
+			return toArraySorted();
 		}
 
-		static void pwcapture(ArrayList<Long> moves, int from, int to) {
+		static void pwcapture(int from, int to) {
 			if (to >= 56 && to < 64) {
-				moves.add(BITS.assemblePromote(IConst.WP, IConst.WQ, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(IConst.WP, IConst.WR, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(IConst.WP, IConst.WN, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(IConst.WP, IConst.WB, from, to, CASTLING_STATE | SPECIAL));
+				add(BITS.assemblePromote(IConst.WP, IConst.WQ, from, to, CASTLING_STATE | SPECIAL));
+				add(BITS.assemblePromote(IConst.WP, IConst.WR, from, to, CASTLING_STATE | SPECIAL));
+				add(BITS.assemblePromote(IConst.WP, IConst.WN, from, to, CASTLING_STATE | SPECIAL));
+				add(BITS.assemblePromote(IConst.WP, IConst.WB, from, to, CASTLING_STATE | SPECIAL));
 			} else if(to<64){
-				moves.add(BITS.assemble(IConst.WP, from, to, CASTLING_STATE));
+				add(BITS.assemble(IConst.WP, from, to, CASTLING_STATE));
 			}
 		}
 
 		static long[] getBlackPawnCaptures(int from) {
-			ArrayList<Long> moves = new ArrayList<Long>();
 			int x = from & 7;
 			if (x != 0)
-				pbcapture(moves, from, from - 9);
+				pbcapture(from, from - 9);
 			if (x != 7)
-				pbcapture(moves, from, from - 7);
-			return toArraySorted(moves);
+				pbcapture(from, from - 7);
+			return toArraySorted();
 		}
 
-		static void pbcapture(ArrayList<Long> moves, int from, int to) {
+		static void pbcapture(int from, int to) {
 			if (to >= 0 && to < 8) {
-				moves.add(BITS.assemblePromote(IConst.BP, IConst.BQ, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(IConst.BP, IConst.BR, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(IConst.BP, IConst.BN, from, to, CASTLING_STATE | SPECIAL));
-				moves.add(BITS.assemblePromote(IConst.BP, IConst.BB, from, to, CASTLING_STATE | SPECIAL));
+				add(BITS.assemblePromote(IConst.BP, IConst.BQ, from, to, CASTLING_STATE | SPECIAL));
+				add(BITS.assemblePromote(IConst.BP, IConst.BR, from, to, CASTLING_STATE | SPECIAL));
+				add(BITS.assemblePromote(IConst.BP, IConst.BN, from, to, CASTLING_STATE | SPECIAL));
+				add(BITS.assemblePromote(IConst.BP, IConst.BB, from, to, CASTLING_STATE | SPECIAL));
 			} else if(to>=0){
-				moves.add(BITS.assemble(IConst.BP, from, to, CASTLING_STATE));
+				add(BITS.assemble(IConst.BP, from, to, CASTLING_STATE));
 			}
 		}
 
@@ -255,27 +251,18 @@ public interface IBase extends IConst {
 			return toArray2(moves);
 		}
 
-		static long[] toArray(ArrayList<Long> moves) {
-			long[] ret = new long[moves.size()];
-			for (int i = 0; i < moves.size(); i++) {
-				ret[i] = moves.get(i);
+		static long[] toArray() {
+			long[] ret = new long[itemp];
+			for (int i = 0; i < itemp; i++) {
+				ret[i] = TEMP[i];
 			}
+			itemp=0;
 			return ret;
 		}
 
-		static long[] toArraySorted(ArrayList<Long> moves) {
-			long[] ret = new long[moves.size()];
-			for (int i = 0; i < moves.size(); i++) {
-				ret[i] = moves.get(i);
-			}
+		static long[] toArraySorted() {
+			long[] ret = toArray();
 			Arrays.sort(ret);
-			return ret;
-		}
-
-		static long[] toLongArray(ArrayList<Integer> moves) {
-			long[] ret = new long[moves.size()];
-			for (int i = 0; i < moves.size(); i++)
-				ret[i] = moves.get(i);
 			return ret;
 		}
 
@@ -306,20 +293,24 @@ public interface IBase extends IConst {
 		 * @param mask
 		 * @return
 		 */
-		static boolean add(ArrayList<Long> moves, int piece, int from, int offset, long mask) {
+		static boolean add(int piece, int from, int offset, long mask) {
 			int to = from + offset;
 			boolean has = inside(to, from);
 			if (has)
-				moves.add(BITS.assemble(piece, from, to, mask));
+				add(BITS.assemble(piece, from, to, mask));
 			return has;
 		}
 
-		static boolean addSlide(ArrayList<Long> moves, int piece, int from, int offset, long mask, int from2) {
+		static boolean addSlide(int piece, int from, int offset, long mask, int from2) {
 			int to = from + offset;
 			boolean has = inside(to, from);
 			if (has)
-				moves.add(BITS.assemble(piece, from2, to, mask));
+				add(BITS.assemble(piece, from2, to, mask));
 			return has;
+		}
+
+		static void add(long bitmap){
+			TEMP[itemp++]=bitmap;
 		}
 
 		/**
@@ -352,10 +343,9 @@ public interface IBase extends IConst {
 		 * @param board
 		 */
 		static void slide(ArrayList<long[]> main, int from, int offset, int piece, long mark) {
-			ArrayList<Long> moves = new ArrayList<Long>();
-			for (int slidefrom = from; addSlide(moves, piece, slidefrom, offset, mark, from); slidefrom += offset)
+			for (int slidefrom = from; addSlide(piece, slidefrom, offset, mark, from); slidefrom += offset)
 				;
-			long[] mv = toArray(moves);
+			long[] mv = toArray();
 			if (mv.length > 0)
 				main.add(mv);
 		}
