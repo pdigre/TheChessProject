@@ -59,8 +59,8 @@ class CreatePSQTimages {
 			gc.rect(p++, v, adj)
 		gc.setColor(Color.BLACK)
 		for (i : 0 .. 7) {
-			gc.drawString(Integer.toString(i + 1), 30 + i * 30, 255)
-			gc.drawString("HGFEDCBA".substring(i, i + 1), 5, 20 + 30 * i)
+			gc.drawString("ABCDEFGH".substring(i, i + 1), 30 + i * 30, 255)
+			gc.drawString(Integer.toString(8 - i), 5, 20 + 30 * i)
 		}
 		ImageIO::write(img, "PNG",
 			new File(out_dir + "/" + name + "_" + (if(isEnd) "End" else "Mid") + table.name + ".png"))
