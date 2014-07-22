@@ -3,6 +3,7 @@ package no.pdigre.chess.engine.base;
 import java.util.Arrays;
 
 import no.pdigre.chess.engine.base.IBase.BASE;
+import no.pdigre.chess.engine.base.IBase.MOVEDATA;
 import no.pdigre.chess.engine.fen.Position64;
 
 public class GNodegen implements IConst {
@@ -16,7 +17,7 @@ public class GNodegen implements IConst {
 	final long bb_bit1;
 	final long bb_bit2;
 	final long bb_bit3;
-	final long[] moves = new long[99];
+	final MOVEDATA[] moves = new MOVEDATA[99];
 	int imoves = 0;
 	final int wking;
 	final int bking;
@@ -53,9 +54,9 @@ public class GNodegen implements IConst {
 			genMoves(bb_white & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
 			genMoves(bb_white & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
 			genMoves(bb_white & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
-			BASE.WK[wking].move(this);
+			BASE.WK[wking].all(this);
 			while (test < imoves) {
-				Position64 next = pos.move(moves[test++]);
+				Position64 next = moves[test++].move(pos);
 				if (!next.isCheckWhite())
 					list[n++] = next;
 			}
@@ -65,9 +66,9 @@ public class GNodegen implements IConst {
 			genMoves(bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
 			genMoves(bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
 			genMoves(bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
-			BASE.BK[bking].move(this);
+			BASE.BK[bking].all(this);
 			while (test < imoves) {
-				Position64 next = pos.move(moves[test++]);
+				Position64 next = moves[test++].move(pos);
 				if (!next.isCheckBlack())
 					list[n++] = next;
 			}
@@ -77,12 +78,12 @@ public class GNodegen implements IConst {
 		return mvs;
 	}
 
-	private <X extends MBase> void genMoves(long b, X[] arr) {
+	public <X extends MBase> void genMoves(long b, X[] arr) {
 		int bits = Long.bitCount(b);
 		for (int j = 0; j < bits; j++) {
 			int from = Long.numberOfTrailingZeros(b);
 			b ^= 1L << from;
-			arr[from].move(this);
+			arr[from].all(this);
 		}
 	}
 

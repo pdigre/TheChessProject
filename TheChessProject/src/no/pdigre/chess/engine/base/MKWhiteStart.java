@@ -13,7 +13,7 @@ public class MKWhiteStart extends MKWhite {
 	}
 
 	@Override
-	public void move(GNodegen gen) {
+	public void all(GNodegen gen) {
 		for (long bitmap : M)
 			slideWhite(gen, bitmap);
 		if ((IConst.CWQ & gen.bb_piece) == 0

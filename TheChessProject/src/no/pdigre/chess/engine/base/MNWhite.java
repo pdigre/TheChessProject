@@ -1,13 +1,14 @@
 package no.pdigre.chess.engine.base;
 
 public class MNWhite extends MBase{
-	public MNWhite(int from) {
+	public MNWhite(int from,long[] m) {
 		super(from);
+		M=m;
 	}
 
-	long[] M;
+	final long[] M;
 
-	public void move(GNodegen gen){
+	public void all(GNodegen gen){
 		for (long m : M)
 			slideWhite(gen,m);
 	}

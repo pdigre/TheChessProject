@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import no.pdigre.chess.engine.fen.Position64;
+
 /**
  * Arrays of possible moves for each position of the board sliders have sub
  * arrays - piece - from - to - x - castling
@@ -18,7 +20,18 @@ public interface IBase extends IConst {
 	REVERSE[] REV = new REVERSE[64];
 	BASE base = new BASE();
 
+	class MOVEDATA {
+		public MOVEDATA(long bitmap) {
+			this.bitmap=bitmap;
+		}
 
+		public Position64 move(Position64 pos){
+			return pos.move(bitmap);
+		}
+
+		long bitmap;
+	}
+	
 	
 	class REVERSE {
 		// Reverse lookup for in-check
@@ -51,41 +64,25 @@ public interface IBase extends IConst {
 		static MKBlack[] BK=new MKBlack[64];
 		static long[] TEMP=new long[8];
 		static int itemp=0;
-		static long[] DATA=new long[40000];
+		static MOVEDATA[] DATA=new MOVEDATA[40000];
 		static int idata=0;
 
 		static {
 
 			for (int from = 0; from < 64; from++) {
 				REV[from] = new REVERSE();
-				WN[from] = new MNWhite(from);
-                BN[from] = new MNBlack(from);
-				WR[from] = new MSliderWhite(from);
-				BR[from] = new MSliderBlack(from);
-				WB[from] = new MSliderWhite(from);
-				BB[from] = new MSliderBlack(from);
-				WQ[from] = new MSliderWhite(from);
-				BQ[from] = new MSliderBlack(from);
+				WN[from] = new MNWhite(from,getKnightMoves(from, IConst.WN, CASTLING_STATE | HALFMOVES));
+                BN[from] = new MNBlack(from,getKnightMoves(from, IConst.BN, CASTLING_STATE | HALFMOVES));
+				WR[from] = new MSliderWhite(from,getRookMoves(from, IConst.WR, CASTLING_STATE | HALFMOVES));
+				BR[from] = new MSliderBlack(from,getRookMoves(from, IConst.BR, CASTLING_STATE | HALFMOVES));
+				WB[from] = new MSliderWhite(from,getBishopMoves(from, IConst.WB, CASTLING_STATE | HALFMOVES));
+				BB[from] = new MSliderBlack(from,getBishopMoves(from, IConst.BB, CASTLING_STATE | HALFMOVES));
+				WQ[from] = new MSliderWhite(from,getQueenMoves(from, IConst.WQ, CASTLING_STATE | HALFMOVES));
+				BQ[from] = new MSliderBlack(from,getQueenMoves(from, IConst.BQ, CASTLING_STATE | HALFMOVES));
 				WP[from] = new MPWhite(from);
 				BP[from] = new MPBlack(from);
 				WK[from] = from == IConst.WK_STARTPOS ?new MKWhiteStart(from):new MKWhite(from);
 				BK[from] = from == IConst.BK_STARTPOS ?new MKBlackStart(from):new MKBlack(from);
-
-				WN[from].M = getKnightMoves(from, IConst.WN, CASTLING_STATE | HALFMOVES);
-				BN[from].M = getKnightMoves(from, IConst.BN, CASTLING_STATE | HALFMOVES);
-				WR[from].M = getRookMoves(from, IConst.WR, CASTLING_STATE | HALFMOVES);
-				BR[from].M = getRookMoves(from, IConst.BR, CASTLING_STATE | HALFMOVES);
-				WB[from].M = getBishopMoves(from, IConst.WB, CASTLING_STATE | HALFMOVES);
-				BB[from].M = getBishopMoves(from, IConst.BB, CASTLING_STATE | HALFMOVES);
-				WQ[from].M = getQueenMoves(from, IConst.WQ, CASTLING_STATE | HALFMOVES);
-				BQ[from].M = getQueenMoves(from, IConst.BQ, CASTLING_STATE | HALFMOVES);
-				WP[from].M = getWhitePawnMoves(from);
-				BP[from].M = getBlackPawnMoves(from);
-				WP[from].C = getWhitePawnCaptures(from);
-				BP[from].C = getBlackPawnCaptures(from);
-				WK[from].M = getKingMoves(from, IConst.WK, CANCASTLE_BLACK | HALFMOVES);
-				BK[from].M = getKingMoves(from, IConst.BK, CANCASTLE_WHITE | HALFMOVES);
-
 			}
 			for (long[] b : WR[0].M)
 				for (int i = 0; i < b.length; i++)
@@ -310,6 +307,7 @@ public interface IBase extends IConst {
 		}
 
 		static void add(long bitmap){
+//			DATA[idata]=new MOVEDATA(bitmap);
 			TEMP[itemp++]=bitmap;
 		}
 

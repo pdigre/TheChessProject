@@ -5,13 +5,15 @@ import no.pdigre.chess.engine.base.IConst.BITS;
 public class MPBlack  extends MBase{
 	public MPBlack(int from) {
 		super(from);
+		M = IBase.BASE.getBlackPawnMoves(from);
+		C = IBase.BASE.getBlackPawnCaptures(from);
 	}
 
 	long[][] M;
 	long[] C;
 	
 	@Override
-	public void move(GNodegen gen) {
+	public void all(GNodegen gen) {
 		for (long[] slides : M)
 			for (int i = 0; i < slides.length && pawnSlide(gen,slides[i]); i++)
 				;

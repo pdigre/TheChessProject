@@ -1,11 +1,12 @@
 package no.pdigre.chess.engine.base;
 
+import no.pdigre.chess.engine.base.IBase.MOVEDATA;
 import no.pdigre.chess.engine.base.IConst.BITS;
 
 
 public abstract class MBase {
 	final public int from;
-	public abstract void move(GNodegen gen);
+	public abstract void all(GNodegen gen);
 
 	public MBase(int from) {
 		this.from = from;
@@ -63,7 +64,7 @@ public abstract class MBase {
 	}
 
 	final void add(GNodegen gen,long bitmap) {
-		gen.moves[gen.imoves++] = bitmap;
+		gen.moves[gen.imoves++] = new MOVEDATA(bitmap);
 	}
 
 	final int type(GNodegen gen,long bit) {
