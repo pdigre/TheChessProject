@@ -71,4 +71,13 @@ public abstract class MBase {
 		return ((gen.bb_bit1 & bit) == 0 ? 0 : 1) | ((gen.bb_bit2 & bit) == 0 ? 0 : 2) | ((gen.bb_bit3 & bit) == 0 ? 0 : 4);
 	}
 	
+	public static <X extends MBase> void genMoves(GNodegen gen,long b, X[] arr) {
+		int bits = Long.bitCount(b);
+		for (int j = 0; j < bits; j++) {
+			int from = Long.numberOfTrailingZeros(b);
+			b ^= 1L << from;
+			arr[from].all(gen);
+		}
+	}
+	
 }

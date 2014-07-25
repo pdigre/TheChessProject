@@ -12,5 +12,6 @@ public class MKWhite extends MBase {
 	public void all(GNodegen gen) {
 		for (long bitmap : M)
 			slideWhite(gen, bitmap);
+		gen.pruneWhite();
 	}
 }

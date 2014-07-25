@@ -23,6 +23,10 @@ public class GNodegen implements IConst {
 	final int bking;
 	final public int enpassant;
 
+	private int n = 0;
+	private int test = 0;
+	private final Position64[] list = new Position64[99];
+
 	GNodegen(Position64 pos) {
 		this.pos = pos;
 		long inherit = pos.getBitmap();
@@ -40,50 +44,46 @@ public class GNodegen implements IConst {
 	}
 
 	final public Position64[] moves() {
+		n = 0;
+		test = 0;
 
 		// *********************************************************************************************
 		// *
 		// *
 		// *********************************************************************************************
-		final Position64[] list = new Position64[99];
-		int n = 0;
-		int test = 0;
 		if (pos.whiteNext()) {
-			genMoves(bb_white & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
-			genMoves(bb_white & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
-			genMoves(bb_white & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
-			genMoves(bb_white & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
-			genMoves(bb_white & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
+			MPWhite.genMoves(this,bb_white & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
+			MBase.genMoves(this,bb_white & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
+			MBase.genMoves(this,bb_white & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
+			MBase.genMoves(this,bb_white & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
+			MBase.genMoves(this,bb_white & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
 			BASE.WK[wking].all(this);
-			while (test < imoves) {
-				Position64 next = moves[test++].move(pos);
-				if (!next.isCheckWhite())
-					list[n++] = next;
-			}
 		} else {
-			genMoves(bb_black & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
-			genMoves(bb_black & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
-			genMoves(bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
-			genMoves(bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
-			genMoves(bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
+			MBase.genMoves(this,bb_black & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
+			MBase.genMoves(this,bb_black & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
+			MBase.genMoves(this,bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
+			MBase.genMoves(this,bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
+			MBase.genMoves(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
 			BASE.BK[bking].all(this);
-			while (test < imoves) {
-				Position64 next = moves[test++].move(pos);
-				if (!next.isCheckBlack())
-					list[n++] = next;
-			}
 		}
 		Position64[] mvs = Arrays.copyOfRange(list, 0, n);
-		NodeGen.mergeSort(list, mvs, 0, n, 0);
+//		NodeGen.mergeSort(list, mvs, 0, n, 0);
 		return mvs;
 	}
 
-	public <X extends MBase> void genMoves(long b, X[] arr) {
-		int bits = Long.bitCount(b);
-		for (int j = 0; j < bits; j++) {
-			int from = Long.numberOfTrailingZeros(b);
-			b ^= 1L << from;
-			arr[from].all(this);
+	public void pruneBlack() {
+		while (test < imoves) {
+			Position64 next = moves[test++].move(pos);
+			if (!next.isCheckBlack())
+				list[n++] = next;
+		}
+	}
+
+	public void pruneWhite() {
+		while (test < imoves) {
+			Position64 next = moves[test++].move(pos);
+			if (!next.isCheckWhite())
+				list[n++] = next;
 		}
 	}
 

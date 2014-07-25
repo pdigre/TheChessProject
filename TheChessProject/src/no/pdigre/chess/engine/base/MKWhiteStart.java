@@ -28,5 +28,6 @@ public class MKWhiteStart extends MKWhite {
 				&& !gen.pos.move(SIDE_WK).isCheckWhite()) {
 			add(gen, CASTLING_WK & gen.castling);
 		}
+		gen.pruneWhite();
 	}
 }

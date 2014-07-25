@@ -29,5 +29,6 @@ public class MPBlack  extends MBase{
 				}
 			}
 		}
+		gen.pruneBlack();
 	}
 }
