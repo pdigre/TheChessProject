@@ -12,24 +12,7 @@ import no.pdigre.chess.engine.fen.IPosition;
  */
 public class ZobristKey implements IConst {
 
-	long zobrist;
-
-	public ZobristKey(long zobrist) {
-		this.zobrist = zobrist;
-	}
-
-	@Override
-	public int hashCode() {
-		return (int) zobrist;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof ZobristKey)
-			return ((ZobristKey) obj).zobrist == zobrist;
-		return super.equals(obj);
-	}
-
+	
 	public final static long[] random64 = new long[] { 0x9D39247E33776D41L, 0x2AF7398005AAA5C7L, 0x44DB015024623547L, 0x9C15F73E62A76AE2L,
 			0x75834465489C0C89L, 0x3290AC3A203001BFL, 0x0FBBAD1F61042279L, 0xE83A908FF2FB60CAL, 0x0D7E765D58755C10L, 0x1A083822CEAFE02DL,
 			0x9605D5F0E25EC3B0L, 0xD021FF5CD13A2ED5L, 0x40BDF15D4A672E32L, 0x011355146FD56395L, 0x5DB4832046F3D9E5L, 0x239F8B2D7FF719CCL,
@@ -162,6 +145,45 @@ public class ZobristKey implements IConst {
 			0x70CC73D90BC26E24L, 0xE21A6B35DF0C3AD7L, 0x003A93D8B2806962L, 0x1C99DED33CB890A1L, 0xCF3145DE0ADD4289L, 0xD0E4427A5514FB72L,
 			0x77C621CC9FB3A483L, 0x67A34DAC4356550BL, 0xF8D626AAAF278509L };
 
+
+	public final static long[][] KEYS;
+	
+	private static long[] longkey(int p) {
+		long[] l = new long[64];
+		int pt = ZobristKey.getKindOfPiece(p);
+		if(pt>=0){
+			int n = pt * 64;
+			for (int i = 0; i < 64; i++)
+				l[i] = ZobristKey.random64[n + i];
+		}
+		return l;
+	}
+
+	static{
+		KEYS=new long[16][];
+		for(int i=0;i<16;i++)
+			KEYS[i]=longkey(i);
+	}
+
+	long zobrist;
+
+	public ZobristKey(long zobrist) {
+		this.zobrist = zobrist;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) zobrist;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ZobristKey)
+			return ((ZobristKey) obj).zobrist == zobrist;
+		return super.equals(obj);
+	}
+
+
 	/**
      * 
      */
@@ -192,7 +214,7 @@ public class ZobristKey implements IConst {
 		case IConst.WK:
 			return 11;
 		}
-		return 0;
+		return -1;
 	}
 
 	public final static long ZOBRIST_CWK = random64[768];
@@ -208,7 +230,7 @@ public class ZobristKey implements IConst {
 		for (int i = 0; i < 64; i++) {
 			int piece = pos.getPiece(i);
 			if(piece!=0)
-				key ^= EBase.TYPES[piece].zobrist[i];
+				key ^= KEYS[piece][i];
 		}
 		key=castling(key, bitmap);
 

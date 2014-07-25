@@ -12,6 +12,7 @@ public class MNBlack extends MBase {
 	public void all(GNodegen gen) {
 		for (long m : M)
 			slideBlack(gen,m);
+		gen.pruneBlack();
 	}
 
 }

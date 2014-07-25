@@ -13,5 +13,6 @@ public class MSliderWhite extends MBase{
 		for (long[] slides : M)
 			for (int i = 0; i < slides.length && slideWhite(gen,slides[i]); i++)
 				;
+		gen.pruneWhite();
 	}
 }

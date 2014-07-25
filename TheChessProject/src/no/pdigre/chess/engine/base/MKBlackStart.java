@@ -28,5 +28,6 @@ public class MKBlackStart extends MKBlack {
 				&& !gen.pos.move(SIDE_BK).isCheckBlack()) {
 			add(gen, CASTLING_BK & gen.castling);
 		}
+		gen.pruneBlack();
 	}
 }

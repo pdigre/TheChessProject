@@ -12,5 +12,6 @@ public class MKBlack extends MBase {
 	public void all(GNodegen gen) {
 		for (long bitmap : M)
 			slideBlack(gen,bitmap);
+		gen.pruneBlack();
 	}
 }
