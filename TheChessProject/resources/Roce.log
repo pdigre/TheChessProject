@@ -1,4 +1,4 @@
-date: 22.6.2014, 17:25.13
+date: 26.6.2014, 15:31.5
 roce-roman's own chess engine
 version: 0.0390
 values read from file: Roce.cfg
@@ -17,5 +17,85 @@ black rook: 500
 black bishop: 300
 black knight: 300
 black pawn: 100
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
+roce: setboard
+roce: divide
 roce: setboard
 roce: divide

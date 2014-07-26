@@ -1,6 +1,5 @@
 package no.pdigre.chess.engine.fen;
 
-import no.pdigre.chess.engine.base.EBase;
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.KingSafe;
 import no.pdigre.chess.engine.base.ZobristKey;
@@ -83,7 +82,6 @@ public class Position64 implements IPosition64 {
 		int from = BITS.getFrom(move);
 		int to = BITS.getTo(move);
 		int piece = BITS.getPiece(move);
-		EBase b=EBase.TYPES[piece];
 		if (from == wking)
 			wking = to;
 		if (from == bking)
@@ -96,7 +94,8 @@ public class Position64 implements IPosition64 {
 			bb_bit2 = (bb_bit2 & mask) | ((piece & 2) == 0 ? 0 : bto);
 			bb_bit3 = (bb_bit3 & mask) | ((piece & 4) == 0 ? 0 : bto);
 			bb_black = (bb_black & mask) | ((piece & 8) == 0 ? 0 : bto);
-			zobrist^=b.zobrist[from]^b.zobrist[to]^ZobristKey.ZOBRIST_NXT;
+			long[] b=ZobristKey.KEYS[piece];
+			zobrist^=b[from]^b[to]^ZobristKey.ZOBRIST_NXT;
 			long cstl = (move^bitmap0)&IConst.CASTLING_STATE;
 			if(cstl!=0)
 				zobrist=ZobristKey.castling(zobrist,cstl);
