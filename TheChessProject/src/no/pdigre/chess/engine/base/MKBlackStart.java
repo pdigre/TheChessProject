@@ -13,7 +13,7 @@ public class MKBlackStart extends MKBlack {
 	}
 
 	@Override
-	public void all(GNodegen gen) {
+	public void all(Movegen gen) {
 		for (long bitmap : M)
 			slideBlack(gen, bitmap);
 		if ((IConst.CBQ & gen.bb_piece) == 0

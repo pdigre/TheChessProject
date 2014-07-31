@@ -8,7 +8,7 @@ public class MNWhite extends MBase{
 
 	final long[] M;
 
-	public void all(GNodegen gen){
+	public void all(Movegen gen){
 		for (long m : M)
 			slideWhite(gen,m);
 		gen.pruneWhite();

@@ -9,7 +9,7 @@ public class MSliderWhite extends MBase{
 
 	final long[][] M;
 	
-	public void all(GNodegen gen){
+	public void all(Movegen gen){
 		for (long[] slides : M)
 			for (int i = 0; i < slides.length && slideWhite(gen,slides[i]); i++)
 				;

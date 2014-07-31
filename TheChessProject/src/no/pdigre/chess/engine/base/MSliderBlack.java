@@ -9,7 +9,7 @@ public class MSliderBlack extends MBase{
 
 	long[][] M;
 	
-	public void all(GNodegen gen){
+	public void all(Movegen gen){
 		for (long[] slides : M)
 			for (int i = 0; i < slides.length && slideBlack(gen,slides[i]); i++)
 				;

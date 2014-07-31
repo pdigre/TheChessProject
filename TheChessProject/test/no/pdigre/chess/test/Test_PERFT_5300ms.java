@@ -9,8 +9,13 @@ import no.pdigre.chess.test.util.PerftResults;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * 
+ * 7833ms
+ *
+ */
 @SuppressWarnings("static-method")
-public class Test_PERFT_Short {
+public class Test_PERFT_5300ms {
 
 	@BeforeClass
 	public static void prepare() {
@@ -38,7 +43,7 @@ public class Test_PERFT_Short {
 	@Test
 	public void e_1_1083() {
 		String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
-		PerftResults.assertPERFT2(fen, new CountFull(new StartGame(fen), 5));
+		PerftResults.assertPERFT(fen, new CountFull(new StartGame(fen), 5));
 	}
 
 	@Test
