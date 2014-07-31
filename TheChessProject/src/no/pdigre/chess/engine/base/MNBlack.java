@@ -9,7 +9,7 @@ public class MNBlack extends MBase {
 
 	final long[] M;
 
-	public void all(GNodegen gen) {
+	public void all(Movegen gen) {
 		for (long m : M)
 			slideBlack(gen,m);
 		gen.pruneBlack();

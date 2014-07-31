@@ -18,11 +18,11 @@ public class NodeGen implements IConst {
 //		if(pos64.whiteNext())
 //			return new GNodegenW(pos64).moves();
 //		return new GNodegenB(pos64).moves();
-		return new GNodegen(pos64).moves();
+		return new GMovegen(pos64).moves();
 	}
 
 	public static final Position64[] getQuiescence64(IPosition pos) {
-		return new GNodegenQ(Position64.getPosition64(pos)).moves();
+		return new GMovegenQ(Position64.getPosition64(pos)).moves();
 	}
 
 	/**

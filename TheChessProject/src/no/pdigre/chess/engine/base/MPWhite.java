@@ -1,175 +1,171 @@
 package no.pdigre.chess.engine.base;
 
-import java.util.ArrayList;
-
 import no.pdigre.chess.engine.base.IConst.BITS;
 
 public class MPWhite extends MBase{
 
-	public MPWhite(int from) {
-		super(from);
-		{
-			int to = from + 8;
-			if (to >= 56 && to < 64) {
-				P1=new long[] { 
-						BITS.assemblePromote(IConst.WP, IConst.WQ, from, to, IBase.CASTLING_STATE | IBase.SPECIAL),
-						BITS.assemblePromote(IConst.WP, IConst.WR, from, to, IBase.CASTLING_STATE | IBase.SPECIAL),
-						BITS.assemblePromote(IConst.WP, IConst.WN, from, to, IBase.CASTLING_STATE | IBase.SPECIAL),
-						BITS.assemblePromote(IConst.WP, IConst.WB, from, to, IBase.CASTLING_STATE | IBase.SPECIAL) };
-			} else if (from >= 8 && from < 16) {
-				M1=BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
-				M2=BITS.assemble(IConst.WP, from, to + 8, IBase.CASTLING_STATE);
-			} else if (to < 64) {
-				M1=BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
-			}
-		}
-
-		{
-			ArrayList<Long> list = new ArrayList<Long>();
-			int x = from & 7;
-			// LEFT
-			if (x != 0){
-				int to=from + 7;
-				if(to<56){
-					CL=BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
-					list.add(CL);
-				} else if (to >= 56 && to < 64) {
-					PL=new long[]{
-					BITS.assemblePromote(IConst.WP, IConst.WQ, from, to, IBase.CASTLING_STATE | IBase.SPECIAL),
-					BITS.assemblePromote(IConst.WP, IConst.WR, from, to, IBase.CASTLING_STATE | IBase.SPECIAL),
-					BITS.assemblePromote(IConst.WP, IConst.WN, from, to, IBase.CASTLING_STATE | IBase.SPECIAL),
-					BITS.assemblePromote(IConst.WP, IConst.WB, from, to, IBase.CASTLING_STATE | IBase.SPECIAL)};
-					for (int i = 0; i < PL.length; i++)
-						list.add(PL[i]);
-				}
-			}
-			// RIGHT
-			if (x != 7) {
-				int to = from + 9;
-				if(to<56){
-				    CR=BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
-					list.add(CR);
-				} else if (to >= 56 && to < 64) {
-					PR=new long[]{
-					BITS.assemblePromote(IConst.WP, IConst.WQ, from, to, IBase.CASTLING_STATE | IBase.SPECIAL),
-					BITS.assemblePromote(IConst.WP, IConst.WR, from, to, IBase.CASTLING_STATE | IBase.SPECIAL),
-					BITS.assemblePromote(IConst.WP, IConst.WN, from, to, IBase.CASTLING_STATE | IBase.SPECIAL),
-					BITS.assemblePromote(IConst.WP, IConst.WB, from, to, IBase.CASTLING_STATE | IBase.SPECIAL)};
-					for (int i = 0; i < PR.length; i++)
-						list.add(PR[i]);
-				}
-			}
-			C = new long[list.size()];
-			for (int i = 0; i < C.length; i++) {
-				C[i]=list.get(i);
-			}
-		}
-	}
-	
-	final long[] C;
-
-	long CL;	// Capture Left
-	long CR;	// Capture right
-	long EL2;  // Enpassant left
-	long ER2;  // Enpassant right
+	long[] CL;	// Capture Left
+	long[] CR;	// Capture right
+	long EL;  // Enpassant left
+	long ER;  // Enpassant right
 	long M1;   // Move 1
 	long M2;   // Move 2
 	long[] P1;   // Promotion
 	long[] PL;   // Promotion Capture Left
 	long[] PR;   // Promotion Capture Right
-
-	@Override
-	public void all(GNodegen gen) {
-		if(from>47){
-			if ((gen.bb_piece & BITS.bitsTo(P1[0])) == 0) {
-				add(gen,P1[0] & gen.castling);
-				add(gen,P1[1] & gen.castling);
-				add(gen,P1[2] & gen.castling);
-				add(gen,P1[3] & gen.castling);
-			}
-		} else if ((gen.bb_piece & BITS.bitsTo(M1)) == 0) {
-			add(gen,M1 & gen.castling);
-			if(M2!=0L && (gen.bb_piece & BITS.bitsTo(M2)) == 0)
-				add(gen,M2 & gen.castling);
-		}
-		
-//		try {
-//			int x = from & 7;
-//			// Left
-//			if (x != 0){
-//				int to = from + 7;
-//				if (gen.enpassant == to) {
-//					add(gen,(purge(CL, PSQT.pVal(to - 8, IConst.BP)) & gen.castling) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
-//				} else {
-//					long bto = 1L << to;
-//					if ((gen.bb_black & bto) != 0) {
-//						int type = type(gen,bto);
-//						if(to<56){
-//							add(gen,(purge(CL, PSQT.pVal(to, type + 8)) & gen.castling) | (type << IConst._CAPTURE));
-//						} else {
-//							add(gen,PL[0] & gen.castling);
-//							add(gen,PL[1] & gen.castling);
-//							add(gen,PL[2] & gen.castling);
-//							add(gen,PL[3] & gen.castling);
-//						}
-//					}
-//				}
-//			}
-//			
-//			
-//			// Right
-//			if (x != 7){
-//				int to = from+9;
-//				if (gen.enpassant == to) {
-//					add(gen,(purge(CR, PSQT.pVal(to - 8, IConst.BP)) & gen.castling) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
-//				} else {
-//					long bto = 1L << to;
-//					if ((gen.bb_black & bto) != 0) {
-//						int type = type(gen,bto);
-//						if(to<56){
-//							add(gen,(purge(CR, PSQT.pVal(to, type + 8)) & gen.castling) | (type << IConst._CAPTURE));
-//						} else{
-//							add(gen,PR[0] & gen.castling);
-//							add(gen,PR[1] & gen.castling);
-//							add(gen,PR[2] & gen.castling);
-//							add(gen,PR[3] & gen.castling);
-//						}
-//					}
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		
-		for (long bitmap : C) {
-			int to = BITS.getTo(bitmap);
-			if (gen.enpassant == to) {
-				add(gen,(purge(bitmap, PSQT.pVal(to - 8, IConst.BP)) & gen.castling) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
+	
+	public MPWhite(int from) {
+		super(from);
+		if(from>7 && from < 56){
+			if (from < 48) {
+				M1=move(from + 8);
+				if(from < 16)
+					M2=move(from + 16);
 			} else {
-				long bto = 1L << to;
-				if ((gen.bb_black & bto) != 0) {
-					int type = type(gen,bto);
-					add(gen,(purge(bitmap, PSQT.pVal(to, type + 8)) & gen.castling) | (type << IConst._CAPTURE));
+				P1=promotes(from + 8);
+			}
+			int x = from & 7;
+			// LEFT
+			if (x != 0){
+				int to=from + 7;
+				if(from>47){
+					IBase.REV[to].RPW |= (1L << from);
+					PL=cpromotes(to);
+				} else {
+					IBase.REV[to].RPW |= (1L << from);
+					CL=captures(to);
+					if(from > 31 && from < 40)
+						EL=enpassant(to);
+				}
+			}
+			// RIGHT
+			if (x != 7) {
+				int to = from + 9;
+				if(from>47){
+					IBase.REV[to].RPW |= (1L << from);
+					PR=cpromotes(to);
+				} else {
+					IBase.REV[to].RPW |= (1L << from);
+				    CR=captures(to);
+					if(from > 31 && from < 40)
+						ER=enpassant(to);
 				}
 			}
 		}
+	}
+
+	private long move(int to) {
+		return BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
+	}
+
+	private long enpassant(int to) {
+		return purge(BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE),PSQT.pVal(to - 8, IConst.BP)) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL;
+	}
+
+	private long[] captures(int to) {
+		long[] captures=new long[5];
+		for (int c = 0; c < 5; c++) {
+			long base = BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
+			int cval = PSQT.pVal(to,WCAPTURES[c]);
+			captures[c]=purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE);;
+		}
+		return captures;
+	}
+
+	private long[] promotes(int to) {
+		long[] promotes=new long[4];
+		for (int p = 0; p < 4; p++)
+			promotes[p]=BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL);
+		return promotes;
+	}
+
+	private long[] cpromotes(int to) {
+		long[] promotes=new long[20];
+		for (int p = 0; p < 4; p++)
+			for (int c = 0; c < 5; c++) {
+				long base = BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL);
+				int cval = PSQT.pVal(to,WCAPTURES[c]);
+				promotes[p*5+c]=purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE);
+			}
+		return promotes;
+	}
+
+	private final static int getctype(int type) {
+		return type>4?type-3:type-1;
+	}
+
+	@Override
+	public void all(Movegen gen) {
+	}
+
+	public static <X extends MBase> void genMoves(final Movegen gen,long b, final X[] arr) {
+		final MPWhite[] mp=(MPWhite[])arr;
+		long occ=~(gen.bb_piece>>8);
+		long m1=b&occ;
+		new Adder(gen,m1) {
+
+			@Override
+			public void add(int from) {
+				if(from>47){
+					add(mp[from].P1[0]);
+					add(mp[from].P1[1]);
+					add(mp[from].P1[2]);
+					add(mp[from].P1[3]);
+				} else {
+					add(mp[from].M1);
+				}
+			}
+		};
+		new Adder(gen,m1&0xFF00L&(occ>>8)) {
+
+			@Override
+			public void add(int from) {
+				add(mp[from].M2);
+			}
+		};
+		final int enp = gen.enpassant;
+		long e=gen.bb_black|(1L<<enp);
+
+		new Adder(gen,(b & ~0x0101010101010101L) &(e>>7)) {
+
+			@Override
+			public void add(int from) {
+				int to=from+7;
+				if (to == enp) {
+					add(mp[from].EL);
+				} else {
+					int ctype=getctype(type(gen,1L << to));
+					if(from<48){
+						add(mp[from].CL[ctype]);
+					} else {
+						add(mp[from].PL[ctype]);
+						add(mp[from].PL[ctype+5]);
+						add(mp[from].PL[ctype+10]);
+						add(mp[from].PL[ctype+15]);
+					}
+				}
+			}
+		};
+		new Adder(gen,(b & ~0x8080808080808080L) &(e>>9)) {
+
+			@Override
+			public void add(int from) {
+				int to=from+9;
+				if (to == enp) {
+					add(mp[from].ER);
+				} else {
+					int ctype=getctype(type(gen,1L << to));
+					if(from<48){
+						add(mp[from].CR[ctype]);
+					} else {
+						add(mp[from].PR[ctype]);
+						add(mp[from].PR[ctype+5]);
+						add(mp[from].PR[ctype+10]);
+						add(mp[from].PR[ctype+15]);
+					}
+				}
+			}
+		};
 		gen.pruneWhite();
 	}
-
-	public static <X extends MBase> void genMoves(GNodegen gen,long b, X[] arr) {
-		int bits = Long.bitCount(b);
-		for (int j = 0; j < bits; j++) {
-			int from = Long.numberOfTrailingZeros(b);
-			b ^= 1L << from;
-			arr[from].all(gen);
-		}
-		// Move 1 - check for ~(any piece shift -8)
-		// Move 2 - only remainder row 2 ~(any piece shift another -8)
-		// Left   - (black + ENP remove col 8)shift -7, OR 
-		// Right  - (black + ENP remove col 1)shift -9, OR 
-		
-		// LSB each - lookup [from]
-		
-	}
-
 }

@@ -1,0 +1,23 @@
+package no.pdigre.chess.engine.base;
+
+import no.pdigre.chess.engine.base.IBase.MOVEDATA;
+
+public abstract class Adder {
+	final Movegen gen;
+
+	public Adder(Movegen gen,long b64) {
+		this.gen = gen;
+		int pop = Long.bitCount(b64);
+		for (int j = 0; j < pop; j++) {
+			int from = Long.numberOfTrailingZeros(b64);
+			b64 ^= 1L << from;
+			add(from);
+		}
+	}
+
+	abstract void add(int from);
+
+	void add(long move) {
+		gen.moves[gen.imoves++] = new MOVEDATA(move & gen.castling);
+	}
+}

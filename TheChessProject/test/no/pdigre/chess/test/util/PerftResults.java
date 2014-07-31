@@ -16,7 +16,7 @@ import java.util.TreeMap;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.IPosition64;
 import no.pdigre.chess.engine.uci.ROCEexe;
-import no.pdigre.chess.test.Test_PERFT_Short;
+import no.pdigre.chess.test.Test_PERFT_5300ms;
 
 public class PerftResults {
 
@@ -80,7 +80,7 @@ public class PerftResults {
 			String key = entry.getKey();
 			int v1 = entry.getValue();
 			if (!div2.containsKey(key)) {
-				System.out.println("ERROR:" + key);
+				System.out.println("WRONG:" + key);
 				continue;
 			}
 			int v2 = div2.get(key);
@@ -128,7 +128,7 @@ public class PerftResults {
 
 	public static void readAll() {
 		allexpected=new HashMap<String, String>();
-		URL resource = new Test_PERFT_Short().getClass().getResource("perft.txt");
+		URL resource = new Test_PERFT_5300ms().getClass().getResource("perft.txt");
 		try {
 			String txt = FileUtils.stream2string((InputStream) resource.getContent());
 			int i = 0;

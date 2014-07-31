@@ -71,6 +71,8 @@ public interface IBase extends IConst {
 
 			for (int from = 0; from < 64; from++) {
 				REV[from] = new REVERSE();
+			}
+			for (int from = 0; from < 64; from++) {
 				WN[from] = new MNWhite(from,getKnightMoves(from, IConst.WN, CASTLING_STATE | HALFMOVES));
                 BN[from] = new MNBlack(from,getKnightMoves(from, IConst.BN, CASTLING_STATE | HALFMOVES));
 				WR[from] = new MSliderWhite(from,getRookMoves(from, IConst.WR, CASTLING_STATE | HALFMOVES));
@@ -113,10 +115,6 @@ public interface IBase extends IConst {
 						REV[IConst.BITS.getTo(bitmap)].RQ |= bfrom;
 				for (long bitmap : WK[from].M)
 					REV[IConst.BITS.getTo(bitmap)].RK |= bfrom;
-				for (long bitmap : WP[from].C)
-					REV[IConst.BITS.getTo(bitmap)].RPW |= bfrom;
-				for (long bitmap : BP[from].C)
-					REV[IConst.BITS.getTo(bitmap)].RPB |= bfrom;
 			}
 		}
 
