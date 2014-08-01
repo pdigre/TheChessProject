@@ -58,8 +58,8 @@ public interface IBase extends IConst {
 				REV[from] = new REVERSE();
 			}
 			for (int from = 0; from < 64; from++) {
-				WN[from] = new MNWhite(from,getKnightMoves(from, IConst.WN, CASTLING_STATE | HALFMOVES));
-                BN[from] = new MNBlack(from,getKnightMoves(from, IConst.BN, CASTLING_STATE | HALFMOVES));
+				WN[from] = new MNWhite(from);
+                BN[from] = new MNBlack(from);
 				WR[from] = new MSliderWhite(from,getRookMoves(from, IConst.WR, CASTLING_STATE | HALFMOVES));
 				BR[from] = new MSliderBlack(from,getRookMoves(from, IConst.BR, CASTLING_STATE | HALFMOVES));
 				WB[from] = new MSliderWhite(from,getBishopMoves(from, IConst.WB, CASTLING_STATE | HALFMOVES));
@@ -87,8 +87,6 @@ public interface IBase extends IConst {
 			// initialize reverse King in-check
 			for (int from = 0; from < 64; from++) {
 				long bfrom = 1L << from;
-				for (long bitmap : WN[from].M)
-					REV[IConst.BITS.getTo(bitmap)].RN |= bfrom;
 				for (long[] m2 : WB[from].M)
 					for (long bitmap : m2)
 						REV[IConst.BITS.getTo(bitmap)].RB |= bfrom;
@@ -98,8 +96,6 @@ public interface IBase extends IConst {
 				for (long[] m2 : WQ[from].M)
 					for (long bitmap : m2)
 						REV[IConst.BITS.getTo(bitmap)].RQ |= bfrom;
-				for (long bitmap : WK[from].M)
-					REV[IConst.BITS.getTo(bitmap)].RK |= bfrom;
 			}
 		}
 

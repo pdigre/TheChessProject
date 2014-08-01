@@ -26,17 +26,17 @@ public class GMovegen extends Movegen {
 		// *********************************************************************************************
 		if (pos.whiteNext()) {
 			MPWhite.genMoves(this,bb_white & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
-			MBase.genMoves(this,bb_white & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
-			MBase.genMoves(this,bb_white & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
-			MBase.genMoves(this,bb_white & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
-			MBase.genMoves(this,bb_white & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
+			MNWhite.genMoves(this,bb_white & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
+			MSliderWhite.genMoves(this,bb_white & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
+			MSliderWhite.genMoves(this,bb_white & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
+			MSliderWhite.genMoves(this,bb_white & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
 			BASE.WK[wking].all(this);
 		} else {
 			MPBlack.genMoves(this,bb_black & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
-			MBase.genMoves(this,bb_black & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
-			MBase.genMoves(this,bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
-			MBase.genMoves(this,bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
-			MBase.genMoves(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
+			MNBlack.genMoves(this,bb_black & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
+			MSliderBlack.genMoves(this,bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
+			MSliderBlack.genMoves(this,bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
+			MSliderBlack.genMoves(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
 			BASE.BK[bking].all(this);
 		}
 		Position64[] mvs = Arrays.copyOfRange(list, 0, n);
