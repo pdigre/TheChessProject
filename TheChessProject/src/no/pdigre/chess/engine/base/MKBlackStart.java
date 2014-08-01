@@ -20,13 +20,13 @@ public class MKBlackStart extends MKBlack {
 				&& (gen.castling & IConst.CANCASTLE_BLACKQUEEN) != 0
 				&& !gen.pos.isCheckBlack()
 				&& !gen.pos.move(SIDE_BQ).isCheckBlack()) {
-			add(gen, CASTLING_BQ & gen.castling);
+			gen.add(CASTLING_BQ & gen.castling);
 		}
 		if ((IConst.CBK & gen.bb_piece) == 0
 				&& (gen.castling & IConst.CANCASTLE_BLACKKING) != 0
 				&& !gen.pos.isCheckBlack()
 				&& !gen.pos.move(SIDE_BK).isCheckBlack()) {
-			add(gen, CASTLING_BK & gen.castling);
+			gen.add(CASTLING_BK & gen.castling);
 		}
 		gen.pruneBlack();
 	}

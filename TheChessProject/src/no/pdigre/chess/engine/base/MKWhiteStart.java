@@ -20,13 +20,13 @@ public class MKWhiteStart extends MKWhite {
 				&& (gen.castling & IConst.CANCASTLE_WHITEQUEEN) != 0
 				&& !gen.pos.isCheckWhite()
 				&& !gen.pos.move(SIDE_WQ).isCheckWhite()) {
-			add(gen, CASTLING_WQ & gen.castling);
+			gen.add(CASTLING_WQ & gen.castling);
 		}
 		if ((IConst.CWK & gen.bb_piece) == 0
 				&& (gen.castling & IConst.CANCASTLE_WHITEKING) != 0
 				&& !gen.pos.isCheckWhite()
 				&& !gen.pos.move(SIDE_WK).isCheckWhite()) {
-			add(gen, CASTLING_WK & gen.castling);
+			gen.add(CASTLING_WK & gen.castling);
 		}
 		gen.pruneWhite();
 	}

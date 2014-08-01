@@ -4,15 +4,15 @@ import no.pdigre.chess.engine.base.IConst.BITS;
 
 public class MPWhite extends MBase{
 
-	long[] CL;	// Capture Left
-	long[] CR;	// Capture right
-	long EL;  // Enpassant left
-	long ER;  // Enpassant right
-	long M1;   // Move 1
-	long M2;   // Move 2
-	long[] P1;   // Promotion
-	long[] PL;   // Promotion Capture Left
-	long[] PR;   // Promotion Capture Right
+	MOVEDATA[] CL;	// Capture Left
+	MOVEDATA[] CR;	// Capture right
+	MOVEDATA EL;  // Enpassant left
+	MOVEDATA ER;  // Enpassant right
+	MOVEDATA M1;   // Move 1
+	MOVEDATA M2;   // Move 2
+	MOVEDATA[] P1;   // Promotion
+	MOVEDATA[] PL;   // Promotion Capture Left
+	MOVEDATA[] PR;   // Promotion Capture Right
 	
 	public MPWhite(int from) {
 		super(from);
@@ -28,11 +28,10 @@ public class MPWhite extends MBase{
 			// LEFT
 			if (x != 0){
 				int to=from + 7;
+				IBase.REV[to].RPW |= (1L << from);
 				if(from>47){
-					IBase.REV[to].RPW |= (1L << from);
 					PL=cpromotes(to);
 				} else {
-					IBase.REV[to].RPW |= (1L << from);
 					CL=captures(to);
 					if(from > 31 && from < 40)
 						EL=enpassant(to);
@@ -41,11 +40,10 @@ public class MPWhite extends MBase{
 			// RIGHT
 			if (x != 7) {
 				int to = from + 9;
+				IBase.REV[to].RPW |= (1L << from);
 				if(from>47){
-					IBase.REV[to].RPW |= (1L << from);
 					PR=cpromotes(to);
 				} else {
-					IBase.REV[to].RPW |= (1L << from);
 				    CR=captures(to);
 					if(from > 31 && from < 40)
 						ER=enpassant(to);
@@ -54,44 +52,40 @@ public class MPWhite extends MBase{
 		}
 	}
 
-	private long move(int to) {
-		return BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
+	private MOVEDATA move(int to) {
+		return new MOVEDATA(BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE));
 	}
 
-	private long enpassant(int to) {
-		return purge(BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE),PSQT.pVal(to - 8, IConst.BP)) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL;
+	private MOVEDATA enpassant(int to) {
+		return new MOVEDATA(purge(BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE),PSQT.pVal(to - 8, IConst.BP)) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
 	}
 
-	private long[] captures(int to) {
-		long[] captures=new long[5];
+	private MOVEDATA[] captures(int to) {
+		MOVEDATA[] captures=new MOVEDATA[5];
 		for (int c = 0; c < 5; c++) {
 			long base = BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
 			int cval = PSQT.pVal(to,WCAPTURES[c]);
-			captures[c]=purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE);;
+			captures[c]=new MOVEDATA(purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE));
 		}
 		return captures;
 	}
 
-	private long[] promotes(int to) {
-		long[] promotes=new long[4];
+	private MOVEDATA[] promotes(int to) {
+		MOVEDATA[] promotes=new MOVEDATA[4];
 		for (int p = 0; p < 4; p++)
-			promotes[p]=BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL);
+			promotes[p]=new MOVEDATA(BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL));
 		return promotes;
 	}
 
-	private long[] cpromotes(int to) {
-		long[] promotes=new long[20];
+	private MOVEDATA[] cpromotes(int to) {
+		MOVEDATA[] promotes=new MOVEDATA[20];
 		for (int p = 0; p < 4; p++)
 			for (int c = 0; c < 5; c++) {
 				long base = BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL);
 				int cval = PSQT.pVal(to,WCAPTURES[c]);
-				promotes[p*5+c]=purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE);
+				promotes[p*5+c]=new MOVEDATA(purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE));
 			}
 		return promotes;
-	}
-
-	private final static int getctype(int type) {
-		return type>4?type-3:type-1;
 	}
 
 	@Override
@@ -134,7 +128,7 @@ public class MPWhite extends MBase{
 				if (to == enp) {
 					add(mp[from].EL);
 				} else {
-					int ctype=getctype(type(gen,1L << to));
+					int ctype=gen.ctype(1L << to);
 					if(from<48){
 						add(mp[from].CL[ctype]);
 					} else {
@@ -154,7 +148,7 @@ public class MPWhite extends MBase{
 				if (to == enp) {
 					add(mp[from].ER);
 				} else {
-					int ctype=getctype(type(gen,1L << to));
+					int ctype=gen.ctype(1L << to);
 					if(from<48){
 						add(mp[from].CR[ctype]);
 					} else {
