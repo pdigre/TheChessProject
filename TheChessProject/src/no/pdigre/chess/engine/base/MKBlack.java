@@ -8,7 +8,6 @@ public class MKBlack extends MBase {
 
 	long[] M;
 
-	@Override
 	public void all(Movegen gen) {
 		for (long bitmap : M)
 			slideBlack(gen,bitmap);

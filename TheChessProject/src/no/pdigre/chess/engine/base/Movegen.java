@@ -1,6 +1,5 @@
 package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.base.IBase.MOVEDATA;
 import no.pdigre.chess.engine.fen.Position64;
 
 public abstract class Movegen implements IConst{
@@ -72,7 +71,7 @@ public abstract class Movegen implements IConst{
 
 	public void pruneBlack() {
 		while (test < imoves) {
-			Position64 next = moves[test++].move(pos);
+			Position64 next = moves[test++].move(pos,castling);
 			if (!next.isCheckBlack())
 				list[n++] = next;
 		}
@@ -80,13 +79,27 @@ public abstract class Movegen implements IConst{
 
 	public void pruneWhite() {
 		while (test < imoves) {
-			Position64 next = moves[test++].move(pos);
+			Position64 next = moves[test++].move(pos,castling);
 			if (!next.isCheckWhite())
 				list[n++] = next;
 		}
 	}
 
-	public void adder(Adder adder){
-		
+	final void add(long bitmap) {
+		moves[imoves++] = new MOVEDATA(bitmap & castling);
 	}
+
+	final void add(MOVEDATA data) {
+		moves[imoves++] = data;
+	}
+
+	final int type(long bit) {
+		return ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4);
+	}
+	
+	final int ctype(long bit) {
+		return ((bb_bit1 & bit) == 0 ? 0 : 1) + ((bb_bit2 & bit) == 0 ? 0 : 2) + ((bb_bit3 & bit) == 0 ? 0 : 2) - 1;
+	}
+	
+	
 }

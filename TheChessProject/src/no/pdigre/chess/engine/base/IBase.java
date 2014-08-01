@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import no.pdigre.chess.engine.fen.Position64;
-
 /**
  * Arrays of possible moves for each position of the board sliders have sub
  * arrays - piece - from - to - x - castling
@@ -20,19 +18,6 @@ public interface IBase extends IConst {
 	REVERSE[] REV = new REVERSE[64];
 	BASE base = new BASE();
 
-	class MOVEDATA {
-		public MOVEDATA(long bitmap) {
-			this.bitmap=bitmap;
-		}
-
-		public Position64 move(Position64 pos){
-			return pos.move(bitmap);
-		}
-
-		long bitmap;
-	}
-	
-	
 	class REVERSE {
 		// Reverse lookup for in-check
 		public long RPW=0L;

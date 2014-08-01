@@ -1,6 +1,5 @@
 package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.base.IBase.MOVEDATA;
 
 public abstract class Adder {
 	final Movegen gen;
@@ -17,7 +16,7 @@ public abstract class Adder {
 
 	abstract void add(int from);
 
-	void add(long move) {
-		gen.moves[gen.imoves++] = new MOVEDATA(move & gen.castling);
+	void add(MOVEDATA move) {
+		gen.moves[gen.imoves++] = move;
 	}
 }
