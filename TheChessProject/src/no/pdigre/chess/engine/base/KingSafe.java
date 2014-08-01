@@ -1,6 +1,7 @@
 package no.pdigre.chess.engine.base;
 
 import no.pdigre.chess.engine.base.IBase.BASE;
+import no.pdigre.chess.engine.base.IBase.REVERSE;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.IPosition64;
 import no.pdigre.chess.engine.fen.Position64;
@@ -10,9 +11,7 @@ public class KingSafe implements IConst {
 	public static int getCheckState(IPosition64 pos) {
 		if (!(pos.whiteNext() ? pos.isCheckWhite() : pos.isCheckBlack()))
 			return 0;
-		if (NodeGen.getLegalMoves64(pos).length==0)
-			return MATE;
-		return CHECK;
+		return NodeGen.getLegalMoves64(pos).length==0? MATE: CHECK;
 	}
 
 	final private long bb_black;
@@ -38,93 +37,87 @@ public class KingSafe implements IConst {
 		return new KingSafe(pos.get64black(), pos.get64bit1(), pos.get64bit2(), pos.get64bit3(), pos.getWKpos(), pos.getBKpos());
 	}
 
-	final public boolean isCheckBlack() {
-		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.REV[bking].RN) != 0)
-			return true;
-		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.REV[bking].RK) != 0)
-			return true;
-		if (((bb_bit1 & bb_bit3 & ~bb_black) & IBase.REV[bking].RB) != 0) {
-			for (long[] slide : BASE.WB[bking].M) {
-				for (long p : slide) {
-					long bit = 1L << BITS.getTo(p);
-					if ((bb_piece & bit) == 0)
-						continue;
-					if ((bb_black & bit) != 0)
-						break;
-					int type = type(bit);
-					if (type == WQ || type == WB)
-						return true;
-					break;
-				}
-			}
-		}
-		if (((bb_bit2 & bb_bit3 & ~bb_black) & IBase.REV[bking].RR) != 0) {
-			for (long[] slide : BASE.WR[bking].M) {
-				for (long p : slide) {
-					long bit = 1L << BITS.getTo(p);
-					if ((bb_piece & bit) == 0)
-						continue;
-					if ((bb_black & bit) != 0)
-						break;
-					int type = type(bit);
-					if (type == WQ || type == WR)
-						return true;
-					break;
-				}
-			}
-		}
-		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & ~bb_black) & IBase.REV[bking].RPW) != 0)
-			return true;
-		return false;
-	}
-
-	String format64(long b64) {
-		String string64 = Long.toBinaryString(b64);
-		return ".0000000.0000000.0000000.0000000.0000000.0000000.0000000.0000000".substring(0, 64 - string64.length()) + string64;
-	}
-
 	final public boolean isCheckWhite() {
-		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.REV[wking].RN) != 0)
+		REVERSE rev = IBase.REV[wking];
+		long e=bb_black;
+		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
 			return true;
-		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black) & IBase.REV[wking].RK) != 0)
-			return true;
-		if (((bb_bit1 & bb_bit3 & bb_black) & IBase.REV[wking].RB) != 0) {
-			for (long[] slide : BASE.WB[wking].M) {
-				for (long p : slide) {
-					long bit = 1L << BITS.getTo(p);
-					if ((bb_piece & bit) == 0)
-						continue;
-					if ((bb_black & bit) == 0)
-						break;
-					int type = type(bit);
-					if (type == WQ || type == WB)
-						return true;
-					break;
-				}
+		MQWhite x = BASE.WQ[wking];
+		long slider=bb_bit3 & e;
+		if((slider & rev.RQ) !=0){
+			if ((bb_bit1 & slider & rev.RB) != 0) {
+				if(bdiag(x.UL)||bdiag(x.UR)||bdiag(x.DL)||bdiag(x.DR))
+					return true;
+			}
+			if ((bb_bit2 & slider & rev.RR) != 0) {
+				if(bline(x.U)||bline(x.D)||bline(x.L)||bline(x.R))
+					return true;
 			}
 		}
-		if (((bb_bit2 & bb_bit3 & bb_black) & IBase.REV[wking].RR) != 0) {
-			for (long[] slide : BASE.WR[wking].M) {
-				for (long p : slide) {
-					long bit = 1L << BITS.getTo(p);
-					if ((bb_piece & bit) == 0)
-						continue;
-					if ((bb_black & bit) == 0)
-						break;
-					int type = type(bit);
-					if (type == WQ || type == WR)
-						return true;
-					break;
-				}
-			}
-		}
-		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & bb_black) & IBase.REV[wking].RPB) != 0)
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & e) & rev.RPB) != 0)
+			return true;
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RK) != 0)
 			return true;
 		return false;
 	}
 
-	final private int type(long bit) {
-		return ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4);
+	final public boolean isCheckBlack() {
+		REVERSE rev = IBase.REV[bking];
+		long e=~bb_black;
+		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
+			return true;
+		MQWhite x = BASE.WQ[bking];
+		long slider=bb_bit3 & e;
+		if((slider & rev.RQ) !=0){
+			if ((bb_bit1 & slider & rev.RB) != 0) {
+				if(wdiag(x.UL)||wdiag(x.UR)||wdiag(x.DL)||wdiag(x.DR))
+					return true;
+			}
+			if ((bb_bit2 & slider & rev.RR) != 0) {
+				if(wline(x.U)||wline(x.D)||wline(x.L)||wline(x.R))
+					return true;
+			}
+		}
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & e) & rev.RPW) != 0)
+			return true;
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RK) != 0)
+			return true;
+		return false;
 	}
 
+	private boolean wdiag(MOVEDATA[] s) {
+		for (MOVEDATA m : s) {
+			long bit = m.bto;
+			if ((bb_piece & bit) != 0)
+				return (bb_black & bit) == 0 && (bb_bit1 & bit) != 0 &&  (bb_bit3 & bit) != 0;
+		}
+		return false;
+	}
+
+	private boolean wline(MOVEDATA[] s) {
+		for (MOVEDATA m : s) {
+			long bit = m.bto;
+			if ((bb_piece & bit) != 0)
+				return (bb_black & bit) == 0 && (bb_bit2 & bit) != 0 &&  (bb_bit3 & bit) != 0;
+		}
+		return false;
+	}
+	
+	private boolean bdiag(MOVEDATA[] s) {
+		for (MOVEDATA m : s) {
+			long bit = m.bto;
+			if ((bb_piece & bit) != 0)
+				return (bb_black & bit) != 0 && (bb_bit1 & bit) != 0 &&  (bb_bit3 & bit) != 0;
+		}
+		return false;
+	}
+
+	private boolean bline(MOVEDATA[] s) {
+		for (MOVEDATA m : s) {
+			long bit = m.bto;
+			if ((bb_piece & bit) != 0)
+				return (bb_black & bit) != 0 && (bb_bit2 & bit) != 0 &&  (bb_bit3 & bit) != 0;
+		}
+		return false;
+	}
 }

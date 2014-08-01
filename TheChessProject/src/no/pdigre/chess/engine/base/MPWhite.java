@@ -53,11 +53,11 @@ public class MPWhite extends MBase{
 	}
 
 	private MOVEDATA move(int to) {
-		return new MOVEDATA(BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE));
+		return MOVEDATA.create(BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE));
 	}
 
 	private MOVEDATA enpassant(int to) {
-		return new MOVEDATA(purge(BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE),PSQT.pVal(to - 8, IConst.BP)) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
+		return MOVEDATA.create(purge(BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE),PSQT.pVal(to - 8, IConst.BP)) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
 	}
 
 	private MOVEDATA[] captures(int to) {
@@ -65,7 +65,7 @@ public class MPWhite extends MBase{
 		for (int c = 0; c < 5; c++) {
 			long base = BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
 			int cval = PSQT.pVal(to,WCAPTURES[c]);
-			captures[c]=new MOVEDATA(purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE));
+			captures[c]=MOVEDATA.create(purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE));
 		}
 		return captures;
 	}
@@ -73,7 +73,7 @@ public class MPWhite extends MBase{
 	private MOVEDATA[] promotes(int to) {
 		MOVEDATA[] promotes=new MOVEDATA[4];
 		for (int p = 0; p < 4; p++)
-			promotes[p]=new MOVEDATA(BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL));
+			promotes[p]=MOVEDATA.create(BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL));
 		return promotes;
 	}
 
@@ -83,7 +83,7 @@ public class MPWhite extends MBase{
 			for (int c = 0; c < 5; c++) {
 				long base = BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL);
 				int cval = PSQT.pVal(to,WCAPTURES[c]);
-				promotes[p*5+c]=new MOVEDATA(purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE));
+				promotes[p*5+c]=MOVEDATA.create(purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE));
 			}
 		return promotes;
 	}

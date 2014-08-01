@@ -86,7 +86,7 @@ public abstract class Movegen implements IConst{
 	}
 
 	final void add(long bitmap) {
-		moves[imoves++] = new MOVEDATA(bitmap & castling);
+		moves[imoves++] = MOVEDATA.create(bitmap & castling);
 	}
 
 	final void add(MOVEDATA data) {
