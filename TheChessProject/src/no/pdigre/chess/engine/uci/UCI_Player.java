@@ -28,13 +28,13 @@ public class UCI_Player extends TestPlayer {
 			
 			@Override
 			public void makeMove(long bitmap) {
-				System.out.println(">"+FEN.printMove(pos.move(bitmap)));
+//				System.out.println(">"+FEN.printMove(pos.move(bitmap)));
 			}
 			
 			@Override
 			public int findBest(int[] bitmaps, int[] scores) {
-				for (int bitmap : bitmaps)
-					System.out.println(":"+FEN.printMove(pos.move(bitmap)));
+//				for (int bitmap : bitmaps)
+//					System.out.println(":"+FEN.printMove(pos.move(bitmap)));
 				return super.findBest(bitmaps, scores);
 			}
         };

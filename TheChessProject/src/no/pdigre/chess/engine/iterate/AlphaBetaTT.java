@@ -1,9 +1,9 @@
 package no.pdigre.chess.engine.iterate;
 
 import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPosition64;
-import no.pdigre.chess.engine.fen.Position64;
+import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.fen.Position;
 
 public class AlphaBetaTT implements IIterator {
 
@@ -21,11 +21,11 @@ public class AlphaBetaTT implements IIterator {
 	}
 
 	@Override
-	public int white(IPosition pos, int alpha, int beta) {
-		Position64[] moves = NodeGen.getLegalMoves64(pos);
+	public int white(Position pos, int alpha, int beta) {
+		Position[] moves = NodeGen.getLegalMoves64(pos);
 		for (int i = moves.length - 1; i >= 0; i--) {
-			Position64 next = moves[i];
-			IPosition tt = Transposition.find(next, quality);
+			Position next = moves[i];
+			Position tt = Transposition.find(next, quality);
 			int score=0;
 			if(tt!=null){
 				score=tt.getScore();
@@ -44,11 +44,11 @@ public class AlphaBetaTT implements IIterator {
 	}
 
 	@Override
-	public int black(IPosition pos, int alpha, int beta) {
-		Position64[] moves = NodeGen.getLegalMoves64(pos);
+	public int black(Position pos, int alpha, int beta) {
+		Position[] moves = NodeGen.getLegalMoves64(pos);
 		for (int i = 0; i < moves.length; i++) {
-			Position64 next = moves[i];
-			IPosition tt = Transposition.find(next, quality);
+			Position next = moves[i];
+			Position tt = Transposition.find(next, quality);
 			int score=0;
 			if(tt!=null){
 				score=tt.getScore();

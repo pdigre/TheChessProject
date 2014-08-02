@@ -6,8 +6,7 @@ import no.pdigre.chess.engine.fen.FEN;
 public class MOVEDATA {
 	
 	public static MOVEDATA create(long bitmap){
-		int to=BITS.getTo(bitmap);
-		return new MOVEDATA(bitmap,1L << to);
+		return new MOVEDATA(bitmap,1L << BITS.getTo(bitmap));
 	}
 	
 	public static MOVEDATA createxw(long bitmap){
@@ -78,8 +77,6 @@ public class MOVEDATA {
 			b_bit3 ^= cfromto;
 			b_black ^= ((piece & 8) == 0 ? 0 : cfromto);
 		}
-		
-		
 		this.b_bit1=b_bit1;
 		this.b_bit2=b_bit2;
 		this.b_bit3=b_bit3;

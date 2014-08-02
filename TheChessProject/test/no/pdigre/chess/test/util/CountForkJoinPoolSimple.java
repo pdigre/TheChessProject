@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.concurrent.ForkJoinPool;
 
 import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class CountForkJoinPoolSimple extends CountSimple {
 
     private static final long serialVersionUID = -3058348904963758664L;
 
-    public CountForkJoinPoolSimple(IPosition pos, int depth) {
+    public CountForkJoinPoolSimple(Position pos, int depth) {
         super(pos, depth);
     }
 
@@ -18,7 +18,7 @@ public class CountForkJoinPoolSimple extends CountSimple {
     public int[] compute() {
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
         ArrayList<CountSimple> tasks = new ArrayList<CountSimple>();
-        for (IPosition next : NodeGen.getLegalMoves64(pos)) {
+        for (Position next : NodeGen.getLegalMoves64(pos)) {
             count(next);
             if (counters.length > 1) {
             	CountSimple task = new CountSimple(next, counters.length - 1);

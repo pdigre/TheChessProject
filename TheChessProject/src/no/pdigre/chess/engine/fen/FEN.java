@@ -143,7 +143,7 @@ public class FEN implements IConst {
         System.out.println(pt == null ? "<none>" : pt.toString() + " " + pos2string(pos));
     }
 
-    public static String printMove(IPosition pos) {
+    public static String printMove(Position pos) {
     	long bitmap = pos.getBitmap();
         StringBuilder sb = new StringBuilder();
         sb.append(PieceType.types[(int) (bitmap & PIECE)]);
@@ -158,7 +158,7 @@ public class FEN implements IConst {
             sb.append(" castling");
         if (BITS.isPromotion(bitmap))
             sb.append(" promoted");
-        switch (KingSafe.getCheckState(Position64.getPosition64(pos))) {
+        switch (KingSafe.getCheckState(pos)) {
             case IConst.CHECK:
                 sb.append(" check");
                 break;
@@ -170,7 +170,7 @@ public class FEN implements IConst {
         return sb.toString();
     }
 
-    public static String notation(IPosition pos) {
+    public static String notation(Position pos) {
     	long bitmap = pos.getBitmap();
         int from = BITS.getFrom(bitmap);
         int to = BITS.getTo(bitmap);
@@ -190,7 +190,7 @@ public class FEN implements IConst {
                 suffix = col == 2 ? "O-O-O" : "O-O";
             }
         }
-        switch (KingSafe.getCheckState(Position64.getPosition64(pos))) {
+        switch (KingSafe.getCheckState(pos)) {
             case IConst.CHECK:
                 suffix += "+";
                 break;

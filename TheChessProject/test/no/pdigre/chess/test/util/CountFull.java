@@ -6,28 +6,26 @@ import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.base.KingSafe;
 import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPosition64;
-import no.pdigre.chess.engine.fen.Position64;
+import no.pdigre.chess.engine.fen.Position;
 
 public class CountFull extends RecursiveTask<Counter[]> {
 
     private static final long serialVersionUID = -3058348234963748664L;
 
-    final protected IPosition pos;
+    final protected Position pos;
 
 	private PerftResults perft;
 
 	protected final Counter[] counters;
 
-    public CountFull(IPosition pos, int depth) {
+    public CountFull(Position pos, int depth) {
         this.pos = pos;
 		counters=new Counter[depth];
         for (int i = 0; i < depth; i++)
             counters[i] = new Counter();
     }
 
-    protected void count(IPosition pos) {
+    protected void count(Position pos) {
         counters[0].moves++;
         long bitmap = pos.getBitmap();
         if (BITS.isCapture(bitmap)) {
@@ -40,7 +38,7 @@ public class CountFull extends RecursiveTask<Counter[]> {
         }
         if (BITS.isPromotion(bitmap))
             counters[0].promotions++;
-        switch (KingSafe.getCheckState(Position64.getPosition64(pos))) {
+        switch (KingSafe.getCheckState(pos)) {
             case IConst.CHECK:
                 counters[0].checks++;
                 break;
@@ -52,11 +50,11 @@ public class CountFull extends RecursiveTask<Counter[]> {
     }
 
     public PerftResults perft() {
-    	IPosition64[] mvs = NodeGen.getLegalMoves64(pos);
+    	Position[] mvs = NodeGen.getLegalMoves64(pos);
     	perft = new PerftResults(mvs);
         int depth = counters.length;
         for (int i = 0; i < mvs.length; i++) {
-			IPosition64 next = mvs[i];
+			Position next = mvs[i];
             count(next);
 			if (depth > 1) {
 				Counter[] compute = new CountFull(next, depth - 1).compute();
@@ -73,7 +71,7 @@ public class CountFull extends RecursiveTask<Counter[]> {
 
     @Override
     public Counter[] compute() {
-        for (IPosition next : NodeGen.getLegalMoves64(pos)) {
+        for (Position next : NodeGen.getLegalMoves64(pos)) {
             count(next);
             if (counters.length > 1)
                 Counter.total(counters, new CountFull(next, counters.length - 1).compute());

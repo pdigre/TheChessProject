@@ -1,6 +1,6 @@
 package no.pdigre.chess.profile;
 
-import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.iterate.AlphaBeta;
 import no.pdigre.chess.engine.iterate.IIterator;
 import no.pdigre.chess.engine.iterate.IterateEnd;
@@ -17,7 +17,7 @@ public class Medium extends Player {
         int n = checkPolyglot();
         if(n>0){
             int pick = (int)(Math.random()*Math.random()*n);
-            makeMove(((IPosition)moves.toArray()[pick]).getBitmap());
+            makeMove(((Position)moves.toArray()[pick]).getBitmap());
             return;
         }
         IIterator iter0 = new IterateEnd();
@@ -27,7 +27,7 @@ public class Medium extends Player {
         IIterator iter4 = new AlphaBeta(iter3);
 
         setTimeout(9000);
-        for (IPosition m : moves.getSortedArray())
+        for (Position m : moves.getSortedArray())
             runThinker(m, moves, iter3);
         processUntilTimeout(iter4);
         makeMove(moves.first().getBitmap());

@@ -5,16 +5,15 @@ import java.util.TreeSet;
 
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPosition64;
+import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.PositionScore;
 
-public final class IterateScores extends TreeSet<IPosition> {
+public final class IterateScores extends TreeSet<Position> {
 
-    public static class Ascending implements Comparator<IPosition> {
+    public static class Ascending implements Comparator<Position> {
 
         @Override
-        public int compare(IPosition in, IPosition other) {
+        public int compare(Position in, Position other) {
             int r1 = in.getQuality();
             int r2 = other.getQuality();
             if (r1 > r2)
@@ -31,10 +30,10 @@ public final class IterateScores extends TreeSet<IPosition> {
         }
     }
 
-    public static class Descending implements Comparator<IPosition> {
+    public static class Descending implements Comparator<Position> {
 
         @Override
-        public int compare(IPosition in, IPosition other) {
+        public int compare(Position in, Position other) {
             int r1 = in.getQuality();
             int r2 = other.getQuality();
             if (r1 > r2)
@@ -53,12 +52,9 @@ public final class IterateScores extends TreeSet<IPosition> {
 
     private static final long serialVersionUID = -6843554025281632383L;
 
-    public IterateScores(IPosition pos, IEvaluator evaluator) {
+    public IterateScores(Position pos, IEvaluator evaluator) {
         super(pos.whiteNext() ? new Ascending() : new Descending());
-        final int total = pos instanceof IPosition ? ((IPosition) pos).getScore() : 0;
-        for (IPosition64 move64 : NodeGen.getLegalMoves64(pos)) {
-            PositionScore next = new PositionScore(move64);
-            next.score = evaluator.score(next, total);
+        for (Position next : NodeGen.getLegalMoves64(pos)) {
             add(next);
         }
     }
@@ -66,7 +62,7 @@ public final class IterateScores extends TreeSet<IPosition> {
     public long[] getBitmaps() {
         long[] bitmaps = new long[size()];
         int i = 0;
-        for (IPosition score : this) {
+        for (Position score : this) {
             bitmaps[i++] = score.getBitmap();
         }
         return bitmaps;
@@ -79,8 +75,8 @@ public final class IterateScores extends TreeSet<IPosition> {
         add(move);
     }
 
-    public IPosition[] getSortedArray() {
-        return toArray(new IPosition[size()]);
+    public Position[] getSortedArray() {
+        return toArray(new Position[size()]);
     }
 
 }

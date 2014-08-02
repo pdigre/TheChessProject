@@ -1,9 +1,9 @@
 package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.fen.Position64;
+import no.pdigre.chess.engine.fen.Position;
 
 public abstract class Movegen implements IConst{
-	final Position64 pos;
+	final Position pos;
 	final long halfmoves;
 	final long castling;
 	final long bb_piece;
@@ -33,9 +33,9 @@ public abstract class Movegen implements IConst{
 
 	protected int n = 0;
 	protected int test = 0;
-	protected final Position64[] list = new Position64[99];
+	protected final Position[] list = new Position[99];
 
-	Movegen(Position64 pos) {
+	Movegen(Position pos) {
 		this.pos = pos;
 		long inherit = pos.getBitmap();
 		this.bb_black = pos.get64black();
@@ -67,11 +67,11 @@ public abstract class Movegen implements IConst{
 	
 	
 	
-	public abstract Position64[] moves();
+	public abstract Position[] moves();
 
 	public void pruneBlack() {
 		while (test < imoves) {
-			Position64 next = (Position64) pos.move(moves[test++],castling);
+			Position next = (Position) pos.move(moves[test++],castling);
 			if (!next.isCheckBlack())
 				list[n++] = next;
 		}
@@ -79,7 +79,7 @@ public abstract class Movegen implements IConst{
 
 	public void pruneWhite() {
 		while (test < imoves) {
-			Position64 next = (Position64) pos.move(moves[test++],castling);
+			Position next = (Position) pos.move(moves[test++],castling);
 			if (!next.isCheckWhite())
 				list[n++] = next;
 		}

@@ -3,7 +3,21 @@ package no.pdigre.chess.engine.fen;
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.MOVEDATA;
 
-public abstract interface IPosition extends IConst, Comparable<IPosition>{
+public interface IPosition extends IConst, Comparable<IPosition> {
+
+	long get64black();
+
+	long get64bit1();
+
+	long get64bit2();
+
+	long get64bit3();
+
+	IPosition move(MOVEDATA m, long castling);
+
+	boolean isCheckWhite();
+
+	boolean isCheckBlack();
 
 	public abstract boolean whiteNext();
 
@@ -25,14 +39,6 @@ public abstract interface IPosition extends IConst, Comparable<IPosition>{
 	 * @return
 	 */
 	public abstract long getBitmap();
-
-	/**
-	 * Returns a new IPosition based on current
-	 * 
-	 * @param bitmap
-	 * @return
-	 */
-	public IPosition move(long bitmap);
 
 	class BOARD88 {
 		final static public int getWKpos(IPosition pos){
@@ -72,5 +78,4 @@ public abstract interface IPosition extends IConst, Comparable<IPosition>{
 	
 	long getZobristKey();
 
-	IPosition64 move(MOVEDATA m, long castling);
 }

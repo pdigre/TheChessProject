@@ -2,7 +2,7 @@ package no.pdigre.chess.profile;
 
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.FEN;
-import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.PositionScore;
 import no.pdigre.chess.engine.iterate.AlphaBeta;
 import no.pdigre.chess.engine.iterate.IIterator;
@@ -21,7 +21,7 @@ public class Hard extends Player {
         int n = checkPolyglot();
         if (n > 0) {
             int pick = (int) (Math.random() * Math.random() * Math.random() * n);
-            makeMove(((IPosition) moves.toArray()[pick]).getBitmap());
+            makeMove(((Position) moves.toArray()[pick]).getBitmap());
             return;
         }
         IIterator iter0 = new IterateEnd();
@@ -34,14 +34,14 @@ public class Hard extends Player {
 
         for (int run = 1; run < 10; run++) {
 //            System.out.println("**** Phase " + run + " ****");
-            IPosition pos = getPosition();
+            Position pos = getPosition();
             recursive(pos, moves, iter3, run, "");
 //            printScore(moves, "---- Phase " + run + " ----");
         }
         makeMove();
     }
 
-    public void recursive(IPosition parent, IterateScores children, IIterator iterator, int run, String prefix) {
+    public void recursive(Position parent, IterateScores children, IIterator iterator, int run, String prefix) {
 
         // if (state != RunState.RUNNING)
         // return;

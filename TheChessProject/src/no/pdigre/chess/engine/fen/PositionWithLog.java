@@ -1,26 +1,26 @@
 package no.pdigre.chess.engine.fen;
 
 
-public final class PositionWithLog extends Position implements IPositionWithLog {
+public class PositionWithLog extends Position implements IPositionWithLog {
 
     final private IPositionWithLog parent;
 
     public PositionWithLog(final IPositionWithLog parent, final long bitmap) {
-        super(IPosition.BOARD88.apply(parent.getBoard(), bitmap), bitmap);
+    	super();
         this.parent = parent;
     }
 
-    @Override
-    final public int totalMoves() {
+    public PositionWithLog() {
+    	super();
+    	parent=null;
+	}
+
+	@Override
+    public int totalMoves() {
         int i = parent.totalMoves();
         if ((getBitmap() & BLACK) != 0)
             i++;
         return i;
-    }
-
-    @Override
-    public IPosition move(long bitmap2) {
-        return new PositionWithLog(this, bitmap2);
     }
 
     @Override

@@ -3,6 +3,7 @@ package no.pdigre.chess.engine.base;
 import java.util.Arrays;
 
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 /**
  * Use Polyglot Zobrist hashkey format as in
@@ -224,7 +225,7 @@ public class ZobristKey implements IConst {
 	public final static long ZOBRIST_NXT = random64[780];
 	public final static long[] ZOBRIST_ENP = Arrays.copyOfRange(random64, 772, 780);
 
-	public final static long getKey(IPosition pos) {
+	public final static long getKey(Position pos) {
 		long key = 0;
 		long bitmap = pos.getBitmap();
 		for (int i = 0; i < 64; i++) {

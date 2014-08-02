@@ -2,14 +2,12 @@ package no.pdigre.chess.engine.iterate;
 
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.FEN;
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPosition64;
-import no.pdigre.chess.profile.TestPlayer;
+import no.pdigre.chess.engine.fen.Position;
 
 public class AlphaBeta implements IIterator {
 
 	private IIterator deeper;
-	private IPosition pos;
+	private Position pos;
 
 	public AlphaBeta(IIterator deeper) {
 		this.deeper = deeper;
@@ -21,10 +19,10 @@ public class AlphaBeta implements IIterator {
 	}
 
 	@Override
-	public int white(IPosition pos, int alpha, int beta) {
-		IPosition64[] moves = NodeGen.getLegalMoves64(pos);
+	public int white(Position pos, int alpha, int beta) {
+		Position[] moves = NodeGen.getLegalMoves64(pos);
 		for (int i = moves.length - 1; i >= 0; i--) {
-			IPosition64 n = moves[i];
+			Position n = moves[i];
 			int score = deeper.black(n, alpha, beta);
 			if (score >= beta)
 				return beta;
@@ -35,10 +33,10 @@ public class AlphaBeta implements IIterator {
 	}
 	
 	@Override
-	public int black(IPosition pos, int alpha, int beta) {
-		IPosition64[] moves = NodeGen.getLegalMoves64(pos);
+	public int black(Position pos, int alpha, int beta) {
+		Position[] moves = NodeGen.getLegalMoves64(pos);
 		for (int i = 0; i < moves.length; i++) {
-			IPosition64 n = moves[i];
+			Position n = moves[i];
 			int score = deeper.white(n, alpha, beta);
 			if (score <= alpha)
 				return alpha;

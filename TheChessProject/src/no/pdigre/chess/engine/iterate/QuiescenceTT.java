@@ -1,8 +1,8 @@
 package no.pdigre.chess.engine.iterate;
 
 import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.Position64;
+import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.fen.Position;
 
 public class QuiescenceTT implements IIterator {
 
@@ -14,30 +14,30 @@ public class QuiescenceTT implements IIterator {
     }
 
 	@Override
-	public int white(IPosition pos, int alpha, int beta) {
+	public int white(Position pos, int alpha, int beta) {
 		long time1=System.currentTimeMillis();
-		int score = qwhite((Position64) pos, alpha, beta);
+		int score = qwhite((Position) pos, alpha, beta);
 		quiesce+=System.currentTimeMillis()-time1;
 		return score;
 //		return Math.min(score,pos.getScore());
 	}
 
 	@Override
-	public int black(IPosition pos, int alpha, int beta) {
+	public int black(Position pos, int alpha, int beta) {
 		long time1=System.currentTimeMillis();
-		int score = qblack((Position64) pos, alpha, beta);
+		int score = qblack((Position) pos, alpha, beta);
 		quiesce+=System.currentTimeMillis()-time1;
 		return score;
 //		return Math.max(score,pos.getScore());
 	}
 
-	private static int qwhite(Position64 pos, int alpha, int beta) {
-		Position64[] moves = NodeGen.getQuiescence64(pos);
+	private static int qwhite(Position pos, int alpha, int beta) {
+		Position[] moves = NodeGen.getQuiescence64(pos);
 		if(moves.length==0)
 			return pos.getScore();
 		for (int i = moves.length - 1; i >= 0; i--) {
-			Position64 next = moves[i];
-			IPosition tt = Transposition.find(next, 0);
+			Position next = moves[i];
+			Position tt = Transposition.find(next, 0);
 			int score=0;
 			if(tt!=null){
 				score=tt.getScore();
@@ -54,13 +54,13 @@ public class QuiescenceTT implements IIterator {
 		return alpha;
 	}
 	
-	private static int qblack(Position64 pos, int alpha, int beta) {
-		Position64[] moves = NodeGen.getQuiescence64(pos);
+	private static int qblack(Position pos, int alpha, int beta) {
+		Position[] moves = NodeGen.getQuiescence64(pos);
 		if(moves.length==0)
 			return pos.getScore();
 		for (int i = 0; i < moves.length; i++) {
-			Position64 next = moves[i];
-			IPosition tt = Transposition.find(next, 0);
+			Position next = moves[i];
+			Position tt = Transposition.find(next, 0);
 			int score=0;
 			if(tt!=null){
 				score=tt.getScore();

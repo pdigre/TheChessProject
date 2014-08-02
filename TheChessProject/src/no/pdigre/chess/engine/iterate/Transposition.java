@@ -1,10 +1,10 @@
 package no.pdigre.chess.engine.iterate;
 
-import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class Transposition {
 	public static final int TTSIZE = 1 << 24;
-	public static final IPosition[] TT = new IPosition[TTSIZE];
+	public static final Position[] TT = new Position[TTSIZE];
 	public static long hits = 0;
 	public static long miss = 0;
 	public static long coll = 0;
@@ -13,11 +13,11 @@ public class Transposition {
 	public static long total =0;
 	public static final long MASK = TTSIZE - 1;
 
-	public static final IPosition find(IPosition next, int quality) {
+	public static final Position find(Position next, int quality) {
 		long zobrist = next.getZobristKey();
 		long k1 = (zobrist) & MASK;
 		long k2 = (zobrist >> 1) & MASK;
-		IPosition pos = TT[(int) k1];
+		Position pos = TT[(int) k1];
 		if (pos == null) {
 			miss++;
 			return null;
@@ -33,7 +33,7 @@ public class Transposition {
 		} else {
 			coll++;
 		}
-		IPosition pos2 = TT[(int) k2];
+		Position pos2 = TT[(int) k2];
 		if (pos2 == null) {
 			miss++;
 			return null;
@@ -51,11 +51,11 @@ public class Transposition {
 		return null;
 	}
 
-	public static final void register(IPosition next) {
+	public static final void register(Position next) {
 		long zobrist = next.getZobristKey();
 		long k1 = (zobrist) & MASK;
 		long k2 = (zobrist >> 1) & MASK;
-		IPosition pos = TT[(int) k1];
+		Position pos = TT[(int) k1];
 		if (pos != null && pos.getZobristKey() != zobrist)
 			TT[(int) k2] = TT[(int) k1];
 		TT[(int) k1] = next;

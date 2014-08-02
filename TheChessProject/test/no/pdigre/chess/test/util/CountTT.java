@@ -6,28 +6,26 @@ import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.base.KingSafe;
 import no.pdigre.chess.engine.base.NodeGen;
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPosition64;
-import no.pdigre.chess.engine.fen.Position64;
+import no.pdigre.chess.engine.fen.Position;
 
 public class CountTT extends RecursiveTask<Counter[]> {
 
 	private static final long serialVersionUID = -3058348234963748664L;
 
-	final protected IPosition pos;
+	final protected Position pos;
 
 	private PerftResults perft;
 
 	protected final Counter[] counters;
 
-	public CountTT(IPosition pos, int depth) {
+	public CountTT(Position pos, int depth) {
 		this.pos = pos;
 		counters = new Counter[depth];
 		for (int i = 0; i < depth; i++)
 			counters[i] = new Counter();
 	}
 
-	protected void count(IPosition pos) {
+	protected void count(Position pos) {
 		CountTT.registerTT(pos);
 		counters[0].moves++;
 		long bitmap = pos.getBitmap();
@@ -41,7 +39,7 @@ public class CountTT extends RecursiveTask<Counter[]> {
 		}
 		if (BITS.isPromotion(bitmap))
 			counters[0].promotions++;
-		switch (KingSafe.getCheckState(Position64.getPosition64(pos))) {
+		switch (KingSafe.getCheckState(pos)) {
 		case IConst.CHECK:
 			counters[0].checks++;
 			break;
@@ -53,11 +51,11 @@ public class CountTT extends RecursiveTask<Counter[]> {
 	}
 
 	public PerftResults perft() {
-		IPosition64[] mvs = NodeGen.getLegalMoves64(pos);
+		Position[] mvs = NodeGen.getLegalMoves64(pos);
 		perft = new PerftResults(mvs);
 		int depth = counters.length;
 		for (int i = 0; i < mvs.length; i++) {
-			IPosition64 next = mvs[i];
+			Position next = mvs[i];
 			count(next);
 			if (depth > 1) {
 				Counter[] compute = new CountTT(next, depth - 1).compute();
@@ -74,7 +72,7 @@ public class CountTT extends RecursiveTask<Counter[]> {
 
 	@Override
 	public Counter[] compute() {
-		for (IPosition next : NodeGen.getLegalMoves64(pos)) {
+		for (Position next : NodeGen.getLegalMoves64(pos)) {
 			count(next);
 			if (counters.length > 1)
 				Counter.total(counters, new CountTT(next, counters.length - 1).compute());
@@ -83,18 +81,18 @@ public class CountTT extends RecursiveTask<Counter[]> {
 	}
 
 	public static final int TTSIZE = 1 << 24;
-	public static final IPosition[] TT = new IPosition[TTSIZE];
+	public static final Position[] TT = new Position[TTSIZE];
 	public static long hits = 0;
 	public static long miss = 0;
 	public static long coll = 0;
 	public static long err = 0;
 	public static final long MASK = TTSIZE - 1;
 
-	private static final void registerTT(IPosition next) {
+	private static final void registerTT(Position next) {
 		long zobrist = next.getZobristKey();
 		long k1 = (zobrist) & MASK;
 		long k2 = (zobrist >> 1) & MASK;
-		IPosition pos = TT[(int) k1];
+		Position pos = TT[(int) k1];
 		if (pos == null) {
 			miss++;
 			TT[(int) k1] = next;
@@ -104,7 +102,7 @@ public class CountTT extends RecursiveTask<Counter[]> {
 				if (pos.getBKpos() != next.getBKpos())
 					err++;
 			} else {
-				IPosition pos2 = TT[(int) k2];
+				Position pos2 = TT[(int) k2];
 				if (pos2 == null) {
 					miss++;
 					TT[(int) k2] = TT[(int) k1];

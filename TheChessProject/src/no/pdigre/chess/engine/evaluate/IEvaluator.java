@@ -1,8 +1,9 @@
 package no.pdigre.chess.engine.evaluate;
 
 import no.pdigre.chess.engine.base.IConst;
-import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.base.IConst.BITS;
+import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public abstract interface IEvaluator {
 
@@ -12,7 +13,7 @@ public abstract interface IEvaluator {
      * 
      * @return
      */
-    public abstract int score(IPosition pos, int total);
+    public abstract int score(Position pos, int total);
 
     public final static IEvaluator BASIC = new IEvaluator() {
         public final int value(final int type) {
@@ -54,7 +55,7 @@ public abstract interface IEvaluator {
         }
 
         @Override
-        public int score(IPosition pos, int total) {
+        public int score(Position pos, int total) {
             return tacticValue(pos.getBitmap());
         }
 

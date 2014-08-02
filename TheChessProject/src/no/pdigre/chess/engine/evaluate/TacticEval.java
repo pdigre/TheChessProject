@@ -1,18 +1,18 @@
 package no.pdigre.chess.engine.evaluate;
 
-import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.base.IConst;
+import no.pdigre.chess.engine.base.IConst.BITS;
 import no.pdigre.chess.engine.base.PSQT;
-import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class TacticEval implements IEvaluator {
 
 	@Override
-	public int score(IPosition pos, int last) {
+	public int score(Position pos, int last) {
 		return _score(pos,last);
 	}
 
-	private int _score(IPosition pos, int last) {
+	private int _score(Position pos, int last) {
 		long bitmap = pos.getBitmap();
 		int piece = BITS.getPiece(bitmap);
 		int from = BITS.getFrom(bitmap);

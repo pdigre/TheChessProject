@@ -1,23 +1,19 @@
 package no.pdigre.chess.engine.fen;
 
-import no.pdigre.chess.engine.base.MOVEDATA;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 
-
-
-
-public class StartGame implements IPositionWithLog {
+public class StartGame extends PositionWithLog {
 
 	private final String castling;
 	private final boolean white;
 	private final int enpassant;
 	private final int halfMoves;
 	private final int fullMoves;
-	private final int[] board;
 
 	public StartGame(String fen) {
+		super();
 		String[] split = fen.split(" ");
-		board = FEN.fen2board(split[0]);
+		setBoard(FEN.fen2board(split[0]));
 		white = "w".equalsIgnoreCase(split[1]);
 		castling = split[2];
 		enpassant = FEN.text2pos(split[3]);
@@ -25,10 +21,6 @@ public class StartGame implements IPositionWithLog {
 		fullMoves = Integer.parseInt(split[5]);
 	}
 
-	@Override
-	public int[] getBoard() {
-	    return board;
-	}
 	@Override
 	public boolean whiteNext() {
 		return white;
@@ -60,29 +52,9 @@ public class StartGame implements IPositionWithLog {
     }
 
     @Override
-    public IPosition move(long bitmap2) {
-        return new Position(IPosition.BOARD88.apply(board, bitmap2), bitmap2);
-    }
-
-    @Override
-    public int getPiece(int square) {
-        return board[square];
-    }
-
-    @Override
     public String toString() {
         return FEN.printMove(this)+"\n"+FEN.board2string(this);
     }
-
-	@Override
-	public int getWKpos() {
-		return BOARD88.getWKpos(this);
-	}
-
-	@Override
-	public int getBKpos() {
-		return BOARD88.getBKpos(this);
-	}
 
 	@Override
 	public long getZobristKey() {
@@ -102,10 +74,5 @@ public class StartGame implements IPositionWithLog {
 	@Override
 	public int compareTo(IPosition o) {
 		return Integer.compare(getScore(), o.getScore());
-	}
-
-	@Override
-	public IPosition64 move(MOVEDATA m, long castling) {
-		return (IPosition64) move(m.bitmap);
 	}
 }

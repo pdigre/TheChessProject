@@ -3,14 +3,13 @@ package no.pdigre.chess.profile;
 import java.lang.Thread.State;
 import java.util.ArrayList;
 
-import no.pdigre.chess.engine.fen.IPositionWithLog;
 import no.pdigre.chess.engine.fen.PositionWithLog;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.profile.IPlayer.Players;
 
 public abstract class GameData {
 
-    public IPositionWithLog pos;
+    public PositionWithLog pos;
 
     private Player[] players=new Player[2];
 

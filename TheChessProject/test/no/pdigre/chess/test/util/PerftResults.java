@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import no.pdigre.chess.engine.fen.FEN;
-import no.pdigre.chess.engine.fen.IPosition64;
+import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.uci.ROCEexe;
 import no.pdigre.chess.test.Test_PERFT_5300ms;
 
@@ -22,11 +22,11 @@ public class PerftResults {
 
 	public static HashMap<String, String> allexpected;
 	
-	final IPosition64[] rootmoves;
+	final Position[] rootmoves;
 	final public int[] rootcount;
 	public Counter[] counters;
 
-	public PerftResults(IPosition64[] rootmoves) {
+	public PerftResults(Position[] rootmoves) {
 		this.rootmoves = rootmoves;
 		rootcount = new int[rootmoves.length];
 	}
@@ -59,15 +59,15 @@ public class PerftResults {
 		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
 		for (int i = 0; i < rootcount.length; i++) {
 			int count = rootcount[i];
-			IPosition64 pos = rootmoves[i];
+			Position pos = rootmoves[i];
 			long bitmap = pos.getBitmap();
 			map.put(FEN.move2literal(bitmap), count);
 		}
 		return map;
 	}
 
-	public ArrayList<IPosition64> getDivideMisses(Map<String, Integer> div2) {
-		ArrayList<IPosition64> list = new ArrayList<IPosition64>();
+	public ArrayList<Position> getDivideMisses(Map<String, Integer> div2) {
+		ArrayList<Position> list = new ArrayList<Position>();
 		Map<String, Integer> div1 = getDivide();
 		Set<String> k1 = div1.keySet();
 		Set<String> diff = new HashSet<String>(div2.keySet());
@@ -85,7 +85,7 @@ public class PerftResults {
 			}
 			int v2 = div2.get(key);
 			if (v1 != v2) {
-				for (IPosition64 pos : rootmoves) {
+				for (Position pos : rootmoves) {
 					if (FEN.move2literal(pos.getBitmap()).equals(key))
 						list.add(pos);
 				}
@@ -114,7 +114,7 @@ public class PerftResults {
 	private static void analyzePerft(String fen, PerftResults perft) {
 		int depth = perft.counters.length;
 		Map<String, Integer> rundiv = ROCEexe.getInstance().runDivide(fen, depth);
-		for (IPosition64 pos : perft.getDivideMisses(rundiv)) {
+		for (Position pos : perft.getDivideMisses(rundiv)) {
 			if(depth>1){
 				String fen2 = FEN.getFen(pos);
 				System.out.println(FEN.move2literal(pos.getBitmap())+" FEN="+fen2 + " "+ FEN.notation(pos));

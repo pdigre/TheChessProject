@@ -1,9 +1,9 @@
 package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.fen.Position64;
+import no.pdigre.chess.engine.fen.Position;
 
 public interface IMovegen {
 
-	public abstract Position64[] moves();
+	public abstract Position[] moves();
 
 }

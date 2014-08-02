@@ -3,12 +3,11 @@ package no.pdigre.chess.engine.base;
 import no.pdigre.chess.engine.base.IBase.BASE;
 import no.pdigre.chess.engine.base.IBase.REVERSE;
 import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPosition64;
-import no.pdigre.chess.engine.fen.Position64;
+import no.pdigre.chess.engine.fen.Position;
 
 public class KingSafe implements IConst {
 
-	public static int getCheckState(IPosition64 pos) {
+	public static int getCheckState(Position pos) {
 		if (!(pos.whiteNext() ? pos.isCheckWhite() : pos.isCheckBlack()))
 			return 0;
 		return NodeGen.getLegalMoves64(pos).length==0? MATE: CHECK;
@@ -32,8 +31,7 @@ public class KingSafe implements IConst {
 		this.bking = bking;
 	}
 
-	public static KingSafe pos(IPosition in) {
-		IPosition64 pos = Position64.getPosition64(in);
+	public static KingSafe pos(Position pos) {
 		return new KingSafe(pos.get64black(), pos.get64bit1(), pos.get64bit2(), pos.get64bit3(), pos.getWKpos(), pos.getBKpos());
 	}
 

@@ -3,11 +3,12 @@ package no.pdigre.chess.engine.evaluate;
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.PSQT;
 import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public class FullEval implements IEvaluator {
 
     @Override
-    public int score(IPosition pos, int total) {
+    public int score(Position pos, int total) {
         int bk = 0;
         int wk = 0;
         int pcs = 0;

@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.StartGame;
 
 public class UCI {
@@ -16,10 +16,10 @@ public class UCI {
 	public enum UCI_from_GUI {
 		UCI, DEBUG, ISREADY, SETOPTION, REGISTER, UCINEWGAME, POSITION, GO, STOP, PONDERHIT, QUIT
 	}
-
+	
 	BufferedReader br;
 
-	private IPosition pos;
+	private Position pos;
 	private static UCI instance;
 	boolean isReady=true;
 

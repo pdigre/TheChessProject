@@ -1,6 +1,6 @@
 package no.pdigre.chess.engine.fen;
 
-public interface IPositionWithLog extends IPosition {
+public interface IPositionWithLog{
 
     /**
      * Number of moves since start of game

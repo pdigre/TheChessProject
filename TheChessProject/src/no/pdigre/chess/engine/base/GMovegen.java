@@ -3,20 +3,16 @@ package no.pdigre.chess.engine.base;
 import java.util.Arrays;
 
 import no.pdigre.chess.engine.base.IBase.BASE;
-import no.pdigre.chess.engine.fen.Position64;
+import no.pdigre.chess.engine.fen.Position;
 
 public class GMovegen extends Movegen {
 
-
-	GMovegen(Position64 pos) {
+	public GMovegen(Position pos) {
 		super(pos);
 	}
 
-	/* (non-Javadoc)
-	 * @see no.pdigre.chess.engine.base.IMovegen#moves()
-	 */
 	@Override
-	final public Position64[] moves() {
+	final public Position[] moves() {
 		n = 0;
 		test = 0;
 
@@ -39,9 +35,7 @@ public class GMovegen extends Movegen {
 			MQBlack.genLegal(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
 			BASE.BK[bking].genLegal(this);
 		}
-		Position64[] mvs = Arrays.copyOfRange(list, 0, n);
-//		NodeGen.mergeSort(list, mvs, 0, n, 0);
-		return mvs;
+		return Arrays.copyOfRange(list, 0, n);
 	}
 
 

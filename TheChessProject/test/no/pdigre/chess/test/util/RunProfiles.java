@@ -27,15 +27,15 @@ public class RunProfiles {
 			
 			@Override
 			public void makeMove(long bitmap) {
-				System.out.println(">"+FEN.printMove(pos.move(bitmap)));
+//				System.out.println(">"+FEN.printMove(pos.move(bitmap)));
 				int to = BITS.getTo(bitmap);
 				results.append(FEN.pos2string(to));
 			}
 			
 			@Override
 			public int findBest(int[] bitmaps, int[] scores) {
-				for (int bitmap : bitmaps)
-					System.out.println(":"+FEN.printMove(pos.move(bitmap)));
+//				for (int bitmap : bitmaps)
+//					System.out.println(":"+FEN.printMove(pos.move(bitmap)));
 				return super.findBest(bitmaps, scores);
 			}
         };

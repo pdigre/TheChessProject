@@ -1,6 +1,6 @@
 package no.pdigre.chess.engine.iterate;
 
-import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 
 public interface IIterator{
 
@@ -16,7 +16,7 @@ public interface IIterator{
      * @param max = Beta  for AlphaBeta
      * @return
      */
-    int black(IPosition pos, int min, int max);
+    int black(Position pos, int min, int max);
 
     /**
      * MAX - Find best white score
@@ -26,7 +26,7 @@ public interface IIterator{
      * @param max = Beta for AlphaBeta
      * @return
      */
-    int white(IPosition pos, int min, int max);
+    int white(Position pos, int min, int max);
 
     int getQuality();
 }

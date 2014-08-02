@@ -1,24 +1,23 @@
 package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.Position64;
+import no.pdigre.chess.engine.fen.Position;
 
 public class NodeGen implements IConst {
 
-	public static final long[] getLegalMoves(IPosition pos) {
-		Position64[] list = getLegalMoves64(pos);
+	public static final long[] getLegalMoves(Position pos) {
+		Position[] list = getLegalMoves64(pos);
 		long[] ret = new long[list.length];
 		for (int i = 0; i < ret.length; i++)
 			ret[i] = list[i].getBitmap();
 		return ret;
 	}
 
-	public static final Position64[] getLegalMoves64(IPosition pos) {
-		return new GMovegen(Position64.getPosition64(pos)).moves();
+	public static final Position[] getLegalMoves64(Position pos) {
+		return new GMovegen(pos).moves();
 	}
 
-	public static final Position64[] getQuiescence64(IPosition pos) {
-		return new GMovegenQ(Position64.getPosition64(pos)).moves();
+	public static final Position[] getQuiescence64(Position pos) {
+		return new GMovegenQ(pos).moves();
 	}
 
 	/**
@@ -34,7 +33,7 @@ public class NodeGen implements IConst {
 	 * offset to generate corresponding low, high in src To be removed in a
 	 * future release.
 	 */
-	public static void mergeSort(Position64[] src, Position64[] dest, int low, int high, int off) {
+	public static void mergeSort(Position[] src, Position[] dest, int low, int high, int off) {
 		int length = high - low;
 
 		// Insertion sort on smallest arrays
@@ -42,7 +41,7 @@ public class NodeGen implements IConst {
 			for (int i = low; i < high; i++)
 				for (int j = i; j > low && dest[j - 1].score > dest[j].score; j--) {
 					int b = j - 1;
-					Position64 t = dest[j];
+					Position t = dest[j];
 					dest[j] = dest[b];
 					dest[b] = t;
 				}

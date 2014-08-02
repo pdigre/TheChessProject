@@ -11,8 +11,9 @@ import org.junit.Test;
 
 /**
  * 
- * 4500ms 
- *
+ * 4700ms with improvements in "kingsafe"
+ * 4300ms with new MOVEDATA bits
+ * 
  */
 @SuppressWarnings("static-method")
 public class Test_PERFT_5300ms {
@@ -25,7 +26,7 @@ public class Test_PERFT_5300ms {
 	@Test
 	public void m1_1_553() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-		PerftResults.assertPERFT2(fen, new CountFull(new StartGame(fen), 5));
+		PerftResults.assertPERFT(fen, new CountFull(new StartGame(fen), 5));
 	}
 
 	@Test
@@ -43,7 +44,7 @@ public class Test_PERFT_5300ms {
 	@Test
 	public void e_1_1083() {
 		String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
-		PerftResults.assertPERFT2(fen, new CountFull(new StartGame(fen), 5));
+		PerftResults.assertPERFT(fen, new CountFull(new StartGame(fen), 5));
 	}
 
 	@Test
