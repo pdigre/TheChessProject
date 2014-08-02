@@ -42,7 +42,7 @@ public class MQBlack extends MBase{
 		return list.toArray(new MOVEDATA[list.size()]);
 	}
 
-	public void all(Movegen gen){
+	public void genLegal(Movegen gen){
 		slide(gen,U);
 		slide(gen,D);
 		slide(gen,L);

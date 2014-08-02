@@ -1,5 +1,6 @@
 package no.pdigre.chess.engine.fen;
 
+import no.pdigre.chess.engine.base.MOVEDATA;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 
 
@@ -101,5 +102,10 @@ public class StartGame implements IPositionWithLog {
 	@Override
 	public int compareTo(IPosition o) {
 		return Integer.compare(getScore(), o.getScore());
+	}
+
+	@Override
+	public IPosition64 move(MOVEDATA m, long castling) {
+		return (IPosition64) move(m.bitmap);
 	}
 }

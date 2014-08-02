@@ -1,6 +1,7 @@
 package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.IConst;
+import no.pdigre.chess.engine.base.MOVEDATA;
 
 public abstract interface IPosition extends IConst, Comparable<IPosition>{
 
@@ -70,4 +71,6 @@ public abstract interface IPosition extends IConst, Comparable<IPosition>{
 	}
 	
 	long getZobristKey();
+
+	IPosition64 move(MOVEDATA m, long castling);
 }

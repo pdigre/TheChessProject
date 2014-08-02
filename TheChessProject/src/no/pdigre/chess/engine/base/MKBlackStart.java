@@ -31,7 +31,7 @@ public class MKBlackStart extends MKBlack {
 	}
 
 	@Override
-	public void all(Movegen gen) {
+	public void genLegal(Movegen gen) {
 		if ((IConst.CBQ & gen.bb_piece) == 0
 				&& (gen.castling & IConst.CANCASTLE_BLACKQUEEN) != 0
 				&& !gen.pos.isCheckBlack()
@@ -44,7 +44,7 @@ public class MKBlackStart extends MKBlack {
 				&& !gen.pos.isSafeBlack(IConst.BK_STARTPOS + 1)) {
 			gen.add(CK);
 		}
-		super.all(gen);
+		super.genLegal(gen);
 	}
 
 }

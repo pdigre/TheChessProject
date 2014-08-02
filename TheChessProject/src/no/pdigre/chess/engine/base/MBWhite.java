@@ -35,7 +35,7 @@ public class MBWhite extends MBase{
 		return list.toArray(new MOVEDATA[list.size()]);
 	}
 
-	public void all(Movegen gen){
+	public void genLegal(Movegen gen){
 		slide(gen,UL);
 		slide(gen,UR);
 		slide(gen,DL);

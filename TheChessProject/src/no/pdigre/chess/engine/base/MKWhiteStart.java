@@ -32,7 +32,7 @@ public class MKWhiteStart extends MKWhite {
 	}
 
 	@Override
-	public void all(Movegen gen) {
+	public void genLegal(Movegen gen) {
 		if ((IConst.CWQ & gen.bb_piece) == 0
 				&& (gen.castling & IConst.CANCASTLE_WHITEQUEEN) != 0
 				&& !gen.pos.isCheckWhite()
@@ -45,6 +45,6 @@ public class MKWhiteStart extends MKWhite {
 				&& !gen.pos.isSafeWhite(IConst.WK_STARTPOS + 1)) {
 			gen.add(CK);
 		}
-		super.all(gen);
+		super.genLegal(gen);
 	}
 }

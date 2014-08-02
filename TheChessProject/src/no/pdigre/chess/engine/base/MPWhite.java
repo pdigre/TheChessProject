@@ -88,7 +88,7 @@ public class MPWhite extends MBase{
 		return promotes;
 	}
 
-	public static <X extends MBase> void genMoves(final Movegen gen,long b, final X[] arr) {
+	public static <X extends MBase> void genLegal(final Movegen gen,long b, final X[] arr) {
 		final MPWhite[] mp=(MPWhite[])arr;
 		long occ=~(gen.bb_piece>>8);
 		long m1=b&occ;

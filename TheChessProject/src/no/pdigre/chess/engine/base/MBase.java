@@ -12,10 +12,6 @@ public abstract class MBase {
 	
 	final public int from;
 	
-	public void all(Movegen gen){
-		//
-	}
-
 	public MBase(int from) {
 		this.from = from;
 	}
@@ -25,12 +21,24 @@ public abstract class MBase {
 		return (((long) score) << 32) | ((int) bitmap);
 	}
 
-	public static <X extends MBase> void genMoves(Movegen gen,long b, X[] arr) {
+	public void genLegal(Movegen gen){
+		//
+	}
+
+	public void genEvasions(Movegen gen){
+		//
+	}
+
+	public void genQuiescence(Movegen gen){
+		//
+	}
+
+	public static <X extends MBase> void genLegal(Movegen gen,long b, X[] arr) {
 		int bits = Long.bitCount(b);
 		for (int j = 0; j < bits; j++) {
 			int from = Long.numberOfTrailingZeros(b);
 			b ^= 1L << from;
-			arr[from].all(gen);
+			arr[from].genLegal(gen);
 		}
 	}
 	

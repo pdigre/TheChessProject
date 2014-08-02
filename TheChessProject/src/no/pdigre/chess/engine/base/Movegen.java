@@ -71,7 +71,7 @@ public abstract class Movegen implements IConst{
 
 	public void pruneBlack() {
 		while (test < imoves) {
-			Position64 next = moves[test++].move(pos,castling);
+			Position64 next = (Position64) pos.move(moves[test++],castling);
 			if (!next.isCheckBlack())
 				list[n++] = next;
 		}
@@ -79,7 +79,7 @@ public abstract class Movegen implements IConst{
 
 	public void pruneWhite() {
 		while (test < imoves) {
-			Position64 next = moves[test++].move(pos,castling);
+			Position64 next = (Position64) pos.move(moves[test++],castling);
 			if (!next.isCheckWhite())
 				list[n++] = next;
 		}

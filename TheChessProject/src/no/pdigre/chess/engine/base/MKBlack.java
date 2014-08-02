@@ -39,7 +39,7 @@ public class MKBlack extends MBase {
 		}
 	}
 
-	public void all(Movegen gen) {
+	public void genLegal(Movegen gen) {
 		for (MOVEDATA[] m : M){
 			long bto = m[5].bto;
 			if ((gen.bb_piece & bto) == 0) {

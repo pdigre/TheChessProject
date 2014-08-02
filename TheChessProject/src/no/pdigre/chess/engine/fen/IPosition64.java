@@ -1,5 +1,7 @@
 package no.pdigre.chess.engine.fen;
 
+import no.pdigre.chess.engine.base.MOVEDATA;
+
 public interface IPosition64 extends IPosition {
 
 	long get64black();
@@ -12,6 +14,9 @@ public interface IPosition64 extends IPosition {
 
 	@Override
 	public IPosition64 move(long bitmap);
+
+	@Override
+	public IPosition64 move(MOVEDATA m, long castling);
 
 	boolean isCheckWhite();
 

@@ -2,19 +2,20 @@ package no.pdigre.chess.engine.fen;
 
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.KingSafe;
+import no.pdigre.chess.engine.base.MOVEDATA;
 import no.pdigre.chess.engine.base.ZobristKey;
 
 public class Position64 implements IPosition64 {
 
-	long bb_bit1;
-	long bb_bit2;
-	long bb_bit3;
-	long bb_black;
-	int checkstate=0;
-	final int wking;
-	final int bking;
-	final long bitmap;
-	final long zobrist;
+	public long bb_bit1;
+	public long bb_bit2;
+	public long bb_bit3;
+	public long bb_black;
+	public int checkstate=0;
+	public int wking;
+	public int bking;
+	public long bitmap;
+	public long zobrist;
 	public int score=0;
 	public int quality=0;
 	
@@ -309,10 +310,26 @@ public class Position64 implements IPosition64 {
 				bb_black |= ((p & 8) == 0 ? 0 : bit);
 			}
 		}
-		
-
 		long zobrist=0L;
 		int score=0;
 		return new Position64(bitmap, score, white, bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking, zobrist);
 	}
+
+	@Override
+	public IPosition64 move(MOVEDATA m, long castling) {
+//		return move(m.bitmap & castling);
+		long bb_black = get64black() ^m.b_black;
+		long bb_bit1 = get64bit1() ^m.b_bit1;
+		long bb_bit2 = get64bit2() ^m.b_bit2;
+		long bb_bit3 = get64bit3() ^m.b_bit3;
+		int wking=getWKpos();
+		int bking=getBKpos();
+		int type = BITS.getPiece(m.bitmap);
+		if(type==IConst.WK)
+			wking=BITS.getTo(m.bitmap);
+		else if(type==IConst.BK)
+			bking=BITS.getTo(m.bitmap);
+		return new Position64(m.bitmap & castling, 0,whiteNext(), bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking,0L);
+	}
+
 }

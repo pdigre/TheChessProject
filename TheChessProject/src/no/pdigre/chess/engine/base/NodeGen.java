@@ -14,11 +14,7 @@ public class NodeGen implements IConst {
 	}
 
 	public static final Position64[] getLegalMoves64(IPosition pos) {
-		Position64 pos64 = Position64.getPosition64(pos);
-//		if(pos64.whiteNext())
-//			return new GNodegenW(pos64).moves();
-//		return new GNodegenB(pos64).moves();
-		return new GMovegen(pos64).moves();
+		return new GMovegen(Position64.getPosition64(pos)).moves();
 	}
 
 	public static final Position64[] getQuiescence64(IPosition pos) {
