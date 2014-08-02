@@ -5,16 +5,17 @@ import java.util.List;
 import no.pdigre.chess.engine.base.IConst.BITS;
 
 public class MKWhiteStart extends MKWhite {
-	final static long SIDE_WK = BITS.assemble(IConst.WK, IConst.WK_STARTPOS, IConst.WK_STARTPOS + 1, IConst.CANCASTLE_BLACK);
-	final static long SIDE_WQ = BITS.assemble(IConst.WK, IConst.WK_STARTPOS, IConst.WK_STARTPOS - 1, IConst.CANCASTLE_BLACK);
-
-	MOVEDATA CK;
-	MOVEDATA CQ;
+	final MOVEDATA CQ;
+	final MOVEDATA CK;
+	final MOVEDATA SQ;
+	final MOVEDATA SK;
 
 	public MKWhiteStart(int from) {
 		super(from);
 		CK=MOVEDATAX.create(BITS.assemble(IConst.WK, IConst.WK_STARTPOS, IConst.WK_STARTPOS + 2, IConst.CANCASTLE_BLACK | IConst.SPECIAL));
 		CQ=MOVEDATAX.create(BITS.assemble(IConst.WK, IConst.WK_STARTPOS, IConst.WK_STARTPOS - 2, IConst.CANCASTLE_BLACK | IConst.SPECIAL));
+		SQ=M[2][5];
+		SK=M[3][5];
 	}
 	
 	protected void add(int offset, List<MOVEDATA[]> list) {
@@ -35,13 +36,13 @@ public class MKWhiteStart extends MKWhite {
 		if ((IConst.CWQ & gen.bb_piece) == 0
 				&& (gen.castling & IConst.CANCASTLE_WHITEQUEEN) != 0
 				&& !gen.pos.isCheckWhite()
-				&& !gen.pos.move(SIDE_WQ).isCheckWhite()) {
+				&& !gen.pos.isSafeWhite(IConst.WK_STARTPOS - 1)) {
 			gen.add(CQ);
 		}
 		if ((IConst.CWK & gen.bb_piece) == 0
 				&& (gen.castling & IConst.CANCASTLE_WHITEKING) != 0
 				&& !gen.pos.isCheckWhite()
-				&& !gen.pos.move(SIDE_WK).isCheckWhite()) {
+				&& !gen.pos.isSafeWhite(IConst.WK_STARTPOS + 1)) {
 			gen.add(CK);
 		}
 		super.all(gen);

@@ -5,16 +5,17 @@ import java.util.List;
 import no.pdigre.chess.engine.base.IConst.BITS;
 
 public class MKBlackStart extends MKBlack {
-	final static long SIDE_BK = BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS + 1, IConst.CANCASTLE_WHITE);
-	final static long SIDE_BQ = BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS - 1, IConst.CANCASTLE_WHITE);
-
-	MOVEDATA CK;
-	MOVEDATA CQ;
+	final MOVEDATA CQ;
+	final MOVEDATA CK;
+	final MOVEDATA SQ;
+	final MOVEDATA SK;
 
 	public MKBlackStart(int from) {
 		super(from);
-		CK=MOVEDATAX.create(BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS + 2, IConst.CANCASTLE_WHITE | IConst.SPECIAL));
 		CQ=MOVEDATAX.create(BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS - 2, IConst.CANCASTLE_WHITE | IConst.SPECIAL));
+		CK=MOVEDATAX.create(BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS + 2, IConst.CANCASTLE_WHITE | IConst.SPECIAL));
+		SQ=M[2][5];
+		SK=M[3][5];
 	}
 
 	protected void add(int offset, List<MOVEDATA[]> list) {
@@ -34,13 +35,13 @@ public class MKBlackStart extends MKBlack {
 		if ((IConst.CBQ & gen.bb_piece) == 0
 				&& (gen.castling & IConst.CANCASTLE_BLACKQUEEN) != 0
 				&& !gen.pos.isCheckBlack()
-				&& !gen.pos.move(SIDE_BQ).isCheckBlack()) {
+				&& !gen.pos.isSafeBlack(IConst.BK_STARTPOS - 1)) {
 			gen.add(CQ);
 		}
 		if ((IConst.CBK & gen.bb_piece) == 0
 				&& (gen.castling & IConst.CANCASTLE_BLACKKING) != 0
 				&& !gen.pos.isCheckBlack()
-				&& !gen.pos.move(SIDE_BK).isCheckBlack()) {
+				&& !gen.pos.isSafeBlack(IConst.BK_STARTPOS + 1)) {
 			gen.add(CK);
 		}
 		super.all(gen);

@@ -37,12 +37,7 @@ public class MOVEDATA {
 		return normal;
 	}
 	
-	public MOVEDATA(long bitmap) {
-		this.bitmap = bitmap;
-		this.bto = 1L << BITS.getTo(bitmap);
-	}
-
-	public MOVEDATA(long bitmap,long bto) {
+	protected MOVEDATA(long bitmap,long bto) {
 		this.bitmap = bitmap;
 		this.bto = bto;
 	}

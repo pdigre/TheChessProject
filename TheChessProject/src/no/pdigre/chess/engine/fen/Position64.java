@@ -20,17 +20,29 @@ public class Position64 implements IPosition64 {
 	
 	@Override
 	public boolean isCheckWhite(){
-		if( (checkstate & 1) ==0)
-			checkstate |= 1 | (KingSafe.pos(this).isCheckWhite()?2:0);
+		if( (checkstate & 1) ==0) {
+			checkstate |= 1 | (KingSafe.pos(this).isSafeWhite(wking)?2:0);
+		}
 		return (checkstate & 2)!=0 ;
 	}
 	
 	@Override
 	public boolean isCheckBlack(){
-		if( (checkstate & 4) ==0)
-			checkstate |= 4 | (KingSafe.pos(this).isCheckBlack()?8:0);
+		if( (checkstate & 4) ==0) {
+			checkstate |= 4 | (isSafeBlack(bking)?8:0);
+		}
 		return (checkstate & 8)!=0 ;
 	}
+
+	public boolean isSafeBlack(int king) {
+		return KingSafe.pos(this).isSafeBlack(king);
+	}
+	
+	public boolean isSafeWhite(int king) {
+		return KingSafe.pos(this).isSafeWhite(king);
+	}
+	
+	
 	
 	public static Position64 getPosition64(IPosition pos){
 		if(pos instanceof Position64)
