@@ -39,27 +39,11 @@ public class MRBlack extends MBase{
 	}
 
 	public void genLegal(Movegen gen){
-		slide(gen,U);
-		slide(gen,D);
-		slide(gen,L);
-		slide(gen,R);
+		bslide(gen,U);
+		bslide(gen,D);
+		bslide(gen,L);
+		bslide(gen,R);
 		gen.pruneBlack();
-	}
-
-	private void slide(Movegen gen, MOVEDATA[] m) {
-		int i=0;
-		long occ=gen.bb_piece;
-		while(i<m.length){
-			long bto=m[i+5].bto;
-			if((occ&bto)!=0){
-				if((gen.bb_white&bto)!=0)
-					gen.add(m[i+gen.ctype(bto)]);
-				break;
-			} else {
-				gen.add(m[i+5]);
-				i+=6;
-			}
-		}
 	}
 	
 }

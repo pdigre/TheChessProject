@@ -1,6 +1,5 @@
 package no.pdigre.chess.engine.uci;
 
-import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.iterate.Quiescence;
 import no.pdigre.chess.profile.GameData;
 import no.pdigre.chess.profile.Player;

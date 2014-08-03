@@ -10,14 +10,8 @@ public class MNWhite extends MBase{
 	public MNWhite(int from) {
 		super(from);
 		ArrayList<MOVEDATA[]> list=new ArrayList<MOVEDATA[]>();
-		add(UP + LEFT + LEFT, list);
-		add(UP + UP + LEFT, list);
-		add(UP + RIGHT + RIGHT, list);
-		add(UP + UP + RIGHT, list);
-		add(DOWN + LEFT + LEFT, list);
-		add(DOWN + DOWN + LEFT, list);
-		add(DOWN + RIGHT + RIGHT, list);
-		add(DOWN + DOWN + RIGHT, list);
+		for (int i = 0; i < KNIGHT_MOVES.length; i++)
+			add(KNIGHT_MOVES[i], list);
 		M=list.toArray(new MOVEDATA[list.size()][]);
 	}
 
@@ -27,7 +21,6 @@ public class MNWhite extends MBase{
 			MOVEDATA[] m=new MOVEDATA[6];
 			list.add(m);
 			m[5]=MOVEDATA.create(BITS.assemble(IConst.WN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES));
-			IBase.REV[to].RN |= (1L<<from);
 			for (int i = 0; i < 5; i++)
 				m[i]=MOVEDATA.createxw((purge(BITS.assemble(IConst.WN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << GMovegen._CAPTURE)); 
 		}

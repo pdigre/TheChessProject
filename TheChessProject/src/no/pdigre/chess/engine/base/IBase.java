@@ -1,6 +1,8 @@
 package no.pdigre.chess.engine.base;
 
 
+
+
 /**
  * Arrays of possible moves for each position of the board sliders have sub
  * arrays - piece - from - to - x - castling
@@ -26,6 +28,8 @@ public interface IBase extends IConst {
 		public long RK=0L;
 	}
 	
+	
+
 	class BASE {
 		final public static int LEFT = -1;
 		final public static int RIGHT = 1;
@@ -47,15 +51,27 @@ public interface IBase extends IConst {
 		static int itemp=0;
 		static MOVEDATA[] DATA=new MOVEDATA[40000];
 		static int idata=0;
+		final static int[] DIAGONAL_MOVES = new int[]{UP+LEFT,UP+RIGHT,DOWN+LEFT,DOWN+RIGHT};
+		final static int[] LINE_MOVES = new int[]{UP,DOWN,LEFT,RIGHT};
+		final static int[] KNIGHT_MOVES = new int[]{UP + LEFT + LEFT,UP + UP + LEFT,UP + RIGHT + RIGHT,UP + UP + RIGHT,
+			DOWN + LEFT + LEFT,DOWN + DOWN + LEFT,DOWN + RIGHT + RIGHT,DOWN + DOWN + RIGHT};
 
 		static {
-			for (int from = 0; from < 64; from++)
-				REV[from] = new REVERSE();
+			for (int from = 0; from < 64; from++){
+				REVERSE r = new REVERSE();
+				REV[from] = r;
+				r.RB=s(from,DIAGONAL_MOVES);
+				r.RR=s(from,LINE_MOVES);
+				r.RQ=r.RB|r.RR;
+				r.RK=m(from,LINE_MOVES)|m(from,DIAGONAL_MOVES);
+				r.RN=m(from,KNIGHT_MOVES);
+			}
+			
 			for (int from = 0; from < 64; from++) {
 				WN[from] = new MNWhite(from);
                 BN[from] = new MNBlack(from);
-				WR[from] = new MRWhite(from);
-				BR[from] = new MRBlack(from);
+				WR[from] = from == IConst.WR_KING_STARTPOS || from == WR_QUEEN_STARTPOS?new MRWhiteStart(from):new MRWhite(from);
+				BR[from] = from == IConst.BR_KING_STARTPOS || from == BR_QUEEN_STARTPOS?new MRBlackStart(from):new MRBlack(from);
 				WB[from] = new MBWhite(from);
 				BB[from] = new MBBlack(from);
 				WQ[from] = new MQWhite(from);
@@ -82,6 +98,29 @@ public interface IBase extends IConst {
 			if ((x1 < 3 && x2 > 4) || (x2 < 3 && x1 > 4))
 				return false;
 			return true;
+		}
+		
+		static long s(int from,int[] offset) {
+			long ret=0L;
+			for (int i = 0; i < offset.length; i++) {
+				int off=offset[i];
+				int to=from+off;
+				while(inside(to, to-off)){
+					ret |= (1L<<to);
+					to+=off;
+				}
+			}
+			return ret;
+		}
+
+		static long m(int from,int[] offset) {
+			long ret=0L;
+			for (int i = 0; i < offset.length; i++) {
+				int to=from+offset[i];
+				if(inside(to, from))
+					ret|= 1L<<to;
+			}
+			return ret;
 		}
 	}
 }

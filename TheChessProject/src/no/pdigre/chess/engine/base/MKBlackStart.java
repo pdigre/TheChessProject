@@ -5,17 +5,16 @@ import java.util.List;
 import no.pdigre.chess.engine.base.IConst.BITS;
 
 public class MKBlackStart extends MKBlack {
-	final MOVEDATA CQ;
-	final MOVEDATA CK;
-	final MOVEDATA SQ;
-	final MOVEDATA SK;
+	final MOVEDATA CQ,CK;
+	final MOVEDATA[][] X,XQ,XK;
 
 	public MKBlackStart(int from) {
 		super(from);
+		X=castling(M,IConst.CANCASTLE_BLACK);
+		XQ=castling(M,IConst.CANCASTLE_BLACKQUEEN);
+		XK=castling(M,IConst.CANCASTLE_BLACKKING);
 		CQ=MOVEDATAX.create(BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS - 2, IConst.CANCASTLE_WHITE | IConst.SPECIAL));
 		CK=MOVEDATAX.create(BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS + 2, IConst.CANCASTLE_WHITE | IConst.SPECIAL));
-		SQ=M[2][5];
-		SK=M[3][5];
 	}
 
 	protected void add(int offset, List<MOVEDATA[]> list) {
@@ -32,19 +31,30 @@ public class MKBlackStart extends MKBlack {
 
 	@Override
 	public void genLegal(Movegen gen) {
-		if ((IConst.CBQ & gen.bb_piece) == 0
-				&& (gen.castling & IConst.CANCASTLE_BLACKQUEEN) != 0
-				&& !gen.pos.isCheckBlack()
-				&& !gen.pos.isSafeBlack(IConst.BK_STARTPOS - 1)) {
-			gen.add(CQ);
+		long castling = gen.castling & IConst.CANCASTLE_BLACK;
+		if(castling != 0){
+			if ((IConst.CBQ & gen.bb_piece) == 0
+					&& (castling & IConst.CANCASTLE_BLACKQUEEN) != 0
+					&& !gen.pos.isCheckBlack()
+					&& !gen.pos.isSafeBlack(IConst.BK_STARTPOS - 1)) {
+				gen.add(CQ);
+			}
+			if ((IConst.CBK & gen.bb_piece) == 0
+					&& (castling & IConst.CANCASTLE_BLACKKING) != 0
+					&& !gen.pos.isCheckBlack()
+					&& !gen.pos.isSafeBlack(IConst.BK_STARTPOS + 1)) {
+				gen.add(CK);
+			}
+			if(castling == IConst.CANCASTLE_BLACK){
+				bmoves(gen,X);
+			} else if((castling & IConst.CANCASTLE_BLACKQUEEN) != 0){
+				bmoves(gen,XQ);
+			} else {
+				bmoves(gen,XK);
+			}
+		} else {
+			super.genLegal(gen);
 		}
-		if ((IConst.CBK & gen.bb_piece) == 0
-				&& (gen.castling & IConst.CANCASTLE_BLACKKING) != 0
-				&& !gen.pos.isCheckBlack()
-				&& !gen.pos.isSafeBlack(IConst.BK_STARTPOS + 1)) {
-			gen.add(CK);
-		}
-		super.genLegal(gen);
 	}
 
 }

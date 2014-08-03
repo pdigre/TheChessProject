@@ -11,14 +11,8 @@ public class MNBlack extends MBase {
 	public MNBlack(int from) {
 		super(from);
 		ArrayList<MOVEDATA[]> list=new ArrayList<MOVEDATA[]>();
-		add(UP + LEFT + LEFT, list);
-		add(UP + UP + LEFT, list);
-		add(UP + RIGHT + RIGHT, list);
-		add(UP + UP + RIGHT, list);
-		add(DOWN + LEFT + LEFT, list);
-		add(DOWN + DOWN + LEFT, list);
-		add(DOWN + RIGHT + RIGHT, list);
-		add(DOWN + DOWN + RIGHT, list);
+		for (int i = 0; i < KNIGHT_MOVES.length; i++)
+			add(KNIGHT_MOVES[i], list);
 		M=list.toArray(new MOVEDATA[list.size()][]);
 	}
 
