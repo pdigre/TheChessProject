@@ -21,6 +21,26 @@ public abstract class MBase {
 		return (((long) score) << 32) | ((int) bitmap);
 	}
 
+	public MOVEDATA[] castling(MOVEDATA[] m) {
+		MOVEDATA[] x=new MOVEDATA[m.length];
+		for (int i = 0; i < m.length; i++)
+			x[i]=new MOVEDATAX(m[i]);
+		return x;
+	}
+
+	public MOVEDATA[] castling(MOVEDATA[] m,long mask) {
+		MOVEDATA[] x=new MOVEDATA[m.length];
+		for (int i = 0; i < m.length; i++)
+			x[i]=new MOVEDATAX(m[i],mask);
+		return x;
+	}
+	public MOVEDATA[][] castling(MOVEDATA[][] M,long castling) {
+		MOVEDATA[][] x=new MOVEDATA[M.length][];
+		for (int i = 0; i < M.length; i++)
+			x[i]=castling(M[i],castling);
+		return x;
+	}
+	
 	public void genLegal(Movegen gen){
 		//
 	}
@@ -32,7 +52,7 @@ public abstract class MBase {
 	public void genQuiescence(Movegen gen){
 		//
 	}
-
+	
 	public static <X extends MBase> void genLegal(Movegen gen,long b, X[] arr) {
 		int bits = Long.bitCount(b);
 		for (int j = 0; j < bits; j++) {
@@ -41,5 +61,29 @@ public abstract class MBase {
 			arr[from].genLegal(gen);
 		}
 	}
-	
+
+	public void wmoves(Movegen gen, MOVEDATA[][] moves) {
+		for (MOVEDATA[] m : moves){
+			long bto = m[5].bto;
+			if ((gen.bb_piece & bto) == 0) {
+				gen.add(m[5]);
+			} else if ((gen.bb_black & bto) != 0) {
+				gen.add(m[gen.ctype(bto)]);
+			}
+		}
+		gen.pruneWhite();
+	}
+
+	public void bmoves(Movegen gen, MOVEDATA[][] moves) {
+		for (MOVEDATA[] m : moves){
+			long bto = m[5].bto;
+			if ((gen.bb_piece & bto) == 0) {
+				gen.add(m[5]);
+			} else if ((gen.bb_white & bto) != 0) {
+				gen.add(m[gen.ctype(bto)]);
+			}
+		}
+		gen.pruneBlack();
+	}
+
 }

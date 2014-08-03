@@ -2,7 +2,6 @@ package no.pdigre.chess.engine.iterate;
 
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.Position;
-import no.pdigre.chess.engine.fen.Position;
 
 public class QuiescenceTT implements IIterator {
 

@@ -4,26 +4,14 @@ import no.pdigre.chess.engine.evaluate.IEvaluator;
 
 public class StartGame extends PositionWithLog {
 
-	private final String castling;
-	private final boolean white;
-	private final int enpassant;
-	private final int halfMoves;
 	private final int fullMoves;
 
 	public StartGame(String fen) {
 		super();
 		String[] split = fen.split(" ");
 		setBoard(FEN.fen2board(split[0]));
-		white = "w".equalsIgnoreCase(split[1]);
-		castling = split[2];
-		enpassant = FEN.text2pos(split[3]);
-		halfMoves = Integer.parseInt(split[4]);
 		fullMoves = Integer.parseInt(split[5]);
-	}
-
-	@Override
-	public boolean whiteNext() {
-		return white;
+		bitmap = getBitmap(FEN.text2pos(split[3]),"w".equalsIgnoreCase(split[1]),Integer.parseInt(split[4]),getCastlingState(split[2]));
 	}
 
 	@Override
@@ -31,15 +19,14 @@ public class StartGame extends PositionWithLog {
 		return fullMoves;
 	}
 
-	final private long getCastlingState() {
+	private long getCastlingState(String castling) {
 		return (castling.contains("K") ? CANCASTLE_WHITEKING:0)
 				| (castling.contains("Q") ? CANCASTLE_WHITEQUEEN:0)
 				| (castling.contains("k") ? CANCASTLE_BLACKKING:0)
 				| (castling.contains("q") ? CANCASTLE_BLACKQUEEN:0);
 	}
 
-    @Override
-    public long getBitmap() {
+    private long getBitmap(int enpassant,boolean white,int halfMoves,long castling) {
         int enp=0;
         if(enpassant!=-1){
             if(white){
@@ -48,7 +35,7 @@ public class StartGame extends PositionWithLog {
                 enp=SPECIAL|WP|(enpassant-8)<<_FROM|(enpassant+8)<<_TO;
             }
         }
-        return (halfMoves<<_HALFMOVES)|getCastlingState()|(white?BLACK:0)|enp;
+        return (halfMoves<<_HALFMOVES)|castling|(white?BLACK:0)|enp;
     }
 
     @Override

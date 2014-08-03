@@ -1,74 +1,37 @@
 package no.pdigre.chess.engine.base;
 
-import java.util.ArrayList;
+import static no.pdigre.chess.engine.base.IBase.BASE.DOWN;
+import static no.pdigre.chess.engine.base.IBase.BASE.LEFT;
+import static no.pdigre.chess.engine.base.IBase.BASE.RIGHT;
+import static no.pdigre.chess.engine.base.IBase.BASE.UP;
 
-import no.pdigre.chess.engine.base.IConst.BITS;
-import static no.pdigre.chess.engine.base.IBase.BASE.*;
 
+public class MQWhite extends MSlider{
 
-public class MQWhite extends MBase{
-
-	final MOVEDATA[] U;
-	final MOVEDATA[] D;
-	final MOVEDATA[] L;
-	final MOVEDATA[] R;
-	final MOVEDATA[] UL;
-	final MOVEDATA[] UR;
-	final MOVEDATA[] DL;
-	final MOVEDATA[] DR;
+	final MOVEDATA[] U,D, L,R,UL,UR,DL,DR;
 
 	public MQWhite(int from) {
 		super(from);
-		U=slide(UP);
-		D=slide(DOWN);
-		L=slide(LEFT);
-		R=slide(RIGHT);
-		UL=slide(UP + LEFT);
-		UR=slide(UP + RIGHT);
-		DL=slide(DOWN + LEFT);
-		DR=slide(DOWN + RIGHT);
-	}
-
-	private MOVEDATA[] slide(int offset) {
-		ArrayList<MOVEDATA> list = new ArrayList<MOVEDATA>();
-		int to=from+offset;
-		while(inside(to, to-offset)){
-			IBase.REV[to].RQ |= (1L<<from);
-			long bitmap = BITS.assemble(IConst.WQ, from, to, IConst.CASTLING_STATE | IConst.HALFMOVES);
-			for (int i = 0; i < 5; i++)
-				list.add(MOVEDATA.createxw((purge(bitmap, PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << GMovegen._CAPTURE)));
-			list.add(MOVEDATA.create(bitmap));
-			to+=offset;
-		}
-		return list.toArray(new MOVEDATA[list.size()]);
+		U=slide(IConst.WQ, UP);
+		D=slide(IConst.WQ, DOWN);
+		L=slide(IConst.WQ, LEFT);
+		R=slide(IConst.WQ, RIGHT);
+		UL=slide(IConst.WQ, UP + LEFT);
+		UR=slide(IConst.WQ, UP + RIGHT);
+		DL=slide(IConst.WQ, DOWN + LEFT);
+		DR=slide(IConst.WQ, DOWN + RIGHT);
 	}
 
 	public void genLegal(Movegen gen){
-		slide(gen,U);
-		slide(gen,D);
-		slide(gen,L);
-		slide(gen,R);
-		slide(gen,UL);
-		slide(gen,UR);
-		slide(gen,DL);
-		slide(gen,DR);
+		wslide(gen,U);
+		wslide(gen,D);
+		wslide(gen,L);
+		wslide(gen,R);
+		wslide(gen,UL);
+		wslide(gen,UR);
+		wslide(gen,DL);
+		wslide(gen,DR);
 		gen.pruneWhite();
-	}
-
-	private void slide(Movegen gen, MOVEDATA[] m) {
-		int i=0;
-		long occ=gen.bb_piece;
-		while(i<m.length){
-			long bto=m[i+5].bto;
-			if((occ&bto)!=0){
-				if((gen.bb_black&bto)!=0)
-					gen.add(m[i+gen.ctype(bto)]);
-				break;
-			} else {
-				gen.add(m[i+5]);
-				i+=6;
-			}
-		}
 	}
 	
 }

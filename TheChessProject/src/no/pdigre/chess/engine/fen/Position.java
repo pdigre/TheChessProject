@@ -255,5 +255,19 @@ public class Position implements IPosition {
 			bking=BITS.getTo(m.bitmap);
 		return new Position(m.bitmap & castling, 0,whiteNext(), bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking,0L);
 	}
+//	Position next = new Position();
+//	next.bb_black ^= m.b_black;
+//	next.bb_bit1 ^= m.b_bit1;
+//	next.bb_bit2 ^= m.b_bit2;
+//	next.bb_bit3 ^= m.b_bit3;
+//	next.wking=getWKpos();
+//	next.bking=getBKpos();
+//	next.bitmap=m.bitmap & castling;
+//	int type = BITS.getPiece(m.bitmap);
+//	if(type==IConst.WK)
+//		next.wking=BITS.getTo(m.bitmap);
+//	else if(type==IConst.BK)
+//		next.bking=BITS.getTo(m.bitmap);
+//	return next;
 
 }

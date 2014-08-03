@@ -9,7 +9,7 @@ import static no.pdigre.chess.engine.base.IBase.BASE.*;
 
 public class MKWhite extends MBase {
 
-	MOVEDATA[][] M;
+	final MOVEDATA[][] M;
 
 	public MKWhite(int from) {
 		super(from);			
@@ -38,14 +38,7 @@ public class MKWhite extends MBase {
 	}
 
 	public void genLegal(Movegen gen) {
-		for (MOVEDATA[] m : M){
-			long bto = m[5].bto;
-			if ((gen.bb_piece & bto) == 0) {
-				gen.add(m[5]);
-			} else if ((gen.bb_black & bto) != 0) {
-				gen.add(m[gen.ctype(bto)]);
-			}
-		}
-		gen.pruneWhite();
+		wmoves(gen,M);
 	}
+
 }
