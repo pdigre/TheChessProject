@@ -2,8 +2,6 @@ package no.pdigre.chess.engine.iterate;
 
 import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.fen.FEN;
-import no.pdigre.chess.engine.fen.IPosition;
-import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position;
 
 public class PVS implements IIterator {

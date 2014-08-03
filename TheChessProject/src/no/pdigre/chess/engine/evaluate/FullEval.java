@@ -2,7 +2,6 @@ package no.pdigre.chess.engine.evaluate;
 
 import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.PSQT;
-import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position;
 
 public class FullEval implements IEvaluator {

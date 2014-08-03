@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.TreeSet;
 
 import no.pdigre.chess.engine.base.GMovegen;
-import no.pdigre.chess.engine.base.NodeGen;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position;

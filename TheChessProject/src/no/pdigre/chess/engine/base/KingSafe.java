@@ -2,7 +2,6 @@ package no.pdigre.chess.engine.base;
 
 import no.pdigre.chess.engine.base.IBase.BASE;
 import no.pdigre.chess.engine.base.IBase.REVERSE;
-import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position;
 
 public class KingSafe implements IConst {

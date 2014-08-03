@@ -2,7 +2,6 @@ package no.pdigre.chess.engine.base;
 
 import java.util.Arrays;
 
-import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position;
 
 /**
