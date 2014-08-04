@@ -17,6 +17,7 @@ public class Position implements IConst, Comparable<Position> {
 	public long zobrist;
 	public int score=0;
 	public int quality=0;
+	public long castling=0L;
 	
 	public Position() {
 		super();
@@ -28,7 +29,7 @@ public class Position implements IConst, Comparable<Position> {
 
 	public boolean isCheckWhite(){
 		if( (checkstate & 1) ==0) {
-			checkstate |= 1 | (KingSafe.pos(this).isSafeWhite(wking)?2:0);
+			checkstate |= 1 | (isSafeWhite(wking)?2:0);
 		}
 		return (checkstate & 2)!=0 ;
 	}
@@ -238,52 +239,38 @@ public class Position implements IConst, Comparable<Position> {
 		return new Position(bitmap, score, white, bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking, zobrist);
 	}
 
-	public Position move(MOVEDATA m, long castling) {
+	public Position move(MOVEDATA m) {
 		Position pos=new Position(this);
-		pos.make(m, castling);
+		pos.make(m);
 		return pos;
 	}
 	
-	public void make(MOVEDATA m, long castling) {
+	public void make(MOVEDATA m) {
+		long castling = ~CASTLING_STATE | bitmap;
 		bitmap=m.bitmap&castling;
 		bb_black ^=m.b_black;
 		bb_bit1 ^=m.b_bit1;
 		bb_bit2 ^=m.b_bit2;
 		bb_bit3 ^=m.b_bit3;
-		int type = BITS.getPiece(m.bitmap);
+
+		int type = BITS.getPiece(bitmap);
 		if(type==IConst.WK)
-			wking=BITS.getTo(m.bitmap);
+			wking=BITS.getTo(bitmap);
 		else if(type==IConst.BK)
-			bking=BITS.getTo(m.bitmap);
+			bking=BITS.getTo(bitmap);
 	}
 
-	public void undo(MOVEDATA m, long castling) {
-		bitmap=(m.bitmap&IConst.CASTLING_STATE) |castling;
+	public void undo(MOVEDATA m,long bitmap) {
+		this.bitmap=bitmap;
 		bb_black ^=m.b_black;
 		bb_bit1 ^=m.b_bit1;
 		bb_bit2 ^=m.b_bit2;
 		bb_bit3 ^=m.b_bit3;
-		int type = BITS.getPiece(m.bitmap);
+		
+		int type = BITS.getPiece(bitmap);
 		if(type==IConst.WK)
-			wking=BITS.getTo(m.bitmap);
+			wking=BITS.getTo(bitmap);
 		else if(type==IConst.BK)
-			bking=BITS.getTo(m.bitmap);
+			bking=BITS.getTo(bitmap);
 	}
-	
-	
-//	Position next = new Position();
-//	next.bb_black ^= m.b_black;
-//	next.bb_bit1 ^= m.b_bit1;
-//	next.bb_bit2 ^= m.b_bit2;
-//	next.bb_bit3 ^= m.b_bit3;
-//	next.wking=getWKpos();
-//	next.bking=getBKpos();
-//	next.bitmap=m.bitmap & castling;
-//	int type = BITS.getPiece(m.bitmap);
-//	if(type==IConst.WK)
-//		next.wking=BITS.getTo(m.bitmap);
-//	else if(type==IConst.BK)
-//		next.bking=BITS.getTo(m.bitmap);
-//	return next;
-
 }

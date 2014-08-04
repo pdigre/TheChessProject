@@ -12,14 +12,7 @@ public class GMovegen extends Movegen {
 	}
 
 	@Override
-	final public Position[] moves() {
-		n = 0;
-		test = 0;
-
-		// *********************************************************************************************
-		// *
-		// *
-		// *********************************************************************************************
+	final public MOVEDATA[] moves() {
 		if (pos.whiteNext()) {
 			MPWhite.genLegal(this,bb_white & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
 			MNWhite.genLegal(this,bb_white & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
@@ -35,7 +28,7 @@ public class GMovegen extends Movegen {
 			MQBlack.genLegal(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
 			BASE.BK[bking].genLegal(this);
 		}
-		return Arrays.copyOfRange(list, 0, n);
+		return getLegal();
 	}
 
 

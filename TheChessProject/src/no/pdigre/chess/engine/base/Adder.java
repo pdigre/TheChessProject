@@ -17,6 +17,6 @@ public abstract class Adder {
 	abstract void add(int from);
 
 	void add(MOVEDATA move) {
-		gen.moves[gen.imoves++] = move;
+		gen.add(move);
 	}
 }

@@ -1,5 +1,7 @@
 package no.pdigre.chess.engine.base;
 
+import java.util.Arrays;
+
 import no.pdigre.chess.engine.fen.Position;
 
 public abstract class Movegen implements IConst{
@@ -26,14 +28,14 @@ public abstract class Movegen implements IConst{
 //	final long bb_pinned;   // pieces that are blocking
 	
 	final MOVEDATA[] moves = new MOVEDATA[99];
-	int imoves = 0;
+	private int iAll = 0;
+	private int iLegal = 0;
+	private int iTested = 0;
+
 	final int wking;
 	final int bking;
 	final public int enpassant;
 
-	protected int n = 0;
-	protected int test = 0;
-	protected final Position[] list = new Position[99];
 
 	Movegen(Position pos) {
 		this.pos = pos;
@@ -67,30 +69,32 @@ public abstract class Movegen implements IConst{
 	
 	
 	
-	public abstract Position[] moves();
+	public abstract MOVEDATA[] moves();
 
-	public void pruneBlack() {
-		while (test < imoves) {
-			Position next = (Position) pos.move(moves[test++],castling);
-			if (!next.isCheckBlack())
-				list[n++] = next;
+	final public void pruneBlack() {
+		while (iTested < iAll) {
+			MOVEDATA md = moves[iTested++];
+			Position next=new Position(pos);
+			next.make(md);
+			if (!next.isCheckBlack()){
+				moves[iLegal++]=md;
+			}
 		}
 	}
 
-	public void pruneWhite() {
-		while (test < imoves) {
-			Position next = (Position) pos.move(moves[test++],castling);
-			if (!next.isCheckWhite())
-				list[n++] = next;
+	final public void pruneWhite() {
+		while (iTested < iAll) {
+			MOVEDATA md = moves[iTested++];
+			Position next=new Position(pos);
+			next.make(md);
+			if (!next.isCheckWhite()){
+				moves[iLegal++]=md;
+			}
 		}
-	}
-
-	final void add(long bitmap) {
-		moves[imoves++] = MOVEDATA.create(bitmap & castling);
 	}
 
 	final void add(MOVEDATA data) {
-		moves[imoves++] = data;
+		moves[iAll++] = data;
 	}
 
 	final int type(long bit) {
@@ -101,5 +105,12 @@ public abstract class Movegen implements IConst{
 		return ((bb_bit1 & bit) == 0 ? 0 : 1) + ((bb_bit2 & bit) == 0 ? 0 : 2) + ((bb_bit3 & bit) == 0 ? 0 : 2) - 1;
 	}
 	
+	final MOVEDATA[] getLegal(){
+		MOVEDATA[] t = Arrays.copyOfRange(moves, 0, iLegal);
+		iLegal = 0;
+		iTested = 0;
+		iAll=0;
+		return t;
+	}
 	
 }

@@ -13,11 +13,18 @@ public class NodeGen implements IConst {
 	}
 
 	public static final Position[] getLegalMoves64(Position pos) {
-		return new GMovegen(pos).moves();
+		return wrap(pos, new GMovegen(pos).moves());
+	}
+
+	public static Position[] wrap(Position pos, MOVEDATA[] moves) {
+		Position[] list=new Position[moves.length];
+		for (int i = 0; i < moves.length; i++)
+			list[i]=pos.move(moves[i]);
+		return list;
 	}
 
 	public static final Position[] getQuiescence64(Position pos) {
-		return new GMovegenQ(pos).moves();
+		return wrap(pos,new GMovegenQ(pos).moves());
 	}
 
 	/**
