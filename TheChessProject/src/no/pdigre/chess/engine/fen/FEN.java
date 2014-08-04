@@ -39,7 +39,7 @@ public class FEN implements IConst {
      * 
      * @return
      */
-    final public static String getFen(IPosition pos) {
+    final public static String getFen(Position pos) {
         StringBuilder fen = new StringBuilder();
         fen.append(FEN.board2fen(pos));
         fen.append(" ");
@@ -50,10 +50,8 @@ public class FEN implements IConst {
         fen.append(FEN.pos2string(BITS.getEnpassant(pos.getBitmap())));
         fen.append(" ");
         fen.append(BITS.halfMoves(pos.getBitmap()));
-        if (pos instanceof IPositionWithLog) {
-            fen.append(" ");
-            fen.append(((IPositionWithLog) pos).totalMoves());
-        }
+        fen.append(" ");
+        fen.append(pos.totalMoves());
         return fen.toString();
     }
 
@@ -72,7 +70,7 @@ public class FEN implements IConst {
         return "abcdefgh".indexOf(pos.charAt(0)) + 8 * (pos.charAt(1) - '1');
     }
 
-    final public static String board2string(IPosition pos) {
+    final public static String board2string(Position pos) {
         StringBuilder fen = new StringBuilder();
         for (int y = 8; y-- > 0;) {
             fen.append(String.valueOf(y+1)+" ");
@@ -100,7 +98,7 @@ public class FEN implements IConst {
         return fen.toString();
     }
 
-    final public static String board2fen(IPosition pos) {
+    final public static String board2fen(Position pos) {
         StringBuilder fen = new StringBuilder();
         for (int y = 8; y-- > 0;) {
             int i = 0;
@@ -124,7 +122,7 @@ public class FEN implements IConst {
         return fen.toString();
     }
 
-    final public static String getFenCastling(IPosition move) {
+    final public static String getFenCastling(Position move) {
         StringBuilder sb = new StringBuilder();
         long state = BITS.getCastlingState(move.getBitmap());
         if ((state & IConst.CANCASTLE_WHITEKING) != 0)

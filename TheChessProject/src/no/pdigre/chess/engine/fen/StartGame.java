@@ -59,7 +59,7 @@ public class StartGame extends PositionWithLog {
 	}
 
 	@Override
-	public int compareTo(IPosition o) {
+	public int compareTo(Position o) {
 		return Integer.compare(getScore(), o.getScore());
 	}
 }

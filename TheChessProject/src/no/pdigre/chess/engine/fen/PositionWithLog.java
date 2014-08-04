@@ -1,11 +1,11 @@
 package no.pdigre.chess.engine.fen;
 
 
-public class PositionWithLog extends Position implements IPositionWithLog {
+public class PositionWithLog extends Position {
 
-    final private IPositionWithLog parent;
+    final private Position parent;
 
-    public PositionWithLog(final IPositionWithLog parent, final long bitmap) {
+    public PositionWithLog(final Position parent, final long bitmap) {
     	super();
         this.parent = parent;
     }

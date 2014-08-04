@@ -5,18 +5,17 @@ import java.util.TreeSet;
 
 import no.pdigre.chess.engine.base.GMovegen;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
-import no.pdigre.chess.engine.fen.IPosition;
 import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.PositionScore;
 
-public final class IterateQuiescence extends TreeSet<IPosition> {
+public final class IterateQuiescence extends TreeSet<Position> {
 
     final static IEvaluator evaluator=IEvaluator.FULL;
     
-    public static class Ascending implements Comparator<IPosition> {
+    public static class Ascending implements Comparator<Position> {
 
         @Override
-        public int compare(IPosition in, IPosition other) {
+        public int compare(Position in,Position other) {
             int r1 = in.getQuality();
             int r2 = other.getQuality();
             if (r1 > r2)
@@ -33,10 +32,10 @@ public final class IterateQuiescence extends TreeSet<IPosition> {
         }
     }
 
-    public static class Descending implements Comparator<IPosition> {
+    public static class Descending implements Comparator<Position> {
 
         @Override
-        public int compare(IPosition in, IPosition other) {
+        public int compare(Position in, Position other) {
             int r1 = in.getQuality();
             int r2 = other.getQuality();
             if (r1 > r2)
@@ -68,7 +67,7 @@ public final class IterateQuiescence extends TreeSet<IPosition> {
     public long[] getBitmaps() {
     	long[] bitmaps = new long[size()];
         int i = 0;
-        for (IPosition score : this) {
+        for (Position score : this) {
             bitmaps[i++] = score.getBitmap();
         }
         return bitmaps;
@@ -81,8 +80,8 @@ public final class IterateQuiescence extends TreeSet<IPosition> {
         add(move);
     }
 
-    public IPosition[] getSortedArray() {
-        return toArray(new IPosition[size()]);
+    public Position[] getSortedArray() {
+        return toArray(new Position[size()]);
     }
 
 }

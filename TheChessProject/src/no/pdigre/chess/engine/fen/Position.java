@@ -4,7 +4,7 @@ import no.pdigre.chess.engine.base.IConst;
 import no.pdigre.chess.engine.base.KingSafe;
 import no.pdigre.chess.engine.base.MOVEDATA;
 
-public class Position implements IPosition {
+public class Position implements IConst, Comparable<Position> {
 
 	public long bb_bit1;
 	public long bb_bit2;
@@ -18,13 +18,14 @@ public class Position implements IPosition {
 	public int score=0;
 	public int quality=0;
 	
-	
-	
 	public Position() {
 		super();
 	}
 
-	@Override
+    public int totalMoves(){
+    	return 0;
+    }
+
 	public boolean isCheckWhite(){
 		if( (checkstate & 1) ==0) {
 			checkstate |= 1 | (KingSafe.pos(this).isSafeWhite(wking)?2:0);
@@ -32,7 +33,6 @@ public class Position implements IPosition {
 		return (checkstate & 2)!=0 ;
 	}
 	
-	@Override
 	public boolean isCheckBlack(){
 		if( (checkstate & 4) ==0) {
 			checkstate |= 4 | (isSafeBlack(bking)?8:0);
@@ -83,53 +83,56 @@ public class Position implements IPosition {
 		this.score=score;
 	}
 
-	@Override
+	public Position(Position pos) {
+		super();
+		this.bitmap = pos.bitmap;
+		this.wking = pos.wking;
+		this.bking = pos.bking;
+		this.bb_black = pos.bb_black;
+		this.bb_bit1 = pos.bb_bit1;
+		this.bb_bit2 = pos.bb_bit2;
+		this.bb_bit3 = pos.bb_bit3;
+		this.zobrist=pos.zobrist;
+		this.score=pos.score;
+	}
+
 	public boolean whiteNext() {
 		return BITS.black(bitmap);
 	}
 
-	@Override
 	public int getWKpos() {
 		return wking;
 	}
 
-	@Override
 	public int getBKpos() {
 		return bking;
 	}
 
-	@Override
 	public long getBitmap() {
 		return bitmap;
 	}
 
-	@Override
 	public long get64black() {
 		return bb_black;
 	}
 
-	@Override
 	public long get64bit1() {
 		return bb_bit1;
 	}
 
-	@Override
 	public long get64bit2() {
 		return bb_bit2;
 	}
 
-	@Override
 	public long get64bit3() {
 		return bb_bit3;
 	}
 
-	@Override
 	public int getPiece(int i) {
 		long bit = 1L << i;
 		return ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4) | ((bb_black & bit) == 0 ? 0 : 8);
 	}
 
-	@Override
 	public int[] getBoard() {
 		int[] board = new int[64];
 		for (int i = 0; i < board.length; i++)
@@ -137,28 +140,23 @@ public class Position implements IPosition {
 		return board;
 	}
 
-	@Override
 	public String toString() {
 		return FEN.printMove(this) + "\n" + FEN.board2string(this);
 	}
 
-	@Override
 	public long getZobristKey() {
 		return zobrist;
 	}
 
-	@Override
 	public int getScore() {
 		return score;
 	}
 
-	@Override
 	public int getQuality() {
 		return quality;
 	}
 
-	@Override
-	public int compareTo(IPosition o) {
+	public int compareTo(Position o) {
 		return Integer.compare(score, o.getScore());
 	}
 
@@ -240,21 +238,39 @@ public class Position implements IPosition {
 		return new Position(bitmap, score, white, bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking, zobrist);
 	}
 
-	@Override
-	public IPosition move(MOVEDATA m, long castling) {
-		long bb_black = get64black() ^m.b_black;
-		long bb_bit1 = get64bit1() ^m.b_bit1;
-		long bb_bit2 = get64bit2() ^m.b_bit2;
-		long bb_bit3 = get64bit3() ^m.b_bit3;
-		int wking=getWKpos();
-		int bking=getBKpos();
+	public Position move(MOVEDATA m, long castling) {
+		Position pos=new Position(this);
+		pos.make(m, castling);
+		return pos;
+	}
+	
+	public void make(MOVEDATA m, long castling) {
+		bitmap=m.bitmap&castling;
+		bb_black ^=m.b_black;
+		bb_bit1 ^=m.b_bit1;
+		bb_bit2 ^=m.b_bit2;
+		bb_bit3 ^=m.b_bit3;
 		int type = BITS.getPiece(m.bitmap);
 		if(type==IConst.WK)
 			wking=BITS.getTo(m.bitmap);
 		else if(type==IConst.BK)
 			bking=BITS.getTo(m.bitmap);
-		return new Position(m.bitmap & castling, 0,whiteNext(), bb_black, bb_bit1, bb_bit2, bb_bit3, wking, bking,0L);
 	}
+
+	public void undo(MOVEDATA m, long castling) {
+		bitmap=(m.bitmap&IConst.CASTLING_STATE) |castling;
+		bb_black ^=m.b_black;
+		bb_bit1 ^=m.b_bit1;
+		bb_bit2 ^=m.b_bit2;
+		bb_bit3 ^=m.b_bit3;
+		int type = BITS.getPiece(m.bitmap);
+		if(type==IConst.WK)
+			wking=BITS.getTo(m.bitmap);
+		else if(type==IConst.BK)
+			bking=BITS.getTo(m.bitmap);
+	}
+	
+	
 //	Position next = new Position();
 //	next.bb_black ^= m.b_black;
 //	next.bb_bit1 ^= m.b_bit1;

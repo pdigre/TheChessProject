@@ -2,7 +2,7 @@ package no.pdigre.chess.swt;
 
 import java.util.ArrayList;
 
-import no.pdigre.chess.engine.fen.IPosition;
+import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.profile.GraphicsCommon;
 import no.pdigre.chess.profile.Marking;
 import no.pdigre.chess.profile.Square;
@@ -45,7 +45,7 @@ public class SwtChessCanvas extends Canvas {
         setLayoutData(new GridData(270, 270));
     }
 
-    public void drawBoard(IPosition pos, ArrayList<Marking> markers) {
+    public void drawBoard(Position pos, ArrayList<Marking> markers) {
         if (common.nobuffer) {
             Rectangle area = getClientArea();
             gc.drawRectangle(area.x + 1, area.y + 1, area.width - 2, area.height - 2);
