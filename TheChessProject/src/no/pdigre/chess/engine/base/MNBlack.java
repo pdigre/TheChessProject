@@ -23,7 +23,7 @@ public class MNBlack extends MBase {
 			list.add(m);
 			m[5]=MOVEDATA.create(BITS.assemble(IConst.BN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES));
 			for (int i = 0; i < 5; i++){
-				m[i]=MOVEDATA.createxb((purge(BITS.assemble(IConst.BN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES), PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << GMovegen._CAPTURE)); 
+				m[i]=MOVEDATA.createxb((purge(BITS.assemble(IConst.BN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES), PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << IBase._CAPTURE)); 
 			}
 		}
 	}

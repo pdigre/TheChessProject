@@ -30,7 +30,7 @@ public class MSlider extends MBase {
 		for (int i = 0; i < 5; i++) {
 			if ((type & 8) > 0) {
 				int c = WCAPTURES[i];
-				long m = (purge(bitmap, PSQT.pVal(to, c))) | ((c & 7) << GMovegen._CAPTURE);
+				long m = (purge(bitmap, PSQT.pVal(to, c))) | ((c & 7) << IBase._CAPTURE);
 				list.add(MOVEDATA.create(m));
 				if (c == IConst.BR) {
 					if (to == IConst.BR_KING_STARTPOS){
@@ -41,7 +41,7 @@ public class MSlider extends MBase {
 				}
 			} else {
 				int c = BCAPTURES[i];
-				long m = (purge(bitmap, PSQT.pVal(to, c))) | ((c & 7) << GMovegen._CAPTURE);
+				long m = (purge(bitmap, PSQT.pVal(to, c))) | ((c & 7) << IBase._CAPTURE);
 				list.add(MOVEDATA.create(m));
 				if (c == IConst.WR) {
 					if (to == IConst.WR_KING_STARTPOS){

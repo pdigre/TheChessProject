@@ -29,7 +29,7 @@ public class MRWhite extends MSlider{
 			else if(from==IConst.WR_KING_STARTPOS)
 				bitmap^= IConst.CANCASTLE_WHITEKING;
 			for (int i = 0; i < 5; i++)
-				list.add(MOVEDATA.createxw((purge(bitmap, PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << GMovegen._CAPTURE)));
+				list.add(MOVEDATA.createxw((purge(bitmap, PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << IBase._CAPTURE)));
 			list.add(MOVEDATA.create(bitmap));
 			to+=offset;
 		}

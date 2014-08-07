@@ -31,7 +31,7 @@ public class MRBlack extends MSlider{
 			else if(from==IConst.BR_KING_STARTPOS)
 				bitmap^= IConst.CANCASTLE_BLACKKING;
 			for (int i = 0; i < 5; i++)
-				list.add(MOVEDATA.createxb((purge(bitmap, PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << GMovegen._CAPTURE)));
+				list.add(MOVEDATA.createxb((purge(bitmap, PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << IBase._CAPTURE)));
 			list.add(MOVEDATA.create(bitmap));
 			to+=offset;
 		}

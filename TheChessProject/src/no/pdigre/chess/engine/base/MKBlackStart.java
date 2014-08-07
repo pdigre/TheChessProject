@@ -25,7 +25,7 @@ public class MKBlackStart extends MKBlack {
 			long bitmap = BITS.assemble(IConst.BK, from, to, IBase.CANCASTLE_WHITE | IBase.HALFMOVES);
 			m[5]=MOVEDATAX.create(bitmap & ~IConst.CANCASTLE_BLACK);
 			for (int i = 0; i < 5; i++)
-				m[i]=MOVEDATAX.create((purge(bitmap, PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << GMovegen._CAPTURE)); 
+				m[i]=MOVEDATAX.create((purge(bitmap, PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << IBase._CAPTURE)); 
 		}
 	}
 
@@ -36,13 +36,13 @@ public class MKBlackStart extends MKBlack {
 			if ((IConst.CBQ & gen.bb_piece) == 0
 					&& (castling & IConst.CANCASTLE_BLACKQUEEN) != 0
 					&& !gen.pos.isCheckBlack()
-					&& !gen.pos.isSafeBlack(IConst.BK_STARTPOS - 1)) {
+					&& !KingSafe.pos(gen.pos).isSafeBlack(IConst.BK_STARTPOS - 1)) {
 				gen.add(CQ);
 			}
 			if ((IConst.CBK & gen.bb_piece) == 0
 					&& (castling & IConst.CANCASTLE_BLACKKING) != 0
 					&& !gen.pos.isCheckBlack()
-					&& !gen.pos.isSafeBlack(IConst.BK_STARTPOS + 1)) {
+					&& !KingSafe.pos(gen.pos).isSafeBlack(IConst.BK_STARTPOS + 1)) {
 				gen.add(CK);
 			}
 			if(castling == IConst.CANCASTLE_BLACK){

@@ -33,7 +33,7 @@ public class MKWhite extends MBase {
 			m[5]=MOVEDATA.create(BITS.assemble(IConst.WK, from, to, IBase.CANCASTLE_BLACK | IBase.HALFMOVES));
 			IBase.REV[to].RK |= (1L<<from);
 			for (int i = 0; i < 5; i++)
-				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.WK, from, to, IBase.CANCASTLE_BLACK | IBase.HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << GMovegen._CAPTURE)); 
+				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.WK, from, to, IBase.CANCASTLE_BLACK | IBase.HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << IBase._CAPTURE)); 
 		}
 	}
 

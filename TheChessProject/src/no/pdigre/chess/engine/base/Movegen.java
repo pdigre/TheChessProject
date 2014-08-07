@@ -2,9 +2,10 @@ package no.pdigre.chess.engine.base;
 
 import java.util.Arrays;
 
+import no.pdigre.chess.engine.base.IBase.BASE;
 import no.pdigre.chess.engine.fen.Position;
 
-public abstract class Movegen implements IConst{
+public class Movegen implements IConst{
 	final Position pos;
 	final long halfmoves;
 	final long castling;
@@ -37,7 +38,7 @@ public abstract class Movegen implements IConst{
 	final public int enpassant;
 
 
-	Movegen(Position pos) {
+	public Movegen(Position pos) {
 		this.pos = pos;
 		long inherit = pos.getBitmap();
 		this.bb_black = pos.get64black();
@@ -66,17 +67,10 @@ public abstract class Movegen implements IConst{
 			// mobile map - moves until checking piece
 	}
 
-	
-	
-	
-	public abstract MOVEDATA[] moves();
-
 	final public void pruneBlack() {
 		while (iTested < iAll) {
 			MOVEDATA md = moves[iTested++];
-			Position next=new Position(pos);
-			next.make(md);
-			if (!next.isCheckBlack()){
+			if (!KingSafe.pos(pos,md).isSafeBlack()){
 				moves[iLegal++]=md;
 			}
 		}
@@ -85,9 +79,7 @@ public abstract class Movegen implements IConst{
 	final public void pruneWhite() {
 		while (iTested < iAll) {
 			MOVEDATA md = moves[iTested++];
-			Position next=new Position(pos);
-			next.make(md);
-			if (!next.isCheckWhite()){
+			if (!KingSafe.pos(pos,md).isSafeWhite()){
 				moves[iLegal++]=md;
 			}
 		}
@@ -112,5 +104,48 @@ public abstract class Movegen implements IConst{
 		iAll=0;
 		return t;
 	}
+
+
+	public static MOVEDATA[] nonevasive(Position pos) {
+		return new Movegen(pos).nonevasive();
+	}
 	
+	final public MOVEDATA[] nonevasive() {
+		if (pos.whiteNext()) {
+			MPWhite.genLegal(this,bb_white & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
+			MNWhite.genLegal(this,bb_white & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
+			MBWhite.genLegal(this,bb_white & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
+			MRWhite.genLegal(this,bb_white & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
+			MQWhite.genLegal(this,bb_white & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
+			BASE.WK[wking].genLegal(this);
+		} else {
+			MPBlack.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
+			MNBlack.genLegal(this,bb_black & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
+			MBBlack.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
+			MRBlack.genLegal(this,bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
+			MQBlack.genLegal(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
+			BASE.BK[bking].genLegal(this);
+		}
+		return getLegal();
+	}
+
+	final public MOVEDATA[] quiesce() {
+		if (pos.whiteNext()) {
+			MPWhite.genLegal(this,bb_white & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
+			MNWhite.genLegal(this,bb_white & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
+			MBWhite.genLegal(this,bb_white & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
+			MRWhite.genLegal(this,bb_white & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
+			MQWhite.genLegal(this,bb_white & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
+			BASE.WK[wking].genLegal(this);
+		} else {
+			MPBlack.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
+			MNBlack.genLegal(this,bb_black & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
+			MBBlack.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
+			MRBlack.genLegal(this,bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
+			MQBlack.genLegal(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
+			BASE.BK[bking].genLegal(this);
+		}
+		return getLegal();
+	}
+
 }

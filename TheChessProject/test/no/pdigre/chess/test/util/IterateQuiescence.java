@@ -3,8 +3,8 @@ package no.pdigre.chess.test.util;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-import no.pdigre.chess.engine.base.GMovegen;
 import no.pdigre.chess.engine.base.MOVEDATA;
+import no.pdigre.chess.engine.base.Movegen;
 import no.pdigre.chess.engine.evaluate.IEvaluator;
 import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.PositionScore;
@@ -58,7 +58,7 @@ public final class IterateQuiescence extends TreeSet<Position> {
     public IterateQuiescence(Position pos) {
         super(pos.whiteNext() ? new Ascending() : new Descending());
         final int total = pos.getScore();
-        for (MOVEDATA m : new GMovegen(pos).moves()) {
+        for (MOVEDATA m : new Movegen(pos).quiesce()) {
         	Position next=pos.move(m);
             next.score = evaluator.score(next, total);
             add(next);

@@ -22,7 +22,7 @@ public class MNWhite extends MBase{
 			list.add(m);
 			m[5]=MOVEDATA.create(BITS.assemble(IConst.WN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES));
 			for (int i = 0; i < 5; i++)
-				m[i]=MOVEDATA.createxw((purge(BITS.assemble(IConst.WN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << GMovegen._CAPTURE)); 
+				m[i]=MOVEDATA.createxw((purge(BITS.assemble(IConst.WN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << IBase._CAPTURE)); 
 		}
 	}
 	

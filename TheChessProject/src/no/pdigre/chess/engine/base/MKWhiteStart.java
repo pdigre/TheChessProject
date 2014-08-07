@@ -26,7 +26,7 @@ public class MKWhiteStart extends MKWhite {
 			m[5]=MOVEDATAX.create(bitmap & ~IConst.CANCASTLE_WHITE);
 			IBase.REV[to].RK |= (1L<<from);
 			for (int i = 0; i < 5; i++)
-				m[i]=MOVEDATAX.create((purge(bitmap, PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << GMovegen._CAPTURE)); 
+				m[i]=MOVEDATAX.create((purge(bitmap, PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << IBase._CAPTURE)); 
 		}
 	}
 
@@ -37,13 +37,13 @@ public class MKWhiteStart extends MKWhite {
 			if ((castling & IConst.CANCASTLE_WHITEQUEEN) != 0
 					&& (IConst.CWQ & gen.bb_piece) == 0
 					&& !gen.pos.isCheckWhite()
-					&& !gen.pos.isSafeWhite(IConst.WK_STARTPOS - 1)) {
+					&& !KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS - 1)) {
 				gen.add(CQ);
 			}
 			if ((castling & IConst.CANCASTLE_WHITEKING) != 0
 					&& (IConst.CWK & gen.bb_piece) == 0
 					&& !gen.pos.isCheckWhite()
-					&& !gen.pos.isSafeWhite(IConst.WK_STARTPOS + 1)) {
+					&& !KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS + 1)) {
 				gen.add(CK);
 			}
 			if(castling == IConst.CANCASTLE_WHITE){

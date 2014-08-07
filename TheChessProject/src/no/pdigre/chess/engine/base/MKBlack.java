@@ -35,7 +35,7 @@ public class MKBlack extends MBase {
 			list.add(m);
 			m[5]=MOVEDATA.create(BITS.assemble(IConst.BK, from, to, IBase.CANCASTLE_WHITE | IBase.HALFMOVES));
 			for (int i = 0; i < 5; i++)
-				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.BK, from, to, IBase.CANCASTLE_WHITE | IBase.HALFMOVES), PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << GMovegen._CAPTURE)); 
+				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.BK, from, to, IBase.CANCASTLE_WHITE | IBase.HALFMOVES), PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << IBase._CAPTURE)); 
 		}
 	}
 

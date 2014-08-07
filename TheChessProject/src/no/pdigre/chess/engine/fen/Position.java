@@ -29,24 +29,16 @@ public class Position implements IConst, Comparable<Position> {
 
 	public boolean isCheckWhite(){
 		if( (checkstate & 1) ==0) {
-			checkstate |= 1 | (isSafeWhite(wking)?2:0);
+			checkstate |= 1 | (KingSafe.pos(this).isSafeWhite(wking)?2:0);
 		}
 		return (checkstate & 2)!=0 ;
 	}
 	
 	public boolean isCheckBlack(){
 		if( (checkstate & 4) ==0) {
-			checkstate |= 4 | (isSafeBlack(bking)?8:0);
+			checkstate |= 4 | (KingSafe.pos(this).isSafeBlack(bking)?8:0);
 		}
 		return (checkstate & 8)!=0 ;
-	}
-
-	public boolean isSafeBlack(int king) {
-		return KingSafe.pos(this).isSafeBlack(king);
-	}
-	
-	public boolean isSafeWhite(int king) {
-		return KingSafe.pos(this).isSafeWhite(king);
 	}
 
 	public void setBoard(int[] board) {

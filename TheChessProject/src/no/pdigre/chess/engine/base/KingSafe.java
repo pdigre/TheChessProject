@@ -17,27 +17,31 @@ public class KingSafe implements IConst {
 	final private long bb_bit1;
 	final private long bb_bit2;
 	final private long bb_bit3;
-	final private int wking;
-	final private int bking;
 
-	public KingSafe(long bb_black, long bb_bit1, long bb_bit2, long bb_bit3, int wking, int bking) {
+	public KingSafe(long bb_black, long bb_bit1, long bb_bit2, long bb_bit3) {
 		this.bb_bit1 = bb_bit1;
 		this.bb_bit2 = bb_bit2;
 		this.bb_bit3 = bb_bit3;
 		this.bb_piece = bb_bit1 | bb_bit2 | bb_bit3;
 		this.bb_black = bb_black;
-		this.wking = wking;
-		this.bking = bking;
 	}
 
 	public static KingSafe pos(Position pos) {
-		return new KingSafe(pos.get64black(), pos.get64bit1(), pos.get64bit2(), pos.get64bit3(), pos.getWKpos(), pos.getBKpos());
+		return new KingSafe(pos.get64black(), pos.get64bit1(), pos.get64bit2(), pos.get64bit3());
 	}
 
-	final public boolean isCheckWhite() {
-		return isSafeWhite(wking);
+	public static KingSafe pos(Position pos,MOVEDATA md) {
+		return new KingSafe(pos.get64black()^md.b_black, pos.get64bit1()^md.b_bit1, pos.get64bit2()^md.b_bit2, pos.get64bit3()^md.b_bit3);
 	}
 
+	final public boolean isSafeWhite() {
+		return isSafeWhite(Long.numberOfTrailingZeros(bb_bit1 & bb_bit2 & ~bb_bit3 & ~bb_black));
+	}
+	
+	final public boolean isSafeBlack() {
+		return isSafeBlack(Long.numberOfTrailingZeros(bb_bit1 & bb_bit2 & ~bb_bit3 & bb_black));
+	}
+	
 	final public boolean isSafeWhite(int king) {
 		REVERSE rev = IBase.REV[king];
 		long e=bb_black;
@@ -60,10 +64,6 @@ public class KingSafe implements IConst {
 		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RK) != 0)
 			return true;
 		return false;
-	}
-
-	final public boolean isCheckBlack() {
-		return isSafeBlack(bking);
 	}
 
 	final public boolean isSafeBlack(int king) {

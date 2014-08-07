@@ -13,7 +13,7 @@ public class NodeGen implements IConst {
 	}
 
 	public static final Position[] getLegalMoves64(Position pos) {
-		return wrap(pos, new GMovegen(pos).moves());
+		return wrap(pos, new Movegen(pos).nonevasive());
 	}
 
 	public static Position[] wrap(Position pos, MOVEDATA[] moves) {
@@ -24,7 +24,7 @@ public class NodeGen implements IConst {
 	}
 
 	public static final Position[] getQuiescence64(Position pos) {
-		return wrap(pos,new GMovegenQ(pos).moves());
+		return wrap(pos,new Movegen(pos).quiesce());
 	}
 
 	/**
