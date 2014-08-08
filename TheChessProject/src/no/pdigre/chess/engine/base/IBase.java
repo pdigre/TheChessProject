@@ -1,8 +1,5 @@
 package no.pdigre.chess.engine.base;
 
-
-
-
 /**
  * Arrays of possible moves for each position of the board sliders have sub
  * arrays - piece - from - to - x - castling
@@ -15,6 +12,7 @@ public interface IBase extends IConst {
 //	MOVEMAP[] MM = new MOVEMAP[64];
 
 	REVERSE[] REV = new REVERSE[64];
+	long[] BETWEEN=new long[4096];
 	BASE base = new BASE();
 
 	class REVERSE {
@@ -57,6 +55,9 @@ public interface IBase extends IConst {
 			DOWN + LEFT + LEFT,DOWN + DOWN + LEFT,DOWN + RIGHT + RIGHT,DOWN + DOWN + RIGHT};
 
 		static {
+			fillBetween(DIAGONAL_MOVES);
+			fillBetween(LINE_MOVES);
+			
 			for (int from = 0; from < 64; from++){
 				REVERSE r = new REVERSE();
 				REV[from] = r;
@@ -121,6 +122,22 @@ public interface IBase extends IConst {
 					ret|= 1L<<to;
 			}
 			return ret;
+		}
+
+		static void fillBetween(int[] offset) {
+			for (int j = 0; j < offset.length; j++) {
+				int off=offset[j];
+				for (int from = 0; from < 64; from++){
+					int to=from+off;
+					long ray=0L;
+					while(inside(to, to-off)){
+						int num = from+to*64;
+						BETWEEN[num]=ray;
+						ray |= (1L<<to);
+						to+=off;
+					}
+				}
+			}
 		}
 	}
 }
