@@ -24,7 +24,6 @@ public class MKWhiteStart extends MKWhite {
 			list.add(m);
 			long bitmap = BITS.assemble(IConst.WK, from, to, IBase.CANCASTLE_BLACK | IBase.HALFMOVES);
 			m[5]=MOVEDATAX.create(bitmap & ~IConst.CANCASTLE_WHITE);
-			IBase.REV[to].RK |= (1L<<from);
 			for (int i = 0; i < 5; i++)
 				m[i]=MOVEDATAX.create((purge(bitmap, PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << IBase._CAPTURE)); 
 		}
@@ -38,20 +37,20 @@ public class MKWhiteStart extends MKWhite {
 					&& (IConst.CWQ & gen.bb_piece) == 0
 					&& !gen.pos.isCheckWhite()
 					&& !KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS - 1)) {
-				gen.add(CQ);
+				gen.addkw(CQ);
 			}
 			if ((castling & IConst.CANCASTLE_WHITEKING) != 0
 					&& (IConst.CWK & gen.bb_piece) == 0
 					&& !gen.pos.isCheckWhite()
 					&& !KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS + 1)) {
-				gen.add(CK);
+				gen.addkw(CK);
 			}
 			if(castling == IConst.CANCASTLE_WHITE){
-				wmoves(gen,X);
+				wmoves2(gen,X);
 			} else if((castling & IConst.CANCASTLE_WHITEQUEEN) != 0){
-				wmoves(gen,XQ);
+				wmoves2(gen,XQ);
 			} else {
-				wmoves(gen,XK);
+				wmoves2(gen,XK);
 			}
 		} else {
 			super.genLegal(gen);

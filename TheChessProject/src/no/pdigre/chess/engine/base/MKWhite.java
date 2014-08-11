@@ -1,11 +1,14 @@
 package no.pdigre.chess.engine.base;
 
+import static no.pdigre.chess.engine.base.IBase.BASE.DOWN;
+import static no.pdigre.chess.engine.base.IBase.BASE.LEFT;
+import static no.pdigre.chess.engine.base.IBase.BASE.RIGHT;
+import static no.pdigre.chess.engine.base.IBase.BASE.UP;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import no.pdigre.chess.engine.base.IConst.BITS;
-import static no.pdigre.chess.engine.base.IBase.BASE.*;
-
 
 public class MKWhite extends MBase {
 
@@ -31,14 +34,12 @@ public class MKWhite extends MBase {
 			MOVEDATA[] m=new MOVEDATA[6];
 			list.add(m);
 			m[5]=MOVEDATA.create(BITS.assemble(IConst.WK, from, to, IBase.CANCASTLE_BLACK | IBase.HALFMOVES));
-			IBase.REV[to].RK |= (1L<<from);
 			for (int i = 0; i < 5; i++)
 				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.WK, from, to, IBase.CANCASTLE_BLACK | IBase.HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << IBase._CAPTURE)); 
 		}
 	}
 
 	public void genLegal(Movegen gen) {
-		wmoves(gen,M);
+		wmoves2(gen,M);
 	}
-
 }

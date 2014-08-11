@@ -74,6 +74,17 @@ public abstract class MBase {
 		gen.pruneWhite();
 	}
 
+	public void wmoves2(Movegen gen, MOVEDATA[][] moves) {
+		for (MOVEDATA[] m : moves){
+			long bto = m[5].bto;
+			if ((gen.bb_piece & bto) == 0) {
+				gen.addkw(m[5]);
+			} else if ((gen.bb_black & bto) != 0) {
+				gen.addkw(m[gen.ctype(bto)]);
+			}
+		}
+	}
+
 	public void bmoves(Movegen gen, MOVEDATA[][] moves) {
 		for (MOVEDATA[] m : moves){
 			long bto = m[5].bto;
@@ -84,6 +95,17 @@ public abstract class MBase {
 			}
 		}
 		gen.pruneBlack();
+	}
+
+	public void bmoves2(Movegen gen, MOVEDATA[][] moves) {
+		for (MOVEDATA[] m : moves){
+			long bto = m[5].bto;
+			if ((gen.bb_piece & bto) == 0) {
+				gen.addkb(m[5]);
+			} else if ((gen.bb_white & bto) != 0) {
+				gen.addkb(m[gen.ctype(bto)]);
+			}
+		}
 	}
 
 }

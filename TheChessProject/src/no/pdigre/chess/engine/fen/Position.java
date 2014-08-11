@@ -134,7 +134,7 @@ public class Position implements IConst, Comparable<Position> {
 	}
 
 	public String toString() {
-		return FEN.printMove(this) + "\n" + FEN.board2string(this);
+		return  FEN.board2string(this) + " " + FEN.printMove(this) + "\n";
 	}
 
 	public long getZobristKey() {

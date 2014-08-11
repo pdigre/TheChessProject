@@ -73,6 +73,9 @@ public class Movegen implements IConst{
 	}
 
 	final public void pruneBlack() {
+		
+	}
+	final public void pruneBlack3() {
 		while (iTested < iAll) {
 			MOVEDATA md = moves[iTested++];
 			if (!KingSafe.pos(pos,md).isSafeBlack())
@@ -82,11 +85,41 @@ public class Movegen implements IConst{
 		iTested=iLegal;
 	}
 
-	final public void pruneWhite() {
+	final public void pruneBlack2() {
 		while (iTested < iAll) {
 			MOVEDATA md = moves[iTested++];
-			if (!KingSafe.pos(pos,md).isSafeWhite())
+			if (!KingSafe.pos(pos,md).isSafeBlack()){
 				moves[iLegal++]=md;
+			} else {
+				System.out.println("ERROR");
+			}
+		}
+		iAll=iLegal;
+		iTested=iLegal;
+	}
+
+	final public void pruneWhite() {
+		
+	}
+	final public void pruneWhite2() {
+		while (iTested < iAll) {
+			MOVEDATA md = moves[iTested++];
+			if (!KingSafe.pos(pos,md).isSafeWhite()){
+				moves[iLegal++]=md;
+			} else {
+				System.out.println("ERROR");
+			}
+		}
+		iAll=iLegal;
+		iTested=iLegal;
+	}
+
+	final public void pruneWhite3() {
+		while (iTested < iAll) {
+			MOVEDATA md = moves[iTested++];
+			if (!KingSafe.pos(pos,md).isSafeWhite()){
+				moves[iLegal++]=md;
+			}
 		}
 		iAll=iLegal;
 		iTested=iLegal;
@@ -97,8 +130,18 @@ public class Movegen implements IConst{
 		iTested=iAll;
 	}
 
-	final void add(MOVEDATA data) {
-		moves[iAll++] = data;
+	final void add(MOVEDATA md) {
+		moves[iAll++] = md;
+	}
+	
+	final void addkw(MOVEDATA md) {
+		if(!KingSafe.pos(pos,md).isSafeWhite())
+			moves[iAll++] = md;
+	}
+	
+	final void addkb(MOVEDATA md) {
+		if(!KingSafe.pos(pos,md).isSafeBlack())
+			moves[iAll++] = md;
 	}
 	
 	final void add2(MOVEDATA data) {
@@ -129,27 +172,51 @@ public class Movegen implements IConst{
 	
 	final public MOVEDATA[] nonevasive() {
 		if (pos.whiteNext()) {
-//			findPinned(wking,bb_white,bb_black,true);
-			MPWhite.genLegal(this,bb_white & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
-			MNWhite.genLegal(this,bb_white & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
-			MBWhite.genLegal(this,bb_white & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
-			MRWhite.genLegal(this,bb_white & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
-			MQWhite.genLegal(this,bb_white & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
+			findPinned(wking,bb_white,bb_black,true);
+			long t=bb_white & ~pinned;
+			MPWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
+			MNWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
+			MBWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
+			MRWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
+			MQWhite.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
 			BASE.WK[wking].genLegal(this);
+			if(checkers==0L){
+				int before=iAll;
+				pruneWhite2();
+				int after=iAll;
+				if(before!=after){
+					System.out.println("Error");
+				}
+			} else {
+				pruneWhite3();
+			}
 		} else {
-//			findPinned(bking,bb_black,bb_white,false);
-			MPBlack.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
-			MNBlack.genLegal(this,bb_black & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
-			MBBlack.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
-			MRBlack.genLegal(this,bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
-			MQBlack.genLegal(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
+			findPinned(bking,bb_black,bb_white,false);
+			long t=bb_black & ~pinned;
+			MPBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
+			MNBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
+			MBBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
+			MRBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
+			MQBlack.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
 			BASE.BK[bking].genLegal(this);
+			if(checkers==0L){
+				int before=iAll;
+				pruneBlack2();
+				int after=iAll;
+				if(before!=after){
+					System.out.println("Error");
+				}
+			} else {
+				pruneBlack3();
+			}
 		}
 		return getLegal();
 	}
 
 	private void findPinned(int king,long own,long enemy,boolean isWhite) {
 		REVERSE rev = IBase.REV[king];
+		checkers=0L;
+		pinned=0L;
 		// Knight
 		checkers|=(~bb_bit1 & bb_bit2 & ~bb_bit3 & enemy) & rev.RN;
 		// Pawn
@@ -279,15 +346,27 @@ public class Movegen implements IConst{
 //							System.out.println(FEN.board2string(pos));
 						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
 							if(isWhite){
-								if(pinner<<7==attacker)
-									add2(BASE.WP[from].CL[ctype(attacker)]);
-								if(pinner<<9==attacker)
-									add2(BASE.WP[from].CR[ctype(attacker)]);
+								if(pinner<<7==attacker) {
+									MOVEDATA[] cl = BASE.WP[from].CL;
+									if(cl!=null)
+										add(cl[ctype(attacker)]);
+								}
+								if(pinner<<9==attacker) {
+									MOVEDATA[] cr = BASE.WP[from].CR;
+									if(cr!=null)
+										add(cr[ctype(attacker)]);
+								}
 							} else {
-								if(pinner>>9==attacker)
-									add2(BASE.BP[from].CL[ctype(attacker)]);
-								if(pinner>>7==attacker)
-									add2(BASE.BP[from].CR[ctype(attacker)]);
+								if(pinner>>9==attacker) {
+									MOVEDATA[] cl = BASE.BP[from].CL;
+									if(cl!=null)
+										add(cl[ctype(attacker)]);
+								}
+								if(pinner>>7==attacker) {
+									MOVEDATA[] cr = BASE.BP[from].CR;
+									if(cr!=null)
+										add(cr[ctype(attacker)]);
+								}
 							}
 //							System.out.println("pawn capture " +FEN.pos2string(Long.numberOfTrailingZeros(pinner)));
 //							System.out.println(FEN.board2string(pos));
@@ -332,5 +411,8 @@ public class Movegen implements IConst{
 		return getLegal();
 	}
 
-	
+	@Override
+	public String toString() {
+		return pos.toString();
+	}
 }

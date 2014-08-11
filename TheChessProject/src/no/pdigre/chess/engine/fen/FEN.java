@@ -73,14 +73,14 @@ public class FEN implements IConst {
     final public static String board2string(Position pos) {
         StringBuilder fen = new StringBuilder();
         for (int y = 8; y-- > 0;) {
+            fen.append("\n");
             fen.append(String.valueOf(y+1)+" ");
             for (int x = 0; x < 8; x++) {
                 PieceType type = PieceType.types[pos.getPiece(y * 8 + x)];
                 fen.append(type == null ? "." : type.fen);
             }
-            fen.append("\n");
         }
-        fen.append("  ABCDEFGH\n");
+        fen.append("\n  ABCDEFGH");
         return fen.toString();
     }
 
