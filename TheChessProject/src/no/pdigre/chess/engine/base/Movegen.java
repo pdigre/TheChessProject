@@ -220,7 +220,7 @@ public class Movegen implements IConst{
 		// Knight
 		checkers|=(~bb_bit1 & bb_bit2 & ~bb_bit3 & enemy) & rev.RN;
 		// Pawn
-		checkers|=(bb_bit1 & ~bb_bit2 & ~bb_bit3 & enemy) & rev.RPW;
+		checkers|=(bb_bit1 & ~bb_bit2 & ~bb_bit3 & enemy) & (isWhite?rev.RPB:rev.RPW);
 		// Sliders
 		long eslider=bb_bit3 & enemy;
 		if((eslider & rev.RQ) !=0){
@@ -268,8 +268,8 @@ public class Movegen implements IConst{
 					long pinner = between&own;
 					pinned|=pinner;
 					if(isLine){
-						if((pinner&bb_bit1&bb_bit3)!=0){		// ROOK / QUEEN
-							boolean isQueen=(pinner&bb_bit2)!=0;
+						if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
+							boolean isQueen=(pinner&bb_bit1)!=0;
 							if(isQueen){
 								if(isWhite){
 									slide(BASE.WQ[from].U,attacker,between);
@@ -315,8 +315,8 @@ public class Movegen implements IConst{
 //							System.out.println(FEN.board2string(pos));
 						}
 					} else {
-						if((pinner&bb_bit2&bb_bit3)!=0){	// BISHOP / QUEEN
-							boolean isQueen=(pinner&bb_bit1)!=0;
+						if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
+							boolean isQueen=(pinner&bb_bit2)!=0;
 							if(isQueen){
 								if(isWhite){
 									slide(BASE.WQ[from].DL,attacker,between);
@@ -346,12 +346,12 @@ public class Movegen implements IConst{
 //							System.out.println(FEN.board2string(pos));
 						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
 							if(isWhite){
-								if(pinner<<7==attacker) {
+								if(pinner<<9==attacker) {
 									MOVEDATA[] cl = BASE.WP[from].CL;
 									if(cl!=null)
 										add(cl[ctype(attacker)]);
 								}
-								if(pinner<<9==attacker) {
+								if(pinner<<7==attacker) {
 									MOVEDATA[] cr = BASE.WP[from].CR;
 									if(cr!=null)
 										add(cr[ctype(attacker)]);
@@ -386,8 +386,10 @@ public class Movegen implements IConst{
 				i += 6;
 				continue;
 			}
-			if ((attacker & bto) != 0)
-				add(m[i + ctype(bto)]);
+			if ((attacker & bto) != 0) {
+				int ctype = ctype(bto);
+				add(m[i + ctype]);
+			}
 			break;
 		}
 	}

@@ -92,6 +92,14 @@ public class MOVEDATA {
 	
 	@Override
 	public String toString() {
-		return FEN.move2literal(bitmap);
+		StringBuffer sb=new StringBuffer();
+		sb.append(FEN.type2fen(BITS.getPiece(bitmap)));
+		sb.append(" ");
+		sb.append(FEN.move2literal(bitmap));
+		if(BITS.isCapture(bitmap)){
+			sb.append(" x");
+			sb.append(FEN.type2fen(BITS.getCaptured(bitmap)));
+		}
+		return sb.toString();
 	}
 }

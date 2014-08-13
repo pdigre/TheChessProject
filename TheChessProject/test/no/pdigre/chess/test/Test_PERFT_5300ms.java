@@ -26,7 +26,7 @@ public class Test_PERFT_5300ms {
 	@Test
 	public void m1_1_553() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-		PerftResults.assertPERFT(fen, new CountFull(new StartGame(fen), 5));
+		PerftResults.assertPERFT2(fen, new CountFull(new StartGame(fen), 5));
 	}
 
 	@Test

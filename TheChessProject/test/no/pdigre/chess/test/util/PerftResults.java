@@ -66,7 +66,8 @@ public class PerftResults {
 		return map;
 	}
 
-	public ArrayList<Position> getDivideMisses(Map<String, Integer> div2) {
+	public ArrayList<Position> getDivideMisses(Map<String, Integer> div2, String fen) {
+		boolean[] print=new boolean[]{false};
 		ArrayList<Position> list = new ArrayList<Position>();
 		Map<String, Integer> div1 = getDivide();
 		Set<String> k1 = div1.keySet();
@@ -74,13 +75,13 @@ public class PerftResults {
 		diff.removeAll(k1);
 		for (String key : diff) {
 			if (!key.contains(":"))
-				System.out.println("MISSING:" + key);
+				System.out.println(print(print,fen)+"MISSING:" + key);
 		}
 		for (Entry<String, Integer> entry : div1.entrySet()) {
 			String key = entry.getKey();
 			int v1 = entry.getValue();
 			if (!div2.containsKey(key)) {
-				System.out.println("WRONG:" + key);
+				System.out.println(print(print,fen)+"WRONG:" + key);
 				continue;
 			}
 			int v2 = div2.get(key);
@@ -89,10 +90,18 @@ public class PerftResults {
 					if (FEN.move2literal(pos.getBitmap()).equals(key))
 						list.add(pos);
 				}
-				System.out.println("Diff:" + key + " " + v1 + "/" + v2);
+				System.out.println(print(print,fen)+"Diff:" + key + " " + v1 + "/" + v2);
 			}
 		}
 		return list;
+	}
+
+	private String print(boolean[] print,String fen) {
+		if(!print[0]){
+			print[0]=true;
+			System.out.println(FEN.board2string(FEN.fen2board(fen)));
+		}
+		return "";
 	}
 
 	public static void assertPERFT(String fen, CountFull runner) {
@@ -114,14 +123,9 @@ public class PerftResults {
 	private static void analyzePerft(String fen, PerftResults perft) {
 		int depth = perft.counters.length;
 		Map<String, Integer> rundiv = ROCEexe.getInstance().runDivide(fen, depth);
-		for (Position pos : perft.getDivideMisses(rundiv)) {
+		for (Position pos : perft.getDivideMisses(rundiv,fen)) {
 			if(depth>1){
-				String fen2 = FEN.getFen(pos);
-				System.out.println(FEN.move2literal(pos.getBitmap())+" FEN="+fen2 + " "+ FEN.notation(pos));
-				System.out.println(FEN.board2string(pos));
-				CountForkJoinPoolFull runner2 = new CountForkJoinPoolFull(pos, depth-1);
-				PerftResults perft2 = runner2.perft();
-				analyzePerft(fen2, perft2);
+				analyzePerft(FEN.getFen(pos), new CountForkJoinPoolFull(pos, depth-1).perft());
 			}
 		}
 	}
