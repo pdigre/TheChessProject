@@ -100,6 +100,6 @@ public class MOVEDATA {
 			sb.append(" x");
 			sb.append(FEN.type2fen(BITS.getCaptured(bitmap)));
 		}
-		return sb.toString();
+		return FEN.board2string(b_bit1,b_bit2,b_bit3,b_black)+" "+sb.toString();
 	}
 }

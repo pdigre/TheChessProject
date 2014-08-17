@@ -73,7 +73,6 @@ public class Movegen implements IConst{
 	}
 
 	final public void pruneBlack() {
-		
 	}
 	final public void pruneBlack3() {
 		while (iTested < iAll) {
@@ -91,6 +90,8 @@ public class Movegen implements IConst{
 			if (!KingSafe.pos(pos,md).isSafeBlack()){
 				moves[iLegal++]=md;
 			} else {
+				KingSafe p = KingSafe.pos(pos,md);
+				boolean safeBlack = p.isSafeBlack();
 				System.out.println("ERROR");
 			}
 		}
@@ -415,6 +416,7 @@ public class Movegen implements IConst{
 
 	@Override
 	public String toString() {
-		return pos.toString();
+		return FEN.addHorizontal(FEN.addHorizontal(pos.toString(), FEN.board2string(pinned)), FEN.board2string(checkers));
 	}
+
 }

@@ -18,6 +18,7 @@ public class Position implements IConst, Comparable<Position> {
 	public int score=0;
 	public int quality=0;
 	public long castling=0L;
+	public Position parent;
 	
 	public Position() {
 		super();
@@ -87,6 +88,7 @@ public class Position implements IConst, Comparable<Position> {
 		this.bb_bit3 = pos.bb_bit3;
 		this.zobrist=pos.zobrist;
 		this.score=pos.score;
+		this.parent=pos;
 	}
 
 	public boolean whiteNext() {
@@ -134,7 +136,7 @@ public class Position implements IConst, Comparable<Position> {
 	}
 
 	public String toString() {
-		return  FEN.board2string(this) + " " + FEN.printMove(this) + "\n";
+		return  FEN.board2string(this) + "\n " + FEN.printMove(this) + "\n";
 	}
 
 	public long getZobristKey() {

@@ -2,6 +2,7 @@ package no.pdigre.chess.engine.base;
 
 import no.pdigre.chess.engine.base.IBase.BASE;
 import no.pdigre.chess.engine.base.IBase.REVERSE;
+import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.Position;
 
 public class KingSafe implements IConst {
@@ -124,5 +125,10 @@ public class KingSafe implements IConst {
 				return (bb_black & bit) != 0 && (bb_bit2 & bit) != 0 &&  (bb_bit3 & bit) != 0;
 		}
 		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return FEN.board2string(bb_bit1,bb_bit2,bb_bit3,bb_black);
 	}
 }

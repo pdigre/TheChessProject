@@ -71,18 +71,40 @@ public class FEN implements IConst {
     }
 
     final public static String board2string(Position pos) {
-        StringBuilder fen = new StringBuilder();
+    	return board2string(pos.bb_bit1, pos.bb_bit2, pos.bb_bit3, pos.bb_black);
+    }
+
+	public static String board2string(long b1, long b2, long b3, long bb) {
+		StringBuilder fen = new StringBuilder();
         for (int y = 8; y-- > 0;) {
             fen.append("\n");
             fen.append(String.valueOf(y+1)+" ");
             for (int x = 0; x < 8; x++) {
-                PieceType type = PieceType.types[pos.getPiece(y * 8 + x)];
+                int sq = y * 8 + x;
+				long bit=1L<<sq;
+				int p=((bit&b1)==0?0:1)+((bit&b2)==0?0:2)+((bit&b3)==0?0:4)+((bit&bb)==0?0:8);
+				PieceType type = PieceType.types[p];
                 fen.append(type == null ? "." : type.fen);
             }
         }
         fen.append("\n  ABCDEFGH");
         return fen.toString();
-    }
+	}
+
+	public static String board2string(long b1) {
+		StringBuilder fen = new StringBuilder();
+        for (int y = 8; y-- > 0;) {
+            fen.append("\n");
+            fen.append(String.valueOf(y+1)+" ");
+            for (int x = 0; x < 8; x++) {
+                int sq = y * 8 + x;
+				long bit=1L<<sq;
+                fen.append((bit&b1)==0 ? "." : "x");
+            }
+        }
+        fen.append("\n  ABCDEFGH");
+        return fen.toString();
+	}
 
     final public static String board2string(int[] brd) {
         StringBuilder fen = new StringBuilder();
@@ -239,6 +261,21 @@ public class FEN implements IConst {
 
 	public final static String move2literal(long bitmap) {
 		return FEN.pos2string(IConst.BITS.getFrom(bitmap))+FEN.pos2string(IConst.BITS.getTo(bitmap));
+	}
+
+	public static String addHorizontal(String a, String b) {
+		StringBuffer sb=new StringBuffer();
+		String[] al=a.split("\n");
+		String[] bl=b.split("\n");
+		for (int i = 0; i < al.length; i++) {
+			sb.append(al[i]);
+			if(bl.length>i){
+				sb.append(" ");
+				sb.append(bl[i]);
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
 	}
 
 }
