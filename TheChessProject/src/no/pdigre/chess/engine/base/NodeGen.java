@@ -13,7 +13,7 @@ public class NodeGen implements IConst {
 	}
 
 	public static final Position[] getLegalMoves64(Position pos) {
-		return wrap(pos, new Movegen(pos).nonevasive());
+		return wrap(pos, new Movegen(pos).legalmoves());
 	}
 
 	public static Position[] wrap(Position pos, MOVEDATA[] moves) {
