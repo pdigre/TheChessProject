@@ -117,12 +117,17 @@ public class Movegen implements IConst{
 	}
 	
 	final void addkw(MOVEDATA md) {
-		if(!KingSafe.pos(pos,md).isSafeWhite(BITS.getTo(md.bitmap)))
+		KingSafe p = KingSafe.pos(pos,md);
+		int to = BITS.getTo(md.bitmap);
+		boolean safeWhite = p.isSafeWhite(to);
+		if(safeWhite)
 			moves[iAll++] = md;
 	}
 	
 	final void addkb(MOVEDATA md) {
-		if(!KingSafe.pos(pos,md).isSafeBlack(BITS.getTo(md.bitmap)))
+		KingSafe p = KingSafe.pos(pos,md);
+		int to = BITS.getTo(md.bitmap);
+		if(p.isSafeBlack(to))
 			moves[iAll++] = md;
 	}
 	
@@ -225,16 +230,17 @@ public class Movegen implements IConst{
 		if (attackers != 0) {
 			int bits = Long.bitCount(attackers);
 			for (int j = 0; j < bits; j++) {
-				int from = Long.numberOfTrailingZeros(attackers);
-				long attacker = 1L << from;
+				int asq = Long.numberOfTrailingZeros(attackers);
+				long attacker = 1L << asq;
 				attackers ^= attacker;
-				long between = IBase.BETWEEN[from+64*king];
+				long between = IBase.BETWEEN[asq+64*king];
 				long bpcs = between&bb_piece;
 				if(bpcs==0L){
 					checkers|=attacker;
 				} else if(Long.bitCount(bpcs)==1){
 					// check for slide moves
 					long pinner = between&own;
+					int from = Long.numberOfTrailingZeros(pinner);
 					pinned|=pinner;
 					if(isLine){
 						if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN

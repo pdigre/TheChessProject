@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -66,31 +65,37 @@ public class PerftResults {
 		return map;
 	}
 
-	public ArrayList<Position> getDivideMisses(Map<String, Integer> div2, String fen) {
+	public ArrayList<Position> getDivideMisses(Map<String, Integer> expected, String fen) {
 		boolean[] print=new boolean[]{false};
 		ArrayList<Position> list = new ArrayList<Position>();
-		Map<String, Integer> div1 = getDivide();
-		Set<String> k1 = div1.keySet();
-		Set<String> diff = new HashSet<String>(div2.keySet());
-		diff.removeAll(k1);
-		for (String key : diff) {
-			if (!key.contains(":"))
-				System.out.println(print(print,fen)+"MISSING:" + key);
-		}
-		for (Entry<String, Integer> entry : div1.entrySet()) {
-			String key = entry.getKey();
-			int v1 = entry.getValue();
-			if (!div2.containsKey(key)) {
-				System.out.println(print(print,fen)+"WRONG:" + key);
-				continue;
+		Map<String, Integer> actual = getDivide();
+		Set<String> actualkeys = actual.keySet();
+		Set<String> missingkeys = new HashSet<String>(expected.keySet());
+		missingkeys.removeAll(actualkeys);
+		Set<String> wrongkeys = new HashSet<String>(actual.keySet());
+		wrongkeys.removeAll(expected.keySet());
+		Set<String> correctkeys = new HashSet<String>(actual.keySet());
+		correctkeys.retainAll(expected.keySet());
+		for (String key : missingkeys) {
+			if (!key.contains(":")){
+				String brd = print(print,fen);
+				System.out.println(brd+"MISSING:" + key);
 			}
-			int v2 = div2.get(key);
-			if (v1 != v2) {
+		}
+		for (String key : wrongkeys) {
+			String brd = print(print,fen);
+			System.out.println(brd+"WRONG:" + key);
+		}
+		
+		for (String key : correctkeys) {
+			int actual_count = actual.get(key);
+			int expected_count = expected.get(key);
+			if (actual_count != expected_count) {
 				for (Position pos : rootmoves) {
 					if (FEN.move2literal(pos.getBitmap()).equals(key))
 						list.add(pos);
 				}
-				System.out.println(print(print,fen)+"Diff:" + key + " " + v1 + "/" + v2);
+//				System.out.println(print(print,fen)+"Diff:" + key + " a=" + actual_count + ",e=" + expected_count);
 			}
 		}
 		return list;
@@ -122,10 +127,10 @@ public class PerftResults {
 
 	private static void analyzePerft(String fen, PerftResults perft) {
 		int depth = perft.counters.length;
-		Map<String, Integer> rundiv = ROCEexe.getInstance().runDivide(fen, depth);
-		for (Position pos : perft.getDivideMisses(rundiv,fen)) {
+		Map<String, Integer> expected = ROCEexe.getInstance().runDivide(fen, depth);
+		for (Position pos : perft.getDivideMisses(expected,fen)) {
 			if(depth>1){
-				analyzePerft(FEN.getFen(pos), new CountForkJoinPoolFull(pos, depth-1).perft());
+				analyzePerft(FEN.getFen(pos), new CountFull(pos, depth-1).perft());
 			}
 		}
 	}
