@@ -13,6 +13,7 @@ import org.junit.Test;
  * 
  * 4700ms with improvements in "kingsafe"
  * 4300ms with new MOVEDATA bits
+ * 4400ms with pinned pieces method - take 1
  * 
  */
 @SuppressWarnings("static-method")
