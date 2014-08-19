@@ -44,6 +44,8 @@ public class KingSafe implements IConst {
 	}
 	
 	final public boolean isSafeWhite(int king) {
+		if(king==64)
+			errorKing();
 		REVERSE rev = IBase.REV[king];
 		long e=bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
@@ -67,7 +69,13 @@ public class KingSafe implements IConst {
 		return true;
 	}
 
+	public void errorKing() {
+		System.out.println("ERROR KINGPOS:"+toString());
+	}
+
 	final public boolean isSafeBlack(int king) {
+		if(king==64)
+			errorKing();
 		REVERSE rev = IBase.REV[king];
 		long e=~bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)

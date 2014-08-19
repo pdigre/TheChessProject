@@ -62,50 +62,6 @@ public abstract class MBase {
 		}
 	}
 
-	public void wmoves(Movegen gen, MOVEDATA[][] moves) {
-		for (MOVEDATA[] m : moves){
-			long bto = m[5].bto;
-			if ((gen.bb_piece & bto) == 0) {
-				gen.add(m[5]);
-			} else if ((gen.bb_black & bto) != 0) {
-				gen.add(m[gen.ctype(bto)]);
-			}
-		}
-		gen.pruneWhite();
-	}
 
-	public void bmoves(Movegen gen, MOVEDATA[][] moves) {
-		for (MOVEDATA[] m : moves){
-			long bto = m[5].bto;
-			if ((gen.bb_piece & bto) == 0) {
-				gen.add(m[5]);
-			} else if ((gen.bb_white & bto) != 0) {
-				gen.add(m[gen.ctype(bto)]);
-			}
-		}
-		gen.pruneBlack();
-	}
-
-	public void wmoves2(Movegen gen, MOVEDATA[][] moves) {
-		for (MOVEDATA[] m : moves){
-			long bto = m[5].bto;
-			if ((gen.bb_piece & bto) == 0) {
-				gen.addkw(m[5]);
-			} else if ((gen.bb_black & bto) != 0) {
-				gen.addkw(m[gen.ctype(bto)]);
-			}
-		}
-	}
-
-	public void bmoves2(Movegen gen, MOVEDATA[][] moves) {
-		for (MOVEDATA[] m : moves){
-			long bto = m[5].bto;
-			if ((gen.bb_piece & bto) == 0) {
-				gen.addkb(m[5]);
-			} else if ((gen.bb_white & bto) != 0) {
-				gen.addkb(m[gen.ctype(bto)]);
-			}
-		}
-	}
 
 }

@@ -117,13 +117,15 @@ public class MPBlack  extends MBase{
 		final int enp = gen.enpassant;
 		long e=gen.bb_white|(1L<<enp);
 
-		new Adder(gen,(b & ~0x0101010101010101L) &(e<<9)) {
+		new Adder(gen,(b & IConst.LEFTMASK) &(e<<9)) {
 
 			@Override
 			public void add(int from) {
 				int to=from-9;
 				if (to == enp) {
-					add(mp[from].EL);
+					MOVEDATA md=mp[from].EL;
+					if(KingSafe.pos(gen.pos, md).isSafeBlack())
+						add(md);
 				} else {
 					int ctype=gen.ctype(1L << to);
 					if(from>15){
@@ -137,13 +139,15 @@ public class MPBlack  extends MBase{
 				}
 			}
 		};
-		new Adder(gen,(b & ~0x8080808080808080L) &(e<<7)) {
+		new Adder(gen,(b & IConst.RIGHTMASK) &(e<<7)) {
 
 			@Override
 			public void add(int from) {
 				int to=from-7;
 				if (to == enp) {
-					add(mp[from].ER);
+					MOVEDATA md=mp[from].ER;
+					if(KingSafe.pos(gen.pos, md).isSafeBlack())
+						add(md);
 				} else {
 					int ctype=gen.ctype(1L << to);
 					if(from>15){
@@ -157,6 +161,5 @@ public class MPBlack  extends MBase{
 				}
 			}
 		};
-		gen.pruneBlack();
 	}
 }

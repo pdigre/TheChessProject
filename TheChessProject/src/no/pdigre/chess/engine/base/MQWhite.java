@@ -9,6 +9,7 @@ import static no.pdigre.chess.engine.base.IBase.BASE.UP;
 public class MQWhite extends MSlider{
 
 	final MOVEDATA[] U,D, L,R,UL,UR,DL,DR;
+	final MOVEDATA[][] DIAG,LINE;
 
 	public MQWhite(int from) {
 		super(from);
@@ -20,18 +21,13 @@ public class MQWhite extends MSlider{
 		UR=slide(IConst.WQ, UP + RIGHT);
 		DL=slide(IConst.WQ, DOWN + LEFT);
 		DR=slide(IConst.WQ, DOWN + RIGHT);
+		DIAG=new MOVEDATA[][]{UL,UR,DL,DR};
+		LINE=new MOVEDATA[][]{U,D, L,R};
 	}
 
 	public void genLegal(Movegen gen){
-		wslide(gen,U);
-		wslide(gen,D);
-		wslide(gen,L);
-		wslide(gen,R);
-		wslide(gen,UL);
-		wslide(gen,UR);
-		wslide(gen,DL);
-		wslide(gen,DR);
-		gen.pruneWhite();
+		wslide(gen,LINE);
+		wslide(gen,DIAG);
 	}
 	
 }

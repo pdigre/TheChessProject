@@ -37,6 +37,5 @@ public class MNWhite extends MBase{
 				gen.add(m[gen.ctype(bto)]);
 			}
 		}
-		gen.pruneWhite();
 	}
 }

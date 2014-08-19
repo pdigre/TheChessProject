@@ -7,7 +7,6 @@ import no.pdigre.chess.test.util.CountFull;
 import no.pdigre.chess.test.util.PerftResults;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -27,18 +26,16 @@ public class Test_PERFT_5300ms {
 	@Test
 	public void m1_1_553() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-		PerftResults.assertPERFT2(fen, new CountFull(new StartGame(fen), 5));
+		PerftResults.assertPERFT(fen, new CountFull(new StartGame(fen), 5));
 	}
 
 	@Test
-	@Ignore
 	public void m1_2_176() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5));
 	}
 
 	@Test
-	@Ignore
 	public void m1_3_174() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPool2Full(new StartGame(fen), 5));
@@ -51,14 +48,12 @@ public class Test_PERFT_5300ms {
 	}
 
 	@Test
-	@Ignore
 	public void e_2_620() {
 		String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5));
 	}
 
 	@Test
-	@Ignore
 	public void e_3_391() {
 		String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
 		PerftResults.assertPERFT(fen, new CountForkJoinPool2Full(new StartGame(fen), 5));
@@ -67,7 +62,7 @@ public class Test_PERFT_5300ms {
 	@Test
 	public void m2_kiwipete_153() {
 		String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
-		PerftResults.assertPERFT(fen, new CountFull(new StartGame(fen), 4));
+		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 4));
 	}
 
 	@Test
