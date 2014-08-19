@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import no.pdigre.chess.engine.base.IConst.BITS;
 
-public class MSlider extends MBase {
+public abstract class MSlider extends MBase {
 
 	MOVEDATA Q;
 	MOVEDATA K;
@@ -55,48 +55,51 @@ public class MSlider extends MBase {
 		list.add(MOVEDATA.create(bitmap));
 	}
 
-	public void bslide(Movegen gen, MOVEDATA[] m) {
-		int i = 0;
-		long occ = gen.bb_piece;
-		while (i < m.length) {
-			long bto = m[i + 5].bto;
-			if ((occ & bto) != 0) {
-				if ((gen.bb_white & bto) != 0)
-					gen.add(m[i + gen.ctype(bto)]);
-				break;
-			} else {
-				if(i==3 && bto==1L<<IConst.WR_KING_STARTPOS){
-					gen.add(K);
-				} else if(i==3 && bto==1L<<IConst.WR_QUEEN_STARTPOS){
-					gen.add(Q);
+	public void bslide(Movegen gen, MOVEDATA[][] mm) {
+		for (MOVEDATA[] m : mm) {
+			int i = 0;
+			long occ = gen.bb_piece;
+			while (i < m.length) {
+				long bto = m[i + 5].bto;
+				if ((occ & bto) != 0) {
+					if ((gen.bb_white & bto) != 0)
+						gen.add(m[i + gen.ctype(bto)]);
+					break;
 				} else {
-					gen.add(m[i + 5]);
+					if(i==3 && bto==1L<<IConst.WR_KING_STARTPOS){
+						gen.add(K);
+					} else if(i==3 && bto==1L<<IConst.WR_QUEEN_STARTPOS){
+						gen.add(Q);
+					} else {
+						gen.add(m[i + 5]);
+					}
+					i += 6;
 				}
-				i += 6;
 			}
 		}
 	}
 
-	public void wslide(Movegen gen, MOVEDATA[] m) {
-		int i = 0;
-		long occ = gen.bb_piece;
-		while (i < m.length) {
-			long bto = m[i + 5].bto;
-			if ((occ & bto) != 0) {
-				if ((gen.bb_black & bto) != 0)
-					gen.add(m[i + gen.ctype(bto)]);
-				break;
-			} else {
-				if(i==3 && bto==1L<<IConst.BR_KING_STARTPOS){
-					gen.add(K);
-				} else if(i==3 && bto==1L<<IConst.BR_QUEEN_STARTPOS){
-					gen.add(Q);
+	public void wslide(Movegen gen, MOVEDATA[][] mm) {
+		for (MOVEDATA[] m : mm) {
+			int i = 0;
+			long occ = gen.bb_piece;
+			while (i < m.length) {
+				long bto = m[i + 5].bto;
+				if ((occ & bto) != 0) {
+					if ((gen.bb_black & bto) != 0)
+						gen.add(m[i + gen.ctype(bto)]);
+					break;
 				} else {
-					gen.add(m[i + 5]);
+					if(i==3 && bto==1L<<IConst.BR_KING_STARTPOS){
+						gen.add(K);
+					} else if(i==3 && bto==1L<<IConst.BR_QUEEN_STARTPOS){
+						gen.add(Q);
+					} else {
+						gen.add(m[i + 5]);
+					}
+					i += 6;
 				}
-				i += 6;
 			}
 		}
 	}
-
 }

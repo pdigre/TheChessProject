@@ -117,7 +117,7 @@ public class MPWhite extends MBase{
 		final int enp = gen.enpassant;
 		long e=gen.bb_black|(1L<<enp);
 
-		new Adder(gen,(b & ~0x0101010101010101L) &(e>>7)) {
+		new Adder(gen,(b & IConst.LEFTMASK) &(e>>7)) {
 
 			@Override
 			public void add(int from) {
@@ -137,7 +137,7 @@ public class MPWhite extends MBase{
 				}
 			}
 		};
-		new Adder(gen,(b & ~0x8080808080808080L) &(e>>9)) {
+		new Adder(gen,(b & IConst.RIGHTMASK) &(e>>9)) {
 
 			@Override
 			public void add(int from) {
@@ -157,6 +157,5 @@ public class MPWhite extends MBase{
 				}
 			}
 		};
-		gen.pruneWhite();
 	}
 }

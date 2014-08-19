@@ -10,6 +10,7 @@ public class MRWhite extends MSlider{
 
 	final MOVEDATA[] U, D, L, R;
 	MOVEDATA XQ, XK;
+	final MOVEDATA[][] LINE;
 
 	public MRWhite(int from) {
 		super(from);
@@ -17,6 +18,7 @@ public class MRWhite extends MSlider{
 		D=slide(DOWN);
 		L=slide(LEFT);
 		R=slide(RIGHT);
+		LINE=new MOVEDATA[][]{U,D, L,R};
 	}
 
 	private MOVEDATA[] slide(int offset) {
@@ -37,11 +39,7 @@ public class MRWhite extends MSlider{
 	}
 
 	public void genLegal(Movegen gen){
-		wslide(gen,U);
-		wslide(gen,D);
-		wslide(gen,L);
-		wslide(gen,R);
-		gen.pruneWhite();
+		wslide(gen,LINE);
 	}
 	
 }

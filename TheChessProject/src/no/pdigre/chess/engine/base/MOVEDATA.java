@@ -43,10 +43,10 @@ public class MOVEDATA {
 		bto = 1L << to;
 		long bfrom = 1L << from;
 		long bfromto = bto|bfrom;
-		b_bit1 = ((piece & 1) == 0 ? 0 : bfromto);
-		b_bit2 = ((piece & 2) == 0 ? 0 : bfromto);
-		b_bit3 = ((piece & 4) == 0 ? 0 : bfromto);
-		b_black = ((piece & 8) == 0 ? 0 : bfromto);
+		long b_bit1 = ((piece & 1) == 0 ? 0 : bfromto);
+		long b_bit2 = ((piece & 2) == 0 ? 0 : bfromto);
+		long b_bit3 = ((piece & 4) == 0 ? 0 : bfromto);
+		long b_black = ((piece & 8) == 0 ? 0 : bfromto);
 		if(BITS.isPromotion(bits)){
 			b_bit1 ^= ((piece & 1) != 0 ? 0 : bfrom);
 			b_bit2 ^= ((piece & 2) == 0 ? 0 : bfrom);
@@ -77,19 +77,18 @@ public class MOVEDATA {
 			b_bit3 ^= cfromto;
 			b_black ^= ((piece & 8) == 0 ? 0 : cfromto);
 		}
-//		this.b_bit1=b_bit1;
-//		this.b_bit2=b_bit2;
-//		this.b_bit3=b_bit3;
-//		this.b_black=b_black;
-//		this.bto=bto;
+		this.b_bit1=b_bit1;
+		this.b_bit2=b_bit2;
+		this.b_bit3=b_bit3;
+		this.b_black=b_black;
 	}
 
-	public long bitmap;
-	public long b_black;
-	public long b_bit1;
-	public long b_bit2;
-	public long b_bit3;
-	public long bto;
+	final public long bitmap;
+	final public long b_black;
+	final public long b_bit1;
+	final public long b_bit2;
+	final public long b_bit3;
+	final public long bto;
 	
 	@Override
 	public String toString() {

@@ -119,6 +119,11 @@ public interface IConst {
 	long CBQ = 7L << BK_STARTPOS - 3;
 	long CBK = 3L << BK_STARTPOS + 1;
 
+	long LEFTLANE = 0x0101010101010101L;
+	long RIGHTLANE = 0x8080808080808080L;
+	long LEFTMASK = ~LEFTLANE;
+	long RIGHTMASK = ~RIGHTLANE;
+	
 	class BITS {
 
 		final public static long assemble2(int piece, int from, int to, long extra) {

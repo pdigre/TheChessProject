@@ -39,7 +39,6 @@ public class MNBlack extends MBase {
 				gen.add(m[gen.ctype(bto)]);
 			}
 		}
-		gen.pruneBlack();
 	}
 
 }

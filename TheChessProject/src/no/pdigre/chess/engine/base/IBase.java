@@ -14,7 +14,7 @@ public interface IBase extends IConst {
 	REVERSE[] REV = new REVERSE[64];
 	long[] BETWEEN=new long[4096];
 	BASE base = new BASE();
-
+	
 	class REVERSE {
 		// Reverse lookup for in-check
 		public long RPW=0L;

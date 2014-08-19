@@ -37,20 +37,22 @@ public class MKWhiteStart extends MKWhite {
 					&& (IConst.CWQ & gen.bb_piece) == 0
 					&& !gen.pos.isCheckWhite()
 					&& !KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS - 1)) {
-				gen.addkw(CQ);
+				add(gen,CQ);
 			}
 			if ((castling & IConst.CANCASTLE_WHITEKING) != 0
 					&& (IConst.CWK & gen.bb_piece) == 0
 					&& !gen.pos.isCheckWhite()
 					&& !KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS + 1)) {
-				gen.addkw(CK);
+				add(gen,CK);
 			}
 			if(castling == IConst.CANCASTLE_WHITE){
-				wmoves2(gen,X);
-			} else if((castling & IConst.CANCASTLE_WHITEQUEEN) != 0){
-				wmoves2(gen,XQ);
+				kmoves(gen,X);
 			} else {
-				wmoves2(gen,XK);
+				if((castling & IConst.CANCASTLE_WHITEQUEEN) != 0){
+					kmoves(gen,XQ);
+				} else {
+					kmoves(gen,XK);
+				}
 			}
 		} else {
 			super.genLegal(gen);

@@ -40,6 +40,30 @@ public class MKBlack extends MBase {
 	}
 
 	public void genLegal(Movegen gen) {
-		bmoves2(gen,M);
+		kmoves(gen,M);
 	}
+	
+	public void kmoves(Movegen gen, MOVEDATA[][] moves) {
+		for (MOVEDATA[] m : moves){
+			long bto = m[5].bto;
+			if ((gen.bb_piece & bto) == 0) {
+				add(gen,m[5]);
+			} else if ((gen.bb_white & bto) != 0) {
+				add(gen,m[gen.ctype(bto)]);
+			}
+		}
+	}
+
+	final void add(Movegen gen,MOVEDATA md) {
+		KingSafe p = KingSafe.pos(gen.pos,md);
+		int to = BITS.getTo(md.bitmap);
+		boolean safe = p.isSafeBlack(to);
+		if(safe){
+			gen.add(md);
+//		} else {
+//			System.out.println("hi");
+		}
+	}
+	
+
 }

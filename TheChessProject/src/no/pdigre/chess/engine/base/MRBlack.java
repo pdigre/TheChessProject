@@ -12,6 +12,7 @@ public class MRBlack extends MSlider{
 	final MOVEDATA[] D;
 	final MOVEDATA[] L;
 	final MOVEDATA[] R;
+	final MOVEDATA[][] LINE;
 
 	public MRBlack(int from) {
 		super(from);
@@ -19,6 +20,7 @@ public class MRBlack extends MSlider{
 		D=slide(DOWN);
 		L=slide(LEFT);
 		R=slide(RIGHT);
+		LINE=new MOVEDATA[][]{U,D, L,R};
 	}
 
 	private MOVEDATA[] slide(int offset) {
@@ -39,11 +41,7 @@ public class MRBlack extends MSlider{
 	}
 
 	public void genLegal(Movegen gen){
-		bslide(gen,U);
-		bslide(gen,D);
-		bslide(gen,L);
-		bslide(gen,R);
-		gen.pruneBlack();
+		bslide(gen,LINE);
 	}
 	
 }

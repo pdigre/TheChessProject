@@ -29,6 +29,10 @@ public class Movegen implements IConst{
 	private int iAll = 0;
 	private int iLegal = 0;
 	private int iTested = 0;
+	private boolean isWhite;
+	private long own;
+	private long enemy;
+	private int king;
 
 	final void clear(){
 		iLegal = 0;
@@ -53,86 +57,8 @@ public class Movegen implements IConst{
 		castling = ~CASTLING_STATE | inherit; // all other are set
 	}
 
-	final public void pruneBlack() {
-	}
-	final public void pruneBlack3() {
-		while (iTested < iAll) {
-			MOVEDATA md = moves[iTested++];
-			if (KingSafe.pos(pos,md).isSafeBlack())
-				moves[iLegal++]=md;
-		}
-		iAll=iLegal;
-		iTested=iLegal;
-	}
-
-	final public void pruneBlack2() {
-		while (iTested < iAll) {
-			MOVEDATA md = moves[iTested++];
-			if (KingSafe.pos(pos,md).isSafeBlack()){
-				moves[iLegal++]=md;
-			} else {
-				KingSafe p = KingSafe.pos(pos,md);
-				boolean safeBlack = p.isSafeBlack();
-				System.out.println("ERROR"+safeBlack);
-			}
-		}
-		iAll=iLegal;
-		iTested=iLegal;
-	}
-
-	final public void pruneWhite() {
-		
-	}
-	final public void pruneWhite2() {
-		while (iTested < iAll) {
-			MOVEDATA md = moves[iTested++];
-			KingSafe p = KingSafe.pos(pos,md);
-			if (p.isSafeWhite()){
-				moves[iLegal++]=md;
-			} else {
-				System.out.println("ERROR");
-			}
-		}
-		iAll=iLegal;
-		iTested=iLegal;
-	}
-
-	final public void pruneWhite3() {
-		while (iTested < iAll) {
-			MOVEDATA md = moves[iTested++];
-			if (KingSafe.pos(pos,md).isSafeWhite()){
-				moves[iLegal++]=md;
-			}
-		}
-		iAll=iLegal;
-		iTested=iLegal;
-	}
-
-	final public void pruneSkip() {
-		iLegal=iAll;
-		iTested=iAll;
-	}
-
 	final void add(MOVEDATA md) {
 		moves[iAll++] = md;
-	}
-	
-	final void addkw(MOVEDATA md) {
-		KingSafe p = KingSafe.pos(pos,md);
-		int to = BITS.getTo(md.bitmap);
-		boolean safeWhite = p.isSafeWhite(to);
-		if(safeWhite){
-			moves[iAll++] = md;
-//		} else {
-//			System.out.println("hi");
-		}
-	}
-	
-	final void addkb(MOVEDATA md) {
-		KingSafe p = KingSafe.pos(pos,md);
-		int to = BITS.getTo(md.bitmap);
-		if(p.isSafeBlack(to))
-			moves[iAll++] = md;
 	}
 	
 	final void add2(MOVEDATA data) {
@@ -153,32 +79,25 @@ public class Movegen implements IConst{
 		return new Movegen(pos).legalmoves();
 	}
 	
-	final public void evasive(boolean isWhite,long t) {
-		if (isWhite) {
-			MPWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
-			MNWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
-			MBWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
-			MRWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
-			MQWhite.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
-			pruneWhite3();
-			BASE.WK[wking].genLegal(this);
-		} else {
-			MPBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
-			MNBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
-			MBBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
-			MRBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
-			MQBlack.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
-			pruneBlack3();
-			BASE.BK[bking].genLegal(this);
-		}
-	}
-
 	final public MOVEDATA[] legalmoves() {
 		// Calculate checkers and pinners
-		boolean isWhite = pos.whiteNext();
-		long own = isWhite?bb_white:bb_black;
-		long enemy = isWhite?bb_black:bb_white;
-		int king=isWhite?wking:bking;
+		initState();
+		if(checkers!=0L){
+			clear(); // not interested in pinned moves for evasive moves
+			evasive(isWhite,own);
+		} else {
+			nonevasive(isWhite, own & ~pinned);
+		}
+		MOVEDATA[] t = Arrays.copyOfRange(moves, 0, iAll);
+		clear();
+		return t;
+	}
+
+	public void initState() {
+		isWhite = pos.whiteNext();
+		own = isWhite?bb_white:bb_black;
+		enemy = isWhite?bb_black:bb_white;
+		king=isWhite?wking:bking;
 		REVERSE rev = IBase.REV[king];
 		checkers=0L;
 		pinned=0L;
@@ -186,18 +105,40 @@ public class Movegen implements IConst{
 		checkers|=(bb_bit1 & ~bb_bit2 & ~bb_bit3 & enemy) & (isWhite?rev.RPB:rev.RPW); // Pawn
 		long eslider=bb_bit3 & enemy; // Sliders
 		if((eslider & rev.RQ) !=0){
-			pinnedSliders(king, own, bb_bit1 & eslider & rev.RB,false,isWhite);
-			pinnedSliders(king, own, bb_bit2 & eslider & rev.RR,true,isWhite);
+			pinnedSliders(bb_bit1 & eslider & rev.RB,false);
+			pinnedSliders(bb_bit2 & eslider & rev.RR,true);
 		}
-		if(checkers!=0L){
-			clear(); // not interested in pinned moves for evasive moves
-			evasive(isWhite,own);
+	}
+
+	final public void evasive(boolean isWhite,long t) {
+		if (isWhite) {
+			MPWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
+			MNWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
+			MBWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
+			MRWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
+			MQWhite.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
+			while (iTested < iAll) {
+				MOVEDATA md = moves[iTested++];
+				if (KingSafe.pos(pos,md).isSafeWhite()){
+					moves[iLegal++]=md;
+				}
+			}
+			iAll=iLegal;
+			BASE.WK[wking].genLegal(this);
 		} else {
-			nonevasive(isWhite, own & ~pinned);
+			MPBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
+			MNBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
+			MBBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
+			MRBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
+			MQBlack.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
+			while (iTested < iAll) {
+				MOVEDATA md = moves[iTested++];
+				if (KingSafe.pos(pos,md).isSafeBlack())
+					moves[iLegal++]=md;
+			}
+			iAll=iLegal;
+			BASE.BK[bking].genLegal(this);
 		}
-		MOVEDATA[] t = Arrays.copyOfRange(moves, 0, iLegal);
-		clear();
-		return t;
 	}
 
 	private void nonevasive(boolean isWhite, long t) {
@@ -207,30 +148,30 @@ public class Movegen implements IConst{
 			MBWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
 			MRWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
 			MQWhite.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
-			int before=iAll;
-			pruneWhite2();
-			int after=iAll;
-			if(before!=after){
-				System.out.println("Error");
-			}
 			BASE.WK[wking].genLegal(this);
+			while (iTested < iAll) {
+				MOVEDATA md = moves[iTested++];
+				KingSafe p = KingSafe.pos(pos,md);
+				if (!p.isSafeWhite())
+					System.out.println("ERROR");
+			}
 		} else {
 			MPBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
 			MNBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
 			MBBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
 			MRBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
 			MQBlack.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
-			int before=iAll;
-			pruneBlack2();
-			int after=iAll;
-			if(before!=after){
-				System.out.println("Error");
-			}
 			BASE.BK[bking].genLegal(this);
+			while (iTested < iAll) {
+				MOVEDATA md = moves[iTested++];
+				KingSafe p = KingSafe.pos(pos,md);
+				if (!p.isSafeBlack())
+					System.out.println("ERROR");
+			}
 		}
 	}
 
-	private void pinnedSliders(int king, long own, long attackers,boolean isLine,boolean isWhite) {
+	private void pinnedSliders(long attackers,boolean isLine) {
 		if (attackers != 0) {
 			int bits = Long.bitCount(attackers);
 			for (int j = 0; j < bits; j++) {
@@ -248,31 +189,10 @@ public class Movegen implements IConst{
 					pinned|=pinner;
 					if(isLine){
 						if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
-							boolean isQueen=(pinner&bb_bit1)!=0;
-							if(isQueen){
-								if(isWhite){
-									pinnedSlide(BASE.WQ[from].U,attacker,between);
-									pinnedSlide(BASE.WQ[from].D,attacker,between);
-									pinnedSlide(BASE.WQ[from].L,attacker,between);
-									pinnedSlide(BASE.WQ[from].R,attacker,between);
-								} else {
-									pinnedSlide(BASE.BQ[from].U,attacker,between);
-									pinnedSlide(BASE.BQ[from].D,attacker,between);
-									pinnedSlide(BASE.BQ[from].L,attacker,between);
-									pinnedSlide(BASE.BQ[from].R,attacker,between);
-								}
+							if((pinner&bb_bit1)!=0){	// QUEEN
+								pinnedSlide(isWhite?BASE.WQ[from].LINE:BASE.BQ[from].LINE,attacker,between);
 							} else {
-								if(isWhite){
-									pinnedSlide(BASE.WR[from].U,attacker,between);
-									pinnedSlide(BASE.WR[from].D,attacker,between);
-									pinnedSlide(BASE.WR[from].L,attacker,between);
-									pinnedSlide(BASE.WR[from].R,attacker,between);
-								} else {
-									pinnedSlide(BASE.BR[from].U,attacker,between);
-									pinnedSlide(BASE.BR[from].D,attacker,between);
-									pinnedSlide(BASE.BR[from].L,attacker,between);
-									pinnedSlide(BASE.BR[from].R,attacker,between);
-								}
+								pinnedSlide(isWhite?BASE.WR[from].LINE:BASE.BR[from].LINE,attacker,between);
 							}
 						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN FORWARD
 							if(isWhite){
@@ -291,54 +211,42 @@ public class Movegen implements IConst{
 						}
 					} else {
 						if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
-							boolean isQueen=(pinner&bb_bit2)!=0;
-							if(isQueen){
-								if(isWhite){
-									pinnedSlide(BASE.WQ[from].DL,attacker,between);
-									pinnedSlide(BASE.WQ[from].DR,attacker,between);
-									pinnedSlide(BASE.WQ[from].UL,attacker,between);
-									pinnedSlide(BASE.WQ[from].UR,attacker,between);
-								} else {
-									pinnedSlide(BASE.BQ[from].DL,attacker,between);
-									pinnedSlide(BASE.BQ[from].DR,attacker,between);
-									pinnedSlide(BASE.BQ[from].UL,attacker,between);
-									pinnedSlide(BASE.BQ[from].UR,attacker,between);
-								}
+							if((pinner&bb_bit2)!=0){  	// QUEEN
+								pinnedSlide(isWhite?BASE.WQ[from].DIAG:BASE.BQ[from].DIAG,attacker,between);
 							} else {
-								if(isWhite){
-									pinnedSlide(BASE.WB[from].DL,attacker,between);
-									pinnedSlide(BASE.WB[from].DR,attacker,between);
-									pinnedSlide(BASE.WB[from].UL,attacker,between);
-									pinnedSlide(BASE.WB[from].UR,attacker,between);
-								} else {
-									pinnedSlide(BASE.BB[from].DL,attacker,between);
-									pinnedSlide(BASE.BB[from].DR,attacker,between);
-									pinnedSlide(BASE.BB[from].UL,attacker,between);
-									pinnedSlide(BASE.BB[from].UR,attacker,between);
-								}
+								pinnedSlide(isWhite?BASE.WB[from].DIAG:BASE.BB[from].DIAG,attacker,between);
 							}
 						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
+							int ctype = ctype(attacker);
 							if(isWhite){
-								if(pinner<<9==attacker) {
-									MOVEDATA[] c = BASE.WP[from].CR;
-									if(c!=null)
-										add(c[ctype(attacker)]);
+								if(pinner<<7==attacker && (attacker&IConst.RIGHTLANE)==0) {
+									if(from<48)
+										add(BASE.WP[from].CL[ctype]);
+									else
+										for (int p = 0; p < 4; p++)
+											add(BASE.WP[from].PL[p*5+ctype]);
 								}
-								if(pinner<<7==attacker) {
-									MOVEDATA[] c = BASE.WP[from].CL;
-									if(c!=null)
-										add(c[ctype(attacker)]);
+								if(pinner<<9==attacker && (attacker&IConst.LEFTLANE)==0) {
+									if(from<48)
+										add(BASE.WP[from].CR[ctype]);
+									else
+										for (int p = 0; p < 4; p++)
+											add(BASE.WP[from].PR[p*5+ctype]);
 								}
 							} else {
-								if(pinner>>9==attacker) {
-									MOVEDATA[] cl = BASE.BP[from].CL;
-									if(cl!=null)
-										add(cl[ctype(attacker)]);
+								if(pinner>>9==attacker && (attacker&IConst.RIGHTLANE)==0) {
+									if(from>15)
+										add(BASE.BP[from].CL[ctype]);
+									else
+										for (int p = 0; p < 4; p++)
+											add(BASE.BP[from].PL[p*5+ctype]);
 								}
-								if(pinner>>7==attacker) {
-									MOVEDATA[] cr = BASE.BP[from].CR;
-									if(cr!=null)
-										add(cr[ctype(attacker)]);
+								if(pinner>>7==attacker && (attacker&IConst.LEFTLANE)==0) {
+									if(from>15)
+										add(BASE.BP[from].CR[ctype]);
+									else
+										for (int p = 0; p < 4; p++)
+											add(BASE.BP[from].PR[p*5+ctype]);
 								}
 							}
 						}
@@ -348,20 +256,22 @@ public class Movegen implements IConst{
 		}
 	}
 
-	private void pinnedSlide(MOVEDATA[] m,long attacker,long between) {
-		int i = 0;
-		while (i < m.length) {
-			long bto = m[i + 5].bto;
-			if((between&bto)!=0){
-				add(m[i + 5]);
-				i += 6;
-				continue;
+	private void pinnedSlide(MOVEDATA[][] mm,long attacker,long between) {
+		for (MOVEDATA[] m : mm) {
+			int i = 0;
+			while (i < m.length) {
+				long bto = m[i + 5].bto;
+				if((between&bto)!=0){
+					add(m[i + 5]);
+					i += 6;
+					continue;
+				}
+				if ((attacker & bto) != 0) {
+					int ctype = ctype(bto);
+					add(m[i + ctype]);
+				}
+				break;
 			}
-			if ((attacker & bto) != 0) {
-				int ctype = ctype(bto);
-				add(m[i + ctype]);
-			}
-			break;
 		}
 	}
 	

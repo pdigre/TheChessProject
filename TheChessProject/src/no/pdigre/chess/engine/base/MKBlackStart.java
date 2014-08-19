@@ -37,20 +37,22 @@ public class MKBlackStart extends MKBlack {
 					&& (castling & IConst.CANCASTLE_BLACKQUEEN) != 0
 					&& !gen.pos.isCheckBlack()
 					&& !KingSafe.pos(gen.pos).isSafeBlack(IConst.BK_STARTPOS - 1)) {
-				gen.addkb(CQ);
+				add(gen,CQ);
 			}
 			if ((IConst.CBK & gen.bb_piece) == 0
 					&& (castling & IConst.CANCASTLE_BLACKKING) != 0
 					&& !gen.pos.isCheckBlack()
 					&& !KingSafe.pos(gen.pos).isSafeBlack(IConst.BK_STARTPOS + 1)) {
-				gen.addkb(CK);
+				add(gen,CK);
 			}
 			if(castling == IConst.CANCASTLE_BLACK){
-				bmoves2(gen,X);
-			} else if((castling & IConst.CANCASTLE_BLACKQUEEN) != 0){
-				bmoves2(gen,XQ);
+				kmoves(gen,X);
 			} else {
-				bmoves2(gen,XK);
+				if((castling & IConst.CANCASTLE_BLACKQUEEN) != 0){
+					kmoves(gen,XQ);
+				} else {
+					kmoves(gen,XK);
+				}
 			}
 		} else {
 			super.genLegal(gen);
