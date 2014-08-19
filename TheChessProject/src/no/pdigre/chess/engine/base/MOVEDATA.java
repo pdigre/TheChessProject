@@ -6,47 +6,47 @@ import no.pdigre.chess.engine.fen.FEN;
 public class MOVEDATA {
 	
 	public static MOVEDATA create(long bitmap){
-		return new MOVEDATA(bitmap,1L << BITS.getTo(bitmap));
+		return new MOVEDATA(bitmap);
 	}
 	
 	public static MOVEDATA createxw(long bitmap){
-		int to=BITS.getTo(bitmap);
-		MOVEDATA normal = new MOVEDATA(bitmap,1L << to);
+		MOVEDATA normal = new MOVEDATA(bitmap);
 		int c=BITS.getCaptured(bitmap);
 		if(c==IConst.BR){
+			int to=BITS.getTo(bitmap);
 			if(to==IConst.BR_KING_STARTPOS)
-				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_BLACKKING,1L << to,normal);
+				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_BLACKKING,normal);
 			if(to==IConst.BR_QUEEN_STARTPOS)
-				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_BLACKQUEEN,1L << to,normal);
+				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_BLACKQUEEN,normal);
 		}
 		return normal;
 	}
 	
 	public static MOVEDATA createxb(long bitmap){
-		int to=BITS.getTo(bitmap);
-		MOVEDATA normal = new MOVEDATA(bitmap,1L << to);
+		MOVEDATA normal = new MOVEDATA(bitmap);
 		int c=BITS.getCaptured(bitmap);
 		if(c==IConst.WR){
+			int to=BITS.getTo(bitmap);
 			if(to==IConst.WR_KING_STARTPOS)
-				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_WHITEKING,1L << to,normal);
+				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_WHITEKING,normal);
 			if(to==IConst.WR_QUEEN_STARTPOS)
-				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_WHITEQUEEN,1L << to,normal);
+				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_WHITEQUEEN,normal);
 		}
 		return normal;
 	}
 	
-	protected MOVEDATA(long bits,long bto) {
-		bitmap = bits;
-		this.bto = bto;
+	protected MOVEDATA(long bits) {
+		this.bitmap = bits;
+		int piece = BITS.getPiece(bits);
 		int from = BITS.getFrom(bits);
 		int to = BITS.getTo(bits);
-		int piece = BITS.getPiece(bits);
+		bto = 1L << to;
 		long bfrom = 1L << from;
 		long bfromto = bto|bfrom;
-		long b_bit1 = ((piece & 1) == 0 ? 0 : bfromto);
-		long b_bit2 = ((piece & 2) == 0 ? 0 : bfromto);
-		long b_bit3 = ((piece & 4) == 0 ? 0 : bfromto);
-		long b_black = ((piece & 8) == 0 ? 0 : bfromto);
+		b_bit1 = ((piece & 1) == 0 ? 0 : bfromto);
+		b_bit2 = ((piece & 2) == 0 ? 0 : bfromto);
+		b_bit3 = ((piece & 4) == 0 ? 0 : bfromto);
+		b_black = ((piece & 8) == 0 ? 0 : bfromto);
 		if(BITS.isPromotion(bits)){
 			b_bit1 ^= ((piece & 1) != 0 ? 0 : bfrom);
 			b_bit2 ^= ((piece & 2) == 0 ? 0 : bfrom);
@@ -77,18 +77,19 @@ public class MOVEDATA {
 			b_bit3 ^= cfromto;
 			b_black ^= ((piece & 8) == 0 ? 0 : cfromto);
 		}
-		this.b_bit1=b_bit1;
-		this.b_bit2=b_bit2;
-		this.b_bit3=b_bit3;
-		this.b_black=b_black;
+//		this.b_bit1=b_bit1;
+//		this.b_bit2=b_bit2;
+//		this.b_bit3=b_bit3;
+//		this.b_black=b_black;
+//		this.bto=bto;
 	}
 
-	final public long bitmap;
-	final public long b_black;
-	final public long b_bit1;
-	final public long b_bit2;
-	final public long b_bit3;
-	final public long bto;
+	public long bitmap;
+	public long b_black;
+	public long b_bit1;
+	public long b_bit2;
+	public long b_bit3;
+	public long bto;
 	
 	@Override
 	public String toString() {

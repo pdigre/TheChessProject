@@ -47,48 +47,48 @@ public class KingSafe implements IConst {
 		REVERSE rev = IBase.REV[king];
 		long e=bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
-			return true;
+			return false;
 		MQWhite x = BASE.WQ[king];
 		long slider=bb_bit3 & e;
 		if((slider & rev.RQ) !=0){
 			if ((bb_bit1 & slider & rev.RB) != 0) {
 				if(bdiag(x.UL)||bdiag(x.UR)||bdiag(x.DL)||bdiag(x.DR))
-					return true;
+					return false;
 			}
 			if ((bb_bit2 & slider & rev.RR) != 0) {
 				if(bline(x.U)||bline(x.D)||bline(x.L)||bline(x.R))
-					return true;
+					return false;
 			}
 		}
 		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & e) & rev.RPB) != 0)
-			return true;
+			return false;
 		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RK) != 0)
-			return true;
-		return false;
+			return false;
+		return true;
 	}
 
 	final public boolean isSafeBlack(int king) {
 		REVERSE rev = IBase.REV[king];
 		long e=~bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
-			return true;
+			return false;
 		MQWhite x = BASE.WQ[king];
 		long slider=bb_bit3 & e;
 		if((slider & rev.RQ) !=0){
 			if ((bb_bit1 & slider & rev.RB) != 0) {
 				if(wdiag(x.UL)||wdiag(x.UR)||wdiag(x.DL)||wdiag(x.DR))
-					return true;
+					return false;
 			}
 			if ((bb_bit2 & slider & rev.RR) != 0) {
 				if(wline(x.U)||wline(x.D)||wline(x.L)||wline(x.R))
-					return true;
+					return false;
 			}
 		}
 		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & e) & rev.RPW) != 0)
-			return true;
+			return false;
 		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RK) != 0)
-			return true;
-		return false;
+			return false;
+		return true;
 	}
 
 	private boolean wdiag(MOVEDATA[] s) {

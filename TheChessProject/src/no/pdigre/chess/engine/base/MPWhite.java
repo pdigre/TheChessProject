@@ -65,7 +65,8 @@ public class MPWhite extends MBase{
 		for (int c = 0; c < 5; c++) {
 			long base = BITS.assemble(IConst.WP, from, to, IBase.CASTLING_STATE);
 			int cval = PSQT.pVal(to,WCAPTURES[c]);
-			captures[c]=MOVEDATA.create(purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE));
+			long bitmap = purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE);
+			captures[c]=MOVEDATA.create(bitmap);
 		}
 		return captures;
 	}

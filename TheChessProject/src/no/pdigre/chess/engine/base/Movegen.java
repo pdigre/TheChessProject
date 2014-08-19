@@ -58,7 +58,7 @@ public class Movegen implements IConst{
 	final public void pruneBlack3() {
 		while (iTested < iAll) {
 			MOVEDATA md = moves[iTested++];
-			if (!KingSafe.pos(pos,md).isSafeBlack())
+			if (KingSafe.pos(pos,md).isSafeBlack())
 				moves[iLegal++]=md;
 		}
 		iAll=iLegal;
@@ -68,7 +68,7 @@ public class Movegen implements IConst{
 	final public void pruneBlack2() {
 		while (iTested < iAll) {
 			MOVEDATA md = moves[iTested++];
-			if (!KingSafe.pos(pos,md).isSafeBlack()){
+			if (KingSafe.pos(pos,md).isSafeBlack()){
 				moves[iLegal++]=md;
 			} else {
 				KingSafe p = KingSafe.pos(pos,md);
@@ -86,7 +86,8 @@ public class Movegen implements IConst{
 	final public void pruneWhite2() {
 		while (iTested < iAll) {
 			MOVEDATA md = moves[iTested++];
-			if (!KingSafe.pos(pos,md).isSafeWhite()){
+			KingSafe p = KingSafe.pos(pos,md);
+			if (p.isSafeWhite()){
 				moves[iLegal++]=md;
 			} else {
 				System.out.println("ERROR");
@@ -99,7 +100,7 @@ public class Movegen implements IConst{
 	final public void pruneWhite3() {
 		while (iTested < iAll) {
 			MOVEDATA md = moves[iTested++];
-			if (!KingSafe.pos(pos,md).isSafeWhite()){
+			if (KingSafe.pos(pos,md).isSafeWhite()){
 				moves[iLegal++]=md;
 			}
 		}
@@ -120,8 +121,11 @@ public class Movegen implements IConst{
 		KingSafe p = KingSafe.pos(pos,md);
 		int to = BITS.getTo(md.bitmap);
 		boolean safeWhite = p.isSafeWhite(to);
-		if(safeWhite)
+		if(safeWhite){
 			moves[iAll++] = md;
+//		} else {
+//			System.out.println("hi");
+		}
 	}
 	
 	final void addkb(MOVEDATA md) {
@@ -316,14 +320,14 @@ public class Movegen implements IConst{
 						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
 							if(isWhite){
 								if(pinner<<9==attacker) {
-									MOVEDATA[] cl = BASE.WP[from].CL;
-									if(cl!=null)
-										add(cl[ctype(attacker)]);
+									MOVEDATA[] c = BASE.WP[from].CR;
+									if(c!=null)
+										add(c[ctype(attacker)]);
 								}
 								if(pinner<<7==attacker) {
-									MOVEDATA[] cr = BASE.WP[from].CR;
-									if(cr!=null)
-										add(cr[ctype(attacker)]);
+									MOVEDATA[] c = BASE.WP[from].CL;
+									if(c!=null)
+										add(c[ctype(attacker)]);
 								}
 							} else {
 								if(pinner>>9==attacker) {

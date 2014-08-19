@@ -84,7 +84,7 @@ public class FEN implements IConst {
 				long bit=1L<<sq;
 				int p=((bit&b1)==0?0:1)+((bit&b2)==0?0:2)+((bit&b3)==0?0:4)+((bit&bb)==0?0:8);
 				PieceType type = PieceType.types[p];
-                fen.append(type == null ? "." : type.fen);
+                fen.append(type == null ? (p==0?".":"X"): type.fen);
             }
         }
         fen.append("\n  ABCDEFGH");

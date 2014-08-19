@@ -10,14 +10,14 @@ public class MOVEDATAX extends MOVEDATA {
 	final MOVEDATA normal;
 	final long castling;
 	
-	public MOVEDATAX(long bitmap,long bto,MOVEDATA m) {
-		super(bitmap,bto);
+	public MOVEDATAX(long bitmap,MOVEDATA m) {
+		super(bitmap);
 		normal=m;
 		castling=0L;
 	}
 
 	public MOVEDATAX(MOVEDATA m) {
-		super(m.bitmap^findCastling(m.bitmap),m.bto);
+		super(m.bitmap^findCastling(m.bitmap));
 		normal=null;
 		this.castling=findCastling(m.bitmap);
 	}
@@ -42,15 +42,14 @@ public class MOVEDATAX extends MOVEDATA {
 	}
 
 	public MOVEDATAX(MOVEDATA m,long mask) {
-		super(m.bitmap^mask,m.bto);
+		super(m.bitmap^mask);
 		normal=null;
 		this.castling=mask;
 	}
 
 	public static MOVEDATA create(long bitmap){
-		int to=BITS.getTo(bitmap);
-		MOVEDATA normal = new MOVEDATA(bitmap,1L << to);
-		return new MOVEDATAX(bitmap,1L << to,normal);
+		MOVEDATA normal = new MOVEDATA(bitmap);
+		return new MOVEDATAX(bitmap,normal);
 	}
 
 }
