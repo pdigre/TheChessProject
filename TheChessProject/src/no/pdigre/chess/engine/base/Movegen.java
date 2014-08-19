@@ -29,10 +29,6 @@ public class Movegen implements IConst{
 	private int iAll = 0;
 	private int iLegal = 0;
 	private int iTested = 0;
-	private boolean isWhite;
-	private long own;
-	private long enemy;
-	private int king;
 
 	final void clear(){
 		iLegal = 0;
@@ -61,11 +57,6 @@ public class Movegen implements IConst{
 		moves[iAll++] = md;
 	}
 	
-	final void add2(MOVEDATA data) {
-		if(data!=null)
-			moves[iAll++] = data;
-	}
-
 	final int type(long bit) {
 		return ((bb_bit1 & bit) == 0 ? 0 : 1) | ((bb_bit2 & bit) == 0 ? 0 : 2) | ((bb_bit3 & bit) == 0 ? 0 : 4);
 	}
@@ -81,36 +72,107 @@ public class Movegen implements IConst{
 	
 	final public MOVEDATA[] legalmoves() {
 		// Calculate checkers and pinners
-		initState();
-		if(checkers!=0L){
-			clear(); // not interested in pinned moves for evasive moves
-			evasive(isWhite,own);
+		boolean isWhite = pos.whiteNext();
+		long own = isWhite?bb_white:bb_black;
+		long enemy = isWhite?bb_black:bb_white;
+		int king=isWhite?wking:bking;
+		REVERSE rev = IBase.REV[king];
+		pinned=0L;
+		checkers=(~bb_bit1 & bb_bit2 & ~bb_bit3 & enemy) & rev.RN; // Knight
+		checkers|=(bb_bit1 & ~bb_bit2 & ~bb_bit3 & enemy) & (isWhite?rev.RPB:rev.RPW); // Pawn
+		long eslider=bb_bit3 & enemy; // Sliders
+		if(checkers==0L && (eslider & rev.RQ) !=0){
+			long attackers = bb_bit1 & eslider & rev.RB;
+			if (attackers != 0L) {
+				int bits = Long.bitCount(attackers);
+				for (int j = 0; j < bits; j++) {
+					int asq = Long.numberOfTrailingZeros(attackers);
+					long attacker = 1L << asq;
+					attackers ^= attacker;
+					long between = IBase.BETWEEN[asq+64*king];
+					long bpcs = between&bb_piece;
+					if(bpcs==0L){
+						checkers|=attacker;
+					} else if(Long.bitCount(bpcs)==1){
+						// check for slide moves
+						long pinner = between&own;
+						int from = Long.numberOfTrailingZeros(pinner);
+						pinned|=pinner;
+						if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
+							if((pinner&bb_bit2)!=0){  	// QUEEN
+								slide(isWhite?BASE.WQ[from].DIAG:BASE.BQ[from].DIAG,attacker,between);
+							} else {
+								slide(isWhite?BASE.WB[from].DIAG:BASE.BB[from].DIAG,attacker,between);
+							}
+						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
+							if(isWhite){
+								if(pinner<<7==attacker && (attacker&IConst.RIGHTLANE)==0)
+									moves[iAll++] = BASE.WP[from].CL[ctype(attacker)];
+								if(pinner<<9==attacker && (attacker&IConst.LEFTLANE)==0)
+									moves[iAll++] = BASE.WP[from].CR[ctype(attacker)];
+							} else {
+								if(pinner>>9==attacker && (attacker&IConst.RIGHTLANE)==0)
+									moves[iAll++] = BASE.BP[from].CL[ctype(attacker)];
+								if(pinner>>7==attacker && (attacker&IConst.LEFTLANE)==0)
+									moves[iAll++] = BASE.BP[from].CR[ctype(attacker)];
+							}
+						}
+					}
+				}
+			}
+			attackers = bb_bit2 & eslider & rev.RR;
+			if (checkers==0L && attackers != 0L) {
+				int bits = Long.bitCount(attackers);
+				for (int j = 0; j < bits; j++) {
+					int asq = Long.numberOfTrailingZeros(attackers);
+					long attacker = 1L << asq;
+					attackers ^= attacker;
+					long between = IBase.BETWEEN[asq+64*king];
+					long bpcs = between&bb_piece;
+					if(bpcs==0L){
+						checkers|=attacker;
+					} else if(Long.bitCount(bpcs)==1){
+						// check for slide moves
+						long pinner = between&own;
+						int from = Long.numberOfTrailingZeros(pinner);
+						pinned|=pinner;
+						if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
+							if((pinner&bb_bit1)!=0){	// QUEEN
+								slide(isWhite?BASE.WQ[from].LINE:BASE.BQ[from].LINE,attacker,between);
+							} else {
+								slide(isWhite?BASE.WR[from].LINE:BASE.BR[from].LINE,attacker,between);
+							}
+						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN FORWARD
+							if(isWhite){
+								if(((pinner<<8)&between)!=0){
+									moves[iAll++] = BASE.WP[from].M1;
+									if(from<16 && ((pinner<<16)&between)!=0)
+										moves[iAll++] = BASE.WP[from].M2;
+								}
+							} else {
+								if(((pinner>>8)&between)!=0){
+									moves[iAll++] = BASE.BP[from].M1;
+									if(from>47 && ((pinner>>16)&between)!=0)
+										moves[iAll++] = BASE.BP[from].M2;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		if(checkers==0L){
+			nonevasive(isWhite, king,own & ~pinned);
 		} else {
-			nonevasive(isWhite, own & ~pinned);
+			clear(); // not interested in pinned moves for evasive moves
+			evasive(isWhite,king,own);
 		}
 		MOVEDATA[] t = Arrays.copyOfRange(moves, 0, iAll);
 		clear();
 		return t;
 	}
 
-	public void initState() {
-		isWhite = pos.whiteNext();
-		own = isWhite?bb_white:bb_black;
-		enemy = isWhite?bb_black:bb_white;
-		king=isWhite?wking:bking;
-		REVERSE rev = IBase.REV[king];
-		checkers=0L;
-		pinned=0L;
-		checkers|=(~bb_bit1 & bb_bit2 & ~bb_bit3 & enemy) & rev.RN; // Knight
-		checkers|=(bb_bit1 & ~bb_bit2 & ~bb_bit3 & enemy) & (isWhite?rev.RPB:rev.RPW); // Pawn
-		long eslider=bb_bit3 & enemy; // Sliders
-		if((eslider & rev.RQ) !=0){
-			pinnedSliders(bb_bit1 & eslider & rev.RB,false);
-			pinnedSliders(bb_bit2 & eslider & rev.RR,true);
-		}
-	}
-
-	final public void evasive(boolean isWhite,long t) {
+	final public void evasive(boolean isWhite,int king, long t) {
 		if (isWhite) {
 			MPWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
 			MNWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
@@ -124,7 +186,7 @@ public class Movegen implements IConst{
 				}
 			}
 			iAll=iLegal;
-			BASE.WK[wking].genLegal(this);
+			BASE.WK[king].genLegal(this);
 		} else {
 			MPBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
 			MNBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.BN);
@@ -137,18 +199,18 @@ public class Movegen implements IConst{
 					moves[iLegal++]=md;
 			}
 			iAll=iLegal;
-			BASE.BK[bking].genLegal(this);
+			BASE.BK[king].genLegal(this);
 		}
 	}
 
-	private void nonevasive(boolean isWhite, long t) {
+	private void nonevasive(boolean isWhite,int king, long t) {
 		if (isWhite) {
 			MPWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.WP);
 			MNWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), BASE.WN);
 			MBWhite.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.WB);
 			MRWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
 			MQWhite.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
-			BASE.WK[wking].genLegal(this);
+			BASE.WK[king].genLegal(this);
 //			while (iTested < iAll) {
 //				MOVEDATA md = moves[iTested++];
 //				KingSafe p = KingSafe.pos(pos,md);
@@ -163,7 +225,7 @@ public class Movegen implements IConst{
 			MBBlack.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
 			MRBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
 			MQBlack.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
-			BASE.BK[bking].genLegal(this);
+			BASE.BK[king].genLegal(this);
 //			while (iTested < iAll) {
 //				MOVEDATA md = moves[iTested++];
 //				KingSafe p = KingSafe.pos(pos,md);
@@ -175,105 +237,18 @@ public class Movegen implements IConst{
 		}
 	}
 
-	private void pinnedSliders(long attackers,boolean isLine) {
-		if (attackers != 0) {
-			int bits = Long.bitCount(attackers);
-			for (int j = 0; j < bits; j++) {
-				int asq = Long.numberOfTrailingZeros(attackers);
-				long attacker = 1L << asq;
-				attackers ^= attacker;
-				long between = IBase.BETWEEN[asq+64*king];
-				long bpcs = between&bb_piece;
-				if(bpcs==0L){
-					checkers|=attacker;
-				} else if(Long.bitCount(bpcs)==1){
-					// check for slide moves
-					long pinner = between&own;
-					int from = Long.numberOfTrailingZeros(pinner);
-					pinned|=pinner;
-					if(isLine){
-						if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
-							if((pinner&bb_bit1)!=0){	// QUEEN
-								slide(isWhite?BASE.WQ[from].LINE:BASE.BQ[from].LINE,attacker,between);
-							} else {
-								slide(isWhite?BASE.WR[from].LINE:BASE.BR[from].LINE,attacker,between);
-							}
-						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN FORWARD
-							if(isWhite){
-								if(((pinner<<8)&between)!=0){
-									add2(BASE.WP[from].M1);
-									if(((pinner<<16)&between)!=0)
-										add2(BASE.WP[from].M2);
-								}
-							} else {
-								if(((pinner>>8)&between)!=0){
-									add2(BASE.BP[from].M1);
-									if(((pinner>>16)&between)!=0)
-										add2(BASE.BP[from].M2);
-								}
-							}
-						}
-					} else {
-						if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
-							if((pinner&bb_bit2)!=0){  	// QUEEN
-								slide(isWhite?BASE.WQ[from].DIAG:BASE.BQ[from].DIAG,attacker,between);
-							} else {
-								slide(isWhite?BASE.WB[from].DIAG:BASE.BB[from].DIAG,attacker,between);
-							}
-						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
-							int ctype = ctype(attacker);
-							if(isWhite){
-								if(pinner<<7==attacker && (attacker&IConst.RIGHTLANE)==0) {
-									if(from<48)
-										add(BASE.WP[from].CL[ctype]);
-									else
-										for (int p = 0; p < 4; p++)
-											add(BASE.WP[from].PL[p*5+ctype]);
-								}
-								if(pinner<<9==attacker && (attacker&IConst.LEFTLANE)==0) {
-									if(from<48)
-										add(BASE.WP[from].CR[ctype]);
-									else
-										for (int p = 0; p < 4; p++)
-											add(BASE.WP[from].PR[p*5+ctype]);
-								}
-							} else {
-								if(pinner>>9==attacker && (attacker&IConst.RIGHTLANE)==0) {
-									if(from>15)
-										add(BASE.BP[from].CL[ctype]);
-									else
-										for (int p = 0; p < 4; p++)
-											add(BASE.BP[from].PL[p*5+ctype]);
-								}
-								if(pinner>>7==attacker && (attacker&IConst.LEFTLANE)==0) {
-									if(from>15)
-										add(BASE.BP[from].CR[ctype]);
-									else
-										for (int p = 0; p < 4; p++)
-											add(BASE.BP[from].PR[p*5+ctype]);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
 	private void slide(MOVEDATA[][] mm,long attacker,long between) {
 		for (MOVEDATA[] m : mm) {
 			int i = 0;
 			while (i < m.length) {
 				long bto = m[i + 5].bto;
 				if((between&bto)!=0){
-					add(m[i + 5]);
+					moves[iAll++] = m[i + 5];
 					i += 6;
 					continue;
 				}
-				if ((attacker & bto) != 0) {
-					int ctype = ctype(bto);
-					add(m[i + ctype]);
-				}
+				if ((attacker & bto) != 0)
+					moves[iAll++] = m[i + ctype(bto)];
 				break;
 			}
 		}
