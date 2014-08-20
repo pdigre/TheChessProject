@@ -2,11 +2,10 @@ package no.pdigre.chess.engine.base;
 
 import java.util.ArrayList;
 
-import no.pdigre.chess.engine.base.IConst.BITS;
-import static no.pdigre.chess.engine.base.IBase.BASE.*;
+import static no.pdigre.chess.engine.base.BASE.*;
 
 
-public class MRBlack extends MSlider{
+public class MBR extends MSlider{
 
 	final MOVEDATA[] U;
 	final MOVEDATA[] D;
@@ -14,7 +13,7 @@ public class MRBlack extends MSlider{
 	final MOVEDATA[] R;
 	final MOVEDATA[][] LINE;
 
-	public MRBlack(int from) {
+	public MBR(int from) {
 		super(from);
 		U=slide(UP);
 		D=slide(DOWN);
@@ -33,7 +32,7 @@ public class MRBlack extends MSlider{
 			else if(from==IConst.BR_KING_STARTPOS)
 				bitmap^= IConst.CANCASTLE_BLACKKING;
 			for (int i = 0; i < 5; i++)
-				list.add(MOVEDATA.createxb((purge(bitmap, PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << IBase._CAPTURE)));
+				list.add(MOVEDATA.createxb((purge(bitmap, PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << _CAPTURE)));
 			list.add(MOVEDATA.create(bitmap));
 			to+=offset;
 		}

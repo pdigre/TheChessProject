@@ -1,10 +1,8 @@
 package no.pdigre.chess.engine.base;
 
-import static no.pdigre.chess.engine.base.IBase.BASE.inside;
+import static no.pdigre.chess.engine.base.BASE.inside;
 
 import java.util.ArrayList;
-
-import no.pdigre.chess.engine.base.IConst.BITS;
 
 public abstract class MSlider extends MBase {
 
@@ -30,7 +28,7 @@ public abstract class MSlider extends MBase {
 		for (int i = 0; i < 5; i++) {
 			if ((type & 8) > 0) {
 				int c = WCAPTURES[i];
-				long m = (purge(bitmap, PSQT.pVal(to, c))) | ((c & 7) << IBase._CAPTURE);
+				long m = (purge(bitmap, PSQT.pVal(to, c))) | ((c & 7) << _CAPTURE);
 				list.add(MOVEDATA.create(m));
 				if (c == IConst.BR) {
 					if (to == IConst.BR_KING_STARTPOS){
@@ -41,7 +39,7 @@ public abstract class MSlider extends MBase {
 				}
 			} else {
 				int c = BCAPTURES[i];
-				long m = (purge(bitmap, PSQT.pVal(to, c))) | ((c & 7) << IBase._CAPTURE);
+				long m = (purge(bitmap, PSQT.pVal(to, c))) | ((c & 7) << _CAPTURE);
 				list.add(MOVEDATA.create(m));
 				if (c == IConst.WR) {
 					if (to == IConst.WR_KING_STARTPOS){

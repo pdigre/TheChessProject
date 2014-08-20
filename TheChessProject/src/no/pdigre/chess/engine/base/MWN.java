@@ -3,12 +3,18 @@ package no.pdigre.chess.engine.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.pdigre.chess.engine.base.IConst.BITS;
-import static no.pdigre.chess.engine.base.IBase.BASE.*;
+import static no.pdigre.chess.engine.base.BASE.*;
 
-public class MNBlack extends MBase {
+public class MWN extends MBase{
+
+	final static MWN[] WN;
+	static {
+		WN=new MWN[64];
+		for (int from = 0; from < 64; from++)
+			WN[from] = new MWN(from);
+	}
 	
-	public MNBlack(int from) {
+	public MWN(int from) {
 		super(from);
 		ArrayList<MOVEDATA[]> list=new ArrayList<MOVEDATA[]>();
 		for (int i = 0; i < KNIGHT_MOVES.length; i++)
@@ -21,10 +27,9 @@ public class MNBlack extends MBase {
 		if (inside(to, from)){
 			MOVEDATA[] m=new MOVEDATA[6];
 			list.add(m);
-			m[5]=MOVEDATA.create(BITS.assemble(IConst.BN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES));
-			for (int i = 0; i < 5; i++){
-				m[i]=MOVEDATA.createxb((purge(BITS.assemble(IConst.BN, from, to, IBase.CASTLING_STATE | IBase.HALFMOVES), PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << IBase._CAPTURE)); 
-			}
+			m[5]=MOVEDATA.create(BITS.assemble(IConst.WN, from, to, CASTLING_STATE | HALFMOVES));
+			for (int i = 0; i < 5; i++)
+				m[i]=MOVEDATA.createxw((purge(BITS.assemble(IConst.WN, from, to, CASTLING_STATE | HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << _CAPTURE)); 
 		}
 	}
 	
@@ -35,10 +40,9 @@ public class MNBlack extends MBase {
 			long bto = m[5].bto;
 			if ((gen.bb_piece & bto) == 0) {
 				gen.add(m[5]);
-			} else if ((gen.bb_white & bto) != 0) {
+			} else if ((gen.bb_black & bto) != 0) {
 				gen.add(m[gen.ctype(bto)]);
 			}
 		}
 	}
-
 }

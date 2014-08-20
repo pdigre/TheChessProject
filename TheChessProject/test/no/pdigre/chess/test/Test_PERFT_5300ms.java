@@ -1,5 +1,6 @@
 package no.pdigre.chess.test;
 
+import no.pdigre.chess.engine.base.BASE;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.test.util.CountForkJoinPool2Full;
 import no.pdigre.chess.test.util.CountForkJoinPoolFull;
@@ -13,7 +14,7 @@ import org.junit.Test;
  * 
  * 4700ms with improvements in "kingsafe"
  * 4300ms with new MOVEDATA bits
- * 4400ms with pinned pieces method - take 1
+ * 4400ms with pinned pieces - take 1 (3700 på jobben)
  * 
  */
 @SuppressWarnings("static-method")
@@ -21,6 +22,7 @@ public class Test_PERFT_5300ms {
 
 	@BeforeClass
 	public static void prepare() {
+		new BASE();
 		PerftResults.readAll();
 	}
 	

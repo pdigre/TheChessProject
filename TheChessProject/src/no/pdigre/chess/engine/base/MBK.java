@@ -1,20 +1,15 @@
 package no.pdigre.chess.engine.base;
 
-import static no.pdigre.chess.engine.base.IBase.BASE.DOWN;
-import static no.pdigre.chess.engine.base.IBase.BASE.LEFT;
-import static no.pdigre.chess.engine.base.IBase.BASE.RIGHT;
-import static no.pdigre.chess.engine.base.IBase.BASE.UP;
+import static no.pdigre.chess.engine.base.BASE.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import no.pdigre.chess.engine.base.IConst.BITS;
-
-public class MKBlack extends MBase {
+public class MBK extends MBase {
 
 	final MOVEDATA[][] M;
 	
-	public MKBlack(int from) {
+	public MBK(int from) {
 		super(from);
 		ArrayList<MOVEDATA[]> list=new ArrayList<MOVEDATA[]>();
 		add(UP,list);
@@ -30,12 +25,12 @@ public class MKBlack extends MBase {
 
 	protected void add(int offset, List<MOVEDATA[]> list) {
 		int to = from + offset;
-		if (IBase.BASE.inside(to, from)){
+		if (BASE.inside(to, from)){
 			MOVEDATA[] m=new MOVEDATA[6];
 			list.add(m);
-			m[5]=MOVEDATA.create(BITS.assemble(IConst.BK, from, to, IBase.CANCASTLE_WHITE | IBase.HALFMOVES));
+			m[5]=MOVEDATA.create(BITS.assemble(IConst.BK, from, to, CANCASTLE_WHITE | HALFMOVES));
 			for (int i = 0; i < 5; i++)
-				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.BK, from, to, IBase.CANCASTLE_WHITE | IBase.HALFMOVES), PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << IBase._CAPTURE)); 
+				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.BK, from, to, CANCASTLE_WHITE | HALFMOVES), PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << _CAPTURE)); 
 		}
 	}
 
@@ -54,7 +49,7 @@ public class MKBlack extends MBase {
 		}
 	}
 
-	final void add(Movegen gen,MOVEDATA md) {
+	final static void add(Movegen gen,MOVEDATA md) {
 		KingSafe p = KingSafe.pos(gen.pos,md);
 		int to = BITS.getTo(md.bitmap);
 		if(p.isSafeBlack(to))

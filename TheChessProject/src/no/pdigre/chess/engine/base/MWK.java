@@ -1,20 +1,25 @@
 package no.pdigre.chess.engine.base;
 
-import static no.pdigre.chess.engine.base.IBase.BASE.DOWN;
-import static no.pdigre.chess.engine.base.IBase.BASE.LEFT;
-import static no.pdigre.chess.engine.base.IBase.BASE.RIGHT;
-import static no.pdigre.chess.engine.base.IBase.BASE.UP;
+import static no.pdigre.chess.engine.base.BASE.DOWN;
+import static no.pdigre.chess.engine.base.BASE.LEFT;
+import static no.pdigre.chess.engine.base.BASE.RIGHT;
+import static no.pdigre.chess.engine.base.BASE.UP;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import no.pdigre.chess.engine.base.IConst.BITS;
-
-public class MKWhite extends MBase {
+public class MWK extends MBase {
 
 	final MOVEDATA[][] M;
 
-	public MKWhite(int from) {
+	final static MWK[] WK;
+	static {
+		WK=new MWK[64];
+		for (int from = 0; from < 64; from++)
+			WK[from] = from == IConst.WK_STARTPOS ?new MWKStart(from):new MWK(from);
+	}
+
+	public MWK(int from) {
 		super(from);			
 		ArrayList<MOVEDATA[]> list=new ArrayList<MOVEDATA[]>();
 		add(UP,list);
@@ -30,12 +35,12 @@ public class MKWhite extends MBase {
 
 	protected void add(int offset, List<MOVEDATA[]> list) {
 		int to = from + offset;
-		if (IBase.BASE.inside(to, from)){
+		if (BASE.inside(to, from)){
 			MOVEDATA[] m=new MOVEDATA[6];
 			list.add(m);
-			m[5]=MOVEDATA.create(BITS.assemble(IConst.WK, from, to, IBase.CANCASTLE_BLACK | IBase.HALFMOVES));
+			m[5]=MOVEDATA.create(BITS.assemble(IConst.WK, from, to, CANCASTLE_BLACK | HALFMOVES));
 			for (int i = 0; i < 5; i++)
-				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.WK, from, to, IBase.CANCASTLE_BLACK | IBase.HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << IBase._CAPTURE)); 
+				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.WK, from, to, CANCASTLE_BLACK | HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << _CAPTURE)); 
 		}
 	}
 
@@ -54,15 +59,12 @@ public class MKWhite extends MBase {
 		}
 	}
 
-	final void add(Movegen gen,MOVEDATA md) {
+	final static void add(Movegen gen,MOVEDATA md) {
 		KingSafe p = KingSafe.pos(gen.pos,md);
 		int to = BITS.getTo(md.bitmap);
 		boolean safe = p.isSafeWhite(to);
-		if(safe){
+		if(safe)
 			gen.add(md);
-//		} else {
-//			System.out.println("hi");
-		}
 	}
 	
 }

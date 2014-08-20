@@ -1,17 +1,17 @@
 package no.pdigre.chess.engine.base;
 
-import static no.pdigre.chess.engine.base.IBase.BASE.DOWN;
-import static no.pdigre.chess.engine.base.IBase.BASE.LEFT;
-import static no.pdigre.chess.engine.base.IBase.BASE.RIGHT;
-import static no.pdigre.chess.engine.base.IBase.BASE.UP;
+import static no.pdigre.chess.engine.base.BASE.DOWN;
+import static no.pdigre.chess.engine.base.BASE.LEFT;
+import static no.pdigre.chess.engine.base.BASE.RIGHT;
+import static no.pdigre.chess.engine.base.BASE.UP;
 
 
-public class MQBlack extends MSlider{
+public class MBQ extends MSlider{
 
 	final MOVEDATA[] U,D, L,R,UL,UR,DL,DR;
 	final MOVEDATA[][] DIAG,LINE;
 
-	public MQBlack(int from) {
+	public MBQ(int from) {
 		super(from);
 		U=slide(IConst.BQ, UP);
 		D=slide(IConst.BQ, DOWN);

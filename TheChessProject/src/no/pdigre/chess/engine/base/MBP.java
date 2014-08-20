@@ -1,8 +1,6 @@
 package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.base.IConst.BITS;
-
-public class MPBlack  extends MBase{
+public class MBP  extends MBase{
 
 	MOVEDATA[] CL;	// Capture Left
 	MOVEDATA[] CR;	// Capture right
@@ -13,8 +11,9 @@ public class MPBlack  extends MBase{
 	MOVEDATA[] P1;   // Promotion
 	MOVEDATA[] PL;   // Promotion Capture Left
 	MOVEDATA[] PR;   // Promotion Capture Right
+	static long[] REV=new long[64];
 
-	public MPBlack(int from) {
+	public MBP(int from) {
 		super(from);
 		if(from>7 && from < 56){
 			if (from > 15) {
@@ -28,7 +27,7 @@ public class MPBlack  extends MBase{
 			// LEFT
 			if (x != 0){
 				int to=from - 9;
-				IBase.REV[to].RPB |= (1L << from);
+				REV[to] |= (1L << from);
 				if(from<16){
 					PL=cpromotes(to);
 				} else {
@@ -40,7 +39,7 @@ public class MPBlack  extends MBase{
 			// RIGHT
 			if (x != 7) {
 				int to = from - 7;
-				IBase.REV[to].RPB |= (1L << from);
+				REV[to] |= (1L << from);
 				if(from<16){
 					PR=cpromotes(to);
 				} else {
@@ -53,17 +52,17 @@ public class MPBlack  extends MBase{
 	}
 
 	private MOVEDATA move(int to) {
-		return MOVEDATA.create(BITS.assemble(IConst.BP, from, to, IBase.CASTLING_STATE));
+		return MOVEDATA.create(BITS.assemble(IConst.BP, from, to, CASTLING_STATE));
 	}
 
 	private MOVEDATA enpassant(int to) {
-		return MOVEDATA.create(purge(BITS.assemble(IConst.BP, from, to, IBase.CASTLING_STATE),PSQT.pVal(to + 8, IConst.WP)) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
+		return MOVEDATA.create(purge(BITS.assemble(IConst.BP, from, to, CASTLING_STATE),PSQT.pVal(to + 8, IConst.WP)) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
 	}
 
 	private MOVEDATA[] captures(int to) {
 		MOVEDATA[] captures=new MOVEDATA[5];
 		for (int c = 0; c < 5; c++) {
-			long base = BITS.assemble(IConst.BP, from, to, IBase.CASTLING_STATE);
+			long base = BITS.assemble(IConst.BP, from, to, CASTLING_STATE);
 			int cval = PSQT.pVal(to,BCAPTURES[c]);
 			captures[c]=MOVEDATA.create(purge(base, cval) | ((BCAPTURES[c] & 7) << IConst._CAPTURE));
 		}
@@ -73,7 +72,7 @@ public class MPBlack  extends MBase{
 	private MOVEDATA[] promotes(int to) {
 		MOVEDATA[] promotes=new MOVEDATA[4];
 		for (int p = 0; p < 4; p++)
-			promotes[p]=MOVEDATA.create(BITS.assemblePromote(IConst.BP, BPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL));
+			promotes[p]=MOVEDATA.create(BITS.assemblePromote(IConst.BP, BPROMOTES[p], from, to, CASTLING_STATE | SPECIAL));
 		return promotes;
 	}
 
@@ -81,7 +80,7 @@ public class MPBlack  extends MBase{
 		MOVEDATA[] promotes=new MOVEDATA[20];
 		for (int p = 0; p < 4; p++)
 			for (int c = 0; c < 5; c++) {
-				long base = BITS.assemblePromote(IConst.BP, BPROMOTES[p], from, to, IBase.CASTLING_STATE | IBase.SPECIAL);
+				long base = BITS.assemblePromote(IConst.BP, BPROMOTES[p], from, to, CASTLING_STATE | SPECIAL);
 				int cval = PSQT.pVal(to,BCAPTURES[c]);
 				promotes[p*5+c]=MOVEDATA.create(purge(base, cval) | ((BCAPTURES[c] & 7) << IConst._CAPTURE));
 			}
@@ -89,7 +88,7 @@ public class MPBlack  extends MBase{
 	}
 
 	public static <X extends MBase> void genLegal(Movegen gen,long b, X[] arr) {
-		final MPBlack[] mp=(MPBlack[])arr;
+		final MBP[] mp=(MBP[])arr;
 		long occ=~(gen.bb_piece<<8);
 		long m1=b&occ;
 		new Adder(gen,m1) {

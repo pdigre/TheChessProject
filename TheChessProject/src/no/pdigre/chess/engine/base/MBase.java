@@ -1,9 +1,8 @@
 package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.base.IConst.BITS;
 
 
-public abstract class MBase {
+public abstract class MBase implements IConst{
 	
 	final static int[] WPROMOTES=new int[]{IConst.WN,IConst.WB,IConst.WR,IConst.WQ};
 	final static int[] BPROMOTES=new int[]{IConst.BN,IConst.BB,IConst.BR,IConst.BQ};

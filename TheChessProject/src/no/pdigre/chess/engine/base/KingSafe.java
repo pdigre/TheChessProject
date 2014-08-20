@@ -1,7 +1,5 @@
 package no.pdigre.chess.engine.base;
 
-import no.pdigre.chess.engine.base.IBase.BASE;
-import no.pdigre.chess.engine.base.IBase.REVERSE;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.Position;
 
@@ -46,11 +44,11 @@ public class KingSafe implements IConst {
 	final public boolean isSafeWhite(int king) {
 		if(king==64)
 			errorKing();
-		REVERSE rev = IBase.REV[king];
+		REVERSE rev = BASE.REV[king];
 		long e=bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
 			return false;
-		MQWhite x = BASE.WQ[king];
+		MWQ x = MWQ.WQ[king];
 		long slider=bb_bit3 & e;
 		if((slider & rev.RQ) !=0){
 			if ((bb_bit1 & slider & rev.RB) != 0) {
@@ -62,7 +60,7 @@ public class KingSafe implements IConst {
 					return false;
 			}
 		}
-		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & e) & rev.RPB) != 0)
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & e) & MBP.REV[king]) != 0)
 			return false;
 		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RK) != 0)
 			return false;
@@ -76,11 +74,11 @@ public class KingSafe implements IConst {
 	final public boolean isSafeBlack(int king) {
 		if(king==64)
 			errorKing();
-		REVERSE rev = IBase.REV[king];
+		REVERSE rev = BASE.REV[king];
 		long e=~bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
 			return false;
-		MQWhite x = BASE.WQ[king];
+		MWQ x = MWQ.WQ[king];
 		long slider=bb_bit3 & e;
 		if((slider & rev.RQ) !=0){
 			if ((bb_bit1 & slider & rev.RB) != 0) {
@@ -92,7 +90,7 @@ public class KingSafe implements IConst {
 					return false;
 			}
 		}
-		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & e) & rev.RPW) != 0)
+		if (((bb_bit1 & ~bb_bit2 & ~bb_bit3 & e) & MWP.REV[king]) != 0)
 			return false;
 		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RK) != 0)
 			return false;
