@@ -5,16 +5,18 @@ import java.util.List;
 import no.pdigre.chess.engine.base.IConst.BITS;
 
 public class MKWhiteStart extends MKWhite {
-	final MOVEDATA CQ,CK;
-	final MOVEDATA[][] X,XQ,XK;
+	static MOVEDATA CQ,CK;
+	static MOVEDATA[][] X,XQ,XK;
 
 	public MKWhiteStart(int from) {
 		super(from);
-		X=castling(M,IConst.CANCASTLE_WHITE);
-		XQ=castling(M,IConst.CANCASTLE_WHITEQUEEN);
-		XK=castling(M,IConst.CANCASTLE_WHITEKING);
-		CK=MOVEDATAX.create(BITS.assemble(IConst.WK, IConst.WK_STARTPOS, IConst.WK_STARTPOS + 2, IConst.CANCASTLE_BLACK | IConst.SPECIAL));
-		CQ=MOVEDATAX.create(BITS.assemble(IConst.WK, IConst.WK_STARTPOS, IConst.WK_STARTPOS - 2, IConst.CANCASTLE_BLACK | IConst.SPECIAL));
+		if(from==IConst.WK_STARTPOS){
+			X=castling(M,IConst.CANCASTLE_WHITE);
+			XQ=castling(M,IConst.CANCASTLE_WHITEQUEEN);
+			XK=castling(M,IConst.CANCASTLE_WHITEKING);
+			CK=MOVEDATAX.create(BITS.assemble(IConst.WK, IConst.WK_STARTPOS, IConst.WK_STARTPOS + 2, IConst.CANCASTLE_BLACK | IConst.SPECIAL));
+			CQ=MOVEDATAX.create(BITS.assemble(IConst.WK, IConst.WK_STARTPOS, IConst.WK_STARTPOS - 2, IConst.CANCASTLE_BLACK | IConst.SPECIAL));
+		}
 	}
 	
 	protected void add(int offset, List<MOVEDATA[]> list) {
@@ -31,31 +33,26 @@ public class MKWhiteStart extends MKWhite {
 
 	@Override
 	public void genLegal(Movegen gen) {
+		kmoves(gen,getCastlingMoves(gen));
+	}
+
+	public MOVEDATA[][] getCastlingMoves(Movegen gen) {
+		final boolean qc=(gen.castling & IConst.CANCASTLE_WHITEQUEEN) != 0;
+		final boolean kc=(gen.castling & IConst.CANCASTLE_WHITEKING) != 0;
+		return qc?(kc?X:XQ):(kc?XK:M);
+	}
+
+	public static void genCastling(Movegen gen) {
 		long castling = gen.castling & IConst.CANCASTLE_WHITE;
-		if(castling != 0){
-			if ((castling & IConst.CANCASTLE_WHITEQUEEN) != 0
-					&& (IConst.CWQ & gen.bb_piece) == 0
-					&& !gen.pos.isCheckWhite()
-					&& KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS - 1)) {
-				add(gen,CQ);
-			}
-			if ((castling & IConst.CANCASTLE_WHITEKING) != 0
-					&& (IConst.CWK & gen.bb_piece) == 0
-					&& !gen.pos.isCheckWhite()
-					&& KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS + 1)) {
-				add(gen,CK);
-			}
-			if(castling == IConst.CANCASTLE_WHITE){
-				kmoves(gen,X);
-			} else {
-				if((castling & IConst.CANCASTLE_WHITEQUEEN) != 0){
-					kmoves(gen,XQ);
-				} else {
-					kmoves(gen,XK);
-				}
-			}
-		} else {
-			super.genLegal(gen);
+		if ((IConst.CWQ & gen.bb_piece) == 0
+				&& (castling & IConst.CANCASTLE_WHITEQUEEN) != 0
+				&& KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS - 1)) {
+			add(gen,CQ);
+		}
+		if ((IConst.CWK & gen.bb_piece) == 0
+				&& (castling & IConst.CANCASTLE_WHITEKING) != 0
+				&& KingSafe.pos(gen.pos).isSafeWhite(IConst.WK_STARTPOS + 1)) {
+			add(gen,CK);
 		}
 	}
 }

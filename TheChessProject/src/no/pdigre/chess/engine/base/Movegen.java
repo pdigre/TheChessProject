@@ -211,6 +211,8 @@ public class Movegen implements IConst{
 			MRWhite.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WR);
 			MQWhite.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.WQ);
 			BASE.WK[king].genLegal(this);
+			if(king==IConst.WK_STARTPOS)
+				MKWhiteStart.genCastling(this);
 //			while (iTested < iAll) {
 //				MOVEDATA md = moves[iTested++];
 //				KingSafe p = KingSafe.pos(pos,md);
@@ -226,6 +228,8 @@ public class Movegen implements IConst{
 			MRBlack.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
 			MQBlack.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
 			BASE.BK[king].genLegal(this);
+			if(king==IConst.BK_STARTPOS)
+				MKBlackStart.genCastling(this);
 //			while (iTested < iAll) {
 //				MOVEDATA md = moves[iTested++];
 //				KingSafe p = KingSafe.pos(pos,md);

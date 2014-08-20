@@ -54,15 +54,12 @@ public class MKWhite extends MBase {
 		}
 	}
 
-	final void add(Movegen gen,MOVEDATA md) {
+	final static void add(Movegen gen,MOVEDATA md) {
 		KingSafe p = KingSafe.pos(gen.pos,md);
 		int to = BITS.getTo(md.bitmap);
 		boolean safe = p.isSafeWhite(to);
-		if(safe){
+		if(safe)
 			gen.add(md);
-//		} else {
-//			System.out.println("hi");
-		}
 	}
 	
 }

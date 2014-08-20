@@ -54,7 +54,7 @@ public class MKBlack extends MBase {
 		}
 	}
 
-	final void add(Movegen gen,MOVEDATA md) {
+	final static void add(Movegen gen,MOVEDATA md) {
 		KingSafe p = KingSafe.pos(gen.pos,md);
 		int to = BITS.getTo(md.bitmap);
 		if(p.isSafeBlack(to))
