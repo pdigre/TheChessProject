@@ -8,6 +8,13 @@ public class MBB extends MSlider{
 	final MOVEDATA[] UL,UR,DL,DR;
 	final MOVEDATA[][] DIAG;
 
+	final static MBB[] BB;
+	static {
+		BB=new MBB[64];
+		for (int from = 0; from < 64; from++)
+			BB[from] = new MBB(from);
+	}
+
 	public MBB(int from) {
 		super(from);
 		UL=slide(IConst.BB, UP + LEFT);

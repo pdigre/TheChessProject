@@ -1,6 +1,9 @@
 package no.pdigre.chess.engine.base;
 
-import static no.pdigre.chess.engine.base.BASE.*;
+import static no.pdigre.chess.engine.base.BASE.DOWN;
+import static no.pdigre.chess.engine.base.BASE.LEFT;
+import static no.pdigre.chess.engine.base.BASE.RIGHT;
+import static no.pdigre.chess.engine.base.BASE.UP;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +11,22 @@ import java.util.List;
 public class MBK extends MBase {
 
 	final MOVEDATA[][] M;
+	final static MOVEDATA CQ,CK;
+	final static MOVEDATA[][] X,XQ,XK;
 	
+	final static MBK[] BK;
+	static {
+		BK=new MBK[64];
+		for (int from = 0; from < 64; from++)
+			BK[from] = new MBK(from);
+		MOVEDATA[][] M=BK[IConst.BK_STARTPOS].M;
+		X=castling(M,IConst.CANCASTLE_BLACK);
+		XQ=castling(M,IConst.CANCASTLE_BLACKQUEEN);
+		XK=castling(M,IConst.CANCASTLE_BLACKKING);
+		CQ=MOVEDATAX.create(BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS - 2, IConst.CANCASTLE_WHITE | IConst.SPECIAL));
+		CK=MOVEDATAX.create(BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS + 2, IConst.CANCASTLE_WHITE | IConst.SPECIAL));
+	}
+
 	public MBK(int from) {
 		super(from);
 		ArrayList<MOVEDATA[]> list=new ArrayList<MOVEDATA[]>();
@@ -35,7 +53,7 @@ public class MBK extends MBase {
 	}
 
 	public void genLegal(Movegen gen) {
-		kmoves(gen,M);
+		kmoves(gen,from == IConst.BK_STARTPOS?getCastlingMoves(gen):M);
 	}
 	
 	public void kmoves(Movegen gen, MOVEDATA[][] moves) {
@@ -56,5 +74,24 @@ public class MBK extends MBase {
 			gen.add(md);
 	}
 	
+	public MOVEDATA[][] getCastlingMoves(Movegen gen) {
+		final boolean qc=(gen.castling & IConst.CANCASTLE_BLACKQUEEN) != 0;
+		final boolean kc=(gen.castling & IConst.CANCASTLE_BLACKKING) != 0;
+		return qc?(kc?X:XQ):(kc?XK:M);
+	}
+
+	public static void genCastling(Movegen gen) {
+		long castling = gen.castling & IConst.CANCASTLE_BLACK;
+		if ((IConst.CBQ & gen.bb_piece) == 0
+				&& (castling & IConst.CANCASTLE_BLACKQUEEN) != 0
+				&& KingSafe.pos(gen.pos).isSafeBlack(IConst.BK_STARTPOS - 1)) {
+			add(gen,CQ);
+		}
+		if ((IConst.CBK & gen.bb_piece) == 0
+				&& (castling & IConst.CANCASTLE_BLACKKING) != 0
+				&& KingSafe.pos(gen.pos).isSafeBlack(IConst.BK_STARTPOS + 1)) {
+			add(gen,CK);
+		}
+	}
 
 }

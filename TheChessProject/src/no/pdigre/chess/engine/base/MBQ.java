@@ -11,6 +11,13 @@ public class MBQ extends MSlider{
 	final MOVEDATA[] U,D, L,R,UL,UR,DL,DR;
 	final MOVEDATA[][] DIAG,LINE;
 
+	final static MBQ[] BQ;
+	static {
+		BQ=new MBQ[64];
+		for (int from = 0; from < 64; from++)
+			BQ[from] = new MBQ(from);
+	}
+
 	public MBQ(int from) {
 		super(from);
 		U=slide(IConst.BQ, UP);

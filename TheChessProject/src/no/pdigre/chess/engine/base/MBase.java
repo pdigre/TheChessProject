@@ -20,20 +20,20 @@ public abstract class MBase implements IConst{
 		return (((long) score) << 32) | ((int) bitmap);
 	}
 
-	public MOVEDATA[] castling(MOVEDATA[] m) {
+	public static MOVEDATA[] castling(MOVEDATA[] m) {
 		MOVEDATA[] x=new MOVEDATA[m.length];
 		for (int i = 0; i < m.length; i++)
 			x[i]=new MOVEDATAX(m[i]);
 		return x;
 	}
 
-	public MOVEDATA[] castling(MOVEDATA[] m,long mask) {
+	public static MOVEDATA[] castling(MOVEDATA[] m,long mask) {
 		MOVEDATA[] x=new MOVEDATA[m.length];
 		for (int i = 0; i < m.length; i++)
 			x[i]=new MOVEDATAX(m[i],mask);
 		return x;
 	}
-	public MOVEDATA[][] castling(MOVEDATA[][] M,long castling) {
+	public static MOVEDATA[][] castling(MOVEDATA[][] M,long castling) {
 		MOVEDATA[][] x=new MOVEDATA[M.length][];
 		for (int i = 0; i < M.length; i++)
 			x[i]=castling(M[i],castling);
@@ -44,14 +44,6 @@ public abstract class MBase implements IConst{
 		//
 	}
 
-	public void genEvasions(Movegen gen){
-		//
-	}
-
-	public void genQuiescence(Movegen gen){
-		//
-	}
-	
 	public static <X extends MBase> void genLegal(Movegen gen,long b, X[] arr) {
 		int bits = Long.bitCount(b);
 		for (int j = 0; j < bits; j++) {
@@ -60,7 +52,4 @@ public abstract class MBase implements IConst{
 			arr[from].genLegal(gen);
 		}
 	}
-
-
-
 }

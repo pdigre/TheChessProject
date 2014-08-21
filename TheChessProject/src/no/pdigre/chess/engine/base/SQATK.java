@@ -1,6 +1,6 @@
 package no.pdigre.chess.engine.base;
 
-public class REVERSE {
+public class SQATK {
 	// Reverse lookup for in-check
 	public final long RN;
 	public final long RB;
@@ -8,7 +8,7 @@ public class REVERSE {
 	public final long RQ;
 	public final long RK;
 
-	public REVERSE(long rN, long rB, long rR, long rQ,long rK) {
+	public SQATK(long rN, long rB, long rR, long rQ,long rK) {
 		RN = rN;
 		RB = rB;
 		RR = rR;

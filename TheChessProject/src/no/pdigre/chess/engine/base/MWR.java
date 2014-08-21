@@ -7,15 +7,25 @@ import static no.pdigre.chess.engine.base.BASE.*;
 
 public class MWR extends MSlider{
 
+	final static MOVEDATA[] XQU,XQD,XQL,XQR,XKU,XKD,XKL,XKR;
 	final MOVEDATA[] U, D, L, R;
-	MOVEDATA XQ, XK;
 	final MOVEDATA[][] LINE;
 
 	final static MWR[] WR;
 	static {
 		WR=new MWR[64];
 		for (int from = 0; from < 64; from++)
-			WR[from] = from == IConst.WR_KING_STARTPOS || from == IConst.WR_QUEEN_STARTPOS?new MWRStart(from):new MWR(from);
+			WR[from] = new MWR(from);
+		MWR Q=WR[WR_QUEEN_STARTPOS];
+		XQU=castling(Q.U);
+		XQD=castling(Q.D);
+		XQL=castling(Q.L);
+		XQR=castling(Q.R);
+		MWR K=WR[WR_KING_STARTPOS];
+		XKU=castling(K.U);
+		XKD=castling(K.D);
+		XKL=castling(K.L);
+		XKR=castling(K.R);
 	}
 
 	public MWR(int from) {

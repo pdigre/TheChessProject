@@ -2,19 +2,24 @@ package no.pdigre.chess.engine.base;
 
 public class MBP  extends MBase{
 
-	MOVEDATA[] CL;	// Capture Left
-	MOVEDATA[] CR;	// Capture right
-	MOVEDATA EL;  // Enpassant left
-	MOVEDATA ER;  // Enpassant right
-	MOVEDATA M1;   // Move 1
-	MOVEDATA M2;   // Move 2
-	MOVEDATA[] P1;   // Promotion
-	MOVEDATA[] PL;   // Promotion Capture Left
-	MOVEDATA[] PR;   // Promotion Capture Right
-	static long[] REV=new long[64];
+	final MOVEDATA[] CL,CR;	// Capture
+	final MOVEDATA EL,ER;  // Enpassant
+	final MOVEDATA M1,M2;   // Forward
+	final MOVEDATA[] P1,PL,PR;   // Promotion
+	final static long[] REV=new long[64];
+
+	final static MBP[] BP;
+	static {
+		BP=new MBP[64];
+		for (int from = 0; from < 64; from++)
+			BP[from] = new MBP(from);
+	}
+
 
 	public MBP(int from) {
 		super(from);
+		MOVEDATA[] CL=null,CR=null,P1=null,PL=null,PR=null;	
+		MOVEDATA EL=null,ER=null,M1=null,M2=null;
 		if(from>7 && from < 56){
 			if (from > 15) {
 				M1=move(from - 8);
@@ -49,6 +54,15 @@ public class MBP  extends MBase{
 				}
 			}
 		}
+		this.CL=CL;
+		this.CR=CR;
+		this.EL=EL;
+		this.ER=ER;
+		this.M1=M1;
+		this.M2=M2;
+		this.P1=P1;
+		this.PL=PL;
+		this.PR=PR;
 	}
 
 	private MOVEDATA move(int to) {

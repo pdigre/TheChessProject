@@ -6,21 +6,22 @@ import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.Position;
 
 public class Movegen implements IConst{
-	final Position pos;
-	final long halfmoves;
-	final long castling;
-	final long bb_piece;
-	final long bb_white;
-	final long bb_black;
-	final long bb_bit1;
-	final long bb_bit2;
-	final long bb_bit3;
+	Position pos;
+	Movegen parent;
+	long halfmoves;
+	long castling;
+	long bb_piece;
+	long bb_white;
+	long bb_black;
+	long bb_bit1;
+	long bb_bit2;
+	long bb_bit3;
 	long pinned=0L;
 	long checkers=0L;
 
-	final int wking;
-	final int bking;
-	final public int enpassant;
+	int wking;
+	int bking;
+	public int enpassant;
 
 
 	final MOVEDATA[] moves = new MOVEDATA[99];
@@ -34,8 +35,14 @@ public class Movegen implements IConst{
 		iAll=0;
 	}
 
-
 	public Movegen(Position pos) {
+		setPos(pos);
+	}
+
+	public Movegen() {
+	}
+
+	public void setPos(Position pos) {
 		this.pos = pos;
 		long inherit = pos.getBitmap();
 		this.bb_black = pos.get64black();
@@ -63,18 +70,14 @@ public class Movegen implements IConst{
 		return ((bb_bit1 & bit) == 0 ? 0 : 1) + ((bb_bit2 & bit) == 0 ? 0 : 2) + ((bb_bit3 & bit) == 0 ? 0 : 2) - 1;
 	}
 	
-
-	public static MOVEDATA[] legalmoves(Position pos) {
-		return new Movegen(pos).legalmoves();
-	}
-	
 	final public MOVEDATA[] legalmoves() {
+		clear();
 		// Calculate checkers and pinners
 		final boolean isWhite = pos.whiteNext();
 		final long own = isWhite?bb_white:bb_black;
 		final long enemy = isWhite?bb_black:bb_white;
 		final int king=isWhite?wking:bking;
-		REVERSE rev = BASE.REV[king];
+		SQATK rev = BASE.REV[king];
 		pinned=0L;
 		final long regular = ~bb_bit3 & enemy;
 		checkers=regular & ((~bb_bit1 & bb_bit2 & rev.RN) | (bb_bit1 & ~bb_bit2 & (isWhite?MBP.REV[king]:MWP.REV[king])));
@@ -98,9 +101,9 @@ public class Movegen implements IConst{
 						pinned|=pinner;
 						if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
 							if((pinner&bb_bit2)!=0){  	// QUEEN
-								slide(isWhite?MWQ.WQ[from].DIAG:BASE.BQ[from].DIAG,attacker,between);
+								slide(isWhite?MWQ.WQ[from].DIAG:MBQ.BQ[from].DIAG,attacker,between);
 							} else {
-								slide(isWhite?MWB.WB[from].DIAG:BASE.BB[from].DIAG,attacker,between);
+								slide(isWhite?MWB.WB[from].DIAG:MBB.BB[from].DIAG,attacker,between);
 							}
 						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
 							if(isWhite){
@@ -110,9 +113,9 @@ public class Movegen implements IConst{
 									moves[iAll++] = MWP.WP[from].CR[ctype(attacker)];
 							} else {
 								if(pinner>>9==attacker && (attacker&IConst.RIGHTLANE)==0)
-									moves[iAll++] = BASE.BP[from].CL[ctype(attacker)];
+									moves[iAll++] = MBP.BP[from].CL[ctype(attacker)];
 								if(pinner>>7==attacker && (attacker&IConst.LEFTLANE)==0)
-									moves[iAll++] = BASE.BP[from].CR[ctype(attacker)];
+									moves[iAll++] = MBP.BP[from].CR[ctype(attacker)];
 							}
 						}
 					}
@@ -136,9 +139,9 @@ public class Movegen implements IConst{
 						pinned|=pinner;
 						if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
 							if((pinner&bb_bit1)!=0){	// QUEEN
-								slide(isWhite?MWQ.WQ[from].LINE:BASE.BQ[from].LINE,attacker,between);
+								slide(isWhite?MWQ.WQ[from].LINE:MBQ.BQ[from].LINE,attacker,between);
 							} else {
-								slide(isWhite?MWR.WR[from].LINE:BASE.BR[from].LINE,attacker,between);
+								slide(isWhite?MWR.WR[from].LINE:MBR.BR[from].LINE,attacker,between);
 							}
 						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN FORWARD
 							if(isWhite){
@@ -149,9 +152,9 @@ public class Movegen implements IConst{
 								}
 							} else {
 								if(((pinner>>8)&between)!=0){
-									moves[iAll++] = BASE.BP[from].M1;
+									moves[iAll++] = MBP.BP[from].M1;
 									if(from>47 && ((pinner>>16)&between)!=0)
-										moves[iAll++] = BASE.BP[from].M2;
+										moves[iAll++] = MBP.BP[from].M2;
 								}
 							}
 						}
@@ -165,9 +168,7 @@ public class Movegen implements IConst{
 			clear(); // not interested in pinned moves for evasive moves
 			evasive(isWhite,king,own);
 		}
-		MOVEDATA[] t = Arrays.copyOfRange(moves, 0, iAll);
-		clear();
-		return t;
+		return Arrays.copyOfRange(moves, 0, iAll);
 	}
 
 	final public void evasive(boolean isWhite,int king, long t) {
@@ -186,18 +187,18 @@ public class Movegen implements IConst{
 			iAll=iLegal;
 			MWK.WK[king].genLegal(this);
 		} else {
-			MBP.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
+			MBP.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), MBP.BP);
 			MBN.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), MBN.BN);
-			MBB.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
-			MBR.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
-			MBQ.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
+			MBB.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), MBB.BB);
+			MBR.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), MBR.BR);
+			MBQ.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), MBQ.BQ);
 			while (iTested < iAll) {
 				MOVEDATA md = moves[iTested++];
 				if (KingSafe.pos(pos,md).isSafeBlack())
 					moves[iLegal++]=md;
 			}
 			iAll=iLegal;
-			BASE.BK[king].genLegal(this);
+			MBK.BK[king].genLegal(this);
 		}
 	}
 
@@ -210,32 +211,16 @@ public class Movegen implements IConst{
 			MWQ.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), MWQ.WQ);
 			MWK.WK[king].genLegal(this);
 			if(king==IConst.WK_STARTPOS)
-				MWKStart.genCastling(this);
-//			while (iTested < iAll) {
-//				MOVEDATA md = moves[iTested++];
-//				KingSafe p = KingSafe.pos(pos,md);
-//				if (!p.isSafeWhite()){
-//					boolean s = p.isSafeWhite();
-//					System.out.println("ERROR");
-//				}
-//			}
+				MWK.genCastling(this);
 		} else {
-			MBP.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
+			MBP.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), MBP.BP);
 			MBN.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), MBN.BN);
-			MBB.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
-			MBR.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
-			MBQ.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
-			BASE.BK[king].genLegal(this);
+			MBB.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), MBB.BB);
+			MBR.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), MBR.BR);
+			MBQ.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), MBQ.BQ);
+			MBK.BK[king].genLegal(this);
 			if(king==IConst.BK_STARTPOS)
-				MBKStart.genCastling(this);
-//			while (iTested < iAll) {
-//				MOVEDATA md = moves[iTested++];
-//				KingSafe p = KingSafe.pos(pos,md);
-//				if (!p.isSafeBlack()){
-//					boolean s = p.isSafeBlack();
-//					System.out.println("ERROR");
-//				}
-//			}
+				MBK.genCastling(this);
 		}
 	}
 
@@ -257,6 +242,7 @@ public class Movegen implements IConst{
 	}
 	
 	final public MOVEDATA[] quiesce() {
+		clear();
 		if (pos.whiteNext()) {
 			MWP.genLegal(this,bb_white & (bb_bit1) & (~bb_bit2) & (~bb_bit3), MWP.WP);
 			MWN.genLegal(this,bb_white & (~bb_bit1) & (bb_bit2) & (~bb_bit3), MWN.WN);
@@ -265,16 +251,14 @@ public class Movegen implements IConst{
 			MWQ.genLegal(this,bb_white & (bb_bit1) & (bb_bit2) & (bb_bit3), MWQ.WQ);
 			MWK.WK[wking].genLegal(this);
 		} else {
-			MBP.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (~bb_bit3), BASE.BP);
+			MBP.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (~bb_bit3), MBP.BP);
 			MBN.genLegal(this,bb_black & (~bb_bit1) & (bb_bit2) & (~bb_bit3), MBN.BN);
-			MBB.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), BASE.BB);
-			MBR.genLegal(this,bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BR);
-			MBQ.genLegal(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), BASE.BQ);
-			BASE.BK[bking].genLegal(this);
+			MBB.genLegal(this,bb_black & (bb_bit1) & (~bb_bit2) & (bb_bit3), MBB.BB);
+			MBR.genLegal(this,bb_black & (~bb_bit1) & (bb_bit2) & (bb_bit3), MBR.BR);
+			MBQ.genLegal(this,bb_black & (bb_bit1) & (bb_bit2) & (bb_bit3), MBQ.BQ);
+			MBK.BK[bking].genLegal(this);
 		}
-		MOVEDATA[] t = Arrays.copyOfRange(moves, 0, iLegal);
-		clear();
-		return t;
+		return Arrays.copyOfRange(moves, 0, iLegal);
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class KingSafe implements IConst {
 	final public boolean isSafeWhite(int king) {
 		if(king==64)
 			errorKing();
-		REVERSE rev = BASE.REV[king];
+		SQATK rev = BASE.REV[king];
 		long e=bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
 			return false;
@@ -74,7 +74,7 @@ public class KingSafe implements IConst {
 	final public boolean isSafeBlack(int king) {
 		if(king==64)
 			errorKing();
-		REVERSE rev = BASE.REV[king];
+		SQATK rev = BASE.REV[king];
 		long e=~bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
 			return false;

@@ -7,11 +7,26 @@ import static no.pdigre.chess.engine.base.BASE.*;
 
 public class MBR extends MSlider{
 
-	final MOVEDATA[] U;
-	final MOVEDATA[] D;
-	final MOVEDATA[] L;
-	final MOVEDATA[] R;
+	final static MOVEDATA[] XQU,XQD,XQL,XQR,XKU,XKD,XKL,XKR;
+	final MOVEDATA[] U, D, L, R;
 	final MOVEDATA[][] LINE;
+
+	final static MBR[] BR;
+	static {
+		BR=new MBR[64];
+		for (int from = 0; from < 64; from++)
+			BR[from] = new MBR(from);
+		MBR Q=BR[BR_QUEEN_STARTPOS];
+		XQU=castling(Q.U);
+		XQD=castling(Q.D);
+		XQL=castling(Q.L);
+		XQR=castling(Q.R);
+		MBR K=BR[BR_KING_STARTPOS];
+		XKU=castling(K.U);
+		XKD=castling(K.D);
+		XKL=castling(K.L);
+		XKR=castling(K.R);
+	}
 
 	public MBR(int from) {
 		super(from);
