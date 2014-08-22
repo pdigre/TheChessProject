@@ -15,7 +15,7 @@ public class Movegen implements IConst{
 	long bb_black,bb_bit1,bb_bit2,bb_bit3;
 	protected long pinned=0L,checkers=0L;
 	protected boolean isWhite=false;
-	long lineAtks1,diagAtks1,lineAtks2,diagAtks2;
+	long lineAtks,diagAtks,lineDefs,diagDefs;
 	int lineCnt,diagCnt;
 	int wking,bking;
 	public int enpassant;
@@ -85,18 +85,22 @@ public class Movegen implements IConst{
 		final int king=isWhite?wking:bking;
 		SQATK rev = BASE.REV[king];
 		pinned=0L;
-		final long regular = ~bb_bit3 & enemy;
-		checkers=regular & ((~bb_bit1 & bb_bit2 & rev.RN) | (bb_bit1 & ~bb_bit2 & (isWhite?MBP.REV[king]:MWP.REV[king])));
-		long eslider=bb_bit3 & enemy; // Sliders
-		if(checkers==0L && (eslider & rev.RQ) !=0){
-			long atks = bb_bit1 & eslider & rev.RB;
+		checkers=~bb_bit3 & enemy & ((~bb_bit1 & bb_bit2 & rev.RN) | (bb_bit1 & ~bb_bit2 & (isWhite?MBP.REV[king]:MWP.REV[king])));
+		long eslider=bb_bit3 & enemy  & rev.RQ; // Sliders
+		if(checkers==0L && eslider !=0L){
+			boolean hasCompare = compare!=null && compare.checkers==0L;
+			long diag_atks = rev.RB;
+			long atks = bb_bit1 & eslider & diag_atks;
+			diagDefs=own & diag_atks;
+			diagAtks=atks;
 			if (atks != 0L) {
-				if(compare!=null && compare.diagAtks1==atks){
-					for (int i = 0; i < compare.diagCnt; i++)
+				boolean isDiagReusable = hasCompare && diagAtks==compare.diagAtks && diagDefs==compare.diagDefs;
+				if(false && isDiagReusable){
+					int diagCnt2=compare.diagCnt;
+					for (int i = 0; i < diagCnt2; i++)
 						moves[iAll++]=compare.moves[i];
+					pinned=compare.pinned&diag_atks;
 				} else {
-					diagAtks1=atks;
-					diagAtks2=own & eslider & rev.RB;
 					int bits = Long.bitCount(atks);
 					for (int j = 0; j < bits; j++) {
 						int asq = Long.numberOfTrailingZeros(atks);
@@ -131,18 +135,34 @@ public class Movegen implements IConst{
 								}
 							}
 						}
-						diagCnt=iAll;
 					}
 				}
+				diagCnt=iAll;
+				if(isDiagReusable){
+					int diagCnt2=compare.diagCnt;
+					if(diagCnt!=diagCnt2)
+						System.out.println("Diag wrong count "+diagCnt +"/"+diagCnt2+this);
+					else {
+						for (int i = 0; i < diagCnt2; i++)
+							if(moves[i]!=compare.moves[i])
+								System.out.println("Diag wrong move "+moves[i]);
+					}
+				} 
 			}
-			atks = bb_bit2 & eslider & rev.RR;
+			diagCnt=iAll;
+			long line_atks = rev.RR;
+			atks = bb_bit2 & eslider & line_atks;
+			lineAtks=atks;
+			lineDefs=own & line_atks;
 			if (checkers==0L && atks != 0L) {
-				if(compare!=null && compare.lineAtks1==atks){
-					for (int i = compare.diagCnt; i < compare.lineCnt; i++)
-						moves[iAll++]=compare.moves[i];
+				boolean isLineReusable = hasCompare && lineAtks==compare.lineAtks && lineDefs==compare.lineDefs;
+				if(false && isLineReusable){
+					int lineCnt2=compare.lineCnt;
+					int diagCnt2 = compare.diagCnt;
+					for (int i = 0; i < lineCnt2-diagCnt2; i++)
+						moves[iAll++]=compare.moves[diagCnt2+i];
+					pinned|=compare.pinned&line_atks;
 				} else {
-					lineAtks1=atks;
-					lineAtks2=own & eslider & rev.RR;
 					int bits = Long.bitCount(atks);
 					for (int j = 0; j < bits; j++) {
 						int asq = Long.numberOfTrailingZeros(atks);
@@ -180,9 +200,30 @@ public class Movegen implements IConst{
 							}
 						}
 					}
-					lineCnt=iAll;
 				}
+				
+				lineCnt=iAll;
+				if(isLineReusable){
+					int diagCnt2 = compare.diagCnt;
+					long lineDefs2=compare.lineDefs;
+					long lineAtks2 = compare.lineAtks;
+					int lineCnt2=compare.lineCnt;
+					if(lineCnt-diagCnt!=lineCnt2-diagCnt2){
+						System.out.println("Line wrong count "+(lineCnt-diagCnt)+"/"+(lineCnt2-diagCnt2)+" "+this);
+						for (int i = 0; i < diagCnt; i++) {
+							System.out.println("New "+moves[i]);
+						}
+						for (int i = 0; i < diagCnt2; i++) {
+							System.out.println("Old "+compare.moves[i]);
+						}
+					} else {
+						for (int i = 0; i < lineCnt2-diagCnt2; i++)
+							if(moves[diagCnt+i]!=compare.moves[diagCnt2+i])
+								System.out.println("Line wrong move "+moves[i]);
+					}
+				} 
 			}
+			lineCnt=iAll;
 		}
 		if(checkers==0L){
 			nonevasive(isWhite, king,own & ~pinned);

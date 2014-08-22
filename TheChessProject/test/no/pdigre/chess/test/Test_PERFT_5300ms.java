@@ -92,4 +92,10 @@ public class Test_PERFT_5300ms {
 		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5).compute());
 	}
 
+	@Test
+	public void m4c_830() {
+		String fen = "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1";
+		PerftResults.assertPERFT(fen, new RunPerft(5, fen).run());
+	}
+
 }
