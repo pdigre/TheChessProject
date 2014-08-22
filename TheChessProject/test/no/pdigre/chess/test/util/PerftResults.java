@@ -109,15 +109,13 @@ public class PerftResults {
 		return "";
 	}
 
-	public static void assertPERFT(String fen, CountFull runner) {
-		Counter[] counters = runner.compute();
+	public static void assertPERFT(String fen, Counter[] counters) {
 		String actual = "FEN=" + fen + "\r\n" + PerftResults.printCounter(counters);
 		String expected = allexpected.get(fen).substring(0, actual.length());
 		assertEquals(expected, actual);
 	}
 
-	public static void assertPERFT2(String fen, CountFull runner) {
-		PerftResults perft = runner.perft();
+	public static void assertPERFT2(String fen, Counter[] counters,PerftResults perft) {
 		String actual = "FEN=" + fen + "\r\n" + PerftResults.printCounter(perft.counters);
 		String expected = allexpected.get(fen).substring(0, actual.length());
 		if (!expected.equals(actual))

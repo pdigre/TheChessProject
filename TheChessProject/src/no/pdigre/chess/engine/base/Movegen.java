@@ -6,28 +6,30 @@ import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.Position;
 
 public class Movegen implements IConst{
-	Position pos;
+	protected Position pos;
 	Movegen parent;
 	long halfmoves;
 	long castling;
 	long bb_piece;
 	long bb_white;
-	long bb_black;
-	long bb_bit1;
-	long bb_bit2;
-	long bb_bit3;
-	long pinned=0L;
-	long checkers=0L;
-
-	int wking;
-	int bking;
+	long bb_black,bb_bit1,bb_bit2,bb_bit3;
+	protected long pinned=0L,checkers=0L;
+	protected boolean isWhite=false;
+	long lineAtks1,diagAtks1,lineAtks2,diagAtks2;
+	int lineCnt,diagCnt;
+	int wking,bking;
 	public int enpassant;
+	Movegen compare;
+
+	public void setCompare(Movegen gen) {
+		compare=gen;
+	}
 
 
-	final MOVEDATA[] moves = new MOVEDATA[99];
-	private int iAll = 0;
-	private int iLegal = 0;
-	private int iTested = 0;
+	protected final MOVEDATA[] moves = new MOVEDATA[99];
+	public int iAll = 0;
+	int iLegal = 0;
+	int iTested = 0;
 
 	final void clear(){
 		iLegal = 0;
@@ -71,9 +73,13 @@ public class Movegen implements IConst{
 	}
 	
 	final public MOVEDATA[] legalmoves() {
+		generate();
+		return Arrays.copyOfRange(moves, 0, iAll);
+	}
+	final public void generate() {
 		clear();
 		// Calculate checkers and pinners
-		final boolean isWhite = pos.whiteNext();
+		isWhite = pos.whiteNext();
 		final long own = isWhite?bb_white:bb_black;
 		final long enemy = isWhite?bb_black:bb_white;
 		final int king=isWhite?wking:bking;
@@ -83,82 +89,98 @@ public class Movegen implements IConst{
 		checkers=regular & ((~bb_bit1 & bb_bit2 & rev.RN) | (bb_bit1 & ~bb_bit2 & (isWhite?MBP.REV[king]:MWP.REV[king])));
 		long eslider=bb_bit3 & enemy; // Sliders
 		if(checkers==0L && (eslider & rev.RQ) !=0){
-			long attackers = bb_bit1 & eslider & rev.RB;
-			if (attackers != 0L) {
-				int bits = Long.bitCount(attackers);
-				for (int j = 0; j < bits; j++) {
-					int asq = Long.numberOfTrailingZeros(attackers);
-					long attacker = 1L << asq;
-					attackers ^= attacker;
-					long between = BASE.BETWEEN[asq+64*king];
-					long bpcs = between&bb_piece;
-					if(bpcs==0L){
-						checkers|=attacker;
-					} else if(Long.bitCount(bpcs)==1){
-						// check for slide moves
-						long pinner = between&own;
-						int from = Long.numberOfTrailingZeros(pinner);
-						pinned|=pinner;
-						if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
-							if((pinner&bb_bit2)!=0){  	// QUEEN
-								slide(isWhite?MWQ.WQ[from].DIAG:MBQ.BQ[from].DIAG,attacker,between);
-							} else {
-								slide(isWhite?MWB.WB[from].DIAG:MBB.BB[from].DIAG,attacker,between);
-							}
-						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
-							if(isWhite){
-								if(pinner<<7==attacker && (attacker&IConst.RIGHTLANE)==0)
-									moves[iAll++] = MWP.WP[from].CL[ctype(attacker)];
-								if(pinner<<9==attacker && (attacker&IConst.LEFTLANE)==0)
-									moves[iAll++] = MWP.WP[from].CR[ctype(attacker)];
-							} else {
-								if(pinner>>9==attacker && (attacker&IConst.RIGHTLANE)==0)
-									moves[iAll++] = MBP.BP[from].CL[ctype(attacker)];
-								if(pinner>>7==attacker && (attacker&IConst.LEFTLANE)==0)
-									moves[iAll++] = MBP.BP[from].CR[ctype(attacker)];
+			long atks = bb_bit1 & eslider & rev.RB;
+			if (atks != 0L) {
+				if(compare!=null && compare.diagAtks1==atks){
+					for (int i = 0; i < compare.diagCnt; i++)
+						moves[iAll++]=compare.moves[i];
+				} else {
+					diagAtks1=atks;
+					diagAtks2=own & eslider & rev.RB;
+					int bits = Long.bitCount(atks);
+					for (int j = 0; j < bits; j++) {
+						int asq = Long.numberOfTrailingZeros(atks);
+						long attacker = 1L << asq;
+						atks ^= attacker;
+						long between = BASE.BETWEEN[asq+64*king];
+						long bpcs = between&bb_piece;
+						if(bpcs==0L){
+							checkers|=attacker;
+						} else if(Long.bitCount(bpcs)==1){
+							// check for slide moves
+							long pinner = between&own;
+							int from = Long.numberOfTrailingZeros(pinner);
+							pinned|=pinner;
+							if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
+								if((pinner&bb_bit2)!=0){  	// QUEEN
+									slide(isWhite?MWQ.WQ[from].DIAG:MBQ.BQ[from].DIAG,attacker,between);
+								} else {
+									slide(isWhite?MWB.WB[from].DIAG:MBB.BB[from].DIAG,attacker,between);
+								}
+							} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
+								if(isWhite){
+									if(pinner<<7==attacker && (attacker&IConst.RIGHTLANE)==0)
+										moves[iAll++] = MWP.WP[from].CL[ctype(attacker)];
+									if(pinner<<9==attacker && (attacker&IConst.LEFTLANE)==0)
+										moves[iAll++] = MWP.WP[from].CR[ctype(attacker)];
+								} else {
+									if(pinner>>9==attacker && (attacker&IConst.RIGHTLANE)==0)
+										moves[iAll++] = MBP.BP[from].CL[ctype(attacker)];
+									if(pinner>>7==attacker && (attacker&IConst.LEFTLANE)==0)
+										moves[iAll++] = MBP.BP[from].CR[ctype(attacker)];
+								}
 							}
 						}
+						diagCnt=iAll;
 					}
 				}
 			}
-			attackers = bb_bit2 & eslider & rev.RR;
-			if (checkers==0L && attackers != 0L) {
-				int bits = Long.bitCount(attackers);
-				for (int j = 0; j < bits; j++) {
-					int asq = Long.numberOfTrailingZeros(attackers);
-					long attacker = 1L << asq;
-					attackers ^= attacker;
-					long between = BASE.BETWEEN[asq+64*king];
-					long bpcs = between&bb_piece;
-					if(bpcs==0L){
-						checkers|=attacker;
-					} else if(Long.bitCount(bpcs)==1){
-						// check for slide moves
-						long pinner = between&own;
-						int from = Long.numberOfTrailingZeros(pinner);
-						pinned|=pinner;
-						if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
-							if((pinner&bb_bit1)!=0){	// QUEEN
-								slide(isWhite?MWQ.WQ[from].LINE:MBQ.BQ[from].LINE,attacker,between);
-							} else {
-								slide(isWhite?MWR.WR[from].LINE:MBR.BR[from].LINE,attacker,between);
-							}
-						} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN FORWARD
-							if(isWhite){
-								if(((pinner<<8)&between)!=0){
-									moves[iAll++] = MWP.WP[from].M1;
-									if(from<16 && ((pinner<<16)&between)!=0)
-										moves[iAll++] = MWP.WP[from].M2;
+			atks = bb_bit2 & eslider & rev.RR;
+			if (checkers==0L && atks != 0L) {
+				if(compare!=null && compare.lineAtks1==atks){
+					for (int i = compare.diagCnt; i < compare.lineCnt; i++)
+						moves[iAll++]=compare.moves[i];
+				} else {
+					lineAtks1=atks;
+					lineAtks2=own & eslider & rev.RR;
+					int bits = Long.bitCount(atks);
+					for (int j = 0; j < bits; j++) {
+						int asq = Long.numberOfTrailingZeros(atks);
+						long attacker = 1L << asq;
+						atks ^= attacker;
+						long between = BASE.BETWEEN[asq+64*king];
+						long bpcs = between&bb_piece;
+						if(bpcs==0L){
+							checkers|=attacker;
+						} else if(Long.bitCount(bpcs)==1){
+							// check for slide moves
+							long pinner = between&own;
+							int from = Long.numberOfTrailingZeros(pinner);
+							pinned|=pinner;
+							if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
+								if((pinner&bb_bit1)!=0){	// QUEEN
+									slide(isWhite?MWQ.WQ[from].LINE:MBQ.BQ[from].LINE,attacker,between);
+								} else {
+									slide(isWhite?MWR.WR[from].LINE:MBR.BR[from].LINE,attacker,between);
 								}
-							} else {
-								if(((pinner>>8)&between)!=0){
-									moves[iAll++] = MBP.BP[from].M1;
-									if(from>47 && ((pinner>>16)&between)!=0)
-										moves[iAll++] = MBP.BP[from].M2;
+							} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN FORWARD
+								if(isWhite){
+									if(((pinner<<8)&between)!=0){
+										moves[iAll++] = MWP.WP[from].M1;
+										if(from<16 && ((pinner<<16)&between)!=0)
+											moves[iAll++] = MWP.WP[from].M2;
+									}
+								} else {
+									if(((pinner>>8)&between)!=0){
+										moves[iAll++] = MBP.BP[from].M1;
+										if(from>47 && ((pinner>>16)&between)!=0)
+											moves[iAll++] = MBP.BP[from].M2;
+									}
 								}
 							}
 						}
 					}
+					lineCnt=iAll;
 				}
 			}
 		}
@@ -168,7 +190,6 @@ public class Movegen implements IConst{
 			clear(); // not interested in pinned moves for evasive moves
 			evasive(isWhite,king,own);
 		}
-		return Arrays.copyOfRange(moves, 0, iAll);
 	}
 
 	final public void evasive(boolean isWhite,int king, long t) {
