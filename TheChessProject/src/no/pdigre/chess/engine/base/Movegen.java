@@ -4,9 +4,10 @@ import java.util.Arrays;
 
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.test.RunPerft.NodeGen;
 
 public class Movegen implements IConst{
-	Position pos;
+	protected Position pos;
 	Movegen parent;
 	long halfmoves;
 	long castling;
@@ -16,18 +17,23 @@ public class Movegen implements IConst{
 	long bb_bit1;
 	long bb_bit2;
 	long bb_bit3;
-	long pinned=0L;
-	long checkers=0L;
-
+	protected long pinned=0L;
+	protected long checkers=0L;
+	protected boolean isWhite=false;
 	int wking;
 	int bking;
 	public int enpassant;
+	Movegen compare;
+
+	public void setCompare(Movegen gen) {
+		compare=gen;
+	}
 
 
-	final MOVEDATA[] moves = new MOVEDATA[99];
-	private int iAll = 0;
-	private int iLegal = 0;
-	private int iTested = 0;
+	protected final MOVEDATA[] moves = new MOVEDATA[99];
+	public int iAll = 0;
+	int iLegal = 0;
+	int iTested = 0;
 
 	final void clear(){
 		iLegal = 0;
@@ -71,9 +77,13 @@ public class Movegen implements IConst{
 	}
 	
 	final public MOVEDATA[] legalmoves() {
+		generate();
+		return Arrays.copyOfRange(moves, 0, iAll);
+	}
+	final public void generate() {
 		clear();
 		// Calculate checkers and pinners
-		final boolean isWhite = pos.whiteNext();
+		isWhite = pos.whiteNext();
 		final long own = isWhite?bb_white:bb_black;
 		final long enemy = isWhite?bb_black:bb_white;
 		final int king=isWhite?wking:bking;
@@ -168,7 +178,6 @@ public class Movegen implements IConst{
 			clear(); // not interested in pinned moves for evasive moves
 			evasive(isWhite,king,own);
 		}
-		return Arrays.copyOfRange(moves, 0, iAll);
 	}
 
 	final public void evasive(boolean isWhite,int king, long t) {
