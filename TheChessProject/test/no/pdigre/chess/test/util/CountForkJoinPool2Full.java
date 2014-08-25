@@ -11,7 +11,7 @@ public class CountForkJoinPool2Full extends CountFull {
     private static final long serialVersionUID = -3058348904963758664L;
 
     public CountForkJoinPool2Full(Position pos, int depth) {
-        super(pos, depth);
+        super(depth, pos);
     }
 
     @Override

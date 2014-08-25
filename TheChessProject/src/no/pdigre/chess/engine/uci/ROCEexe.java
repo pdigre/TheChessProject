@@ -11,7 +11,11 @@ import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ROCEexe {
+import no.pdigre.chess.engine.fen.FEN;
+import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.test.IPerft;
+
+public class ROCEexe implements IPerft{
 	private InputStream es;
 	private InputStream is;
 	private OutputStream os;
@@ -20,7 +24,7 @@ public class ROCEexe {
 	private static ROCEexe instance;
 	private BufferedReader br;
 	
-	public static ROCEexe getInstance(){
+	public static IPerft getInstance(){
 		if(instance==null){
 			instance=new ROCEexe();
 			instance.run();
@@ -71,7 +75,7 @@ public class ROCEexe {
 	
 	
 	public static void main(String[] args) {
-		ROCEexe run = getInstance();
+		ROCEexe run = (ROCEexe) getInstance();
 		run.command("help");
 		run.command("setboard r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
 		run.command("perft 5");
@@ -79,8 +83,8 @@ public class ROCEexe {
 		run.stop();
 	}
 
-	public Map<String, Integer> runDivide(String fen, int depth) {
-		command("setboard "+fen);
+	public Map<String, Integer> divide(Position pos, int depth) {
+		command("setboard "+FEN.getFen(pos));
 		command("divide "+depth);
 		TreeMap<String, Integer> moves = new TreeMap<String, Integer>();
 		String line="";
@@ -89,7 +93,7 @@ public class ROCEexe {
 			if(line.startsWith("roce: "))
 				line=line.substring(6);
 			String[] split = line.split(" ");
-			if(split.length==2)
+			if(split.length==2 && !split[0].contains(":"))
 				moves.put(split[0], new Integer(split[1]));
 		}
 		return moves;

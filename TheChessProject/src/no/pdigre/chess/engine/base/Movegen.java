@@ -15,18 +15,12 @@ public class Movegen implements IConst{
 	long bb_black,bb_bit1,bb_bit2,bb_bit3;
 	protected long pinned=0L,checkers=0L;
 	protected boolean isWhite=false;
-	long lineAtks,diagAtks,lineDefs,diagDefs;
-	int lineCnt,diagCnt;
+	public boolean isCompare=false;
 	int wking,bking;
 	public int enpassant;
-	Movegen compare;
-
-	public void setCompare(Movegen gen) {
-		compare=gen;
-	}
 
 
-	protected final MOVEDATA[] moves = new MOVEDATA[99];
+	public final MOVEDATA[] moves = new MOVEDATA[99];
 	public int iAll = 0;
 	int iLegal = 0;
 	int iTested = 0;
@@ -76,7 +70,7 @@ public class Movegen implements IConst{
 		generate();
 		return Arrays.copyOfRange(moves, 0, iAll);
 	}
-	final public void generate() {
+	public void generate() {
 		clear();
 		// Calculate checkers and pinners
 		isWhite = pos.whiteNext();
@@ -88,148 +82,99 @@ public class Movegen implements IConst{
 		checkers=~bb_bit3 & enemy & ((~bb_bit1 & bb_bit2 & rev.RN) | (bb_bit1 & ~bb_bit2 & (isWhite?MBP.REV[king]:MWP.REV[king])));
 		long eslider=bb_bit3 & enemy  & rev.RQ; // Sliders
 		if(checkers==0L && eslider !=0L){
-			boolean hasCompare = compare!=null && compare.checkers==0L;
 			long diag_atks = rev.RB;
-			long atks = bb_bit1 & eslider & diag_atks;
-			diagDefs=own & diag_atks;
-			diagAtks=atks;
-			if (atks != 0L) {
-				boolean isDiagReusable = hasCompare && diagAtks==compare.diagAtks && diagDefs==compare.diagDefs;
-				if(false && isDiagReusable){
-					int diagCnt2=compare.diagCnt;
-					for (int i = 0; i < diagCnt2; i++)
-						moves[iAll++]=compare.moves[i];
-					pinned=compare.pinned&diag_atks;
-				} else {
-					int bits = Long.bitCount(atks);
-					for (int j = 0; j < bits; j++) {
-						int asq = Long.numberOfTrailingZeros(atks);
-						long attacker = 1L << asq;
-						atks ^= attacker;
-						long between = BASE.BETWEEN[asq+64*king];
-						long bpcs = between&bb_piece;
-						if(bpcs==0L){
-							checkers|=attacker;
-						} else if(Long.bitCount(bpcs)==1){
-							// check for slide moves
-							long pinner = between&own;
-							int from = Long.numberOfTrailingZeros(pinner);
-							pinned|=pinner;
-							if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
-								if((pinner&bb_bit2)!=0){  	// QUEEN
-									slide(isWhite?MWQ.WQ[from].DIAG:MBQ.BQ[from].DIAG,attacker,between);
-								} else {
-									slide(isWhite?MWB.WB[from].DIAG:MBB.BB[from].DIAG,attacker,between);
-								}
-							} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
-								if(isWhite){
-									if(pinner<<7==attacker && (attacker&IConst.RIGHTLANE)==0)
-										moves[iAll++] = MWP.WP[from].CL[ctype(attacker)];
-									if(pinner<<9==attacker && (attacker&IConst.LEFTLANE)==0)
-										moves[iAll++] = MWP.WP[from].CR[ctype(attacker)];
-								} else {
-									if(pinner>>9==attacker && (attacker&IConst.RIGHTLANE)==0)
-										moves[iAll++] = MBP.BP[from].CL[ctype(attacker)];
-									if(pinner>>7==attacker && (attacker&IConst.LEFTLANE)==0)
-										moves[iAll++] = MBP.BP[from].CR[ctype(attacker)];
-								}
-							}
-						}
-					}
-				}
-				diagCnt=iAll;
-				if(isDiagReusable){
-					int diagCnt2=compare.diagCnt;
-					if(diagCnt!=diagCnt2)
-						System.out.println("Diag wrong count "+diagCnt +"/"+diagCnt2+this);
-					else {
-						for (int i = 0; i < diagCnt2; i++)
-							if(moves[i]!=compare.moves[i])
-								System.out.println("Diag wrong move "+moves[i]);
-					}
-				} 
-			}
-			diagCnt=iAll;
+			long diagatks = bb_bit1 & eslider & diag_atks;
+			if (diagatks != 0L)
+				diagPinners(own, king, diagatks);
 			long line_atks = rev.RR;
-			atks = bb_bit2 & eslider & line_atks;
-			lineAtks=atks;
-			lineDefs=own & line_atks;
-			if (checkers==0L && atks != 0L) {
-				boolean isLineReusable = hasCompare && lineAtks==compare.lineAtks && lineDefs==compare.lineDefs;
-				if(false && isLineReusable){
-					int lineCnt2=compare.lineCnt;
-					int diagCnt2 = compare.diagCnt;
-					for (int i = 0; i < lineCnt2-diagCnt2; i++)
-						moves[iAll++]=compare.moves[diagCnt2+i];
-					pinned|=compare.pinned&line_atks;
-				} else {
-					int bits = Long.bitCount(atks);
-					for (int j = 0; j < bits; j++) {
-						int asq = Long.numberOfTrailingZeros(atks);
-						long attacker = 1L << asq;
-						atks ^= attacker;
-						long between = BASE.BETWEEN[asq+64*king];
-						long bpcs = between&bb_piece;
-						if(bpcs==0L){
-							checkers|=attacker;
-						} else if(Long.bitCount(bpcs)==1){
-							// check for slide moves
-							long pinner = between&own;
-							int from = Long.numberOfTrailingZeros(pinner);
-							pinned|=pinner;
-							if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
-								if((pinner&bb_bit1)!=0){	// QUEEN
-									slide(isWhite?MWQ.WQ[from].LINE:MBQ.BQ[from].LINE,attacker,between);
-								} else {
-									slide(isWhite?MWR.WR[from].LINE:MBR.BR[from].LINE,attacker,between);
-								}
-							} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN FORWARD
-								if(isWhite){
-									if(((pinner<<8)&between)!=0){
-										moves[iAll++] = MWP.WP[from].M1;
-										if(from<16 && ((pinner<<16)&between)!=0)
-											moves[iAll++] = MWP.WP[from].M2;
-									}
-								} else {
-									if(((pinner>>8)&between)!=0){
-										moves[iAll++] = MBP.BP[from].M1;
-										if(from>47 && ((pinner>>16)&between)!=0)
-											moves[iAll++] = MBP.BP[from].M2;
-									}
-								}
-							}
-						}
-					}
-				}
-				
-				lineCnt=iAll;
-				if(isLineReusable){
-					int diagCnt2 = compare.diagCnt;
-					long lineDefs2=compare.lineDefs;
-					long lineAtks2 = compare.lineAtks;
-					int lineCnt2=compare.lineCnt;
-					if(lineCnt-diagCnt!=lineCnt2-diagCnt2){
-						System.out.println("Line wrong count "+(lineCnt-diagCnt)+"/"+(lineCnt2-diagCnt2)+" "+this);
-						for (int i = 0; i < diagCnt; i++) {
-							System.out.println("New "+moves[i]);
-						}
-						for (int i = 0; i < diagCnt2; i++) {
-							System.out.println("Old "+compare.moves[i]);
-						}
-					} else {
-						for (int i = 0; i < lineCnt2-diagCnt2; i++)
-							if(moves[diagCnt+i]!=compare.moves[diagCnt2+i])
-								System.out.println("Line wrong move "+moves[i]);
-					}
-				} 
+			long lineatks = bb_bit2 & eslider & line_atks;
+			if (checkers==0L && lineatks != 0L) {
+				linePinners(own, king, lineatks);
 			}
-			lineCnt=iAll;
 		}
 		if(checkers==0L){
 			nonevasive(isWhite, king,own & ~pinned);
 		} else {
 			clear(); // not interested in pinned moves for evasive moves
 			evasive(isWhite,king,own);
+		}
+	}
+
+	public void diagPinners(final long own, final int king, long atks) {
+		int bits = Long.bitCount(atks);
+		for (int j = 0; j < bits; j++) {
+			int asq = Long.numberOfTrailingZeros(atks);
+			long attacker = 1L << asq;
+			atks ^= attacker;
+			long between = BASE.BETWEEN[asq+64*king];
+			long bpcs = between&bb_piece;
+			if(bpcs==0L){
+				checkers|=attacker;
+			} else if(Long.bitCount(bpcs)==1){
+				// check for slide moves
+				long pinner = between&own;
+				int from = Long.numberOfTrailingZeros(pinner);
+				pinned|=pinner;
+				if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
+					if((pinner&bb_bit2)!=0){  	// QUEEN
+						slide(isWhite?MWQ.WQ[from].DIAG:MBQ.BQ[from].DIAG,attacker,between);
+					} else {
+						slide(isWhite?MWB.WB[from].DIAG:MBB.BB[from].DIAG,attacker,between);
+					}
+				} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
+					if(isWhite){
+						if(pinner<<7==attacker && (attacker&IConst.RIGHTLANE)==0)
+							moves[iAll++] = MWP.WP[from].CL[ctype(attacker)];
+						if(pinner<<9==attacker && (attacker&IConst.LEFTLANE)==0)
+							moves[iAll++] = MWP.WP[from].CR[ctype(attacker)];
+					} else {
+						if(pinner>>9==attacker && (attacker&IConst.RIGHTLANE)==0)
+							moves[iAll++] = MBP.BP[from].CL[ctype(attacker)];
+						if(pinner>>7==attacker && (attacker&IConst.LEFTLANE)==0)
+							moves[iAll++] = MBP.BP[from].CR[ctype(attacker)];
+					}
+				}
+			}
+		}
+	}
+
+	public void linePinners(final long own, final int king, long atks) {
+		int bits = Long.bitCount(atks);
+		for (int j = 0; j < bits; j++) {
+			int asq = Long.numberOfTrailingZeros(atks);
+			long attacker = 1L << asq;
+			atks ^= attacker;
+			long between = BASE.BETWEEN[asq+64*king];
+			long bpcs = between&bb_piece;
+			if(bpcs==0L){
+				checkers|=attacker;
+			} else if(Long.bitCount(bpcs)==1){
+				// check for slide moves
+				long pinner = between&own;
+				int from = Long.numberOfTrailingZeros(pinner);
+				pinned|=pinner;
+				if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
+					if((pinner&bb_bit1)!=0){	// QUEEN
+						slide(isWhite?MWQ.WQ[from].LINE:MBQ.BQ[from].LINE,attacker,between);
+					} else {
+						slide(isWhite?MWR.WR[from].LINE:MBR.BR[from].LINE,attacker,between);
+					}
+				} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN FORWARD
+					if(isWhite){
+						if(((pinner<<8)&between)!=0){
+							moves[iAll++] = MWP.WP[from].M1;
+							if(from<16 && ((pinner<<16)&between)!=0)
+								moves[iAll++] = MWP.WP[from].M2;
+						}
+					} else {
+						if(((pinner>>8)&between)!=0){
+							moves[iAll++] = MBP.BP[from].M1;
+							if(from>47 && ((pinner>>16)&between)!=0)
+								moves[iAll++] = MBP.BP[from].M2;
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -264,7 +209,7 @@ public class Movegen implements IConst{
 		}
 	}
 
-	private void nonevasive(boolean isWhite,int king, long t) {
+	protected void nonevasive(boolean isWhite,int king, long t) {
 		if (isWhite) {
 			MWP.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), MWP.WP);
 			MWN.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), MWN.WN);

@@ -1,35 +1,41 @@
 package no.pdigre.chess.test;
 
-import java.util.Map;
-
 import no.pdigre.chess.engine.base.KingSafe;
 import no.pdigre.chess.engine.base.MOVEDATA;
 import no.pdigre.chess.engine.base.Movegen;
-import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.base.MovegenCache;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.test.util.Counter;
 
-public class RunPerft implements IPerft{
+public class RunPerftCache {
 	int levels;
-	Position pos;
+	String fen;
 	NodeGen[] movegen;
 	Counter[] results;
 
+	public RunPerftCache(int levels, String fen) {
+		configure(levels, fen);
+	}
 	
-	public void start(int levels, Position pos) {
+	public void configure(int levels, String fen) {
 		this.levels = levels;
+		this.fen = fen;
 		movegen = new NodeGen[levels];
 		results=new Counter[levels];
 		NodeGen root = new RootGen();
-		root.setPos(pos);
+		root.setPos(new StartGame(fen));
 		movegen[0] = root;
 		results[0] = root.count;
+		root.isCompare=true;
 		for (int i = 1; i < levels; i++) {
 			NodeGen m = i < levels - 1 ? new BranchGen() : new LeafGen();
 			movegen[i] = m;
 			results[i] = m.count;
 			m.parent = movegen[i - 1];
+			m.isCompare=true;
 			movegen[i - 1].child = m;
+			if(i>1)
+				m.setCompare(movegen[i-2]);
 		}
 	}
 
@@ -38,7 +44,7 @@ public class RunPerft implements IPerft{
 		return results;
 	}
 
-	public class NodeGen extends Movegen {
+	public class NodeGen extends MovegenCache {
 		Counter count = new Counter();
 		NodeGen parent = null, child = null;
 
@@ -97,21 +103,6 @@ public class RunPerft implements IPerft{
 				}
 			}
 		}
-	}
-
-	@Override
-	public Map<String, Integer> divide(Position pos, int depth) {
-		start(depth, pos);
-		return divide();
-	}
-
-	public Map<String,Integer> divide() {
-		return null;
-	}
-
-	public Counter[] perft(int i, String fen) {
-		start(i, new StartGame(fen));
-		return run();
 	}
 
 }

@@ -1,20 +1,23 @@
 package no.pdigre.chess.test.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
+import no.pdigre.chess.engine.base.MOVEDATA;
 import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.Position;
+import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.engine.uci.ROCEexe;
+import no.pdigre.chess.test.IPerft;
+import no.pdigre.chess.test.RunPerftFast;
 import no.pdigre.chess.test.Test_PERFT_5300ms;
 
 public class PerftResults {
@@ -54,83 +57,10 @@ public class PerftResults {
 		return sb.toString();
 	}
 
-	public Map<String, Integer> getDivide() {
-		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
-		for (int i = 0; i < rootcount.length; i++) {
-			int count = rootcount[i];
-			Position pos = rootmoves[i];
-			long bitmap = pos.getBitmap();
-			map.put(FEN.move2literal(bitmap), count);
-		}
-		return map;
-	}
-
-	public ArrayList<Position> getDivideMisses(Map<String, Integer> expected, String fen) {
-		boolean[] print=new boolean[]{false};
-		ArrayList<Position> list = new ArrayList<Position>();
-		Map<String, Integer> actual = getDivide();
-		Set<String> actualkeys = actual.keySet();
-		Set<String> missingkeys = new HashSet<String>(expected.keySet());
-		missingkeys.removeAll(actualkeys);
-		Set<String> wrongkeys = new HashSet<String>(actual.keySet());
-		wrongkeys.removeAll(expected.keySet());
-		Set<String> correctkeys = new HashSet<String>(actual.keySet());
-		correctkeys.retainAll(expected.keySet());
-		for (String key : missingkeys) {
-			if (!key.contains(":")){
-				String brd = print(print,fen);
-				System.out.println(brd+"MISSING:" + key);
-			}
-		}
-		for (String key : wrongkeys) {
-			String brd = print(print,fen);
-			System.out.println(brd+"WRONG:" + key);
-		}
-		
-		for (String key : correctkeys) {
-			int actual_count = actual.get(key);
-			int expected_count = expected.get(key);
-			if (actual_count != expected_count) {
-				for (Position pos : rootmoves) {
-					if (FEN.move2literal(pos.getBitmap()).equals(key))
-						list.add(pos);
-				}
-//				System.out.println(print(print,fen)+"Diff:" + key + " a=" + actual_count + ",e=" + expected_count);
-			}
-		}
-		return list;
-	}
-
-	private String print(boolean[] print,String fen) {
-		if(!print[0]){
-			print[0]=true;
-			System.out.println(FEN.board2string(FEN.fen2board(fen)));
-		}
-		return "";
-	}
-
 	public static void assertPERFT(String fen, Counter[] counters) {
 		String actual = "FEN=" + fen + "\r\n" + PerftResults.printCounter(counters);
 		String expected = allexpected.get(fen).substring(0, actual.length());
 		assertEquals(expected, actual);
-	}
-
-	public static void assertPERFT2(String fen, Counter[] counters,PerftResults perft) {
-		String actual = "FEN=" + fen + "\r\n" + PerftResults.printCounter(perft.counters);
-		String expected = allexpected.get(fen).substring(0, actual.length());
-		if (!expected.equals(actual))
-			analyzePerft(fen, perft);
-		assertEquals(expected, actual);
-	}
-
-	private static void analyzePerft(String fen, PerftResults perft) {
-		int depth = perft.counters.length;
-		Map<String, Integer> expected = ROCEexe.getInstance().runDivide(fen, depth);
-		for (Position pos : perft.getDivideMisses(expected,fen)) {
-			if(depth>1){
-				analyzePerft(FEN.getFen(pos), new CountFull(pos, depth-1).perft());
-			}
-		}
 	}
 
 	public static void readAll() {
@@ -153,6 +83,43 @@ public class PerftResults {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static void assertPERFT(int cnt, String fen, int levels,long run) {
+		if(cnt==run)
+			return;
+		StartGame pos = new StartGame(fen);
+		findError(pos, levels,FEN.board2string(pos));
+		assertTrue("Wrong",false);
+	}
+
+	public static void findError(Position pos, int levels,String append) {
+		if(levels<2)
+			System.out.println("hi");
+		RunPerftFast perft = new RunPerftFast();
+		Map<String, Integer> actual = perft.divide(pos,levels);
+		Map<String, Integer> expected = ROCEexe.getInstance().divide(pos, levels);
+		Set<String> kactual = new HashSet<String>(actual.keySet());
+		Set<String> kexpected = new HashSet<String>(expected.keySet());
+		if(!kactual.equals(kexpected)){
+			kactual.removeAll(kexpected);
+			kexpected.removeAll(actual.keySet());
+			System.out.println(append);
+			System.out.println("ILLEGAL= "+String.join(" ", kactual)+", MISSING= "+String.join(" ", kexpected));
+			return;
+		} else {
+			String[] keys = actual.keySet().toArray(new String[actual.size()]);
+			for (int i = 0; i < keys.length; i++) {
+				String key=keys[i];
+				if(!actual.get(key).equals(expected.get(key))){
+					MOVEDATA md = perft.root.moves[i];
+					Position pos2 = pos.move(md);
+					String text = FEN.addHorizontal(FEN.board2string(pos2)+"\n"+FEN.move2literal(md.bitmap), append);
+					findError(pos2, levels-1,text);
+					return; 
+				}
+			}
 		}
 	}
 

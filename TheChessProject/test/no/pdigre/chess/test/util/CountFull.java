@@ -18,7 +18,7 @@ public class CountFull extends RecursiveTask<Counter[]> {
 
 	protected final Counter[] counters;
 
-    public CountFull(Position pos, int depth) {
+    public CountFull(int depth, Position pos) {
         this.pos = pos;
 		counters=new Counter[depth];
         for (int i = 0; i < depth; i++)
@@ -57,7 +57,7 @@ public class CountFull extends RecursiveTask<Counter[]> {
 			Position next = mvs[i];
             count(next);
 			if (depth > 1) {
-				Counter[] compute = new CountFull(next, depth - 1).compute();
+				Counter[] compute = new CountFull(depth - 1, next).compute();
 				for (int i1 = 0; i1 < compute.length; i1++) {
 					Counter count = compute[i1];
 					counters[i1+1].add(count);
@@ -74,7 +74,7 @@ public class CountFull extends RecursiveTask<Counter[]> {
         for (Position next : NodeGen.getLegalMoves64(pos)) {
             count(next);
             if (counters.length > 1)
-                Counter.total(counters, new CountFull(next, counters.length - 1).compute());
+                Counter.total(counters, new CountFull(counters.length - 1, next).compute());
         }
         return counters;
     }

@@ -11,7 +11,7 @@ public class CountForkJoinPoolFull extends CountFull {
     private static final long serialVersionUID = -3058348904963758664L;
 
     public CountForkJoinPoolFull(Position pos, int depth) {
-        super(pos, depth);
+        super(depth, pos);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class CountForkJoinPoolFull extends CountFull {
         for (Position next : NodeGen.getLegalMoves64(pos)) {
             count(next);
             if (counters.length > 1) {
-                CountFull task = new CountFull(next, counters.length - 1);
+                CountFull task = new CountFull(counters.length - 1, next);
                 tasks.add(task);
                 pool.execute(task);
             }
