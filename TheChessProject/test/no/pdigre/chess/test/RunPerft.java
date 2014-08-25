@@ -13,7 +13,14 @@ public class RunPerft {
 	Counter[] results;
 
 	public RunPerft(int levels, String fen) {
-		super();
+		configure(levels, fen, false);
+	}
+	
+	public RunPerft(int levels, String fen,boolean cache) {
+		configure(levels, fen, cache);
+	}
+
+	public void configure(int levels, String fen, boolean cache) {
 		this.levels = levels;
 		this.fen = fen;
 		movegen = new NodeGen[levels];
@@ -22,13 +29,15 @@ public class RunPerft {
 		root.setPos(new StartGame(fen));
 		movegen[0] = root;
 		results[0] = root.count;
+		root.isCompare=cache;
 		for (int i = 1; i < levels; i++) {
 			NodeGen m = i < levels - 1 ? new BranchGen() : new LeafGen();
 			movegen[i] = m;
 			results[i] = m.count;
 			m.parent = movegen[i - 1];
+			m.isCompare=cache;
 			movegen[i - 1].child = m;
-			if(i>1)
+			if(cache && i>1)
 				m.setCompare(movegen[i-2]);
 		}
 	}

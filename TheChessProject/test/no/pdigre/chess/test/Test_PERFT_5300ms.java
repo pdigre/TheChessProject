@@ -1,12 +1,14 @@
 package no.pdigre.chess.test;
 
 import no.pdigre.chess.engine.base.BASE;
+import no.pdigre.chess.engine.base.Movegen;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.test.util.CountForkJoinPool2Full;
 import no.pdigre.chess.test.util.CountForkJoinPoolFull;
 import no.pdigre.chess.test.util.CountFull;
 import no.pdigre.chess.test.util.PerftResults;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,7 +37,7 @@ public class Test_PERFT_5300ms {
 	@Test
 	public void m1_2_176() {
 		String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5).compute());
+		PerftResults.assertPERFT(fen, new RunPerft(5,fen).run());
 	}
 
 	@Test
@@ -53,7 +55,7 @@ public class Test_PERFT_5300ms {
 	@Test
 	public void e_2_620() {
 		String fen = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
-		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5).compute());
+		PerftResults.assertPERFT(fen, new RunPerft(5,fen).run());
 	}
 
 	@Test
@@ -71,7 +73,7 @@ public class Test_PERFT_5300ms {
 	@Test
 	public void m1_kiwipete2_239() {
 		String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
-		PerftResults.assertPERFT(fen, new RunPerft(4, fen).run());
+		PerftResults.assertPERFT(fen, new RunPerft(4, fen,false).run());
 	}
 
 	@Test
@@ -83,19 +85,33 @@ public class Test_PERFT_5300ms {
 	@Test
 	public void m4a_835() {
 		String fen = "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1";
-		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5).compute());
+		PerftResults.assertPERFT(fen, new CountFull(new StartGame(fen), 5).compute());
 	}
 
 	@Test
 	public void m4b_830() {
 		String fen = "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1";
-		PerftResults.assertPERFT(fen, new CountForkJoinPoolFull(new StartGame(fen), 5).compute());
+		PerftResults.assertPERFT(fen, new CountFull(new StartGame(fen), 5).compute());
 	}
 
 	@Test
 	public void m4c_830() {
 		String fen = "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1";
 		PerftResults.assertPERFT(fen, new RunPerft(5, fen).run());
+		System.out.println("");
 	}
+
+	@Test
+	public void m4d_830() {
+		String fen = "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1";
+		PerftResults.assertPERFT(fen, new RunPerft(5, fen,true).run());
+		System.out.println("");
+	}
+
+	@AfterClass
+	public static void finish() {
+		System.out.println(Movegen.printStats());
+	}
+	
 
 }

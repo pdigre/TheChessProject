@@ -15,11 +15,14 @@ public class Movegen implements IConst{
 	long bb_black,bb_bit1,bb_bit2,bb_bit3;
 	protected long pinned=0L,checkers=0L;
 	protected boolean isWhite=false;
-	long lineAtks,diagAtks,lineDefs,diagDefs;
+	public boolean isCompare=false;
+	long lineEnms,diagEnms,lineDefs,diagDefs,lineAtks,diagAtks,lineKey,diagKey;
 	int lineCnt,diagCnt;
 	int wking,bking;
 	public int enpassant;
 	Movegen compare;
+	public static long hits=0;
+	public static long misses=0;
 
 	public void setCompare(Movegen gen) {
 		compare=gen;
@@ -87,15 +90,26 @@ public class Movegen implements IConst{
 		pinned=0L;
 		checkers=~bb_bit3 & enemy & ((~bb_bit1 & bb_bit2 & rev.RN) | (bb_bit1 & ~bb_bit2 & (isWhite?MBP.REV[king]:MWP.REV[king])));
 		long eslider=bb_bit3 & enemy  & rev.RQ; // Sliders
+		boolean hasCompare = isCompare && compare!=null && compare.checkers==0L;
 		if(checkers==0L && eslider !=0L){
-			boolean hasCompare = compare!=null && compare.checkers==0L;
 			long diag_atks = rev.RB;
 			long atks = bb_bit1 & eslider & diag_atks;
-			diagDefs=own & diag_atks;
-			diagAtks=atks;
 			if (atks != 0L) {
-				boolean isDiagReusable = hasCompare && diagAtks==compare.diagAtks && diagDefs==compare.diagDefs;
-				if(false && isDiagReusable){
+				boolean isDiagReusable=false;
+				if(isCompare){
+					diagAtks=atks;
+					diagDefs=own & diag_atks;
+					diagEnms=enemy & diag_atks;
+					diagKey = atks|(diagDefs)>>1|(diagEnms)>>2|(bb_bit2 & diag_atks)>>3;
+					if(hasCompare){
+						isDiagReusable = diagEnms==compare.diagEnms && diagDefs==compare.diagDefs && diagAtks==compare.diagAtks && diagKey==compare.diagKey;
+						if(isDiagReusable)
+							hits++;
+						else
+							misses++;
+					}
+				}
+				if(isDiagReusable){
 					int diagCnt2=compare.diagCnt;
 					for (int i = 0; i < diagCnt2; i++)
 						moves[iAll++]=compare.moves[i];
@@ -140,23 +154,48 @@ public class Movegen implements IConst{
 				diagCnt=iAll;
 				if(isDiagReusable){
 					int diagCnt2=compare.diagCnt;
-					if(diagCnt!=diagCnt2)
-						System.out.println("Diag wrong count "+diagCnt +"/"+diagCnt2+this);
-					else {
-						for (int i = 0; i < diagCnt2; i++)
-							if(moves[i]!=compare.moves[i])
-								System.out.println("Diag wrong move "+moves[i]);
+					if(diagCnt!=diagCnt2){
+						System.out.println("Diag wrong count "+diagCnt +"/"+diagCnt2);
+						String t1 = FEN.addHorizontal(toString(),FEN.addHorizontal(FEN.board2string(diagEnms), FEN.board2string(diagDefs)));
+						String t2 = FEN.addHorizontal(compare.toString(),FEN.addHorizontal(FEN.board2string(compare.diagEnms), FEN.board2string(compare.diagDefs)));
+						System.out.println(FEN.addHorizontal(t1,t2));
+						for (int i = 0; i < diagCnt; i++) {
+							MOVEDATA md = moves[i];
+							System.out.println("New "+md);
+						}
+						for (int i = 0; i < diagCnt2; i++) {
+							MOVEDATA md = compare.moves[i];
+							System.out.println("Old "+md);
+						}
+					} else {
+						for (int i = 0; i < diagCnt2; i++) {
+							MOVEDATA a = moves[i];
+							MOVEDATA b = compare.moves[i];
+							if(a!=b)
+								System.out.println("Diag wrong move "+a);
+						}
 					}
 				} 
 			}
 			diagCnt=iAll;
 			long line_atks = rev.RR;
 			atks = bb_bit2 & eslider & line_atks;
-			lineAtks=atks;
-			lineDefs=own & line_atks;
 			if (checkers==0L && atks != 0L) {
-				boolean isLineReusable = hasCompare && lineAtks==compare.lineAtks && lineDefs==compare.lineDefs;
-				if(false && isLineReusable){
+				boolean isLineReusable = false;
+				if(isCompare){
+					lineAtks=atks;
+					lineEnms=enemy & line_atks;
+					lineDefs=own & line_atks;
+					lineKey = atks|(lineDefs)>>9|(lineEnms)>>18|(bb_bit1 & line_atks)>>27;
+					if(hasCompare){
+						isLineReusable = hasCompare && lineEnms==compare.lineEnms && lineDefs==compare.lineDefs && lineAtks==compare.lineAtks && lineKey==compare.lineKey;
+						if(isLineReusable)
+							hits++;
+						else
+							misses++;
+					}
+				}
+				if(isLineReusable){
 					int lineCnt2=compare.lineCnt;
 					int diagCnt2 = compare.diagCnt;
 					for (int i = 0; i < lineCnt2-diagCnt2; i++)
@@ -206,15 +245,17 @@ public class Movegen implements IConst{
 				if(isLineReusable){
 					int diagCnt2 = compare.diagCnt;
 					long lineDefs2=compare.lineDefs;
-					long lineAtks2 = compare.lineAtks;
+					long lineAtks2 = compare.lineEnms;
 					int lineCnt2=compare.lineCnt;
 					if(lineCnt-diagCnt!=lineCnt2-diagCnt2){
 						System.out.println("Line wrong count "+(lineCnt-diagCnt)+"/"+(lineCnt2-diagCnt2)+" "+this);
-						for (int i = 0; i < diagCnt; i++) {
-							System.out.println("New "+moves[i]);
+						for (int i = diagCnt; i < lineCnt; i++) {
+							MOVEDATA md = moves[i];
+							System.out.println("New "+md);
 						}
-						for (int i = 0; i < diagCnt2; i++) {
-							System.out.println("Old "+compare.moves[i]);
+						for (int i = diagCnt2; i < lineCnt2; i++) {
+							MOVEDATA md = compare.moves[i];
+							System.out.println("Old "+md);
 						}
 					} else {
 						for (int i = 0; i < lineCnt2-diagCnt2; i++)
@@ -326,6 +367,11 @@ public class Movegen implements IConst{
 	@Override
 	public String toString() {
 		return FEN.addHorizontal(FEN.addHorizontal(pos.toString(), FEN.board2string(pinned)), FEN.board2string(checkers));
+	}
+
+	public static String printStats() {
+		long tot = hits+misses+1;
+		return hits +"/" +tot + "="+100*hits/tot+"%";
 	}
 
 }
