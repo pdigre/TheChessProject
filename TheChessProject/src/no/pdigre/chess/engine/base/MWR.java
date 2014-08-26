@@ -47,7 +47,9 @@ public class MWR extends MSlider{
 			else if(from==IConst.WR_KING_STARTPOS)
 				bitmap^= IConst.CANCASTLE_WHITEKING;
 			for (int i = 0; i < 5; i++) {
-				list.add(MOVEDATA.capture(bitmap, WCAPTURES[i]));
+				int c = WCAPTURES[i];
+				list.add(MOVEDATA.capture(bitmap, c));
+				rookCapture(to, bitmap, c);
 			}
 			list.add(MOVEDATA.create(bitmap));
 			to+=offset;

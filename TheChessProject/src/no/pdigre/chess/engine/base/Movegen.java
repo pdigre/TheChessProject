@@ -87,15 +87,12 @@ public class Movegen implements IConst{
 		checkers=~bb_bit3 & enemy & ((~bb_bit1 & bb_bit2 & rev.RN) | (bb_bit1 & ~bb_bit2 & (isWhite?MBP.REV[king]:MWP.REV[king])));
 		long eslider=bb_bit3 & enemy  & rev.RQ; // Sliders
 		if(checkers==0L && eslider !=0L){
-			long diag_atks = rev.RB;
-			long diagatks = bb_bit1 & eslider & diag_atks;
+			long diagatks = bb_bit1 & eslider & rev.RB;
 			if (diagatks != 0L)
 				diagPinners(own, king, diagatks);
-			long line_atks = rev.RR;
-			long lineatks = bb_bit2 & eslider & line_atks;
-			if (checkers==0L && lineatks != 0L) {
+			long lineatks = bb_bit2 & eslider & rev.RR;
+			if (checkers==0L && lineatks != 0L)
 				linePinners(own, king, lineatks);
-			}
 		}
 		if(checkers==0L){
 			nonevasive(isWhite, king,own & ~pinned);
@@ -122,9 +119,13 @@ public class Movegen implements IConst{
 				pinned|=pinner;
 				if((pinner&bb_bit1&bb_bit3)!=0){	// BISHOP / QUEEN
 					if((pinner&bb_bit2)!=0){  	// QUEEN
-						slide(isWhite?MWQ.WQ[from].DIAG:MBQ.BQ[from].DIAG,attacker,between);
+						MOVEDATA[][] mm = isWhite?MWQ.WQ[from].DIAG:MBQ.BQ[from].DIAG;
+						MBase b=isWhite?MWQ.WQ[from]:MBQ.BQ[from];
+						slide(mm,b,attacker,between);
 					} else {
-						slide(isWhite?MWB.WB[from].DIAG:MBB.BB[from].DIAG,attacker,between);
+						MOVEDATA[][] mm = isWhite?MWB.WB[from].DIAG:MBB.BB[from].DIAG;
+						MBase b=isWhite?MWQ.WQ[from]:MBQ.BQ[from];
+						slide(mm,b,attacker,between);
 					}
 				} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN CAPTURE
 					if(isWhite){
@@ -160,9 +161,13 @@ public class Movegen implements IConst{
 				pinned|=pinner;
 				if((pinner&bb_bit2&bb_bit3)!=0){		// ROOK / QUEEN
 					if((pinner&bb_bit1)!=0){	// QUEEN
-						slide(isWhite?MWQ.WQ[from].LINE:MBQ.BQ[from].LINE,attacker,between);
+						MOVEDATA[][] mm = isWhite?MWQ.WQ[from].LINE:MBQ.BQ[from].LINE;
+						MBase b=isWhite?MWQ.WQ[from]:MBQ.BQ[from];
+						slide(mm,b,attacker,between);
 					} else {
-						slide(isWhite?MWR.WR[from].LINE:MBR.BR[from].LINE,attacker,between);
+						MOVEDATA[][] mm = isWhite?MWR.WR[from].LINE:MBR.BR[from].LINE;
+						MBase b= isWhite?MWR.WR[from]:MBR.BR[from];
+						slide(mm,b,attacker,between);
 					}
 				} else if((pinner&bb_bit1&~bb_bit2&~bb_bit3)!=0){  // PAWN FORWARD
 					if(isWhite){
@@ -216,27 +221,27 @@ public class Movegen implements IConst{
 
 	protected void nonevasive(boolean isWhite,int king, long t) {
 		if (isWhite) {
-			MWP.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), MWP.WP);
-			MWN.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), MWN.WN);
-			MWB.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), MWB.WB);
-			MWR.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), MWR.WR);
-			MWQ.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), MWQ.WQ);
+			MWP.genLegal(this,t & (bb_bit1)  & (~bb_bit2) & (~bb_bit3), MWP.WP);
+			MWN.genLegal(this,t & (~bb_bit1) & (bb_bit2)  & (~bb_bit3), MWN.WN);
+			MWB.genLegal(this,t & (bb_bit1)  & (~bb_bit2) & (bb_bit3), MWB.WB);
+			MWR.genLegal(this,t & (~bb_bit1) & (bb_bit2)  & (bb_bit3), MWR.WR);
+			MWQ.genLegal(this,t & (bb_bit1)  & (bb_bit2)  & (bb_bit3), MWQ.WQ);
 			MWK.WK[king].genLegal(this);
 			if(king==IConst.WK_STARTPOS)
 				MWK.genCastling(this);
 		} else {
-			MBP.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (~bb_bit3), MBP.BP);
-			MBN.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (~bb_bit3), MBN.BN);
-			MBB.genLegal(this,t & (bb_bit1) & (~bb_bit2) & (bb_bit3), MBB.BB);
-			MBR.genLegal(this,t & (~bb_bit1) & (bb_bit2) & (bb_bit3), MBR.BR);
-			MBQ.genLegal(this,t & (bb_bit1) & (bb_bit2) & (bb_bit3), MBQ.BQ);
+			MBP.genLegal(this,t & (bb_bit1)  & (~bb_bit2) & (~bb_bit3), MBP.BP);
+			MBN.genLegal(this,t & (~bb_bit1) & (bb_bit2)  & (~bb_bit3), MBN.BN);
+			MBB.genLegal(this,t & (bb_bit1)  & (~bb_bit2) & (bb_bit3), MBB.BB);
+			MBR.genLegal(this,t & (~bb_bit1) & (bb_bit2)  & (bb_bit3), MBR.BR);
+			MBQ.genLegal(this,t & (bb_bit1)  & (bb_bit2)  & (bb_bit3), MBQ.BQ);
 			MBK.BK[king].genLegal(this);
 			if(king==IConst.BK_STARTPOS)
 				MBK.genCastling(this);
 		}
 	}
 
-	private void slide(MOVEDATA[][] mm,long attacker,long between) {
+	private void slide(MOVEDATA[][] mm,MBase b,long attacker,long between) {
 		for (MOVEDATA[] m : mm) {
 			int i = 0;
 			while (i < m.length) {
@@ -246,8 +251,28 @@ public class Movegen implements IConst{
 					i += 6;
 					continue;
 				}
-				if ((attacker & bto) != 0)
-					moves[iAll++] = m[i + ctype(bto)];
+				if ((attacker & bto) != 0){
+					int c = ctype(bto);
+					if(c==3){
+						if(isWhite){
+							if(bto==1L<<IConst.BR_KING_STARTPOS)
+								add(b.K);
+							 else if(bto==1L<<IConst.BR_QUEEN_STARTPOS)
+								add(b.Q);
+							 else 
+								moves[iAll++] = m[i + c];
+						} else {
+							if(bto==1L<<IConst.WR_KING_STARTPOS)
+								add(b.K);
+							 else if(bto==1L<<IConst.WR_QUEEN_STARTPOS)
+								add(b.Q);
+							 else 
+								moves[iAll++] = m[i + c];
+						}
+					} else {
+						moves[iAll++] = m[i + c];
+					}
+				}
 				break;
 			}
 		}

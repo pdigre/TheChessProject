@@ -7,7 +7,13 @@ import no.pdigre.chess.engine.base.IConst.BITS;
  */
 public class MOVEDATAX extends MOVEDATA {
 
-	public static MOVEDATA create(long bitmap){
+	public static MOVEDATAX capture(long bitmap,int victim){
+		int to = BITS.getTo(bitmap);
+		long purge = purge(bitmap, PSQT.pVal(to, victim));
+		return create((purge | ((victim & 7) << IConst._CAPTURE))^findCastling(bitmap));
+	}
+
+	public static MOVEDATAX create(long bitmap){
 		return new MOVEDATAX(bitmap);
 	}
 
@@ -15,10 +21,6 @@ public class MOVEDATAX extends MOVEDATA {
 		super(bitmap);
 	}
 
-	public static MOVEDATAX createx(long bitmap){
-		return new MOVEDATAX(bitmap^findCastling(bitmap));
-	}
-	
 	private static long findCastling(long bitmap) {
 		int to=BITS.getTo(bitmap);
 		int from=BITS.getFrom(bitmap);

@@ -73,6 +73,13 @@ public class RunPerftFast implements IPerft{
         root.generate();
 		long[] count=new long[root.iAll];
 		if(levels<4){
+			if(levels==1){
+		        for (int i = 0; i < root.iAll; i++) {
+		        	MOVEDATA md = root.moves[i];
+		    		map.put(FEN.move2literal(md.bitmap),1);
+				}
+		        return map;
+			}
 	        for (int i = 0; i < root.iAll; i++) {
 	        	MOVEDATA md = root.moves[i];
     			runSimple(count, i, pos.move(md));

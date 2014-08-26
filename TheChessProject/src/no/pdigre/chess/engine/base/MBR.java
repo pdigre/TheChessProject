@@ -47,7 +47,9 @@ public class MBR extends MSlider{
 			else if(from==IConst.BR_KING_STARTPOS)
 				bitmap^= IConst.CANCASTLE_BLACKKING;
 			for (int i = 0; i < 5; i++) {
-				list.add(MOVEDATA.capture(bitmap, BCAPTURES[i]));
+				int c = BCAPTURES[i];
+				list.add(MOVEDATA.capture(bitmap, c));
+				rookCapture(to, bitmap, c);
 			}
 			list.add(MOVEDATA.create(bitmap));
 			to+=offset;

@@ -6,6 +6,7 @@ import no.pdigre.chess.test.util.PerftResults;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -71,8 +72,33 @@ public class Test_PERFT_5300ms {
 	}
 
 	@Test
-	public void m6_err_fast() {
+	@Ignore
+	public void e3_err_fast() {
 		RunPerftFast.test(179869,6,"8/8/8/8/8/8/6k1/4K2R b K - 0 1");
+	}
+
+	@Test
+	@Ignore
+	public void e2_err_fast() {
+		RunPerftFast.test(193690690,5,"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
+	}
+
+	@Test
+	@Ignore
+	public void e56_err_fast() {
+		RunPerftFast.test(525169084,6,"R6r/8/8/2K5/5k2/8/8/r6R w - - 0 1");
+	}
+
+	@Test
+	@Ignore
+	public void e58_err_fast() {
+		RunPerftFast.test(524966748,6,"R6r/8/8/2K5/5k2/8/8/r6R b - - 0 1");
+	}
+
+	@Test
+	@Ignore
+	public void e121_err_fast() {
+		RunPerftFast.test(28859283,6,"8/PPPk4/8/8/8/8/4Kppp/8 w - - 0 1");
 	}
 
 	@AfterClass

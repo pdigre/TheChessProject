@@ -59,16 +59,16 @@ public abstract class MBase implements IConst{
 	public void rookCapture(int to, long bitmap, int c) {
 		if (c == IConst.BR) {
 			if (to == IConst.BR_KING_STARTPOS){
-				K=MOVEDATA.capture(bitmap & ~IConst.CANCASTLE_BLACKKING, c);
+				K=MOVEDATAX.capture(bitmap, c);
 			} else if (to == IConst.BR_QUEEN_STARTPOS){
-				Q=MOVEDATA.capture(bitmap & ~IConst.CANCASTLE_BLACKQUEEN,c);
+				Q=MOVEDATAX.capture(bitmap,c);
 			}
 		}
 		if (c == IConst.WR) {
 			if (to == IConst.WR_KING_STARTPOS){
-				K=MOVEDATA.capture(bitmap & ~IConst.CANCASTLE_WHITEKING, c);
+				K=MOVEDATAX.capture(bitmap, c);
 			} else if (to == IConst.WR_QUEEN_STARTPOS){
-				Q=MOVEDATA.capture(bitmap & ~IConst.CANCASTLE_WHITEQUEEN, c);
+				Q=MOVEDATAX.capture(bitmap, c);
 			}
 		}
 	}

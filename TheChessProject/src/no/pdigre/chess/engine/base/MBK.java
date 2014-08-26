@@ -61,18 +61,22 @@ public class MBK extends MBase {
 	}
 	
 	public void kmoves(Movegen gen, MOVEDATA[][] moves) {
+		long enemy = gen.bb_white;
+		long all = gen.bb_piece;
 		for (MOVEDATA[] m : moves){
 			long bto = m[5].bto;
-			if ((gen.bb_piece & bto) == 0) {
+			if ((all & bto) == 0) {
 				add(gen,m[5]);
-			} else if ((gen.bb_white & bto) != 0) {
-				int c = gen.ctype(bto);
-				if(c==3 && bto==1L<<IConst.WR_KING_STARTPOS)
-					gen.add(K);
-				else if(c==3 && bto==1L<<IConst.WR_QUEEN_STARTPOS)
-					gen.add(Q);
-				else 
-					add(gen,m[c]);
+			} else {
+				if ((enemy & bto) != 0L) {
+					int c = gen.ctype(bto);
+//					if(c==3 && bto==1L<<IConst.WR_KING_STARTPOS)
+//						gen.add(K);
+//					else if(c==3 && bto==1L<<IConst.WR_QUEEN_STARTPOS)
+//						gen.add(Q);
+//					else 
+						add(gen,m[c]);
+				}
 			}
 		}
 	}
