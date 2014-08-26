@@ -27,9 +27,12 @@ public class MBN extends MBase {
 		if (inside(to, from)){
 			MOVEDATA[] m=new MOVEDATA[6];
 			list.add(m);
-			m[5]=MOVEDATA.create(BITS.assemble(IConst.BN, from, to, CASTLING_STATE | HALFMOVES));
+			long bitmap = BITS.assemble(IConst.BN, from, to, CASTLING_STATE | HALFMOVES);
+			m[5]=MOVEDATA.create(bitmap);
 			for (int i = 0; i < 5; i++){
-				m[i]=MOVEDATA.createxb((purge(BITS.assemble(IConst.BN, from, to, CASTLING_STATE | HALFMOVES), PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << _CAPTURE)); 
+				int c = BCAPTURES[i];
+				m[i]=MOVEDATA.capture(bitmap, c); 
+				rookCapture(to, bitmap, c);
 			}
 		}
 	}
@@ -42,7 +45,14 @@ public class MBN extends MBase {
 			if ((gen.bb_piece & bto) == 0) {
 				gen.add(m[5]);
 			} else if ((gen.bb_white & bto) != 0) {
-				gen.add(m[gen.ctype(bto)]);
+				int c = gen.ctype(bto);
+				if(c==3 && bto==1L<<IConst.WR_KING_STARTPOS){
+					gen.add(K);
+				} else if(c==3 && bto==1L<<IConst.WR_QUEEN_STARTPOS){
+					gen.add(Q);
+				} else {
+					gen.add(m[c]);
+				}
 			}
 		}
 	}

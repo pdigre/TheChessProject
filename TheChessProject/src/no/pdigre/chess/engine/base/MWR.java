@@ -17,15 +17,15 @@ public class MWR extends MSlider{
 		for (int from = 0; from < 64; from++)
 			WR[from] = new MWR(from);
 		MWR Q=WR[WR_QUEEN_STARTPOS];
-		XQU=castling(Q.U);
-		XQD=castling(Q.D);
-		XQL=castling(Q.L);
-		XQR=castling(Q.R);
+		XQU=castlingRook(Q.U);
+		XQD=castlingRook(Q.D);
+		XQL=castlingRook(Q.L);
+		XQR=castlingRook(Q.R);
 		MWR K=WR[WR_KING_STARTPOS];
-		XKU=castling(K.U);
-		XKD=castling(K.D);
-		XKL=castling(K.L);
-		XKR=castling(K.R);
+		XKU=castlingRook(K.U);
+		XKD=castlingRook(K.D);
+		XKL=castlingRook(K.L);
+		XKR=castlingRook(K.R);
 	}
 
 	public MWR(int from) {
@@ -46,8 +46,9 @@ public class MWR extends MSlider{
 				bitmap^= IConst.CANCASTLE_WHITEQUEEN;
 			else if(from==IConst.WR_KING_STARTPOS)
 				bitmap^= IConst.CANCASTLE_WHITEKING;
-			for (int i = 0; i < 5; i++)
-				list.add(MOVEDATA.createxw((purge(bitmap, PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << _CAPTURE)));
+			for (int i = 0; i < 5; i++) {
+				list.add(MOVEDATA.capture(bitmap, WCAPTURES[i]));
+			}
 			list.add(MOVEDATA.create(bitmap));
 			to+=offset;
 		}

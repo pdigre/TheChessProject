@@ -20,9 +20,9 @@ public class MBK extends MBase {
 		for (int from = 0; from < 64; from++)
 			BK[from] = new MBK(from);
 		MOVEDATA[][] M=BK[IConst.BK_STARTPOS].M;
-		X=castling(M,IConst.CANCASTLE_BLACK);
-		XQ=castling(M,IConst.CANCASTLE_BLACKQUEEN);
-		XK=castling(M,IConst.CANCASTLE_BLACKKING);
+		X=castlingKing(M,IConst.CANCASTLE_BLACK);
+		XQ=castlingKing(M,IConst.CANCASTLE_BLACKQUEEN);
+		XK=castlingKing(M,IConst.CANCASTLE_BLACKKING);
 		CQ=MOVEDATAX.create(BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS - 2, IConst.CANCASTLE_WHITE | IConst.SPECIAL));
 		CK=MOVEDATAX.create(BITS.assemble(IConst.BK, IConst.BK_STARTPOS, IConst.BK_STARTPOS + 2, IConst.CANCASTLE_WHITE | IConst.SPECIAL));
 	}
@@ -46,9 +46,13 @@ public class MBK extends MBase {
 		if (BASE.inside(to, from)){
 			MOVEDATA[] m=new MOVEDATA[6];
 			list.add(m);
-			m[5]=MOVEDATA.create(BITS.assemble(IConst.BK, from, to, CANCASTLE_WHITE | HALFMOVES));
-			for (int i = 0; i < 5; i++)
-				m[i]=MOVEDATA.create((purge(BITS.assemble(IConst.BK, from, to, CANCASTLE_WHITE | HALFMOVES), PSQT.pVal(to, BCAPTURES[i]))) | ((BCAPTURES[i] & 7) << _CAPTURE)); 
+			long bitmap = BITS.assemble(IConst.BK, from, to, CANCASTLE_WHITE | HALFMOVES);
+			m[5]=MOVEDATA.create(bitmap);
+			for (int i = 0; i < 5; i++){
+				int c = BCAPTURES[i];
+				m[i]=MOVEDATA.capture(bitmap, c); 
+				rookCapture(to, bitmap, c);
+			}
 		}
 	}
 
@@ -62,7 +66,13 @@ public class MBK extends MBase {
 			if ((gen.bb_piece & bto) == 0) {
 				add(gen,m[5]);
 			} else if ((gen.bb_white & bto) != 0) {
-				add(gen,m[gen.ctype(bto)]);
+				int c = gen.ctype(bto);
+				if(c==3 && bto==1L<<IConst.WR_KING_STARTPOS)
+					gen.add(K);
+				else if(c==3 && bto==1L<<IConst.WR_QUEEN_STARTPOS)
+					gen.add(Q);
+				else 
+					add(gen,m[c]);
 			}
 		}
 	}

@@ -17,6 +17,7 @@ public class RunPerftFast implements IPerft{
 	long count;
 	private Position pos;
 	public NodeGen root;
+	
 
 	public static void test(int test,int levels, String fen) {
 		PerftResults.assertPERFT(test,fen,levels,perft(levels, fen));
@@ -43,41 +44,66 @@ public class RunPerftFast implements IPerft{
 	}
 
 	public long perft() {
-		CountTask[] tasks = exec();
+        root.generate();
+		long[] count=new long[root.iAll];
+		if(levels<4){
+			long total=0L;
+	        for (int i = 0; i < root.iAll; i++) {
+	        	MOVEDATA md = root.moves[i];
+    			runSimple(count, i, pos.move(md));
+    			total+=count[i];
+			}
+	        return total;
+		}
+		CountTask[] tasks = concurrent(count);
         try {
 			for (RecursiveTask<Long> task : tasks)
-				count+=task.get();
+				task.get();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        return count;
+        long total=0;
+        for (int i = 0; i < count.length; i++)
+			total+=count[i];
+        return total;
 	}
 	
 	public Map<String,Integer> divide() {
 		LinkedHashMap<String, Integer> map=new LinkedHashMap<String, Integer>();
-		if(levels<2){
-	        root.generate();
+        root.generate();
+		long[] count=new long[root.iAll];
+		if(levels<4){
 	        for (int i = 0; i < root.iAll; i++) {
-	    		map.put(FEN.move2literal(root.moves[i].bitmap),1);
+	        	MOVEDATA md = root.moves[i];
+    			runSimple(count, i, pos.move(md));
+	    		map.put(FEN.move2literal(md.bitmap),(int)count[i]);
 			}
 	        return map;
 		}
-		CountTask[] tasks = exec();
-        try {
-        	for (int i = 0; i < tasks.length; i++) 
-        		map.put(FEN.move2literal(root.moves[i].bitmap),(int)(long)tasks[i].get());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		CountTask[] tasks = concurrent(count);
+        	for (int i = 0; i < tasks.length; i++){
+                try {
+                	tasks[i].get();
+        		} catch (Exception e) {
+        			e.printStackTrace();
+        		}
+        		map.put(FEN.move2literal(root.moves[i].bitmap),(int) count[i]);
+        	}
         return map;
 	}
 
-	public CountTask[] exec() {
+	public void runSimple(long[] count, int i, Position p) {
+		NodeGen[] movegen = new NodeGen[levels-1];
+		assign(p,movegen,levels,count,i);
+		movegen[0].run();
+	}
+
+	public CountTask[] concurrent(long[] count) {
 		ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
-        root.generate();
         CountTask[] tasks = new CountTask[root.iAll];
 		for (int i = 0; i < root.iAll; i++) {
-			CountTask task=new CountTask(pos.move(root.moves[i]));
+			Position p = pos.move(root.moves[i]);
+			CountTask task=new CountTask(p,count,i);
 			tasks[i]=task;
 			pool.execute(task);
 		}
@@ -86,19 +112,11 @@ public class RunPerftFast implements IPerft{
 
 	private final class CountTask extends RecursiveTask<Long> {
 		private static final long serialVersionUID = -2743566188067414328L;
-		long count=0;
 		NodeGen[] movegen;
 
-		public CountTask(Position pos) {
+		public CountTask(Position pos,long[] count,int i) {
 			movegen = new NodeGen[levels-1];
-			for (int i = 0; i < movegen.length; i++) {
-				NodeGen m = i < movegen.length - 1 ? new NodeGen() : new LeafGen(this);
-				movegen[i] = m;
-				NodeGen parent = i>0?movegen[i - 1]:root;
-				m.parent = parent;
-				parent.child = m;
-			}
-			movegen[0].setPos(pos);
+			assign(pos,movegen,levels,count,i);
 		}
 
 		@Override
@@ -106,6 +124,17 @@ public class RunPerftFast implements IPerft{
 			movegen[0].run();
 			return count;
 		}
+	}
+
+	public void assign(Position pos,NodeGen[] movegen,int levels,long[] count,int inum) {
+		for (int i = 0; i < movegen.length; i++) {
+			NodeGen m = i < movegen.length - 1 ? new NodeGen() : new LeafGen(count,inum);
+			movegen[i] = m;
+			NodeGen parent = i>0?movegen[i - 1]:root;
+			m.parent = parent;
+			parent.child = m;
+		}
+		movegen[0].setPos(pos);
 	}
 
 	public class NodeGen extends Movegen {
@@ -122,16 +151,17 @@ public class RunPerftFast implements IPerft{
 	}
 
 	public class LeafGen extends NodeGen {
-		private CountTask task;
-
-		public LeafGen(CountTask parent) {
-			this.task=parent;
+		final long[] count;
+		final int inum;
+		public LeafGen(long[] count, int inum) {
+			this.count=count;
+			this.inum=inum;
 		}
 
 		@Override
 		public void run() {
 			generate();
-			task.count+=iAll;
+			count[inum]+=iAll;
 		}
 	}
 

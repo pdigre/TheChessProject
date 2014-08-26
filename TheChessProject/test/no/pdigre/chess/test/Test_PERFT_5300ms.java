@@ -72,7 +72,7 @@ public class Test_PERFT_5300ms {
 
 	@Test
 	public void m6_err_fast() {
-		RunPerftFast.test(179869,5,"8/8/8/8/8/8/6k1/4K2R b K - 0 1");
+		RunPerftFast.test(179869,6,"8/8/8/8/8/8/6k1/4K2R b K - 0 1");
 	}
 
 	@AfterClass

@@ -8,6 +8,8 @@ import static no.pdigre.chess.engine.base.BASE.*;
 public class MWN extends MBase{
 
 	final static MWN[] WN;
+	;
+
 	static {
 		WN=new MWN[64];
 		for (int from = 0; from < 64; from++)
@@ -27,9 +29,13 @@ public class MWN extends MBase{
 		if (inside(to, from)){
 			MOVEDATA[] m=new MOVEDATA[6];
 			list.add(m);
-			m[5]=MOVEDATA.create(BITS.assemble(IConst.WN, from, to, CASTLING_STATE | HALFMOVES));
-			for (int i = 0; i < 5; i++)
-				m[i]=MOVEDATA.createxw((purge(BITS.assemble(IConst.WN, from, to, CASTLING_STATE | HALFMOVES), PSQT.pVal(to, WCAPTURES[i]))) | ((WCAPTURES[i] & 7) << _CAPTURE)); 
+			long bitmap = BITS.assemble(IConst.WN, from, to, CASTLING_STATE | HALFMOVES);
+			m[5]=MOVEDATA.create(bitmap);
+			for (int i = 0; i < 5; i++){
+				int c = WCAPTURES[i];
+				m[i]=MOVEDATA.capture(bitmap, c); 
+				rookCapture(to, bitmap, c);
+			}
 		}
 	}
 	
@@ -41,7 +47,14 @@ public class MWN extends MBase{
 			if ((gen.bb_piece & bto) == 0) {
 				gen.add(m[5]);
 			} else if ((gen.bb_black & bto) != 0) {
-				gen.add(m[gen.ctype(bto)]);
+				int c = gen.ctype(bto);
+				if(c==3 && bto==1L<<IConst.BR_KING_STARTPOS){
+					gen.add(K);
+				} else if(c==3 && bto==1L<<IConst.BR_QUEEN_STARTPOS){
+					gen.add(Q);
+				} else {
+					gen.add(m[c]);
+				}
 			}
 		}
 	}

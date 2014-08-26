@@ -68,16 +68,15 @@ public class MWP extends MBase{
 	}
 
 	private MOVEDATA enpassant(int to) {
-		return MOVEDATA.create(purge(BITS.assemble(IConst.WP, from, to, CASTLING_STATE),PSQT.pVal(to - 8, IConst.BP)) | (IConst.WP << IConst._CAPTURE) | IConst.SPECIAL);
+		long bitmap = BITS.assemble(IConst.WP, from, to, CASTLING_STATE | IConst.SPECIAL);
+		return MOVEDATA.create(purge(bitmap,PSQT.pVal(to - 8, IConst.BP)) | (IConst.WP << IConst._CAPTURE));
 	}
 
 	private MOVEDATA[] captures(int to) {
 		MOVEDATA[] captures=new MOVEDATA[5];
-		for (int c = 0; c < 5; c++) {
-			long base = BITS.assemble(IConst.WP, from, to, CASTLING_STATE);
-			int cval = PSQT.pVal(to,WCAPTURES[c]);
-			long bitmap = purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE);
-			captures[c]=MOVEDATA.create(bitmap);
+		for (int i = 0; i < 5; i++) {
+			long bitmap = BITS.assemble(IConst.WP, from, to, CASTLING_STATE);
+			captures[i]=MOVEDATA.capture(bitmap, WCAPTURES[i]);
 		}
 		return captures;
 	}
@@ -92,10 +91,9 @@ public class MWP extends MBase{
 	private MOVEDATA[] cpromotes(int to) {
 		MOVEDATA[] promotes=new MOVEDATA[20];
 		for (int p = 0; p < 4; p++)
-			for (int c = 0; c < 5; c++) {
-				long base = BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, CASTLING_STATE | SPECIAL);
-				int cval = PSQT.pVal(to,WCAPTURES[c]);
-				promotes[p*5+c]=MOVEDATA.create(purge(base, cval) | ((WCAPTURES[c] & 7) << IConst._CAPTURE));
+			for (int i = 0; i < 5; i++) {
+				long bitmap = BITS.assemblePromote(IConst.WP, WPROMOTES[p], from, to, CASTLING_STATE | SPECIAL);
+				promotes[p*5+i]=MOVEDATA.capture(bitmap, WCAPTURES[i]);
 			}
 		return promotes;
 	}

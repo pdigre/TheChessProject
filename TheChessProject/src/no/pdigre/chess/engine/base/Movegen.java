@@ -55,6 +55,8 @@ public class Movegen implements IConst{
 	}
 
 	final void add(MOVEDATA md) {
+		if(md==null)
+			System.out.println("err");
 		moves[iAll++] = md;
 	}
 	
@@ -74,6 +76,9 @@ public class Movegen implements IConst{
 		clear();
 		// Calculate checkers and pinners
 		isWhite = pos.whiteNext();
+//		if(Long.bitCount(bb_piece)==2){
+//			return;
+//		}
 		final long own = isWhite?bb_white:bb_black;
 		final long enemy = isWhite?bb_black:bb_white;
 		final int king=isWhite?wking:bking;

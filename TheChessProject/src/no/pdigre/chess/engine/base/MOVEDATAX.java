@@ -7,22 +7,19 @@ import no.pdigre.chess.engine.base.IConst.BITS;
  */
 public class MOVEDATAX extends MOVEDATA {
 
-	final MOVEDATA normal;
-	final long castling;
-	
-	public MOVEDATAX(long bitmap,MOVEDATA m) {
+	public static MOVEDATA create(long bitmap){
+		return new MOVEDATAX(bitmap);
+	}
+
+	private MOVEDATAX(long bitmap) {
 		super(bitmap);
-		normal=m;
-		castling=0L;
 	}
 
-	public MOVEDATAX(MOVEDATA m) {
-		super(m.bitmap^findCastling(m.bitmap));
-		normal=null;
-		this.castling=findCastling(m.bitmap);
+	public static MOVEDATAX createx(long bitmap){
+		return new MOVEDATAX(bitmap^findCastling(bitmap));
 	}
-
-	public static long findCastling(long bitmap) {
+	
+	private static long findCastling(long bitmap) {
 		int to=BITS.getTo(bitmap);
 		int from=BITS.getFrom(bitmap);
 		long castling=0L;
@@ -39,17 +36,6 @@ public class MOVEDATAX extends MOVEDATA {
 		else if(from==IConst.BK_STARTPOS)
 			castling^=IConst.CANCASTLE_BLACK;
 		return castling;
-	}
-
-	public MOVEDATAX(MOVEDATA m,long mask) {
-		super(m.bitmap^mask);
-		normal=null;
-		this.castling=mask;
-	}
-
-	public static MOVEDATA create(long bitmap){
-		MOVEDATA normal = new MOVEDATA(bitmap);
-		return new MOVEDATAX(bitmap,normal);
 	}
 
 }

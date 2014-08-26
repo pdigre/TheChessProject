@@ -75,10 +75,9 @@ public class MBP  extends MBase{
 
 	private MOVEDATA[] captures(int to) {
 		MOVEDATA[] captures=new MOVEDATA[5];
-		for (int c = 0; c < 5; c++) {
-			long base = BITS.assemble(IConst.BP, from, to, CASTLING_STATE);
-			int cval = PSQT.pVal(to,BCAPTURES[c]);
-			captures[c]=MOVEDATA.create(purge(base, cval) | ((BCAPTURES[c] & 7) << IConst._CAPTURE));
+		for (int i = 0; i < 5; i++) {
+			long bitmap = BITS.assemble(IConst.BP, from, to, CASTLING_STATE);
+			captures[i]=MOVEDATA.capture(bitmap, BCAPTURES[i]);
 		}
 		return captures;
 	}
@@ -93,10 +92,9 @@ public class MBP  extends MBase{
 	private MOVEDATA[] cpromotes(int to) {
 		MOVEDATA[] promotes=new MOVEDATA[20];
 		for (int p = 0; p < 4; p++)
-			for (int c = 0; c < 5; c++) {
-				long base = BITS.assemblePromote(IConst.BP, BPROMOTES[p], from, to, CASTLING_STATE | SPECIAL);
-				int cval = PSQT.pVal(to,BCAPTURES[c]);
-				promotes[p*5+c]=MOVEDATA.create(purge(base, cval) | ((BCAPTURES[c] & 7) << IConst._CAPTURE));
+			for (int i = 0; i < 5; i++) {
+				long bitmap = BITS.assemblePromote(IConst.BP, BPROMOTES[p], from, to, CASTLING_STATE | SPECIAL);
+				promotes[p*5+i]=MOVEDATA.capture(bitmap, BCAPTURES[i]);
 			}
 		return promotes;
 	}

@@ -9,32 +9,16 @@ public class MOVEDATA {
 		return new MOVEDATA(bitmap);
 	}
 	
-	public static MOVEDATA createxw(long bitmap){
-		MOVEDATA normal = new MOVEDATA(bitmap);
-		int c=BITS.getCaptured(bitmap);
-		if(c==IConst.BR){
-			int to=BITS.getTo(bitmap);
-			if(to==IConst.BR_KING_STARTPOS)
-				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_BLACKKING,normal);
-			if(to==IConst.BR_QUEEN_STARTPOS)
-				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_BLACKQUEEN,normal);
-		}
-		return normal;
+	public static MOVEDATA capture(long bitmap,int victim){
+		int to = BITS.getTo(bitmap);
+		long purge = purge(bitmap, PSQT.pVal(to, victim));
+		return new MOVEDATA(purge | ((victim & 7) << IConst._CAPTURE));
 	}
 	
-	public static MOVEDATA createxb(long bitmap){
-		MOVEDATA normal = new MOVEDATA(bitmap);
-		int c=BITS.getCaptured(bitmap);
-		if(c==IConst.WR){
-			int to=BITS.getTo(bitmap);
-			if(to==IConst.WR_KING_STARTPOS)
-				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_WHITEKING,normal);
-			if(to==IConst.WR_QUEEN_STARTPOS)
-				return new MOVEDATAX(bitmap & ~IConst.CANCASTLE_WHITEQUEEN,normal);
-		}
-		return normal;
+	final static long purge(long bitmap, int subtract) {
+		return (((long) (BITS.score(bitmap) - subtract)) << 32) | ((int) bitmap);
 	}
-	
+
 	protected MOVEDATA(long bits) {
 		this.bitmap = bits;
 		int piece = BITS.getPiece(bits);

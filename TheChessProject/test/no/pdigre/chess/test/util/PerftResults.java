@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.Map;	
 import java.util.Set;
 
 import no.pdigre.chess.engine.base.MOVEDATA;
@@ -16,7 +16,6 @@ import no.pdigre.chess.engine.fen.FEN;
 import no.pdigre.chess.engine.fen.Position;
 import no.pdigre.chess.engine.fen.StartGame;
 import no.pdigre.chess.engine.uci.ROCEexe;
-import no.pdigre.chess.test.IPerft;
 import no.pdigre.chess.test.RunPerftFast;
 import no.pdigre.chess.test.Test_PERFT_5300ms;
 
@@ -91,35 +90,38 @@ public class PerftResults {
 			return;
 		StartGame pos = new StartGame(fen);
 		findError(pos, levels,FEN.board2string(pos));
-		assertTrue("Wrong",false);
+		assertTrue("Wrong "+run+"/"+cnt,false);
 	}
 
 	public static void findError(Position pos, int levels,String append) {
-		if(levels<2)
-			System.out.println("hi");
-		RunPerftFast perft = new RunPerftFast();
-		Map<String, Integer> actual = perft.divide(pos,levels);
-		Map<String, Integer> expected = ROCEexe.getInstance().divide(pos, levels);
-		Set<String> kactual = new HashSet<String>(actual.keySet());
-		Set<String> kexpected = new HashSet<String>(expected.keySet());
-		if(!kactual.equals(kexpected)){
-			kactual.removeAll(kexpected);
-			kexpected.removeAll(actual.keySet());
-			System.out.println(append);
-			System.out.println("ILLEGAL= "+String.join(" ", kactual)+", MISSING= "+String.join(" ", kexpected));
-			return;
-		} else {
-			String[] keys = actual.keySet().toArray(new String[actual.size()]);
-			for (int i = 0; i < keys.length; i++) {
-				String key=keys[i];
-				if(!actual.get(key).equals(expected.get(key))){
-					MOVEDATA md = perft.root.moves[i];
-					Position pos2 = pos.move(md);
-					String text = FEN.addHorizontal(FEN.board2string(pos2)+"\n"+FEN.move2literal(md.bitmap), append);
-					findError(pos2, levels-1,text);
-					return; 
+		try {
+			RunPerftFast perft = new RunPerftFast();
+			Map<String, Integer> actual = perft.divide(pos,levels);
+			Map<String, Integer> expected = ROCEexe.getInstance().divide(pos, levels);
+			Set<String> kactual = new HashSet<String>(actual.keySet());
+			Set<String> kexpected = new HashSet<String>(expected.keySet());
+			if(!kactual.equals(kexpected)){
+				kactual.removeAll(kexpected);
+				kexpected.removeAll(actual.keySet());
+				System.out.println(append);
+				System.out.println("ILLEGAL= "+String.join(" ", kactual)+", MISSING= "+String.join(" ", kexpected));
+				return;
+			} else {
+				String[] keys = actual.keySet().toArray(new String[actual.size()]);
+				for (int i = 0; i < keys.length; i++) {
+					String key=keys[i];
+					if(!actual.get(key).equals(expected.get(key))){
+						MOVEDATA md = perft.root.moves[i];
+						Position pos2 = pos.move(md);
+						String text = FEN.addHorizontal(FEN.board2string(pos2)+"\n"+FEN.move2literal(md.bitmap), append);
+						findError(pos2, levels-1,text);
+						return; 
+					}
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(append);
 		}
 	}
 

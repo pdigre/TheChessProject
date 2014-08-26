@@ -50,6 +50,8 @@ public class KingSafe implements IConst {
 		long e=bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
 			return false;
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RK) != 0)
+			return false;
 		MWQ x = MWQ.WQ[king];
 		long slider=bb_bit3 & e;
 		if((slider & rev.RQ) !=0){
@@ -79,6 +81,8 @@ public class KingSafe implements IConst {
 		SQATK rev = BASE.REV[king];
 		long e=~bb_black;
 		if (((~bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RN) != 0)
+			return false;
+		if (((bb_bit1 & bb_bit2 & ~bb_bit3 & e) & rev.RK) != 0)
 			return false;
 		MWQ x = MWQ.WQ[king];
 		long slider=bb_bit3 & e;
